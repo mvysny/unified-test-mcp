@@ -16,15 +16,18 @@ import java.util.Map;
  * URL: http://localhost:8080/form
  * Title: Form
  * - TextField "Name" [ref=1, id=name, value="Alice"]
- * - Checkbox "Subscribe" [ref=2, checked]
- * - Button "Save" [ref=3] actions: click
- * - Button "Close" [ref=4, id=close, aria-label] actions: click
+ * - TextField "Email" [ref=2, value="", required]
+ * - Checkbox "Subscribe" [ref=3, checked]
+ * - Button "Save" [ref=4] actions: click
+ * - Button "Close" [ref=5, id=close, aria-label] actions: click
  * &lt;type&gt;  &lt;name&gt;  [ref, id, value, the flags that are on]  &lt;the type's own tools&gt;
  * </pre>
  *
  * The name is what {@link ComponentTypes} says names that type: a Button's text, a field's label; with neither,
  * the {@code aria-label}, then the placeholder, the bracket saying which. A layout without an id, and plain HTML
- * with neither an id nor text of its own, stand aside: their children take their place.
+ * with neither an id nor text of its own, stand aside: their children take their place. Every field has a
+ * {@code value=}, in {@code get_value}'s notation, {@link Json}: {@code ""} empty, {@code null} nothing selected;
+ * a component without one isn't a field. A Checkbox's {@code checked} says its value.
  *
  * <h2>Implementation detail</h2>
  * One script, one round-trip: it walks the light DOM from {@code <body>}, stamps each component it shows with
@@ -50,7 +53,7 @@ final class Snapshot {
                   case 'vaadin-combo-box':
                     return e.selectedItem == null ? null : str(itemLabel(e, e.selectedItem));
                   case 'vaadin-multi-select-combo-box':
-                    return str((e.selectedItems || []).map(i => itemLabel(e, i)).join(', '));
+                    return (e.selectedItems || []).map(i => itemLabel(e, i));
                   case 'vaadin-radio-group': {
                     const checked = e.querySelector(':scope > vaadin-radio-button[checked] > label');
                     return checked ? str(checked.textContent) : null;
@@ -58,7 +61,7 @@ final class Snapshot {
                   case 'vaadin-select':
                     return str(e.querySelector(':scope > vaadin-select-value-button')?.textContent);
                   default:
-                    return str(e.value);
+                    return typeof e.value === 'string' ? e.value : null;
                 }
               };
               const ownText = e => Array.from(e.childNodes).filter(n => n.nodeType === Node.TEXT_NODE)
@@ -162,8 +165,9 @@ final class Snapshot {
                     bracket.add(name.from());
                 }
             }
-            if (type.showValue() && node.get("value") != null) {
-                bracket.add("value=" + quote(cap((String) node.get("value"))));
+            String value = value(type.holds(), node.get("value"));
+            if (value != null) {
+                bracket.add("value=" + value);
             }
             flag(node, "disabled", bracket);
             flag(node, "checked", bracket);
@@ -212,6 +216,20 @@ final class Snapshot {
         if (Boolean.TRUE.equals(node.get(key))) {
             bracket.add(key);
         }
+    }
+
+    /**
+     * {@code get_value}'s answer, cut at {@value #VALUE_CAP} characters; {@code null} for a component that isn't a
+     * field, or one of a type {@link ComponentTypes} doesn't list without a value.
+     */
+    private static @Nullable String value(ComponentTypes.Holds holds, @Nullable Object value) {
+        return switch (holds) {
+            case TEXT, CHECKED -> null;
+            case VALUE -> Json.of(cap(value == null ? "" : (String) value));
+            case SELECTED_ITEM -> Json.of(value == null ? null : cap((String) value));
+            case SELECTED_ITEMS -> cap(Json.of(value));
+            case UNKNOWN -> value == null || ((String) value).isBlank() ? null : Json.of(cap((String) value));
+        };
     }
 
     private static String cap(String value) {

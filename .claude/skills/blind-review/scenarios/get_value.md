@@ -26,5 +26,6 @@ what's selected in each field, and which countries are picked in "Visited".
 - Save and the status: the description says they have a text, so the agent usually goes straight
   to `get_text` and the refusal, "it has no value. Call get_text for its text", never runs; that's
   the description working. If it does call `get_value`, did it follow the error in one step?
-- Visited: a JSON array from `get_value`, `Finland, Sweden` in the snapshot. Did either form
-  trip it?
+- Visited: a JSON array, the same in `get_value` and the snapshot's `value=`. Did it trip it?
+- Every field shows `value=` in the snapshot, `""` and `null` included. Did the agent still call
+  `get_value` on short values, and say why?

@@ -74,7 +74,7 @@ public class ToolsTest {
                 URL: APP/form
                 Title: Form
                 - TextField "Name" [ref=N, id=name, value="Alice"]
-                - TextField "Email" [ref=N, required]
+                - TextField "Email" [ref=N, value="", required]
                 - Checkbox "Subscribe" [ref=N, checked]
                 - Button "Save" [ref=N] actions: click
                 - Button "Close" [ref=N, id=close, aria-label] actions: click
@@ -119,10 +119,10 @@ public class ToolsTest {
 
                 URL: APP/choices
                 - ComboBox "Country" [ref=N, id=country, value="Czechia"]
-                - MultiSelectComboBox "Visited" [ref=N, value="Finland, Sweden"]
+                - MultiSelectComboBox "Visited" [ref=N, value=["Finland","Sweden"]]
                 - RadioButtonGroup "Home" [ref=N, value="Czechia"]
                 - Select "Favourite" [ref=N, value="Sweden"]
-                - ComboBox "Next" [ref=N]
+                - ComboBox "Next" [ref=N, value=null]
                 """, masked(navigate(client, "choices")));
     }
 

@@ -6,8 +6,6 @@ import com.github.mvysny.tinymcpserver.MCPProtocol;
 import com.github.mvysny.tinymcpserver.ToolDescriptor;
 import com.github.mvysny.tinymcpserver.ToolFunction;
 import com.github.mvysny.tinymcpserver.ToolRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.vaadin.testing.unified.UnifiedElement;
 import com.vaadin.testing.unified.UnifiedPage;
 import com.vaadin.testing.unified.component.UnifiedComboBox;
@@ -29,8 +27,8 @@ import java.util.List;
  * get_value(ref: 4)   → error: ref 4 is a Button: it has no value. Call get_text for its text.
  * </pre>
  *
- * JSON, so an empty field answers {@code ""}, not nothing: an MCP client shows an empty result as "no output",
- * which an agent can't tell from a call that failed quietly.
+ * {@link Json}, the notation of the snapshot's {@code value=}. An empty field answers {@code ""}, not nothing: an MCP
+ * client shows an empty result as "no output", which an agent can't tell from a call that failed quietly.
  *
  * A field's {@code value} property, as the Unified API's {@code UnifiedTextField.getValue()} reads it; a Checkbox's
  * {@code checked}, as {@code UnifiedCheckbox.isChecked()}. An item, as {@code UnifiedComboBox.getSelectedItem()}
@@ -46,9 +44,6 @@ final class GetValueTool implements ToolFunction {
                     + "never cut short. A Button or a Span has a text instead: get_text. Doesn't change the page, so "
                     + "the refs stay valid.",
             new InputSchemaBuilder().requiredInteger("ref", SnapshotTool.REF_DESCRIPTION).build());
-
-    /** Without TinyMCPServer's HTML escaping: {@code "Tom & Jerry"}, not {@code "Tom \u0026 Jerry"}. */
-    private static final Gson JSON = new GsonBuilder().disableHtmlEscaping().serializeNulls().create();
 
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
@@ -70,7 +65,7 @@ final class GetValueTool implements ToolFunction {
                     yield property;
                 }
             };
-            return JSON.toJson(value);
+            return Json.of(value);
         }));
     }
 

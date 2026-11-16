@@ -148,8 +148,12 @@ custom element shows its tag. The quoted name is the property a person tells the
 by, in Flow's and the Unified API's words, which agree: the text for a `HasText` component
 (`withText`), the label for a `HasLabel` one (`withLabel`), else the `aria-label`, then the
 placeholder, the bracket saying which. Never Vaadin 8's "caption". The bracket shows the id, a
-field's value capped at 80 characters (a name never is: it says which component this is), and
-only the states that are on. `actions` lists only the tools made for that type, and only tools
+field's value, and only the states that are on. Every field shows `value=`, written as `get_value`
+answers it — `""` for an empty field, `null` for nothing selected, `["Finland","Sweden"]` — and
+capped at 80 characters (a name never is: it says which component this is). So a missing `value=`
+means one thing, not a field; why not leave an empty field's out to save tokens, as the states
+are: then it reads the same as a Button's, and a blind agent called `get_value` to tell them
+apart. A Checkbox shows `checked` instead, its value already. `actions` lists only the tools made for that type, and only tools
 this server has: any component takes a click, so `click` on every Div would be noise; what the
 agent can't tell from the type is which tool fits. Left out, so lines stay short: a layout without
 an id and plain HTML with neither id nor text of its own (their children take their place, as

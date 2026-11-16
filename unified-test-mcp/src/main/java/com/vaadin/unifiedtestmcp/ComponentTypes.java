@@ -63,12 +63,7 @@ final class ComponentTypes {
      * @param flowName the Flow class's simple name, {@code Button}, or {@code <tag>} for an element with none
      * @param actions  the tools that act on it beyond what every component allows; only tools this server has
      */
-    record Type(String flowName, NameFrom nameFrom, Holds holds, List<String> actions) {
-        /** Whether its value is worth a snapshot line: a field's is, a Checkbox's ({@code checked} says it) isn't. */
-        boolean showValue() {
-            return holds != Holds.TEXT && holds != Holds.CHECKED;
-        }
-    }
+    record Type(String flowName, NameFrom nameFrom, Holds holds, List<String> actions) {}
 
     private static final Map<String, Type> TYPES = Map.ofEntries(
             Map.entry("vaadin-button", new Type("Button", NameFrom.TEXT, Holds.TEXT, List.of("click"))),
