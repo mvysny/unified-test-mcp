@@ -4,18 +4,16 @@ import com.github.mvysny.tinymcpserver.MCPErrorResponseException;
 import com.github.mvysny.tinymcpserver.MCPSession;
 import com.vaadin.testing.unified.UnifiedPage;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * How a tool reaches the browser: the action runs on the page of the calling MCP session's {@link UnifiedBrowser},
- * and a failure — a lookup that timed out, an app that isn't up — becomes a tool error whose message the model reads.
+ * with that session's {@link Refs}, and a failure — a lookup that timed out, an app that isn't up — becomes a tool
+ * error whose message the model reads.
  *
  * <pre>{@code
- * ToolCall.run(page -> page.navigate("second"));
- * String text = ToolCall.get(page -> ComponentLookup.button(page, "clicker").getText());
+ * String text = ToolCall.get((page, refs) -> refs.resolve(page, 7).element().getText());
  * }</pre>
  *
  * Call it from a tool's {@code call} only: the session is bound to that thread. A timed-out lookup throws
@@ -26,17 +24,18 @@ final class ToolCall {
 
     private ToolCall() {}
 
-    static void run(Consumer<UnifiedPage> action) {
-        get(page -> {
-            action.accept(page);
-            return null;
-        });
+    /** Runs on the browser thread. */
+    @FunctionalInterface
+    interface Action<T> {
+        T apply(UnifiedPage page, Refs refs);
     }
 
-    static <T> T get(Function<UnifiedPage, T> action) {
-        UnifiedBrowser browser = MCPSession.getCurrent().getAttribute(UnifiedBrowser.class);
+    static <T> T get(Action<T> action) {
+        MCPSession session = MCPSession.getCurrent();
+        UnifiedBrowser browser = session.getAttribute(UnifiedBrowser.class);
+        Refs refs = session.getAttribute(Refs.class);
         try {
-            return browser.call(action);
+            return browser.call(page -> action.apply(page, refs));
         } catch (MCPErrorResponseException e) {
             throw e;
         } catch (RuntimeException | AssertionError e) {

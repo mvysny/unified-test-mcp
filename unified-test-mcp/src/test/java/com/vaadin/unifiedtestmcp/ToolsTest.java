@@ -15,9 +15,13 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URI;
 import java.time.Duration;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -57,54 +61,91 @@ public class ToolsTest {
 
     @BeforeEach
     public void startOnMainView() throws IOException {
-        call(client, "navigate", Map.of("path", ""));
+        navigate(client, "");
+    }
+
+    @Test
+    public void snapshotShowsEachKindOfName() throws IOException {
+        assertEquals("""
+                Navigated to /form
+
+                Path: /form
+                - TextField "Name" [ref=N, id=name, value="Alice"]
+                - TextField "Email" [ref=N, required]
+                - Checkbox "Subscribe" [ref=N, checked]
+                - Button "Save" [ref=N] actions: click
+                - Button "Close" [ref=N, id=close, aria-label] actions: click
+                - Button "Delete" [ref=N, disabled] actions: click
+                - Span "Not saved" [ref=N]
+                """, masked(navigate(client, "form")));
+        assertEquals(masked(call(client, "snapshot", Map.of())), masked(navigate(client, "form")).substring(
+                "Navigated to /form\n\n".length()));
+    }
+
+    @Test
+    public void clickWithoutIdFindsTheStampedComponent() throws IOException {
+        int save = ref(navigate(client, "form"), "Button \"Save\"");
+        String after = call(client, "click", ref(save));
+        assertTrue(after.startsWith("Clicked ref=" + save + "\n\nPath: /form\n"), after);
+        assertTrue(after.contains("- Span \"Saved\" ["), after);
+        assertEquals(save, ref(after, "Button \"Save\""), "a component keeps its ref");
     }
 
     @Test
     public void clickChangesText() throws IOException {
-        assertEquals("Click me", call(client, "get_text", id("clicker")));
-        assertEquals("Clicked Button#clicker", call(client, "click", id("clicker")));
-        assertEquals("Clicked 1 times", call(client, "get_text", id("clicker")));
-        call(client, "click", id("clicker"));
-        assertEquals("Clicked 2 times", call(client, "get_text", id("clicker")));
+        int clicker = ref(call(client, "snapshot", Map.of()), "id=clicker");
+        assertEquals("Click me", call(client, "get_text", ref(clicker)));
+        String after = call(client, "click", ref(clicker));
+        assertTrue(after.contains("- Button \"Clicked 1 times\" [ref=" + clicker + ", id=clicker]"), after);
+        call(client, "click", ref(clicker));
+        assertEquals("Clicked 2 times", call(client, "get_text", ref(clicker)));
     }
 
     @Test
     public void navigateOpensView() throws IOException {
-        assertEquals("Navigated to /second", call(client, "navigate", Map.of("path", "second")));
-        assertEquals("Back to main", call(client, "get_text", id("back")));
-        call(client, "click", id("back"));
-        assertEquals("Click me", call(client, "get_text", id("clicker")));
+        String second = navigate(client, "second");
+        assertTrue(second.startsWith("Navigated to /second\n\nPath: /second\n"), second);
+        String main = call(client, "click", ref(ref(second, "id=back")));
+        assertTrue(main.contains("\nPath: /\n- Button \"Click me\" [ref="), main);
     }
 
     @Test
     public void navigateStartsViewAfresh() throws IOException {
-        call(client, "click", id("clicker"));
-        assertEquals("Clicked 1 times", call(client, "get_text", id("clicker")));
-        call(client, "navigate", Map.of("path", "/"));
-        assertEquals("Click me", call(client, "get_text", id("clicker")));
+        int before = ref(call(client, "snapshot", Map.of()), "id=clicker");
+        call(client, "click", ref(before));
+        String reloaded = navigate(client, "/");
+        assertTrue(reloaded.contains("- Button \"Click me\" ["), reloaded);
+        assertNotEquals(before, ref(reloaded, "id=clicker"), "a new page's components get new numbers");
+    }
+
+    @Test
+    public void refFromBeforeNavigationIsRejected() throws IOException {
+        int clicker = ref(call(client, "snapshot", Map.of()), "id=clicker");
+        int back = ref(navigate(client, "second"), "id=back");
+        assertEquals("ref " + clicker + " isn't in the latest snapshot; its refs are " + back
+                + ". Call snapshot to see the components on the page now.", error(client, "get_text", ref(clicker)));
+    }
+
+    @Test
+    public void refBeforeAnySnapshotIsRejected() throws IOException {
+        try (TinyMCPClient other = connect()) {
+            assertEquals("No refs yet: call snapshot first, then use a ref from it.",
+                    error(other, "click", ref(1)));
+        }
     }
 
     @Test
     public void eachSessionHasItsOwnBrowser() throws IOException {
-        call(client, "click", id("clicker"));
+        int clicker = ref(call(client, "snapshot", Map.of()), "id=clicker");
+        call(client, "click", ref(clicker));
         try (TinyMCPClient other = connect()) {
-            call(other, "navigate", Map.of("path", ""));
-            assertEquals("Click me", call(other, "get_text", id("clicker")));
-            call(other, "click", id("clicker"));
-            call(other, "click", id("clicker"));
-            assertEquals("Clicked 2 times", call(other, "get_text", id("clicker")));
+            int otherClicker = ref(navigate(other, ""), "id=clicker");
+            call(other, "click", ref(otherClicker));
+            String twice = call(other, "click", ref(otherClicker));
+            assertTrue(twice.contains("\"Clicked 2 times\""), twice);
         }
-        assertEquals("Clicked 1 times", call(client, "get_text", id("clicker")));
+        assertEquals("Clicked 1 times", call(client, "get_text", ref(clicker)));
         assertEquals(1, handler.getSessionCount());
-    }
-
-    @Test
-    public void unknownIdIsToolError() throws IOException {
-        MCPProtocol.CallToolResult result = client.callTool(request("get_text", id("no-such-id")));
-        assertEquals(Boolean.TRUE, result.getIsError());
-        String message = result.getContent().get(0).getText();
-        assertTrue(message.startsWith("No component matches "), message);
     }
 
     private static TinyMCPClient connect() throws IOException {
@@ -120,8 +161,33 @@ public class ToolsTest {
         return text;
     }
 
-    private static Map<String, Object> id(String id) {
-        return Map.of("id", id);
+    private static String navigate(TinyMCPClient session, String path) throws IOException {
+        return call(session, "navigate", Map.of("path", path));
+    }
+
+    private static String error(TinyMCPClient session, String tool, Map<String, Object> arguments)
+            throws IOException {
+        MCPProtocol.CallToolResult result = session.callTool(request(tool, arguments));
+        assertEquals(Boolean.TRUE, result.getIsError(), result.getContent().get(0).getText());
+        return result.getContent().get(0).getText();
+    }
+
+    private static Map<String, Object> ref(int ref) {
+        return Map.of("ref", ref);
+    }
+
+    /** The ref on the one snapshot line containing {@code part}. */
+    private static int ref(String snapshot, String part) {
+        List<String> lines = snapshot.lines().filter(l -> l.contains(part)).toList();
+        assertEquals(1, lines.size(), "one line with " + part + " in\n" + snapshot);
+        Matcher m = Pattern.compile("ref=(\\d+)").matcher(lines.get(0));
+        assertTrue(m.find(), lines.get(0));
+        return Integer.parseInt(m.group(1));
+    }
+
+    /** Refs as {@code ref=N}: their numbers depend on what ran before. */
+    private static String masked(String snapshot) {
+        return snapshot.replaceAll("ref=\\d+", "ref=N");
     }
 
     private static ToolRequest request(String tool, Map<String, Object> arguments) {

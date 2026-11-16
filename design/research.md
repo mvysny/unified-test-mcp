@@ -61,6 +61,11 @@ a claim came from, so the prose doesn't repeat it.
   and trimmed. **[src]**
 - Escape hatch: `UnifiedPage.unwrap(com.microsoft.playwright.Page.class)` returns the session's
   Playwright `Page`; a wrapper unwraps to its Dramafinder element or a `Locator`. **[src]**
+- `UnifiedContainer` is bound to any tag (`@UnifiedComponent(tag = "*")`): `page.find(UnifiedContainer.class)`
+  with `withAttribute(name, value)` or `withId(id)` finds an element of any type by a CSS selector,
+  `*[data-mcp-ref="3"]`. **[verified 2026-11-16, unified-test-playwright 0.1.0-alpha2]**
+- `Query.exists()` reads the page once, without waiting; `single()` waits, on first use, until
+  exactly one matches. **[src]**
 
 ## R_unified_lazy_elements — Unified API: a wrapper holds its query, not an element
 

@@ -7,12 +7,24 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 
 ## Status
 
-A prototype with three tools; the component ones know Buttons only:
+A prototype with four tools:
 
+- `snapshot()` — the Vaadin components on the page, one line each, each with a `ref` the other
+  tools take:
+
+  ```
+  Path: /form
+  - TextField "Name" [ref=1, id=name, value="Alice"]
+  - Button "Save" [ref=4] actions: click
+  ```
 - `navigate(path)` — opens the view at that path relative to the app's URL, `""` being the
-  start view; a full page load.
-- `click(id)` — clicks the Button with that id; returns once the server has handled the click.
-- `get_text(id)` — the Button's text.
+  start view; a full page load. Returns the new snapshot.
+- `click(ref)` — clicks the component; returns the snapshot once the server has handled the
+  click.
+- `get_text(ref)` — the component's text.
+
+Set ids on the components your tests touch: the snapshot shows them, so what an agent finds
+carries straight into a Java test.
 
 What's next is in [design/ideas/](design/ideas/).
 
@@ -35,10 +47,9 @@ start the app first, or at least before the first call.
 A JDK 21 or newer. `./gradlew` builds everything and runs the tests; the server's jar lands in
 `unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`.
 
-`test-app` is a two-view Vaadin app to test against: `./gradlew :test-app:run`, then
+`test-app` is a Vaadin app to test against: `./gradlew :test-app:run`, then
 http://localhost:8080. The start view has the button `clicker`; the view at `second` has the
-button `back`, which returns to the start view.
+button `back`, which returns to the start view; the view at `form` has a few fields and buttons.
 
 Try it: start `test-app`, register the jar you built as above, start `claude`, and ask it to
-click the button `clicker` twice and tell you its text, or to navigate to `second` and click
-`back`.
+click the button `clicker` twice and tell you its text, or to go to `form` and save.

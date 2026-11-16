@@ -1,23 +1,24 @@
 # Beyond Buttons: more component types, faster failures
 
-What the click / get_text spike left open.
+What the click / get_text / snapshot work left open.
 
-`Q_lookup_type`: every Unified API lookup starts from a component type; there is no "find by
-id, whatever it is" (`R_unified_no_enumeration`). The tools assume Button. Next steps, in the
-order I'd take them:
-1. an optional `type` argument (`"Button"`, `"TextField"`, …) mapped to its wrapper class;
-2. without `type`, ask the page for the element's tag (`document.getElementById(id).localName`
-   through the escape hatch) and map tag → wrapper (`vaadin-button` → `UnifiedButton`); the
-   `@UnifiedComponent` annotations on the wrappers already carry that table.
+`Q_typed_actions`: a ref resolves to a `UnifiedContainer` (any tag), enough for `click` and
+`get_text`. A typed action — `set_value` on a TextField, `check` on a Checkbox — needs the type's
+own wrapper: `ComponentTypes` gets a wrapper column (`vaadin-text-field` → `UnifiedTextField`),
+and `Refs.resolve` finds the component through it, `find(UnifiedTextField.class).withAttribute(…)`.
+For a type with a Dramafinder element (Button, TextField) that filter goes through Dramafinder's
+query by reflection (`R_unified_no_enumeration`); check it finds the stamped element. The
+`@UnifiedComponent` annotations on the wrappers carry the tag → wrapper table, if hand-listing
+the column gets long.
 
 `Q_get_text_name`: `get_text` matches `UnifiedButton.getText()`. A TextField's interesting
 thing is its value, not its text — later that's `get_value`/`set_value`, or a per-type `read`
 that returns what matters for that type.
 
-`Q_timeout`: a missing id costs the full 10 s lookup timeout before the tool fails — slow for an
-agent probing, and for `ToolsTest.unknownIdIsToolError`. A `--timeout` option, or a
-shorter timeout for reads than for actions (a read of something not there yet is rarer than an
-action on something still loading)?
+`Q_timeout`: a ref that isn't in the latest snapshot, or whose component is gone, fails at once.
+What still costs the full 10 s is an action on a component that is there but stays disabled or
+hidden: `click` on the snapshot's `Button "Delete" [disabled]` waits for it to be enabled. Fail at
+once on a component the snapshot showed disabled, or a `--timeout` option?
 
 `Q_browser_download`: Playwright downloads every browser on its first start, 1.3 GB
 (`R_playwright_thread_safety`). With `--browser-executable`, the server could set

@@ -94,3 +94,77 @@ there, every session drives the one Swing UI in the one
 JVM, so two would fight; here sessions share nothing but the app's server. The cost: each HTTP
 session launches a browser of its own, a second or two and a Chromium's memory; still lazy,
 on the session's first tool call.
+
+## D_refs_not_ids — Why does every tool take a snapshot's ref rather than the component's id?
+
+Every tool that acts on a component takes a `ref`, a number the snapshot shows on the
+component's line; the snapshot mints one for every component it shows, id or not. One kind of
+handle, so every tool has the same schema, as in swing-mcp. Why not ids: an id isn't something a
+person sees, plenty of components have none, and an agent's session is transient, not a test
+anyone keeps. The snapshot still shows the id (`Button "Save" [ref=3, id=save]`): TestBench, the
+Unified API and Karibu-Testing all tell an app to set ids on what tests touch, and so do we; an
+agent fixing a Java test reads it there. Why not take both, `id` or `ref`: every tool would carry
+two optional parameters and a rule that exactly one is given.
+
+How a ref finds its component again is ours, per session (`Refs`). A component whose id was
+unique on the page is found by the id: a Unified API wrapper re-runs its lookup on every call
+(`R_unified_lazy_elements`), so Flow re-creating the element doesn't break the ref. Any other by
+a `data-mcp-ref` attribute the snapshot stamped on it. Why a stamp: without an id, the only
+lookup left is positional, `all().get(i)`, which silently names a *different* component once
+one is added before it; the stamp sits on the actual DOM node, and when Flow re-creates the
+element the stamp goes with the old node, so the lookup finds nothing and the tool says the
+component is gone, instead of clicking the wrong one. Flow keeps the attribute through
+round-trips and never sends it to the server (`R_flow_foreign_attributes`). Why not a JavaScript
+property, which keeps the DOM clean: the Unified API's filters match attributes only. Why not a
+Java handle, as TestBench's `ButtonElement`: a Unified API wrapper holds its lookup, not an
+element, so for a component without an id there is nothing stable to hold.
+
+A ref is valid while the latest snapshot shows it: every snapshot (the `snapshot` tool's, or
+the one an action returns) replaces the session's refs; a read or a failed action leaves them,
+so the agent can retry without a new snapshot. The script keeps a stamp already on an element,
+so a component keeps its number from one snapshot to the next, through a text change too (the
+Playwright MCP mints a new ref when the accessible name changes, `R_playwright_mcp_refs`; ours
+names the element, not its text). So a second action sent with an older snapshot's ref still
+works if its component survived, where swing-mcp, clearing its refs after each action, fails it.
+The numbers come from a per-session counter in Java that never goes back, not from the page: a
+counter in the page would start again at 1 after every reload, and an agent's ref from before a
+`navigate` would name a different component after it. Each way a ref fails names the next step:
+no snapshot yet, a ref not in the latest snapshot (listing those that are), a component gone.
+
+## D_snapshot_from_javascript — Why is the snapshot one script in the page rather than Unified API lookups?
+
+The Unified API can't list what's on a page: every lookup starts from a component type
+(`R_unified_no_enumeration`). So the snapshot is one script, run through the escape hatch: it
+walks the light DOM from `<body>`, stamps, and reads each component's tag, id, own text, label,
+`aria-label`, placeholder, value and states, in one browser round-trip. The actions still go
+through the Unified API, for its waiting and its component semantics. Why not ask the Unified API
+for `all()` of every wrapper type: a flat list with no nesting, nothing for a component without
+a wrapper, and one round-trip per type. Why not the browser's ARIA snapshot, as the Playwright
+MCP: it names roles and DOM, not Vaadin components, and shows the dev tools' own buttons.
+
+A line names the Flow class a Java developer writes (`TextField`, not `vaadin-text-field`), from
+`ComponentTypes`; an unlisted `vaadin-*` tag gets a name derived from it (`SplitLayout`), any other
+custom element shows its tag. The quoted name is the property a person tells the component apart
+by, in Flow's and the Unified API's words, which agree: the text for a `HasText` component
+(`withText`), the label for a `HasLabel` one (`withLabel`), else the `aria-label`, then the
+placeholder, the bracket saying which. Never Vaadin 8's "caption". The bracket shows the id, a
+field's value capped at 80 characters (a name never is: it says which component this is), and
+only the states that are on. `actions` lists only the tools made for that type, and only tools
+this server has: any component takes a click, so `click` on every Div would be noise; what the
+agent can't tell from the type is which tool fits. Left out, so lines stay short: a layout without
+an id and plain HTML with neither id nor text of its own (their children take their place, as
+swing-mcp does with unnamed panels), Flow's bootstrap wrappers (`#outlet`, `flow-container-*`),
+the parts a Vaadin component renders into its own light DOM (its input, label, messages), icons,
+the dev tools, and anything `hidden`. A layout with an id stays: the app named it. Revisit the
+pruning when an agent can't tell two identical forms apart.
+
+## D_action_returns_snapshot — Why does an action answer with the whole snapshot rather than an echo?
+
+`click` and `navigate` answer with an echo line, then the snapshot taken once the server has
+handled the action. The agent sees what its action did without a second call, and the refs in it
+are current; `navigate`'s snapshot starts with the path the browser landed on, which tells a
+reroute, to a login view say, from the path asked for. The Playwright MCP does the same. Why not
+swing-mcp's echo, "Dispatched …, call swing_snapshot to verify": every action would cost the
+agent a second call, and a second chance to act on a stale picture. The cost, a snapshot's tokens
+per action, stays within the promise: one line per component on the screen. A read, `get_text`,
+returns only what it read.

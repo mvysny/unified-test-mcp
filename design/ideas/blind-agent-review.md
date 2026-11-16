@@ -79,11 +79,6 @@ change.
 
 ## Open questions
 
-**Blocked on `snapshot`** (`design/ideas/snapshot.md`): every lookup error should send the
-agent to the snapshot ("call `snapshot` to see the components on the page"), so reviewing a tool
-before that exists would only rediscover the missing snapshot. Snapshot first, then the skill's
-first run.
-
 `Q_app_port`: `test-app` serves on 8080, which `./gradlew :test-app:run` by the owner may already
 hold. A free port per review (Vaadin Boot reads one from the environment, to verify), or reuse an
 app already up?
@@ -92,8 +87,6 @@ app already up?
 results). A periodic review of the whole set, with a scenario spanning several tools, besides the
 per-tool one?
 
-Candidates already visible, before any review:
-- `get_text("no-such-id")` fails with the Unified API's "No component matches …". It doesn't say
-  which ids are there, or that the component may be on another view (`navigate`).
-- `navigate` to a path with no route reports success: Vaadin renders its "not found" view, and the
-  agent only learns that when its next lookup times out.
+Candidate already visible, before any review: `navigate` to a path with no route still reports
+success. The snapshot it returns shows Vaadin's "not found" view, so the agent can tell, but
+nothing says so.

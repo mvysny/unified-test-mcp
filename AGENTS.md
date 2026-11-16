@@ -32,14 +32,15 @@ Every fact lives in exactly one of these; the others link to it.
 
 - **Every Playwright call runs on `UnifiedBrowser`'s thread**, through `UnifiedBrowser.call`; Playwright for Java is not thread-safe, and a call from a transport thread corrupts the session. The threading is in `design/architecture.md`.
 - **Every tool reaches the browser through `ToolCall`**, which finds the calling MCP session's own browser (`D_browser_per_session`). A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `ToolCall` turns it into a tool error the model reads.
-- **The tools use the Unified API, not Playwright**; its escape hatch only for what no wrapper offers. See `D_unified_api_backend`.
+- **The tools use the Unified API, not Playwright**; its escape hatch only for what no wrapper offers, as the snapshot's script (`D_snapshot_from_javascript`). See `D_unified_api_backend`.
+- **A tool names a component by its `ref` from the latest snapshot, never by its id**, and finds it through `Refs.resolve` (`D_refs_not_ids`). **A tool that changes the page answers with the new snapshot** (`D_action_returns_snapshot`).
 
 ## Module map
 
 - The MCP protocol and its transports are [TinyMCPServer](https://github.com/mvysny/tinymcpserver), a separate product this depends on as `com.github.mvysny.tinymcpserver:mcp-server`.
 - The Vaadin component knowledge is the [Unified API](https://github.com/parttio/unified-testing-tool), depended on as `org.vaadin.addons:unified-test-playwright`. `unified-testing-tool/` is a gitignored clone of its repository, there to read its source; a change to it goes upstream as a PR.
 - `unified-test-mcp` — the MCP server itself: `main()`, the tools, and opening a Unified API page outside JUnit.
-- `test-app` — a two-view Vaadin Boot app the tools are tried and tested against.
+- `test-app` — a three-view Vaadin Boot app the tools are tried and tested against.
 
 ## Conventions
 
@@ -47,7 +48,7 @@ Every fact lives in exactly one of these; the others link to it.
 - **Gradle, Kotlin DSL; every version in `gradle/libs.versions.toml`.** Vaadin stays on the line the Unified API is built against.
 - **Tests: JUnit; a tool is tested end to end** — `test-app` booted in the test JVM, a real browser, the tool called over MCP's HTTP transport (`ToolsTest`). No mocks of the Unified API or Playwright.
 - **Diagnostics go to `java.util.logging`**, never `System.out`: on stdio, stdout is the protocol.
-- **One class per tool**, `<Name>Tool implements ToolFunction` with its `DESCRIPTOR`, registered in `UnifiedTestMCP`; no base class — shared steps are plain functions (`ToolCall`, `ComponentLookup`), per the `cop` skill.
+- **One class per tool**, `<Name>Tool implements ToolFunction` with its `DESCRIPTOR`, registered in `UnifiedTestMCP`; no base class — shared steps live in classes of their own (`ToolCall`, `Refs`, `Snapshot`, `ComponentTypes`), per the `cop` skill.
 - **A tool failure is an `MCPErrorResponseException`** whose message says what was looked for; the Unified API's own message does that already.
 - **Released as one jar on GitHub Releases, never Maven Central**, every dependency and every OS's Playwright driver inside; steps in `RELEASING.md`, why in `D_single_jar_release`.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.

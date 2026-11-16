@@ -7,20 +7,23 @@ import com.github.mvysny.tinymcpserver.ToolFunction;
 import com.github.mvysny.tinymcpserver.ToolRequest;
 
 /**
- * {@code get_text(id)}: a Button's text.
+ * {@code get_text(ref)}: a component's text, all of it, its children's included.
  *
  * <pre>
- * get_text(id: "clicker")   → Clicked 2 times
+ * get_text(ref: 1)   → Clicked 2 times
  * </pre>
+ *
+ * A read: the refs stay as they are.
  */
 final class GetTextTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("get_text",
-            "The text of a Vaadin Button, found by its id.",
-            new InputSchemaBuilder().requiredString("id", "The Button's id").build());
+            "The text of a component, its children's included, whitespace collapsed: a Button's text, a "
+                    + "Paragraph's. Doesn't change the page, so the refs stay valid.",
+            new InputSchemaBuilder().requiredInteger("ref", SnapshotTool.REF_DESCRIPTION).build());
 
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
-        String id = request.arguments().getString("id");
-        return MCPProtocol.Content.text(ToolCall.get(page -> ComponentLookup.button(page, id).getText()));
+        int ref = request.arguments().getInt("ref");
+        return MCPProtocol.Content.text(ToolCall.get((page, refs) -> refs.resolve(page, ref).element().getText()));
     }
 }

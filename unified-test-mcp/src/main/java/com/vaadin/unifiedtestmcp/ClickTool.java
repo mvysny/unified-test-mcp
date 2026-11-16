@@ -7,22 +7,32 @@ import com.github.mvysny.tinymcpserver.ToolFunction;
 import com.github.mvysny.tinymcpserver.ToolRequest;
 
 /**
- * {@code click(id)}: clicks a Button, returns once the server has handled the click.
+ * {@code click(ref)}: clicks a component, then answers with the snapshot taken once the server has handled the
+ * click.
  *
  * <pre>
- * click(id: "clicker")   → Clicked Button#clicker
+ * click(ref: 3)   → Clicked ref=3
+ *
+ *                   Path: /form
+ *                   - Span "Saved" [ref=8]
+ *                   …
  * </pre>
+ *
+ * Any component takes a click; the snapshot lists {@code click} among the actions only of those made for it.
  */
 final class ClickTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("click",
-            "Click a Vaadin Button, found by its id. Waits until the button is visible and enabled, clicks it, "
-                    + "then waits until the server has handled the click.",
-            new InputSchemaBuilder().requiredString("id", "The Button's id").build());
+            "Click a component, as a user would. Waits until it is visible and enabled, clicks it, waits until the "
+                    + "server has handled the click, then returns the new snapshot of the page.",
+            new InputSchemaBuilder().requiredInteger("ref", SnapshotTool.REF_DESCRIPTION).build());
 
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
-        String id = request.arguments().getString("id");
-        ToolCall.run(page -> ComponentLookup.button(page, id).click());
-        return MCPProtocol.Content.text("Clicked Button#" + id);
+        int ref = request.arguments().getInt("ref");
+        String snapshot = ToolCall.get((page, refs) -> {
+            refs.resolve(page, ref).element().click();
+            return Snapshot.take(page, refs);
+        });
+        return MCPProtocol.Content.text("Clicked ref=" + ref + "\n\n" + snapshot);
     }
 }

@@ -4,6 +4,7 @@ import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Span;
 import org.junit.jupiter.api.*;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ.*;
@@ -38,5 +39,13 @@ public class ViewsTest {
         UI.getCurrent().navigate(SecondView.class);
         _click(_get(Button.class, s -> s.withId("back")));
         _assertOne(MainView.class);
+    }
+
+    @Test
+    public void saveSetsStatus() {
+        UI.getCurrent().navigate(FormView.class);
+        _assertOne(Span.class, s -> s.withText("Not saved"));
+        _click(_get(Button.class, s -> s.withText("Save")));
+        _assertOne(Span.class, s -> s.withText("Saved"));
     }
 }
