@@ -28,3 +28,34 @@ TestBench: it drives Selenium only and needs a license; we revisit it once TestB
 Playwright. The cost we carry: the Unified API is a 0.1.0 alpha whose only entry point is a
 JUnit extension (`R_unified_junit_bound`), and it has no query that lists the components on a
 page (`R_unified_no_enumeration`), so a snapshot cannot come from it alone.
+
+## D_separate_process — Why run as a process of its own rather than inside the app, as swing-mcp does?
+
+The server is a separate JVM that an MCP client spawns over stdio, and it reaches the app only
+through a browser pointed at the app's URL. The app needs no change and no extra dependency, it
+can be any Vaadin app on any server (Spring Boot, Vaadin Boot, a WAR on Tomcat), and its
+lifecycle is its own: the browser opens the start page on the first tool call, so the app need
+not be up when the client starts the server. The browser is a process outside both JVMs
+anyway. Why not inside the app, as a `-javaagent` like swing-mcp: swing-mcp has to be there,
+because the Swing UI exists only in that JVM; a Vaadin UI is reachable over HTTP, and putting a
+Playwright driver, its browser and the Unified API on the app's classpath makes them the app's
+dependencies, at the app's Vaadin version. The cost: no Browserless backend, which needs the
+app's classes and session in the same JVM; when that becomes worth having, it is a second entry
+point, not a rewrite of the tools. Why stdio rather than HTTP: the client owns the process, so
+the browser lives exactly as long as the client's session and nothing listens on a port.
+
+## D_junit_free_context — Why open the Unified API page through a fake JUnit context rather than wait for an upstream entry point?
+
+The only way the Unified API opens a page is its JUnit extension; the adapter it calls takes an
+`AdapterContext` whose `extensionContext()` is a JUnit `ExtensionContext`, and the Playwright
+adapter keeps its browser in that context's root store (`R_unified_junit_bound`).
+`JUnitFreeContext` hands the adapter a proxy that answers `getRoot()` and `getStore(..)` with a
+map-backed store and throws on anything else, then wraps the session in the API's own
+`UnifiedPageImpl`. That is one class, and it works on 0.1.0-alpha2. Why not wait for upstream:
+a JUnit-free factory (say `UnifiedPages.open(tool, settings)`, with `extensionContext()`
+optional) is the right fix and worth asking for, but the tools should not wait on it. Why not
+copy the adapter's code: it would fork the part — the session, the Dramafinder bridge — the
+Unified API exists to maintain (`D_unified_api_backend`). The cost we carry: we lean on the
+`internal` package (`UnifiedPageImpl`, `TestRun`) and on which `ExtensionContext` methods the
+adapter happens to call, so an upgrade of the Unified API is checked by `ButtonToolsTest` before
+anything else. When upstream gains the entry point, this class is deleted.

@@ -7,9 +7,12 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 
 ## Status
 
-Project structure only: the server starts but offers no tools yet. The first prototype (click
-a Button by its id, read its text) is sketched in
-[design/ideas/first-tools.md](design/ideas/first-tools.md).
+A prototype with two tools, Buttons only:
+
+- `click(id)` — clicks the Button with that id; returns once the server has handled the click.
+- `get_text(id)` — the Button's caption.
+
+What's next is in [design/ideas/](design/ideas/).
 
 ## Building
 
@@ -22,3 +25,10 @@ A JDK 21 or newer. `./gradlew` builds everything and runs the tests.
   ```bash
   claude mcp add vaadin-test -- "$PWD/unified-test-mcp/build/install/unified-test-mcp/bin/unified-test-mcp"
   ```
+  Options: `--url <app url>` (default `http://localhost:8080`), `--browser-executable <path>`
+  to use an installed Chromium instead of Playwright's own download, `--headed` to watch the
+  browser. The browser opens the app on the first tool call, so start the app first, or at
+  least before the first call.
+
+Try it: start `test-app`, start `claude` in this folder, and ask it to click the button `clicker`
+twice and tell you its caption.

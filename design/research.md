@@ -31,6 +31,12 @@ a claim came from, so the prose doesn't repeat it.
   parameters and system properties. **[src]**
 - The test-user login (`LoginSupport`) is skipped when `unified-test-spring` is not on the
   classpath. **[src]**
+- Of the `ExtensionContext`, opening a page and a whole click / read session call only
+  `getRoot()` and `getStore(GLOBAL)`. **[verified 2026-11-16, 0.1.0-alpha2]**
+- Of the store, the adapter calls only `computeIfAbsent(key, creator, type)`. **[src]**
+- A lookup that never singles out a component throws `AssertionError`, not an exception, after
+  the timeout: `No component matches page.find(UnifiedButton).withId("x").single() (waited
+  10000 ms)`; several matches read `N components match …, expected exactly one`. **[src]**
 
 ## R_unified_no_enumeration — Unified API: every lookup starts from a component type
 
@@ -44,6 +50,8 @@ a claim came from, so the prose doesn't repeat it.
   `withId`, text → `withText` / `withTextContaining`, label → `withLabel`, attribute →
   `withAttribute`; a Dramafinder query lacking the method fails with
   `UnsupportedOperationException`. **[src]**
+- Dramafinder's Button query has `withId`: `page.find(UnifiedButton.class).withId("clicker")`
+  finds `<vaadin-button id="clicker">`. **[verified 2026-11-16, Dramafinder 2.0.2]**
 - Both paths drop matches inside the shadow DOM of a `vaadin-*` or `copilot-*` host — the dev
   tools' own components (`BrowserQueries.APP_CONTENT`). **[src]**
 - `UnifiedElement.findChildren` / `findDescendants(tag)` walk light DOM only; in a browser that
@@ -66,3 +74,23 @@ a claim came from, so the prose doesn't repeat it.
   `--no-sandbox`, instead of Playwright's own download; `vaadin.testing.playwright.browser`
   picks `chromium` (default), `firefox` or `webkit`; `vaadin.testing.playwright.headless`
   defaults to `true`. **[src]**
+- Excluding `vaadin-dev` from it breaks nothing for an app that runs in another JVM.
+  **[verified 2026-11-16, 0.1.0-alpha2]**
+
+## R_playwright_thread_safety — Playwright for Java: threads and browser downloads
+
+- Playwright for Java is not thread-safe: every method of `Playwright` and of every object made
+  from it must be called on the thread that created the `Playwright`. **[docs]**
+- `Playwright.create()` without options downloads every browser it supports on first use —
+  Chromium, Chromium headless shell, Firefox, WebKit, and ffmpeg — into `~/.cache/ms-playwright`,
+  1.3 GB unpacked. **[verified 2026-11-16, Playwright 1.63.0]**
+- `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` in the environment skips that download. **[docs]**
+- The download's host check warns about libraries WebKit lacks (`libavif16`, `libmanette-0.2-0`
+  on Ubuntu 26.04); Chromium runs without them. **[verified 2026-11-16, Playwright 1.63.0]**
+
+## R_vaadin_boot_jar_webapp — Vaadin Boot serving `webapp/` from a jar
+
+- When the app's `webapp/` comes from a jar on the classpath — a Gradle project dependency, as in
+  `unified-test-mcp`'s tests — `VaadinBoot.stop()` logs `stop() failed:
+  java.nio.file.ClosedFileSystemException` from Jetty's `WebInfConfiguration.deconfigure`; the
+  server has stopped anyway. **[verified 2026-11-16, Vaadin Boot 13.7]**

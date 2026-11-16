@@ -1,6 +1,6 @@
 # Snapshot: the Vaadin components on the page, as text
 
-On hold until `first-tools.md` works; parked here so the thinking isn't lost.
+On hold: the prototype finds components by id. Parked here so the thinking isn't lost.
 
 The goal, swing-mcp style — one line per component, refs for the ones you can act on:
 

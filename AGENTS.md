@@ -19,12 +19,19 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 |---|---|---|
 | `README.md` | the pitch, how to run it | — |
 | `AGENTS.md` (this) | promises, the module map, conventions, commands | every turn |
+| `design/architecture.md` | how the pieces compose — wiring, the browser thread, a tool call's flow; normative | lazy |
 | `design/decisions.md` | why this and not that — `D_` entries, FAQ-shaped | lazy |
 | `design/research.md` | what the Unified API, Dramafinder and Playwright actually do — `R_` entries with provenance | lazy |
 | `design/ideas/` | ideas not yet acted on, one per file; deleted once implemented or rejected, their lasting parts moved into the files above | lazy |
 | doc comments | what one symbol does and why it is shaped so | at the symbol |
 
 Every fact lives in exactly one of these; the others link to it.
+
+## Invariants
+
+- **Every Playwright call runs on `UnifiedBrowser`'s thread**, through `UnifiedBrowser.call`; Playwright for Java is not thread-safe, and a call from a transport thread corrupts the session. The threading is in `design/architecture.md`.
+- **Every tool reaches the browser through `UnifiedTestMCP.call`.** A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `call` turns it into a tool error the model reads.
+- **The tools use the Unified API, not Playwright**; its escape hatch only for what no wrapper offers. See `D_unified_api_backend`.
 
 ## Module map
 
@@ -37,12 +44,15 @@ Every fact lives in exactly one of these; the others link to it.
 
 - **Java 21**, the Unified API's own floor (`R_unified_playwright_packaging`); `--release 21`, not a toolchain, so any installed JDK 21+ builds it and none is downloaded.
 - **Gradle, Kotlin DSL; every version in `gradle/libs.versions.toml`.** Vaadin stays on the line the Unified API is built against.
+- **Tests: JUnit; a tool is tested end to end** — `test-app` booted in the test JVM, a real browser, the tool called over MCP's HTTP transport (`ButtonToolsTest`). No mocks of the Unified API or Playwright.
+- **Diagnostics go to `java.util.logging`**, never `System.out`: on stdio, stdout is the protocol.
+- **A tool failure is an `MCPErrorResponseException`** whose message says what was looked for; the Unified API's own message does that already.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.
 
 ## Commands
 
 - `./gradlew` — clean, build, all tests (the default tasks); needs a JDK 21 or newer.
-- `./gradlew :test-app:test --tests "com.vaadin.unifiedtestmcp.testapp.MainViewTest"` — one class; append `.methodName` for one method.
+- `./gradlew :unified-test-mcp:test --tests "com.vaadin.unifiedtestmcp.ButtonToolsTest"` — one class; append `.methodName` for one method. The first run downloads Playwright's browsers (`R_playwright_thread_safety`).
 - `./gradlew :test-app:run` — the test app in dev mode on http://localhost:8080.
 - `./gradlew :unified-test-mcp:installDist` — the server's launcher, `unified-test-mcp/build/install/unified-test-mcp/bin/unified-test-mcp`, speaking MCP on stdio.
 - `design/verify_design_tripwires.sh` — the doc layer.
@@ -50,6 +60,7 @@ Every fact lives in exactly one of these; the others link to it.
 ## Skills this project follows
 
 - **Component-oriented:** self-sufficient components that reach their data directly, no MVC layers; the `cop` skill has the rules.
+- **Javadoc carries the contract, not the narrative:** an example over an algorithm, no history, no referrer lists; the `writing-javadoc` skill has the rules.
 - **Test app on Vaadin Boot:** a Vaadin Flow app started from a plain `main()` on embedded Jetty, no Spring; the `vaadin-boot-app` skill has the setup.
 
 ## Maintenance of this file
