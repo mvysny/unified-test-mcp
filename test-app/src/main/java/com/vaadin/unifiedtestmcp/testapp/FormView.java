@@ -7,14 +7,16 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 /**
  * At {@code form}: one of each case a snapshot names differently — a field by its label and value, a button by
  * its text, an icon-only button by its {@code aria-label}, a disabled button, a component without an id. The
- * {@code Save} button, which has no id, sets the status text.
+ * {@code Save} button, which has no id, sets the status text. The one view with a page title.
  */
 @Route("form")
+@PageTitle("Form")
 public class FormView extends VerticalLayout {
     public FormView() {
         TextField name = new TextField("Name");

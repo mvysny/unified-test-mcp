@@ -30,7 +30,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 
 1. The transport hands `tools/call` to `MCPHandler`, which calls the tool's class, a TinyMCPServer `ToolFunction`.
 2. `ClickTool` hands `(page, refs) -> …` to `ToolCall`, which submits it to the calling session's `UnifiedBrowser.call`.
-3. On the browser thread, the session's first call opens the page: `PlaywrightAdapter.open` launches Playwright and the browser, then the page navigates to the app's start path.
+3. On the browser thread, the session's first call opens the page: `PlaywrightAdapter.open` launches Playwright and the browser, on an empty page; only `navigate` sends it anywhere.
 4. `Refs.resolve` turns the ref into a Unified API wrapper: by the component's id if the snapshot saw it unique, else by its stamp. A ref not in the latest snapshot, or a component gone from the page, fails right away with what to do next.
 5. The Unified API waits until the component is visible and enabled, clicks, and waits for the server round-trip; then a snapshot, which the tool returns (`D_action_returns_snapshot`).
 6. A failure — a lookup that timed out, an app that isn't up — comes back as a tool error carrying the Unified API's own message, which the model reads.

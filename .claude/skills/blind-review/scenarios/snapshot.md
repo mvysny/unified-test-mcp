@@ -2,8 +2,8 @@
 
 ## Task
 
-A Vaadin web app is running, and a browser is ready to drive it. Open its page at the path `form`
-and describe that form to me as a tester would before testing it: each field with its label and
+A Vaadin web app is running at {{url}}, and a browser is ready to drive it. Open its page at
+the path `form` and describe that form to me as a tester would before testing it: each field with its label and
 current value, which fields are required, which checkboxes are ticked, each button and whether I
 can press it, and any status text. Also: is there a "Phone" field on that page?
 
@@ -16,4 +16,5 @@ can press it, and any status text. Also: is there a "Phone" field on that page?
 ## Watch for
 
 - Whether it calls `navigate` and reads the snapshot that comes back, or calls `snapshot` again.
+- Whether it composes the URL `{{url}}/form` at once, or first tries a bare path.
 - Whether it understands `[aria-label]` and the `actions:` suffix without guessing.

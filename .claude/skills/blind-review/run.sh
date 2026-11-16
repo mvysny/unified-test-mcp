@@ -64,15 +64,15 @@ else
 fi
 
 # --- the isolated agent ----------------------------------------------------------------------
-jq -n --arg java "$(command -v java)" --arg jar "$jar" --arg url "http://localhost:$port" --arg name "$server" \
-  '{mcpServers: {($name): {type: "stdio", command: $java, args: ["-jar", $jar, "--url", $url]}}}' >"$out/mcp.json"
+jq -n --arg java "$(command -v java)" --arg jar "$jar" --arg name "$server" \
+  '{mcpServers: {($name): {type: "stdio", command: $java, args: ["-jar", $jar]}}}' >"$out/mcp.json"
 
 # The isolation; every flag's why is in SKILL.md, "Run 1".
 flags=(--mcp-config "$out/mcp.json" --strict-mcp-config --tools "" --allowedTools "mcp__${server}__*"
   --disable-slash-commands --output-format stream-json --verbose --model sonnet)
 
-# "## Task" is all the agent gets; the scenario's other sections are the reviewer's.
-task=$(awk '/^## /{ on = ($0 == "## Task"); next } on' "$scenario")
+# "## Task" is all the agent gets, {{url}} the app's; the scenario's other sections are the reviewer's.
+task=$(awk '/^## /{ on = ($0 == "## Task"); next } on' "$scenario" | sed "s|{{url}}|http://localhost:$port|g")
 [ -n "$(printf '%s' "$task" | tr -d '[:space:]')" ] || { echo "$scenario has no '## Task' section" >&2; exit 2; }
 
 readable() {

@@ -2,8 +2,8 @@
 
 ## Task
 
-A Vaadin web app is running, and a browser is ready to drive it. On its start page, what exactly
-does the button with id `clicker` say? Then on the page at `form`, what does the status text below
+A Vaadin web app is running at {{url}}, and a browser is ready to drive it. On its start page,
+what exactly does the button with id `clicker` say? Then on the page at `form`, what does the status text below
 the buttons say, before and after pressing Save? Last, what does the button with id `submit` on
 that page say?
 

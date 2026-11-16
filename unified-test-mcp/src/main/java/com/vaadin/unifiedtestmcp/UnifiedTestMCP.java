@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * <pre>{@code
  * MCPHandler handler = UnifiedTestMCP.createHandler(
- *         Map.of("vaadin.testing.base-url", "http://localhost:8080"), Duration.ofSeconds(10), "1.0");
+ *         Map.of("vaadin.testing.playwright.headless", "false"), Duration.ofSeconds(10), "1.0");
  * new StdioMCPServer(handler).runStdio(System.in, System.out);
  * }</pre>
  *
@@ -24,11 +24,12 @@ public final class UnifiedTestMCP {
 
     private static final String INSTRUCTIONS = """
             Drives a running Vaadin app in a real browser, in terms of its Vaadin components: Button, TextField, \
-            Grid. The browser opens the app on the first tool call.
+            Grid. The browser starts on an empty page.
 
             ## Workflow
 
-            1. Call `snapshot`, or `navigate` to a view: both show the components on the page, each with a `ref`.
+            1. `navigate` to the app's URL: it shows the components on the page, each with a `ref`; so does \
+            `snapshot`, for the page as it is now.
             2. Act on a component by its `ref` (`click`, `get_text`).
             3. An action that changes the page (`click`, `navigate`) returns the new snapshot: read what it did \
             there, no need to call `snapshot` again.

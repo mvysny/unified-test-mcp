@@ -12,7 +12,7 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
  */
 final class SnapshotTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("snapshot",
-            "The Vaadin components on the current page, one line each, indented by nesting: "
+            "The page's URL and title, then the Vaadin components on it, one line each, indented by nesting: "
                     + "`- Button \"Save\" [ref=3, id=save] actions: click`. The quoted name is what a user reads: a "
                     + "Button's or Span's text, a field's or Checkbox's label; a component with neither is named by "
                     + "its aria-label or placeholder, the bracket saying which. The bracket also shows the id when "

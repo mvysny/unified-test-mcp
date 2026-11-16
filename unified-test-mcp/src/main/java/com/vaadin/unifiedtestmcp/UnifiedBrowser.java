@@ -18,17 +18,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * One browser tab on the app under test, driven through the Unified API's Playwright adapter:
+ * One browser tab, driven through the Unified API's Playwright adapter:
  *
  * <pre>{@code
- * try (UnifiedBrowser browser = new UnifiedBrowser(
- *         Map.of("vaadin.testing.base-url", "http://localhost:8080"), Duration.ofSeconds(10))) {
+ * try (UnifiedBrowser browser = new UnifiedBrowser(Map.of(), Duration.ofSeconds(10))) {
+ *     browser.call(page -> { page.navigate("http://localhost:8080"); return null; });
  *     String text = browser.call(page -> page.find(UnifiedButton.class).withId("clicker").single().getText());
  * }
  * }</pre>
  *
- * The browser starts and opens the app's start page on the first {@link #call}, so the app need not be up before
- * then.
+ * The browser starts on the first {@link #call}, on an empty page: it goes nowhere until a call navigates.
  *
  * <p>Thread-safe.
  *
@@ -50,8 +49,8 @@ public final class UnifiedBrowser implements AutoCloseable {
     private UnifiedPage page;
 
     /**
-     * @param settings the Unified API's settings by key: {@code vaadin.testing.base-url} is the app's URL, the
-     *                 {@code vaadin.testing.playwright.*} keys pick and launch the browser
+     * @param settings the Unified API's settings by key: the {@code vaadin.testing.playwright.*} keys pick and
+     *                 launch the browser
      * @param timeout  how long a lookup or an action waits before it fails
      */
     public UnifiedBrowser(Map<String, String> settings, Duration timeout) {
@@ -82,18 +81,8 @@ public final class UnifiedBrowser implements AutoCloseable {
 
     private UnifiedPage page() {
         if (page == null) {
-            AdapterSession opened = new PlaywrightAdapter().open(context);
-            UnifiedPage opening = new UnifiedPageImpl(new TestRun(TestingTool.PLAYWRIGHT, opened, context.timeout()));
-            try {
-                opening.navigate("");
-            } catch (RuntimeException e) {
-                opened.close();
-                throw new IllegalStateException("Can't open the app at "
-                        + context.configuration("vaadin.testing.base-url").orElse("http://localhost:8080")
-                        + "; is it running? " + e.getMessage(), e);
-            }
-            session = opened;
-            page = opening;
+            session = new PlaywrightAdapter().open(context);
+            page = new UnifiedPageImpl(new TestRun(TestingTool.PLAYWRIGHT, session, context.timeout()));
         }
         return page;
     }

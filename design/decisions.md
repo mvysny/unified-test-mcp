@@ -34,8 +34,8 @@ page (`R_unified_no_enumeration`), so a snapshot cannot come from it alone.
 The server is a separate JVM that an MCP client spawns over stdio, and it reaches the app only
 through a browser pointed at the app's URL. The app needs no change and no extra dependency, it
 can be any Vaadin app on any server (Spring Boot, Vaadin Boot, a WAR on Tomcat), and its
-lifecycle is its own: the browser opens the start page on the first tool call, so the app need
-not be up when the client starts the server. The browser is a process outside both JVMs
+lifecycle is its own: the browser starts on an empty page and goes only where the agent
+navigates, so the server knows no app URL, and the app need not be up when the client starts it. The browser is a process outside both JVMs
 anyway. Why not inside the app, as a `-javaagent` like swing-mcp: swing-mcp has to be there,
 because the Swing UI exists only in that JVM; a Vaadin UI is reachable over HTTP, and putting a
 Playwright driver, its browser and the Unified API on the app's classpath makes them the app's
@@ -162,8 +162,8 @@ pruning when an agent can't tell two identical forms apart.
 
 `click` and `navigate` answer with an echo line, then the snapshot taken once the server has
 handled the action. The agent sees what its action did without a second call, and the refs in it
-are current; `navigate`'s snapshot starts with the path the browser landed on, which tells a
-reroute, to a login view say, from the path asked for. The Playwright MCP does the same. Why not
+are current; `navigate`'s snapshot starts with the URL the browser landed on, which tells a
+reroute, to a login view say, from the URL asked for. The Playwright MCP does the same. Why not
 swing-mcp's echo, "Dispatched …, call swing_snapshot to verify": every action would cost the
 agent a second call, and a second chance to act on a stale picture. The cost, a snapshot's tokens
 per action, stays within the promise: one line per component on the screen. A read, `get_text`,

@@ -13,7 +13,7 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
  * <pre>
  * click(ref: 3)   → Clicked ref=3
  *
- *                   Path: /form
+ *                   URL: http://localhost:8080/form
  *                   - Span "Saved" [ref=8]
  *                   …
  * </pre>

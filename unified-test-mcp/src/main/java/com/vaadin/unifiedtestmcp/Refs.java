@@ -54,7 +54,8 @@ final class Refs {
      */
     UnifiedContainer resolve(UnifiedPage page, int ref) {
         if (latest == null) {
-            throw new MCPErrorResponseException("No refs yet: call snapshot first, then use a ref from it.");
+            throw new MCPErrorResponseException("No refs yet: call snapshot if a page is open, or navigate to the app's URL;"
+                    + " then use a ref from the snapshot either returns.");
         }
         Target target = latest.get(ref);
         if (target == null) {

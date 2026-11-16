@@ -33,14 +33,16 @@ public class ToolsTest {
     private static MCPHandler handler;
     private static HttpMCPServer server;
     private static TinyMCPClient client;
+    /** test-app's URL, {@code http://localhost:<port>}. */
+    private static String appUrl;
 
     @BeforeAll
     public static void start() throws Exception {
         int appPort = freePort();
         app = new VaadinBoot().withPort(appPort).localhostOnly().openBrowserInDevMode(false);
         app.start();
-        handler = UnifiedTestMCP.createHandler(Map.of("vaadin.testing.base-url", "http://localhost:" + appPort),
-                Duration.ofSeconds(10), "test");
+        appUrl = "http://localhost:" + appPort;
+        handler = UnifiedTestMCP.createHandler(Map.of(), Duration.ofSeconds(10), "test");
         server = new HttpMCPServer(0, "/mcp", handler);
         server.start();
         client = connect();
@@ -67,9 +69,10 @@ public class ToolsTest {
     @Test
     public void snapshotShowsEachKindOfName() throws IOException {
         assertEquals("""
-                Navigated to /form
+                Navigated to APP/form
 
-                Path: /form
+                URL: APP/form
+                Title: Form
                 - TextField "Name" [ref=N, id=name, value="Alice"]
                 - TextField "Email" [ref=N, required]
                 - Checkbox "Subscribe" [ref=N, checked]
@@ -79,14 +82,14 @@ public class ToolsTest {
                 - Span "Not saved" [ref=N]
                 """, masked(navigate(client, "form")));
         assertEquals(masked(call(client, "snapshot", Map.of())), masked(navigate(client, "form")).substring(
-                "Navigated to /form\n\n".length()));
+                "Navigated to APP/form\n\n".length()));
     }
 
     @Test
     public void clickWithoutIdFindsTheStampedComponent() throws IOException {
         int save = ref(navigate(client, "form"), "Button \"Save\"");
         String after = call(client, "click", ref(save));
-        assertTrue(after.startsWith("Clicked ref=" + save + "\n\nPath: /form\n"), after);
+        assertTrue(after.startsWith("Clicked ref=" + save + "\n\nURL: " + appUrl + "/form\n"), after);
         assertTrue(after.contains("- Span \"Saved\" ["), after);
         assertEquals(save, ref(after, "Button \"Save\""), "a component keeps its ref");
     }
@@ -104,24 +107,25 @@ public class ToolsTest {
     @Test
     public void navigateOpensView() throws IOException {
         String second = navigate(client, "second");
-        assertTrue(second.startsWith("Navigated to /second\n\nPath: /second\n"), second);
+        assertTrue(masked(second).startsWith("Navigated to APP/second\n\nURL: APP/second\n"), second);
         String main = call(client, "click", ref(ref(second, "id=back")));
-        assertTrue(main.contains("\nPath: /\n- Button \"Click me\" [ref="), main);
+        assertTrue(main.contains("\nURL: " + appUrl + "/\n- Button \"Click me\" [ref="), main);
     }
 
     @Test
     public void navigateToMissingRouteSaysSo() throws IOException {
         String orders = navigate(client, "orders");
-        assertTrue(orders.startsWith("No view at /orders: the app shows Vaadin's \"Could not navigate\" page\n\n"
-                + "Path: /orders\n"), orders);
-        assertTrue(navigate(client, "form").startsWith("Navigated to /form\n"), "a view's text doesn't trip it");
+        assertTrue(masked(orders).startsWith("No view at APP/orders: the app shows Vaadin's \"Could not navigate\""
+                + " page\n\nURL: APP/orders\n"), orders);
+        assertTrue(masked(navigate(client, "form")).startsWith("Navigated to APP/form\n"),
+                "a view's text doesn't trip it");
     }
 
     @Test
     public void navigateStartsViewAfresh() throws IOException {
         int before = ref(call(client, "snapshot", Map.of()), "id=clicker");
         call(client, "click", ref(before));
-        String reloaded = navigate(client, "/");
+        String reloaded = navigate(client, "");
         assertTrue(reloaded.contains("- Button \"Click me\" ["), reloaded);
         assertNotEquals(before, ref(reloaded, "id=clicker"), "a new page's components get new numbers");
     }
@@ -137,9 +141,36 @@ public class ToolsTest {
     @Test
     public void refBeforeAnySnapshotIsRejected() throws IOException {
         try (TinyMCPClient other = connect()) {
-            assertEquals("No refs yet: call snapshot first, then use a ref from it.",
+            assertEquals("No refs yet: call snapshot if a page is open, or navigate to the app's URL; then use a ref"
+                    + " from the snapshot either returns.",
                     error(other, "click", ref(1)));
         }
+    }
+
+    @Test
+    public void browserStartsOnNoPage() throws IOException {
+        try (TinyMCPClient other = connect()) {
+            assertEquals("No page open yet: call navigate with the app's URL.\n", call(other, "snapshot", Map.of()));
+        }
+    }
+
+    @Test
+    public void navigateWithoutSchemeIsRejected() throws IOException {
+        assertEquals("navigate takes a full URL, with its http:// or https://; the browser is at " + appUrl + "/.",
+                error(client, "navigate", Map.of("url", "form")));
+        try (TinyMCPClient other = connect()) {
+            assertEquals("navigate takes a full URL, with its http:// or https://, as http://localhost:8080/orders.",
+                    error(other, "navigate", Map.of("url", "form")));
+        }
+    }
+
+    @Test
+    public void navigateToNoServerSaysSo() throws IOException {
+        String url = "http://localhost:" + freePort() + "/";
+        String message = error(client, "navigate", Map.of("url", url));
+        assertEquals("Can't open " + url + ": is the app running there? net::ERR_CONNECTION_REFUSED at " + url,
+                message);
+        assertTrue(masked(navigate(client, "")).startsWith("Navigated to APP/\n"), "the next navigate works");
     }
 
     @Test
@@ -169,8 +200,9 @@ public class ToolsTest {
         return text;
     }
 
+    /** Navigates to {@code path} in test-app: {@code "form"}, or {@code ""} for the start view. */
     private static String navigate(TinyMCPClient session, String path) throws IOException {
-        return call(session, "navigate", Map.of("path", path));
+        return call(session, "navigate", Map.of("url", appUrl + "/" + path));
     }
 
     private static String error(TinyMCPClient session, String tool, Map<String, Object> arguments)
@@ -193,9 +225,9 @@ public class ToolsTest {
         return Integer.parseInt(m.group(1));
     }
 
-    /** Refs as {@code ref=N}: their numbers depend on what ran before. */
+    /** Refs as {@code ref=N}, their numbers depending on what ran before; test-app's URL as {@code APP}. */
     private static String masked(String snapshot) {
-        return snapshot.replaceAll("ref=\\d+", "ref=N");
+        return snapshot.replaceAll("ref=\\d+", "ref=N").replace(appUrl, "APP");
     }
 
     private static ToolRequest request(String tool, Map<String, Object> arguments) {

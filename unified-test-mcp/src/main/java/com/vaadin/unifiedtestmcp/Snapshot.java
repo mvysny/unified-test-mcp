@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Vaadin components on the page as text, one line each, indented by nesting:
+ * The page's URL and title, if it has one, then its Vaadin components as text, one line each, indented by nesting:
  *
  * <pre>
- * Path: /form
+ * URL: http://localhost:8080/form
+ * Title: Form
  * - TextField "Name" [ref=1, id=name, value="Alice"]
  * - Checkbox "Subscribe" [ref=2, checked]
  * - Button "Save" [ref=3] actions: click
@@ -78,19 +79,35 @@ final class Snapshot {
                 }];
               };
               const nodes = Array.from(document.body.children).flatMap(c => visit(c, 'body'));
-              return { path: location.pathname + location.search, next, nodes };
+              return { url: location.href, title: document.title, next, nodes };
             }""";
+
+    /** What a snapshot of the browser's empty first page says, instead of listing nothing. */
+    static final String NO_PAGE = "No page open yet: call navigate with the app's URL.";
+
+    /** Whether the browser is still on its empty first page, before any navigation. */
+    static boolean isBlank(Page browser) {
+        return browser.url().equals("about:blank");
+    }
 
     /**
      * Snapshots the page and makes its refs the session's valid ones.
      *
-     * @return the snapshot's text, starting with the browser's path
+     * @return the snapshot's text, starting with the browser's URL; {@link #NO_PAGE} before any navigation
      */
     static String take(UnifiedPage page, Refs refs) {
+        Page browser = page.unwrap(Page.class);
+        if (isBlank(browser)) {
+            return NO_PAGE + "\n";
+        }
         Map<String, Object> arg = Map.of("next", refs.next(), "layouts", List.copyOf(ComponentTypes.LAYOUTS),
                 "skipped", List.copyOf(ComponentTypes.SKIPPED), "attribute", Refs.ATTRIBUTE);
-        Map<?, ?> result = (Map<?, ?>) page.unwrap(Page.class).evaluate(SCRIPT, arg);
-        StringBuilder out = new StringBuilder("Path: ").append(result.get("path")).append('\n');
+        Map<?, ?> result = (Map<?, ?>) browser.evaluate(SCRIPT, arg);
+        StringBuilder out = new StringBuilder("URL: ").append(result.get("url")).append('\n');
+        String title = (String) result.get("title");
+        if (!title.isBlank()) {
+            out.append("Title: ").append(title.strip()).append('\n');
+        }
         Map<Integer, Refs.Target> targets = new LinkedHashMap<>();
         List<?> nodes = (List<?>) result.get("nodes");
         if (nodes.isEmpty()) {

@@ -13,12 +13,13 @@ A prototype with four tools:
   tools take:
 
   ```
-  Path: /form
+  URL: http://localhost:8080/form
+  Title: Form
   - TextField "Name" [ref=1, id=name, value="Alice"]
   - Button "Save" [ref=4] actions: click
   ```
-- `navigate(path)` — opens the view at that path relative to the app's URL, `""` being the
-  start view; a full page load. Returns the new snapshot.
+- `navigate(url)` — opens that URL, a full page load; says so when the app has no view there.
+  Returns the new snapshot.
 - `click(ref)` — clicks the component; returns the snapshot once the server has handled the
   click.
 - `get_text(ref)` — the component's text.
@@ -37,10 +38,10 @@ needs Java 21 or newer. Register it with Claude Code:
 claude mcp add vaadin-test -- java -jar /path/to/unified-test-mcp-<version>.jar
 ```
 
-Options, after the jar: `--url <app url>` (default `http://localhost:8080`),
-`--browser-executable <path>` to use an installed Chromium instead of Playwright's own
-download, `--headed` to watch the browser. The browser opens the app on the first tool call, so
-start the app first, or at least before the first call.
+Options, after the jar: `--browser-executable <path>` to use an installed Chromium instead of
+Playwright's own download, `--headed` to watch the browser. The browser starts on an empty page
+and goes where the agent navigates, so tell the agent the app's URL; the app needs to be up only
+by then.
 
 ## Building
 
@@ -52,4 +53,5 @@ http://localhost:8080. The start view has the button `clicker`; the view at `sec
 button `back`, which returns to the start view; the view at `form` has a few fields and buttons.
 
 Try it: start `test-app`, register the jar you built as above, start `claude`, and ask it to
-click the button `clicker` twice and tell you its text, or to go to `form` and save.
+open http://localhost:8080, click the button `clicker` twice and tell you its text, or to go to
+`form` and save.

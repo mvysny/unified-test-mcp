@@ -2,8 +2,8 @@
 
 ## Task
 
-A Vaadin web app is running, and a browser is ready to drive it. On its start page, press the
-button whose id is `clicker` three times and tell me what it says afterwards. Then go to the page
+A Vaadin web app is running at {{url}}, and a browser is ready to drive it. On its start page,
+press the button whose id is `clicker` three times and tell me what it says afterwards. Then go to the page
 at `form`, press Save, and tell me what the status text says. Finally, on that same page, press
 Delete and tell me what happened.
 

@@ -33,9 +33,10 @@ What it does, so a failure can be read:
    left running — a scenario that needs a `test-app` change needs the owner to restart it first.
    **Not running**: started on a free port, handed over as `SERVER_PORT` (Vaadin Boot reads it),
    stopped when the script exits.
-3. Writes an MCP config naming only this server, `--url` at that port, into a scratch dir outside
-   the checkout, so no project `AGENTS.md` loads.
-4. **Run 1, the task**: `claude -p "<the scenario's ## Task>"` from that dir, isolated:
+3. Writes an MCP config naming only this server into a scratch dir outside the checkout, so no
+   project `AGENTS.md` loads.
+4. **Run 1, the task**: `claude -p "<the scenario's ## Task>"` from that dir, its `{{url}}`
+   replaced by the app's URL, isolated:
    - `--mcp-config … --strict-mcp-config` — this server only; not the owner's Playwright or
      Vaadin-docs MCPs, which would let it work around our tools;
    - `--tools ""` — no built-in tools: no Read of the source, no Bash `curl` of the app;
@@ -95,9 +96,9 @@ Where findings go:
 
 `scenarios/<tool>.md`, one per tool, kept so a review can be re-run. Three sections:
 
-- `## Task` — all the agent gets. A tester's words, naming what a tester sees (a view's path, a
-  button's id or text), never a tool's name: whether it finds the right tool is half the test. A
-  success path and at least one failure path (a wrong id, a missing route), so the errors get
-  read too.
+- `## Task` — all the agent gets. A tester's words, naming what a tester sees (the app's URL as
+  `{{url}}`, a view's path, a button's id or text), never a tool's name: whether it finds the
+  right tool is half the test. A success path and at least one failure path (a wrong id, a
+  missing route), so the errors get read too.
 - `## Done when` — what the answers are, so the report can say whether it got there.
 - `## Watch for` — the reviewer's: known weak spots, and the calls worth a look.

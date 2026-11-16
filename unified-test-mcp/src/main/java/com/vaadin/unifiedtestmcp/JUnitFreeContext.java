@@ -36,7 +36,7 @@ final class JUnitFreeContext implements AdapterContext, AutoCloseable {
     private final ExtensionContext extensionContext = fakeExtensionContext(store);
 
     /**
-     * @param settings the Unified API's settings by key, e.g. {@code vaadin.testing.base-url}
+     * @param settings the Unified API's settings by key, e.g. {@code vaadin.testing.playwright.headless}
      */
     JUnitFreeContext(Map<String, String> settings, Duration timeout) {
         this.settings = Map.copyOf(settings);

@@ -9,19 +9,18 @@ import java.util.Map;
 /**
  * Starts the MCP server on stdio, for an MCP client that spawns this process.
  * <pre>
- * unified-test-mcp [--url http://localhost:8080] [--browser-executable /snap/bin/chromium] [--headed]
+ * unified-test-mcp [--browser-executable /snap/bin/chromium] [--headed]
  * </pre>
+ *
+ * No app URL: the browser starts empty and goes where the agent's {@code navigate} says.
  */
 public final class Main {
-    private static final String USAGE =
-            "usage: unified-test-mcp [--url <app url>] [--browser-executable <path>] [--headed]";
+    private static final String USAGE = "usage: unified-test-mcp [--browser-executable <path>] [--headed]";
 
     public static void main(String[] args) {
         Map<String, String> settings = new HashMap<>();
-        settings.put("vaadin.testing.base-url", "http://localhost:8080");
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
-                case "--url" -> settings.put("vaadin.testing.base-url", value(args, ++i));
                 case "--browser-executable" -> settings.put("vaadin.testing.playwright.executable", value(args, ++i));
                 case "--headed" -> settings.put("vaadin.testing.playwright.headless", "false");
                 default -> exit("unknown argument " + args[i]);
