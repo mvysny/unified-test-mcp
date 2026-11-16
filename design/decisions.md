@@ -59,3 +59,19 @@ Unified API exists to maintain (`D_unified_api_backend`). The cost we carry: we 
 `internal` package (`UnifiedPageImpl`, `TestRun`) and on which `ExtensionContext` methods the
 adapter happens to call, so an upgrade of the Unified API is checked by `ButtonToolsTest` before
 anything else. When upstream gains the entry point, this class is deleted.
+
+## D_single_jar_release — Why release one jar with every dependency on GitHub Releases, rather than a zip of start scripts, a jar per OS, or Maven Central?
+
+A release is one file, `unified-test-mcp-<version>.jar`, built by Shadow with every dependency
+merged in, attached to a GitHub release (`RELEASING.md`). An MCP client starts it as
+`java -jar <path>`, and that one line is the same on every OS: there is nothing to unpack, and
+the only prerequisite is a Java 21 or newer. Why not the `application` plugin's zip of a `bin/`
+script and `lib/`: it has to be unpacked before it can be configured, its path points inside the
+unpacked folder, and on Windows the script is a `.bat` that an MCP client's config has to wrap in
+`cmd /c`; it needs the same Java anyway. Why not a jar per OS, keeping only that platform's
+Playwright driver: the driver bundle is most of the size (`R_playwright_driver_bundle`), so a
+Linux-only jar would be roughly a quarter of it, but five artifacts per release make the user
+pick the right one, and each wants its own smoke test; one jar runs everywhere. Why not
+Maven Central: a 210 MB jar is too big to publish there. A thin jar and its POM could go there
+instead, since the driver bundle already is, for a launcher that resolves dependencies (jbang);
+that is worth adding when someone asks for it, not a reason to give up the one-file download.

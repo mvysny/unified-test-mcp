@@ -14,21 +14,27 @@ A prototype with two tools, Buttons only:
 
 What's next is in [design/ideas/](design/ideas/).
 
+## Running
+
+The server is one jar, `unified-test-mcp-<version>.jar`, from the GitHub releases page; it
+needs Java 21 or newer. Register it with Claude Code:
+
+```bash
+claude mcp add vaadin-test -- java -jar /path/to/unified-test-mcp-<version>.jar
+```
+
+Options, after the jar: `--url <app url>` (default `http://localhost:8080`),
+`--browser-executable <path>` to use an installed Chromium instead of Playwright's own
+download, `--headed` to watch the browser. The browser opens the app on the first tool call, so
+start the app first, or at least before the first call.
+
 ## Building
 
-A JDK 21 or newer. `./gradlew` builds everything and runs the tests.
+A JDK 21 or newer. `./gradlew` builds everything and runs the tests; the server's jar lands in
+`unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`.
 
-- `test-app` — a one-button Vaadin app to test against: `./gradlew :test-app:run`, then
-  http://localhost:8080.
-- `unified-test-mcp` — the MCP server: `./gradlew :unified-test-mcp:installDist`, then register
-  it with Claude Code:
-  ```bash
-  claude mcp add vaadin-test -- "$PWD/unified-test-mcp/build/install/unified-test-mcp/bin/unified-test-mcp"
-  ```
-  Options: `--url <app url>` (default `http://localhost:8080`), `--browser-executable <path>`
-  to use an installed Chromium instead of Playwright's own download, `--headed` to watch the
-  browser. The browser opens the app on the first tool call, so start the app first, or at
-  least before the first call.
+`test-app` is a one-button Vaadin app to test against: `./gradlew :test-app:run`, then
+http://localhost:8080.
 
-Try it: start `test-app`, start `claude` in this folder, and ask it to click the button `clicker`
-twice and tell you its caption.
+Try it: start `test-app`, register the jar you built as above, start `claude`, and ask it to
+click the button `clicker` twice and tell you its caption.

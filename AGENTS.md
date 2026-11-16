@@ -18,6 +18,7 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 | File | Owns | Loaded |
 |---|---|---|
 | `README.md` | the pitch, how to run it | — |
+| `RELEASING.md` | how a maintainer cuts a release | — |
 | `AGENTS.md` (this) | promises, the module map, conventions, commands | every turn |
 | `design/architecture.md` | how the pieces compose — wiring, the browser thread, a tool call's flow; normative | lazy |
 | `design/decisions.md` | why this and not that — `D_` entries, FAQ-shaped | lazy |
@@ -47,6 +48,7 @@ Every fact lives in exactly one of these; the others link to it.
 - **Tests: JUnit; a tool is tested end to end** — `test-app` booted in the test JVM, a real browser, the tool called over MCP's HTTP transport (`ButtonToolsTest`). No mocks of the Unified API or Playwright.
 - **Diagnostics go to `java.util.logging`**, never `System.out`: on stdio, stdout is the protocol.
 - **A tool failure is an `MCPErrorResponseException`** whose message says what was looked for; the Unified API's own message does that already.
+- **Released as one jar on GitHub Releases, never Maven Central**, every dependency and every OS's Playwright driver inside; steps in `RELEASING.md`, why in `D_single_jar_release`.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.
 
 ## Commands
@@ -54,7 +56,7 @@ Every fact lives in exactly one of these; the others link to it.
 - `./gradlew` — clean, build, all tests (the default tasks); needs a JDK 21 or newer.
 - `./gradlew :unified-test-mcp:test --tests "com.vaadin.unifiedtestmcp.ButtonToolsTest"` — one class; append `.methodName` for one method. The first run downloads Playwright's browsers (`R_playwright_thread_safety`).
 - `./gradlew :test-app:run` — the test app in dev mode on http://localhost:8080.
-- `./gradlew :unified-test-mcp:installDist` — the server's launcher, `unified-test-mcp/build/install/unified-test-mcp/bin/unified-test-mcp`, speaking MCP on stdio.
+- `./gradlew :unified-test-mcp:shadowJar` — the server's jar, `unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`; `java -jar` it to speak MCP on stdio.
 - `design/verify_design_tripwires.sh` — the doc layer.
 
 ## Skills this project follows

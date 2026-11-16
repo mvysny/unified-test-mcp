@@ -88,6 +88,16 @@ a claim came from, so the prose doesn't repeat it.
 - The download's host check warns about libraries WebKit lacks (`libavif16`, `libmanette-0.2-0`
   on Ubuntu 26.04); Chromium runs without them. **[verified 2026-11-16, Playwright 1.63.0]**
 
+## R_playwright_driver_bundle — Playwright for Java: the driver jar
+
+- `com.microsoft.playwright:driver-bundle` is 194 MB: Playwright's Node.js driver once per
+  platform — `linux`, `linux-arm64`, `mac`, `mac-arm64`, `win32_x64` — under `driver/` in the
+  jar. Every other dependency of `unified-test-mcp` together is about 15 MB.
+  **[verified 2026-11-16, Playwright 1.63.0]**
+- On start, the driver is copied out of the jar into a `playwright-java-*` folder under
+  `java.io.tmpdir` and run from there; this works the same from a jar with every dependency
+  merged in. **[verified 2026-11-16, Playwright 1.63.0]**
+
 ## R_vaadin_boot_jar_webapp — Vaadin Boot serving `webapp/` from a jar
 
 - When the app's `webapp/` comes from a jar on the classpath — a Gradle project dependency, as in
