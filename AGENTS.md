@@ -24,6 +24,7 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 | `design/decisions.md` | why this and not that — `D_` entries, FAQ-shaped | lazy |
 | `design/research.md` | what the Unified API, Dramafinder and Playwright actually do — `R_` entries with provenance | lazy |
 | `design/ideas/` | ideas not yet acted on, one per file; deleted once implemented or rejected, their lasting parts moved into the files above | lazy |
+| `.claude/skills/blind-review/` | how a tool is tried by a Claude that knows only this server, and its critique triaged; one scenario per tool | on `/blind-review` |
 | doc comments | what one symbol does and why it is shaped so | at the symbol |
 
 Every fact lives in exactly one of these; the others link to it.
@@ -52,6 +53,7 @@ Every fact lives in exactly one of these; the others link to it.
 - **A tool failure is an `MCPErrorResponseException`** whose message says what was looked for; the Unified API's own message does that already.
 - **Released as one jar on GitHub Releases, never Maven Central**, every dependency and every OS's Playwright driver inside; steps in `RELEASING.md`, why in `D_single_jar_release`.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.
+- **A new tool gets a blind review before the commit that adds it**: once its tests pass, ask the owner to run `/blind-review <tool>`, its scenario written first.
 - **Designing a tool, read swing-mcp's nearest one first** — its description and input schema in `swing-mcp/src/main/java/com/vaadin/swingmcp/tools/SwingTools.java`, its errors in `mcp/tools/Swing*Tool.java`: polished wording and tool-design tips. Inspiration, not a port: keep what fits a browser and the Unified API.
 
 ## Commands

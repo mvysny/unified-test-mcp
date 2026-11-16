@@ -1,6 +1,6 @@
 # Whole-toolset review: one big scenario across every tool
 
-`blind-agent-review.md` tries one tool at a time. Some problems only show across tools: which
+The `blind-review` skill tries one tool at a time. Some problems only show across tools: which
 tool comes next, whether results echo the same way, whether one tool's error points at another
 that exists, whether refs carry from one result into the next call. A per-tool scenario never
 walks that far.
