@@ -75,3 +75,20 @@ pick the right one, and each wants its own smoke test; one jar runs everywhere. 
 Maven Central: a 210 MB jar is too big to publish there. A thin jar and its POM could go there
 instead, since the driver bundle already is, for a launcher that resolves dependencies (jbang);
 that is worth adding when someone asks for it, not a reason to give up the one-file download.
+
+## D_browser_per_session — Why does each MCP session get a browser of its own rather than the server sharing one?
+
+The handler creates a `UnifiedBrowser` when a session starts and closes it when the session
+closes; nothing about the browser outlives the session. A browser is its own Vaadin session —
+cookies, the UI, a view's state — so two agents connected over HTTP each drive their own UI
+and never click in each other's; a client that reconnects starts on a fresh page instead of
+inheriting where the last one left off; and the browser's lifetime is the session's, which
+TinyMCPServer already ends on stdin's EOF, on DELETE, on 30 minutes idle and on `stop()`, so an
+abandoned HTTP client does not keep a Chromium alive. Per-agent state that comes later (refs
+from a snapshot) belongs to the same session. Why not one browser for the server: on stdio, the
+only way the server ships, there is one session anyway, so sharing would buy nothing there and
+cost isolation on HTTP. Why not swing-mcp's one session at a time, a newcomer evicting the old:
+there, every session drives the one Swing UI in the one
+JVM, so two would fight; here sessions share nothing but the app's server. The cost: each HTTP
+session launches a browser of its own, a second or two and a Chromium's memory; still lazy,
+on the session's first tool call.

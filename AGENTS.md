@@ -31,7 +31,7 @@ Every fact lives in exactly one of these; the others link to it.
 ## Invariants
 
 - **Every Playwright call runs on `UnifiedBrowser`'s thread**, through `UnifiedBrowser.call`; Playwright for Java is not thread-safe, and a call from a transport thread corrupts the session. The threading is in `design/architecture.md`.
-- **Every tool reaches the browser through `ToolCall`.** A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `ToolCall` turns it into a tool error the model reads.
+- **Every tool reaches the browser through `ToolCall`**, which finds the calling MCP session's own browser (`D_browser_per_session`). A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `ToolCall` turns it into a tool error the model reads.
 - **The tools use the Unified API, not Playwright**; its escape hatch only for what no wrapper offers. See `D_unified_api_backend`.
 
 ## Module map

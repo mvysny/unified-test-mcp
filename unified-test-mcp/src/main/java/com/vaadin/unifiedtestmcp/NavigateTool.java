@@ -24,16 +24,10 @@ final class NavigateTool implements ToolFunction {
                     + "A full page load: the view starts afresh. Waits until the server is idle.",
             new InputSchemaBuilder().requiredString("path", "The view's path, without the app's URL").build());
 
-    private final UnifiedBrowser browser;
-
-    NavigateTool(UnifiedBrowser browser) {
-        this.browser = browser;
-    }
-
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
         String path = request.arguments().getString("path");
-        ToolCall.run(browser, page -> page.navigate(path));
+        ToolCall.run(page -> page.navigate(path));
         return MCPProtocol.Content.text("Navigated to /" + (path.startsWith("/") ? path.substring(1) : path));
     }
 }

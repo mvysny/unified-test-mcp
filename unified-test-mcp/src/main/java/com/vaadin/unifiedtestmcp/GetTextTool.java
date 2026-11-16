@@ -18,15 +18,9 @@ final class GetTextTool implements ToolFunction {
             "The caption of a Vaadin Button, found by its id.",
             new InputSchemaBuilder().requiredString("id", "The Button's id").build());
 
-    private final UnifiedBrowser browser;
-
-    GetTextTool(UnifiedBrowser browser) {
-        this.browser = browser;
-    }
-
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
         String id = request.arguments().getString("id");
-        return MCPProtocol.Content.text(ToolCall.get(browser, page -> ComponentLookup.button(page, id).getText()));
+        return MCPProtocol.Content.text(ToolCall.get(page -> ComponentLookup.button(page, id).getText()));
     }
 }

@@ -28,10 +28,9 @@ public final class Main {
             }
         }
         String version = Main.class.getPackage().getImplementationVersion();
-        try (UnifiedBrowser browser = new UnifiedBrowser(settings, Duration.ofSeconds(10))) {
-            new StdioMCPServer(UnifiedTestMCP.createHandler(browser, version == null ? "dev" : version))
-                    .runStdio(System.in, System.out);
-        }
+        new StdioMCPServer(UnifiedTestMCP.createHandler(settings, Duration.ofSeconds(10),
+                version == null ? "dev" : version))
+                .runStdio(System.in, System.out);
     }
 
     private static String value(String[] args, int i) {

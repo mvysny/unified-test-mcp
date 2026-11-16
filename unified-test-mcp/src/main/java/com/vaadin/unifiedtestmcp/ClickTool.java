@@ -19,16 +19,10 @@ final class ClickTool implements ToolFunction {
                     + "then waits until the server has handled the click.",
             new InputSchemaBuilder().requiredString("id", "The Button's id").build());
 
-    private final UnifiedBrowser browser;
-
-    ClickTool(UnifiedBrowser browser) {
-        this.browser = browser;
-    }
-
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
         String id = request.arguments().getString("id");
-        ToolCall.run(browser, page -> ComponentLookup.button(page, id).click());
+        ToolCall.run(page -> ComponentLookup.button(page, id).click());
         return MCPProtocol.Content.text("Clicked Button#" + id);
     }
 }
