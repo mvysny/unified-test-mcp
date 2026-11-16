@@ -23,8 +23,15 @@ change.
 
 **What the skill does:**
 
-1. Builds the jar (`:unified-test-mcp:shadowJar`) and starts `test-app` in the background.
-2. Writes an MCP config naming only this server, into a scratch dir outside the checkout.
+1. Builds the jar (`:unified-test-mcp:shadowJar`) and finds `test-app`:
+   - **already running** (the owner's `./gradlew :test-app:run`): a JVM whose main class is
+     `com.vaadin.unifiedtestmcp.testapp.Main`; its port from `ss -ltnp` for that pid. Reused, and
+     left running afterwards. A scenario that needs a `test-app` change needs it restarted first.
+   - **not running**: started in the background on a free port, handed over as `SERVER_PORT`
+     (Vaadin Boot 13.7 reads it, then `-Dserver.port`, then defaults to 8080); stopped once the
+     review is done.
+2. Writes an MCP config naming only this server, `--url http://localhost:<port>`, into a scratch
+   dir outside the checkout.
 3. **Run 1, the task.** `claude -p "<scenario>"` from that scratch dir, isolated:
    - `--mcp-config <cfg> --strict-mcp-config` — this server only; not the owner's Playwright or
      Vaadin-docs MCPs, which would let it work around our tools;
@@ -77,16 +84,10 @@ change.
 - A decision spanning several tools (how every error names the next step, how results echo) →
   a `D_` entry.
 
-## Open questions
+Problems that only show across tools are `whole-toolset-review.md`'s, later.
 
-`Q_app_port`: `test-app` serves on 8080, which `./gradlew :test-app:run` by the owner may already
-hold. A free port per review (Vaadin Boot reads one from the environment, to verify), or reuse an
-app already up?
+## Candidates already visible
 
-`Q_whole_toolset`: some problems only show across tools (which tool comes next, consistent
-results). A periodic review of the whole set, with a scenario spanning several tools, besides the
-per-tool one?
-
-Candidate already visible, before any review: `navigate` to a path with no route still reports
+Before any review: `navigate` to a path with no route still reports
 success. The snapshot it returns shows Vaadin's "not found" view, so the agent can tell, but
 nothing says so.
