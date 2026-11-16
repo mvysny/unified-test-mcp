@@ -154,7 +154,8 @@ this server has: any component takes a click, so `click` on every Div would be n
 agent can't tell from the type is which tool fits. Left out, so lines stay short: a layout without
 an id and plain HTML with neither id nor text of its own (their children take their place, as
 swing-mcp does with unnamed panels), Flow's bootstrap wrappers (`#outlet`, `flow-container-*`),
-the parts a Vaadin component renders into its own light DOM (its input, label, messages), icons,
+the parts a Vaadin component renders into its own light DOM (its input, label, messages; a field's
+whole inside, a ComboBox's scroller, a RadioButtonGroup's buttons), icons,
 the dev tools, and anything `hidden`. A layout with an id stays: the app named it. Revisit the
 pruning when an agent can't tell two identical forms apart.
 
@@ -176,7 +177,11 @@ Its DOM text is its label, so `get_text` on the Name field would answer "Name", 
 asked what the field says would report the label as its content, without an error to tell it
 otherwise. So the two reads split by what the component holds (`ComponentTypes.Holds`):
 `get_text` takes a Button, a Span, a Paragraph; `get_value` takes the fields and a Checkbox,
-whose value is whether it's ticked. Each refuses the other kind, naming the right tool. A type
+whose value is whether it's ticked. A field holding an item — a ComboBox, a Select — answers with
+the item's label, as the snapshot's `value=` does: the browser has only Flow's key for the item,
+meaningless to the user, and the label is what the user sees and the Unified API picks by
+(`R_flow_item_keys`). swing-mcp's `swing_get_selection` reports a `JComboBox` the same way, by
+its rendered name. Each refuses the other kind, naming the right tool. A type
 `ComponentTypes` doesn't list takes either. Why not one `read` tool that picks by type: a tester
 asks either "what does it say" or "what's in it", and a tool named after the question is the one
 an agent finds.

@@ -7,6 +7,13 @@ import com.github.mvysny.tinymcpserver.ToolDescriptor;
 import com.github.mvysny.tinymcpserver.ToolFunction;
 import com.github.mvysny.tinymcpserver.ToolRequest;
 import com.vaadin.testing.unified.UnifiedElement;
+import com.vaadin.testing.unified.UnifiedPage;
+import com.vaadin.testing.unified.component.UnifiedComboBox;
+import com.vaadin.testing.unified.component.UnifiedMultiSelectComboBox;
+import com.vaadin.testing.unified.component.UnifiedRadioButtonGroup;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * {@code get_value(ref)}: what a field holds, uncut, or whether a Checkbox is ticked.
@@ -14,18 +21,23 @@ import com.vaadin.testing.unified.UnifiedElement;
  * <pre>
  * get_value(ref: 1)   → Alice
  * get_value(ref: 3)   → true
+ * get_value(ref: 5)   → Czechia                  (a ComboBox: its selected item's label)
+ * get_value(ref: 6)   → ["Finland","Sweden"]     (a MultiSelectComboBox)
  * get_value(ref: 4)   → error: ref 4 is a Button: it has no value. Call get_text for its text.
  * </pre>
  *
- * The web component's {@code value} property, as the Unified API's {@code UnifiedTextField.getValue()} reads it; a
- * Checkbox's {@code checked}, as {@code UnifiedCheckbox.isChecked()}. A read: the refs stay as they are.
+ * A field's {@code value} property, as the Unified API's {@code UnifiedTextField.getValue()} reads it; a Checkbox's
+ * {@code checked}, as {@code UnifiedCheckbox.isChecked()}. An item, as {@code UnifiedComboBox.getSelectedItem()}
+ * reads it: its label, what the user sees and picks by; the browser has no other trace of the item, its
+ * {@code value} property being Flow's key for it ({@code "3"}). A read: the refs stay as they are.
  */
 final class GetValueTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("get_value",
             "The value of a field, as the field holds it: a TextField's text, a DatePicker's date as 2026-11-16, "
-                    + "a Checkbox's true or false; empty for an empty field. Unlike the snapshot's value=, never "
-                    + "cut short. A Button or a Span has a text instead: get_text. Doesn't change the page, so the "
-                    + "refs stay valid.",
+                    + "a Checkbox's true or false; empty for an empty field. A ComboBox's, a Select's or a "
+                    + "RadioButtonGroup's selected item by the label the user sees, a MultiSelectComboBox's as a "
+                    + "JSON array of labels. Unlike the snapshot's value=, never cut short. A Button or a Span has a "
+                    + "text instead: get_text. Doesn't change the page, so the refs stay valid.",
             new InputSchemaBuilder().requiredInteger("ref", SnapshotTool.REF_DESCRIPTION).build());
 
     @Override
@@ -33,16 +45,34 @@ final class GetValueTool implements ToolFunction {
         int ref = request.arguments().getInt("ref");
         return MCPProtocol.Content.text(ToolCall.get((page, refs) -> {
             UnifiedElement element = refs.resolve(page, ref).element();
-            ComponentTypes.Type type = ComponentTypes.of(element.getTag());
-            if (type.holds() == ComponentTypes.Holds.CHECKED) {
-                return String.valueOf(Boolean.TRUE.equals(element.getPropertyBoolean("checked")));
-            }
-            String value = type.holds().hasValue() ? element.getProperty("value") : null;
+            String tag = element.getTag();
+            ComponentTypes.Type type = ComponentTypes.of(tag);
+            String value = switch (type.holds()) {
+                case TEXT -> null;
+                case CHECKED -> String.valueOf(Boolean.TRUE.equals(element.getPropertyBoolean("checked")));
+                case SELECTED_ITEM -> Objects.requireNonNullElse(selectedItem(page, refs, ref, tag, element), "");
+                case SELECTED_ITEMS -> MCPProtocol.toJson(
+                        refs.resolve(page, ref, UnifiedMultiSelectComboBox.class).getSelectedItems());
+                case VALUE, UNKNOWN -> element.getProperty("value");
+            };
             if (value == null) {
                 throw new MCPErrorResponseException("ref " + ref + " is a " + type.flowName()
                         + ": it has no value. Call get_text for its text.");
             }
             return value;
         }));
+    }
+
+    /** The selected item's label, {@code null} for none. */
+    private static String selectedItem(UnifiedPage page, Refs refs, int ref, String tag, UnifiedElement element) {
+        return switch (tag) {
+            case "vaadin-combo-box" -> refs.resolve(page, ref, UnifiedComboBox.class).getSelectedItem();
+            case "vaadin-radio-group" -> refs.resolve(page, ref, UnifiedRadioButtonGroup.class).getSelectedItem();
+            // no Unified API wrapper for a Select: the button shows the selected item, as the user sees it
+            default -> {
+                List<UnifiedElement> button = element.findChildren("vaadin-select-value-button");
+                yield button.isEmpty() ? null : button.get(0).getText();
+            }
+        };
     }
 }

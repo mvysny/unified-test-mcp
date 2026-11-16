@@ -142,6 +142,27 @@ Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-butto
 - Navigating to another view and back, by `UI.navigate` from a click, builds new elements: no
   attribute survives anywhere on the page. **[verified 2026-11-16, Vaadin 25.3.5]**
 
+## R_flow_item_keys — Flow's item fields in the browser: a key, and the label beside it
+
+- A ComboBox's, RadioButtonGroup's and Select's `value` property is Flow's key for the item, `"1"`,
+  `"2"`, from its key mapper; the item itself never reaches the browser. With an item label
+  generator: ComboBox Czechia → `value="1"`. **[verified 2026-11-16, Vaadin 25.3.5]**
+- The label the generator gave is in the page beside the key: a ComboBox's
+  `selectedItem[itemLabelPath]`, a MultiSelectComboBox's `selectedItems`, the checked
+  `<vaadin-radio-button>`'s `<label>`, the text of a Select's `<vaadin-select-value-button>`; all
+  light DOM. **[verified 2026-11-16, Vaadin 25.3.5]**
+- The Unified API names an item by that label on every backend: `UnifiedComboBox.getSelectedItem()`,
+  `selectItem(label)`. Playwright reads `selectedItem[itemLabelPath]` through Dramafinder's
+  `ComboBoxElement.getSelectedItemLabel()`; Browserless applies the component's
+  `ItemLabelGenerator` to `getValue()` on the server. **[src]**
+- Dramafinder's `ComboBoxElement.getValue()` reads the input's text instead: a typed filter, or a
+  custom value no item matches, shows there while `getSelectedItemLabel()` is `null`. **[src]**
+- The Unified API has no wrapper for a Select (Dramafinder has `SelectElement`).
+  **[src, unified-testing-tool `76ab776`]**
+- `find(UnifiedComboBox.class).withAttribute(name, value)` finds a stamped element through
+  Dramafinder's query, as it does for the RadioButtonGroup and the MultiSelectComboBox.
+  **[verified 2026-11-16, unified-test-playwright 0.1.0-alpha2]**
+
 ## R_playwright_mcp_refs — the Playwright MCP's element refs
 
 Read in playwright-core 1.66.0-alpha-2026-11-09 under `@playwright/mcp` 0.0.85.

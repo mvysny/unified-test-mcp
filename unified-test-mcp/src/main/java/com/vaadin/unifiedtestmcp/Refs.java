@@ -1,8 +1,10 @@
 package com.vaadin.unifiedtestmcp;
 
 import com.github.mvysny.tinymcpserver.MCPErrorResponseException;
+import com.vaadin.testing.unified.Findable;
 import com.vaadin.testing.unified.UnifiedPage;
 import com.vaadin.testing.unified.component.UnifiedContainer;
+import com.vaadin.testing.unified.query.Query;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
@@ -53,6 +55,22 @@ final class Refs {
      *         component is gone; each names the next step
      */
     UnifiedContainer resolve(UnifiedPage page, int ref) {
+        return resolve(page, ref, UnifiedContainer.class);
+    }
+
+    /**
+     * The component the latest snapshot showed as {@code ref}, as the Unified API wrapper of its type, for what
+     * only that wrapper reads:
+     *
+     * <pre>{@code
+     * refs.resolve(page, 5, UnifiedComboBox.class).getSelectedItem()   // => "Czechia"
+     * }</pre>
+     *
+     * @param type the wrapper of the component's own type; another type finds nothing, and so throws as for a
+     *             component that's gone
+     * @throws MCPErrorResponseException as {@link #resolve(UnifiedPage, int)}
+     */
+    <W, Q extends Query<W, Q>> W resolve(UnifiedPage page, int ref, Class<? extends Findable<Q>> type) {
         if (latest == null) {
             throw new MCPErrorResponseException("No refs yet: call snapshot if a page is open, or navigate to the app's URL;"
                     + " then use a ref from the snapshot either returns.");
@@ -63,7 +81,7 @@ final class Refs {
                     + (latest.isEmpty() ? ", which showed no components" : "; its refs are " + ranges())
                     + ". Call snapshot to see the components on the page now.");
         }
-        UnifiedContainer.ContainerQuery query = page.find(UnifiedContainer.class);
+        Q query = page.find(type);
         query = target.uniqueId() != null
                 ? query.withId(target.uniqueId())
                 : query.withAttribute(ATTRIBUTE, String.valueOf(ref));

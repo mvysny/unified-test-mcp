@@ -113,6 +113,31 @@ public class ToolsTest {
     }
 
     @Test
+    public void snapshotShowsSelectedItemsByTheirLabels() throws IOException {
+        assertEquals("""
+                Navigated to APP/choices
+
+                URL: APP/choices
+                - ComboBox "Country" [ref=N, id=country, value="Czechia"]
+                - MultiSelectComboBox "Visited" [ref=N, value="Finland, Sweden"]
+                - RadioButtonGroup "Home" [ref=N, value="Czechia"]
+                - Select "Favourite" [ref=N, value="Sweden"]
+                - ComboBox "Next" [ref=N]
+                """, masked(navigate(client, "choices")));
+    }
+
+    @Test
+    public void getValueReadsSelectedItemsByTheirLabels() throws IOException {
+        String choices = navigate(client, "choices");
+        assertEquals("Czechia", call(client, "get_value", ref(ref(choices, "id=country"))));
+        assertEquals("[\"Finland\",\"Sweden\"]",
+                call(client, "get_value", ref(ref(choices, "MultiSelectComboBox \"Visited\""))));
+        assertEquals("Czechia", call(client, "get_value", ref(ref(choices, "RadioButtonGroup \"Home\""))));
+        assertEquals("Sweden", call(client, "get_value", ref(ref(choices, "Select \"Favourite\""))));
+        assertEquals("", call(client, "get_value", ref(ref(choices, "ComboBox \"Next\""))));
+    }
+
+    @Test
     public void getTextRefusesWhatHoldsAValue() throws IOException {
         String form = navigate(client, "form");
         int name = ref(form, "id=name");

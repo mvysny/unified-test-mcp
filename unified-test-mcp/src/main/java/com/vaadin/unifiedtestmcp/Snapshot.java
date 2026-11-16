@@ -38,11 +38,29 @@ final class Snapshot {
     private static final int VALUE_CAP = 80;
 
     private static final String SCRIPT = """
-            ({ next, layouts, skipped, attribute }) => {
-              const LAYOUTS = new Set(layouts), SKIPPED = new Set(skipped);
+            ({ next, layouts, skipped, fields, attribute }) => {
+              const LAYOUTS = new Set(layouts), SKIPPED = new Set(skipped), FIELDS = new Set(fields);
               // the light-DOM children a Vaadin component renders for itself: its input, label, messages
               const OWN_PARTS = new Set(['input', 'textarea', 'label', 'error-message', 'helper', 'tooltip']);
               const str = v => typeof v === 'string' && v.trim() !== '' ? v : null;
+              // what the user sees selected, as Dramafinder reads it: the value property is Flow's key for the item
+              const itemLabel = (e, i) => typeof i === 'string' ? i : String(i[e.itemLabelPath || 'label'] ?? '');
+              const valueOf = e => {
+                switch (e.localName) {
+                  case 'vaadin-combo-box':
+                    return e.selectedItem == null ? null : str(itemLabel(e, e.selectedItem));
+                  case 'vaadin-multi-select-combo-box':
+                    return str((e.selectedItems || []).map(i => itemLabel(e, i)).join(', '));
+                  case 'vaadin-radio-group': {
+                    const checked = e.querySelector(':scope > vaadin-radio-button[checked] > label');
+                    return checked ? str(checked.textContent) : null;
+                  }
+                  case 'vaadin-select':
+                    return str(e.querySelector(':scope > vaadin-select-value-button')?.textContent);
+                  default:
+                    return str(e.value);
+                }
+              };
               const ownText = e => Array.from(e.childNodes).filter(n => n.nodeType === Node.TEXT_NODE)
                   .map(n => n.textContent).join(' ').replace(/\\s+/g, ' ').trim();
               const visit = (e, parentTag) => {
@@ -51,7 +69,7 @@ final class Snapshot {
                 if (parentTag.startsWith('vaadin-') && OWN_PARTS.has(e.getAttribute('slot'))) return [];
                 const custom = tag.includes('-');
                 const text = ownText(e);
-                const children = () => Array.from(e.children).flatMap(c => visit(c, tag));
+                const children = () => FIELDS.has(tag) ? [] : Array.from(e.children).flatMap(c => visit(c, tag));
                 // Flow's bootstrap wraps every view in <div id="outlet"><flow-container-root-…>: not the app's
                 const bootstrap = tag.startsWith('flow-container-') || (tag === 'div' && e.id === 'outlet');
                 const shown = !bootstrap && (custom ? !(LAYOUTS.has(tag) && !e.id) : !!(e.id || text));
@@ -68,7 +86,7 @@ final class Snapshot {
                   label: custom ? str(e.label) : null,
                   ariaLabel: str(e.getAttribute('aria-label')),
                   placeholder: custom ? str(e.placeholder) : null,
-                  value: custom ? str(e.value) : null,
+                  value: custom ? valueOf(e) : null,
                   disabled: e.disabled === true || e.hasAttribute('disabled'),
                   checked: custom && e.checked === true,
                   invalid: custom && e.invalid === true,
@@ -101,7 +119,8 @@ final class Snapshot {
             return NO_PAGE + "\n";
         }
         Map<String, Object> arg = Map.of("next", refs.next(), "layouts", List.copyOf(ComponentTypes.LAYOUTS),
-                "skipped", List.copyOf(ComponentTypes.SKIPPED), "attribute", Refs.ATTRIBUTE);
+                "skipped", List.copyOf(ComponentTypes.SKIPPED), "fields", List.copyOf(ComponentTypes.FIELDS),
+                "attribute", Refs.ATTRIBUTE);
         Map<?, ?> result = (Map<?, ?>) browser.evaluate(SCRIPT, arg);
         StringBuilder out = new StringBuilder("URL: ").append(result.get("url")).append('\n');
         String title = (String) result.get("title");

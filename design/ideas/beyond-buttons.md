@@ -2,19 +2,10 @@
 
 What the click / get_text / snapshot work left open.
 
-`Q_typed_actions`: a ref resolves to a `UnifiedContainer` (any tag), enough for `click` and
-`get_text`. A typed action — `set_value` on a TextField, `check` on a Checkbox — needs the type's
-own wrapper: `ComponentTypes` gets a wrapper column (`vaadin-text-field` → `UnifiedTextField`),
-and `Refs.resolve` finds the component through it, `find(UnifiedTextField.class).withAttribute(…)`.
-For a type with a Dramafinder element (Button, TextField) that filter goes through Dramafinder's
-query by reflection (`R_unified_no_enumeration`); check it finds the stamped element. The
-`@UnifiedComponent` annotations on the wrappers carry the tag → wrapper table, if hand-listing
-the column gets long.
-
-`Q_combo_value`: a ComboBox's or a Select's `value` property is Flow's item key ("3"), not the
-item the user sees, and both the snapshot's `value=` and `get_value` show that key. The Unified
-API reads the shown item through `UnifiedComboBox.getSelectedItem()`; that needs the typed
-resolution of `Q_typed_actions`.
+`Q_typed_actions`: a typed action — `set_value` on a TextField, `check` on a Checkbox — takes the
+type's own wrapper, `refs.resolve(page, ref, UnifiedTextField.class)`, as `get_value` does for a
+ComboBox. Which wrapper fits is the tag's: `ComponentTypes` gets a wrapper column then, or reads the
+`@UnifiedComponent` annotations on the wrappers if hand-listing it gets long.
 
 `Q_timeout`: a ref that isn't in the latest snapshot, or whose component is gone, fails at once.
 What still costs the full 10 s is an action on a component that is there but stays disabled or

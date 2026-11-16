@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * What the snapshot knows about a component by its tag: the Flow class it shows, which property names it, and the
@@ -39,6 +40,13 @@ final class ComponentTypes {
         VALUE,
         /** A Checkbox's value is whether it's ticked, its {@code checked} property; {@code value} is {@code "on"}. */
         CHECKED,
+        /**
+         * One item, shown by its label: a ComboBox, a Select. Its {@code value} property is Flow's key for the item,
+         * {@code "3"}, meaningless to the user.
+         */
+        SELECTED_ITEM,
+        /** Items, shown by their labels: a MultiSelectComboBox. */
+        SELECTED_ITEMS,
         /** A type this table doesn't list: either may be there. */
         UNKNOWN;
 
@@ -56,9 +64,9 @@ final class ComponentTypes {
      * @param actions  the tools that act on it beyond what every component allows; only tools this server has
      */
     record Type(String flowName, NameFrom nameFrom, Holds holds, List<String> actions) {
-        /** Whether its {@code value} property is worth a snapshot line: a field's is, a Checkbox's isn't. */
+        /** Whether its value is worth a snapshot line: a field's is, a Checkbox's ({@code checked} says it) isn't. */
         boolean showValue() {
-            return holds == Holds.VALUE || holds == Holds.UNKNOWN;
+            return holds != Holds.TEXT && holds != Holds.CHECKED;
         }
     }
 
@@ -75,8 +83,10 @@ final class ComponentTypes {
             Map.entry("vaadin-date-picker", field("DatePicker")),
             Map.entry("vaadin-time-picker", field("TimePicker")),
             Map.entry("vaadin-date-time-picker", field("DateTimePicker")),
-            Map.entry("vaadin-combo-box", field("ComboBox")),
-            Map.entry("vaadin-select", field("Select")),
+            Map.entry("vaadin-combo-box", selection("ComboBox", Holds.SELECTED_ITEM)),
+            Map.entry("vaadin-select", selection("Select", Holds.SELECTED_ITEM)),
+            Map.entry("vaadin-radio-group", selection("RadioButtonGroup", Holds.SELECTED_ITEM)),
+            Map.entry("vaadin-multi-select-combo-box", selection("MultiSelectComboBox", Holds.SELECTED_ITEMS)),
             Map.entry("div", html("Div")),
             Map.entry("span", html("Span")),
             Map.entry("p", html("Paragraph")),
@@ -92,6 +102,15 @@ final class ComponentTypes {
     /** Layouts: without an id, their children take their place in the snapshot. */
     static final Set<String> LAYOUTS = Set.of("vaadin-vertical-layout", "vaadin-horizontal-layout",
             "vaadin-form-layout", "vaadin-form-item", "vaadin-form-row", "vaadin-scroller");
+
+    /**
+     * Fields: nothing inside one is the app's, so a snapshot shows none of it — a ComboBox's scroller, a
+     * RadioButtonGroup's buttons, a Select's list.
+     */
+    static final Set<String> FIELDS = TYPES.entrySet().stream()
+            .filter(e -> e.getValue().holds() != Holds.TEXT)
+            .map(Map.Entry::getKey)
+            .collect(Collectors.toUnmodifiableSet());
 
     /** Never in a snapshot, nor anything inside them: decoration, and the dev tools. */
     static final Set<String> SKIPPED = Set.of("vaadin-icon", "svg", "img", "vaadin-tooltip", "script", "style",
@@ -110,6 +129,10 @@ final class ComponentTypes {
 
     private static Type field(String flowName) {
         return new Type(flowName, NameFrom.LABEL, Holds.VALUE, List.of());
+    }
+
+    private static Type selection(String flowName, Holds holds) {
+        return new Type(flowName, NameFrom.LABEL, holds, List.of());
     }
 
     private static Type html(String flowName) {
