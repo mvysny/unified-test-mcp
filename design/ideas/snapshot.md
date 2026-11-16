@@ -1,14 +1,42 @@
 # Snapshot: the Vaadin components on the page, as text
 
-On hold: the prototype finds components by id. Parked here so the thinking isn't lost.
+Next up: it comes before the blind-agent review (`blind-agent-review.md`), since every lookup
+error should send the agent here ("call `snapshot` to see the components on the page").
 
-The goal, swing-mcp style — one line per component, refs for the ones you can act on:
+The goal, swing-mcp style — one line per component, a handle for the ones you can act on:
 
 ```
 - VerticalLayout
-  - Button "Click me" [ref=1] actions: click
+  - Button "Click me" [id=clicker] actions: click
   - TextField "Name" [ref=2, value="Alice", invalid] actions: set_value
 ```
+
+## Handles: the id first, a stamped ref where there is none
+
+**Ids are the handle.** TestBench, the Unified API and Karibu-Testing all recommend that an app
+set ids on what tests touch; so does this server. A component with an id unique on the page is
+named by it. **A ref is the fallback**: a component with no id, or one whose id isn't unique,
+gets a ref from the snapshot.
+
+**The ref is a stamped attribute, `data-mcp-ref="7"`, not a Java handle** (`R_unified_lazy_elements`).
+A Unified API wrapper holds its lookup, not an element, so it never goes stale like TestBench's
+`ButtonElement` did; but for a component with no id, the only lookup left is positional
+(`all().get(i)`), which silently names a *different* component once one is added before it. The
+stamp pins the actual DOM node: `page.find(<wrapper>).withAttribute("data-mcp-ref", "7").single()`.
+When Flow re-creates the element, the attribute goes with the old node, the lookup finds nothing,
+and the tool says "stale ref, call `snapshot` again" instead of clicking the wrong button. A JS
+property would hide the stamp from the DOM, but the Unified API's filters can't query one.
+
+`Q_handle_parameter`: one parameter that takes either (`"clicker"` or `"ref=7"`), or `id` and
+`ref` as two optional parameters, exactly one given? swing-mcp has `ref` only.
+
+`Q_ref_lifetime`: swing-mcp clears refs after every successful mutation. Here a stamp survives
+until Flow replaces the element, and a stale one fails cleanly — so keep refs across actions, and
+only re-stamp on the next snapshot?
+
+`Q_stamp_safety`: Flow leaves an attribute it didn't set alone (to verify): it neither syncs it
+to the server nor removes it on the next round-trip. An app's own CSS matching `[data-mcp-ref]`
+is not a realistic worry.
 
 ## The gap
 
@@ -26,17 +54,13 @@ ARIA snapshot shows the Copilot dev toolbar — a `radiogroup "Mode"` with four 
    light DOM from `document.body`, keeps Vaadin components (`vaadin-*` tags, plus custom
    elements generally), skips the inside of Vaadin's own shadow roots and the dev tools (the
    `APP_CONTENT` rule the Unified API already uses), reads per element: tag, label / text /
-   accessible name, value, disabled / invalid / checked, and stamps `data-mcp-ref="N"`.
+   accessible name, value, disabled / invalid / checked, the id, and stamps `data-mcp-ref="N"`
+   on what has no unique id.
    One round trip for the whole page.
 2. An action takes a ref and resolves it with the Unified API:
    `page.find(<wrapper for the tag>).withAttribute("data-mcp-ref", "N").single()`.
 3. A ref that resolves to nothing — Flow re-created the element — is a "stale, snapshot again"
-   error. A successful mutation clears the refs, as in swing-mcp.
-
-`Q_ref_mechanism`: attribute stamping writes into the app's DOM (harmless? Flow leaves unknown
-attributes alone as far as I know — to check). The alternative, keeping Playwright `Locator`s
-per ref server-side, can't be turned into a `UnifiedElement`: `PlaywrightElement`'s constructor
-is package-private.
+   error.
 
 `Q_component_identity`: name a component by its Flow class (`Button`, `TextField`) — what a Java
 developer writes — mapped from the tag through the wrappers' `@UnifiedComponent`; an unknown

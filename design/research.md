@@ -62,6 +62,25 @@ a claim came from, so the prose doesn't repeat it.
 - Escape hatch: `UnifiedPage.unwrap(com.microsoft.playwright.Page.class)` returns the session's
   Playwright `Page`; a wrapper unwraps to its Dramafinder element or a `Locator`. **[src]**
 
+## R_unified_lazy_elements — Unified API: a wrapper holds its query, not an element
+
+- A wrapper such as `UnifiedButton` sits on a `LazyElement`, which keeps the lookup (component
+  type, filters) and, after `all().get(i)`, an index; it holds no element. Every read and action
+  runs the lookup again, waiting until exactly one component matches (`single()`) or the indexed
+  one exists. **[src]**
+- So a wrapper never goes stale the way a Selenium `WebElement` or TestBench's `ButtonElement`
+  does: when Vaadin re-renders a component, the next call finds the new element. An adapter
+  that loses an element mid-call throws `StaleElementException`, and the core finds the element
+  again and retries, within the timeout (`StaleRetry`). **[src]**
+- The flip side: a wrapper names *whatever matches its lookup now*. One found by index, as
+  `all().get(2)`, is the third match at the time of each call, a different component once one
+  is added before it; one found by id stays the component with that id. **[src]**
+- On Playwright each match is a `Locator` built from the query, `candidates.nth(i)` among them —
+  a selector re-run on every use, never a pinned DOM node. **[src]**
+- Filters query attributes, not JavaScript properties: `withAttribute(name, value)`, `withId`,
+  `withTestId`, `withClassName`. A value set only as a JS property on an element can't be found
+  without the escape hatch. **[src]**
+
 ## R_unified_playwright_packaging — unified-test-playwright as a dependency
 
 - Compiled for Java 21 (`maven.compiler.release`) against the Vaadin 25.3.5 BOM and Dramafinder
