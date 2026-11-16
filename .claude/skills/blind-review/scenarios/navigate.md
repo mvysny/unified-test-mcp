@@ -14,6 +14,6 @@ this app, and tell me whether it does. Finish on the app's start page and tell m
 
 ## Watch for
 
-- `orders`: `navigate` reports "Navigated to /orders" and no error; only the snapshot, showing
-  Vaadin's "not found" view, tells there's no such route. Did the agent notice, and from what?
+- `orders`: `navigate` answers "No view at /orders", not an error. Did the agent take it from
+  that line, without parsing the page's text?
 - How it names the start page: `""`, `"/"`, or a guess that failed first.

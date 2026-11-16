@@ -110,6 +110,14 @@ public class ToolsTest {
     }
 
     @Test
+    public void navigateToMissingRouteSaysSo() throws IOException {
+        String orders = navigate(client, "orders");
+        assertTrue(orders.startsWith("No view at /orders: the app shows Vaadin's \"Could not navigate\" page\n\n"
+                + "Path: /orders\n"), orders);
+        assertTrue(navigate(client, "form").startsWith("Navigated to /form\n"), "a view's text doesn't trip it");
+    }
+
+    @Test
     public void navigateStartsViewAfresh() throws IOException {
         int before = ref(call(client, "snapshot", Map.of()), "id=clicker");
         call(client, "click", ref(before));
