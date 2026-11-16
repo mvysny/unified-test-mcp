@@ -1,0 +1,18 @@
+# reference clone of https://github.com/parttio/unified-testing-tool, read for its source
+/unified-testing-tool/
+
+# build output
+build/
+.gradle/
+target/
+
+# IDE metadata
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+bin/
+
+# Playwright MCP snapshots and logs
+.playwright-mcp/
