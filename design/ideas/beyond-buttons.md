@@ -24,6 +24,3 @@ action on something still loading)?
 `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` for itself — but the adapter calls `Playwright.create()`
 without options, so the variable has to be in the process environment: the launcher script, or
 an upstream option.
-
-`Q_upstream_entry_point`: open an issue on parttio/unified-testing-tool asking for a JUnit-free
-way to open a page (`D_junit_free_context`), with this server as the use case.

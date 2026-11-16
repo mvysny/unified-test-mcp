@@ -23,6 +23,9 @@ import java.util.logging.Logger;
  * <p>
  * Of {@link ExtensionContext} only {@code getRoot()} and {@code getStore(..)} answer; any other method throws, naming
  * itself, so an adapter upgrade that starts calling one fails loudly.
+ * <p>
+ * A stand-in until the Unified API can open a page without JUnit: drop this class once
+ * <a href="https://github.com/parttio/unified-testing-tool/issues/219">unified-testing-tool#219</a> is fixed.
  */
 final class JUnitFreeContext implements AdapterContext, AutoCloseable {
     private static final Logger LOG = Logger.getLogger(JUnitFreeContext.class.getName());

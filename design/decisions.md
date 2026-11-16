@@ -58,7 +58,9 @@ copy the adapter's code: it would fork the part — the session, the Dramafinder
 Unified API exists to maintain (`D_unified_api_backend`). The cost we carry: we lean on the
 `internal` package (`UnifiedPageImpl`, `TestRun`) and on which `ExtensionContext` methods the
 adapter happens to call, so an upgrade of the Unified API is checked by `ToolsTest` before
-anything else. When upstream gains the entry point, this class is deleted.
+anything else. When upstream gains the entry point, asked for in
+[unified-testing-tool#219](https://github.com/parttio/unified-testing-tool/issues/219), this
+class is deleted.
 
 ## D_single_jar_release — Why release one jar with every dependency on GitHub Releases, rather than a zip of start scripts, a jar per OS, or Maven Central?
 
