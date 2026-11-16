@@ -31,7 +31,7 @@ Every fact lives in exactly one of these; the others link to it.
 ## Invariants
 
 - **Every Playwright call runs on `UnifiedBrowser`'s thread**, through `UnifiedBrowser.call`; Playwright for Java is not thread-safe, and a call from a transport thread corrupts the session. The threading is in `design/architecture.md`.
-- **Every tool reaches the browser through `UnifiedTestMCP.call`.** A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `call` turns it into a tool error the model reads.
+- **Every tool reaches the browser through `ToolCall`.** A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `ToolCall` turns it into a tool error the model reads.
 - **The tools use the Unified API, not Playwright**; its escape hatch only for what no wrapper offers. See `D_unified_api_backend`.
 
 ## Module map
@@ -47,6 +47,7 @@ Every fact lives in exactly one of these; the others link to it.
 - **Gradle, Kotlin DSL; every version in `gradle/libs.versions.toml`.** Vaadin stays on the line the Unified API is built against.
 - **Tests: JUnit; a tool is tested end to end** — `test-app` booted in the test JVM, a real browser, the tool called over MCP's HTTP transport (`ToolsTest`). No mocks of the Unified API or Playwright.
 - **Diagnostics go to `java.util.logging`**, never `System.out`: on stdio, stdout is the protocol.
+- **One class per tool**, `<Name>Tool implements ToolFunction` with its `DESCRIPTOR`, registered in `UnifiedTestMCP`; no base class — shared steps are plain functions (`ToolCall`, `ComponentLookup`), per the `cop` skill.
 - **A tool failure is an `MCPErrorResponseException`** whose message says what was looked for; the Unified API's own message does that already.
 - **Released as one jar on GitHub Releases, never Maven Central**, every dependency and every OS's Playwright driver inside; steps in `RELEASING.md`, why in `D_single_jar_release`.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.

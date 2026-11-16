@@ -11,7 +11,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 ## Wiring
 
 - The server is a process of its own, pointed at the app's URL; the app under test needs no change (`D_separate_process`).
-- Dependencies point down: `Main` → `UnifiedTestMCP` (the tools) → `UnifiedBrowser` → the Unified API's `PlaywrightAdapter`. The tools see a `UnifiedPage` and the Unified API's wrappers, never Playwright.
+- Dependencies point down: `Main` → `UnifiedTestMCP` (the handler) → one class per tool (`ClickTool`, …) → `UnifiedBrowser` → the Unified API's `PlaywrightAdapter`. The tools see a `UnifiedPage` and the Unified API's wrappers, never Playwright.
 - `Main` constructs one `UnifiedBrowser` and one `MCPHandler` over it and serves the handler on stdio; the system test serves the same handler over HTTP instead. The transport is the seam.
 - `UnifiedBrowser` opens its page through `JUnitFreeContext`, which stands in for the JUnit extension that normally opens a Unified API page (`D_junit_free_context`).
 
@@ -24,8 +24,8 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 
 **A tool call** (`click`, say):
 
-1. The transport hands `tools/call` to `MCPHandler`, which runs the tool's function.
-2. The function submits `page -> button(page, id).click()` to `UnifiedBrowser.call`.
+1. The transport hands `tools/call` to `MCPHandler`, which calls the tool's class, a TinyMCPServer `ToolFunction`.
+2. `ClickTool` submits `page -> button(page, id).click()` through `ToolCall` to `UnifiedBrowser.call`.
 3. On the browser thread, the first call ever opens the page: `PlaywrightAdapter.open` launches Playwright and the browser, then the page navigates to the app's start path.
 4. The Unified API finds the Button, waits until it is visible and enabled, clicks, and waits for the server round-trip.
 5. A failure — a lookup that timed out, an app that isn't up — comes back as a tool error carrying the Unified API's own message, which the model reads.
@@ -34,4 +34,4 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 
 ## Where to start reading
 
-`UnifiedTestMCP` — the tools, each a few lines over the Unified API; then `UnifiedBrowser` for the one thread and the lazy open.
+`UnifiedTestMCP` — the tools registered; then one tool, `ClickTool`, a few lines over the Unified API; then `UnifiedBrowser` for the one thread and the lazy open.
