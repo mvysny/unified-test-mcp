@@ -11,9 +11,10 @@ query by reflection (`R_unified_no_enumeration`); check it finds the stamped ele
 `@UnifiedComponent` annotations on the wrappers carry the tag → wrapper table, if hand-listing
 the column gets long.
 
-`Q_get_text_name`: `get_text` matches `UnifiedButton.getText()`. A TextField's interesting
-thing is its value, not its text — later that's `get_value`/`set_value`, or a per-type `read`
-that returns what matters for that type.
+`Q_combo_value`: a ComboBox's or a Select's `value` property is Flow's item key ("3"), not the
+item the user sees, and both the snapshot's `value=` and `get_value` show that key. The Unified
+API reads the shown item through `UnifiedComboBox.getSelectedItem()`; that needs the typed
+resolution of `Q_typed_actions`.
 
 `Q_timeout`: a ref that isn't in the latest snapshot, or whose component is gone, fails at once.
 What still costs the full 10 s is an action on a component that is there but stays disabled or

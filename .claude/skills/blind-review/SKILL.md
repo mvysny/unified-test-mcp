@@ -98,7 +98,9 @@ Where findings go:
 
 - `## Task` — all the agent gets. A tester's words, naming what a tester sees (the app's URL as
   `{{url}}`, a view's path, a button's id or text), never a tool's name: whether it finds the
-  right tool is half the test. A success path and at least one failure path (a wrong id, a
-  missing route), so the errors get read too.
+  right tool is half the test. A success path and a few failure paths, so the errors get read
+  too: a component that isn't there (a wrong id, a missing route), one the tool doesn't fit
+  (`get_text` on a field or an icon-only button), one the user can't act on (a disabled button),
+  one that went away (a ref from before a navigation), an app that isn't reachable.
 - `## Done when` — what the answers are, so the report can say whether it got there.
 - `## Watch for` — the reviewer's: known weak spots, and the calls worth a look.

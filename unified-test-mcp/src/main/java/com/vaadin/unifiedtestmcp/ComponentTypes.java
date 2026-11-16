@@ -28,17 +28,43 @@ final class ComponentTypes {
         LABEL_OR_TEXT
     }
 
+    /** What a component holds, and so which of {@code get_text} and {@code get_value} reads it. */
+    enum Holds {
+        /** A text, Flow's {@code HasText}: a Button, a Span. No value. */
+        TEXT,
+        /**
+         * A value, Flow's {@code HasValue}, in its {@code value} property: the fields. No text: a TextField's DOM
+         * text is its label.
+         */
+        VALUE,
+        /** A Checkbox's value is whether it's ticked, its {@code checked} property; {@code value} is {@code "on"}. */
+        CHECKED,
+        /** A type this table doesn't list: either may be there. */
+        UNKNOWN;
+
+        boolean hasText() {
+            return this == TEXT || this == UNKNOWN;
+        }
+
+        boolean hasValue() {
+            return this != TEXT;
+        }
+    }
+
     /**
-     * @param flowName  the Flow class's simple name, {@code Button}, or {@code <tag>} for an element with none
-     * @param showValue whether its {@code value} property is worth a line: a field's is, a Checkbox's ({@code "on"})
-     *                  isn't
-     * @param actions   the tools that act on it beyond what every component allows; only tools this server has
+     * @param flowName the Flow class's simple name, {@code Button}, or {@code <tag>} for an element with none
+     * @param actions  the tools that act on it beyond what every component allows; only tools this server has
      */
-    record Type(String flowName, NameFrom nameFrom, boolean showValue, List<String> actions) {}
+    record Type(String flowName, NameFrom nameFrom, Holds holds, List<String> actions) {
+        /** Whether its {@code value} property is worth a snapshot line: a field's is, a Checkbox's isn't. */
+        boolean showValue() {
+            return holds == Holds.VALUE || holds == Holds.UNKNOWN;
+        }
+    }
 
     private static final Map<String, Type> TYPES = Map.ofEntries(
-            Map.entry("vaadin-button", new Type("Button", NameFrom.TEXT, false, List.of("click"))),
-            Map.entry("vaadin-checkbox", new Type("Checkbox", NameFrom.LABEL, false, List.of())),
+            Map.entry("vaadin-button", new Type("Button", NameFrom.TEXT, Holds.TEXT, List.of("click"))),
+            Map.entry("vaadin-checkbox", new Type("Checkbox", NameFrom.LABEL, Holds.CHECKED, List.of())),
             Map.entry("vaadin-text-field", field("TextField")),
             Map.entry("vaadin-text-area", field("TextArea")),
             Map.entry("vaadin-password-field", field("PasswordField")),
@@ -77,17 +103,17 @@ final class ComponentTypes {
             return known;
         }
         if (tag.startsWith("vaadin-")) {
-            return new Type(className(tag.substring("vaadin-".length())), NameFrom.LABEL_OR_TEXT, true, List.of());
+            return new Type(className(tag.substring("vaadin-".length())), NameFrom.LABEL_OR_TEXT, Holds.UNKNOWN, List.of());
         }
-        return new Type("<" + tag + ">", NameFrom.LABEL_OR_TEXT, true, List.of());
+        return new Type("<" + tag + ">", NameFrom.LABEL_OR_TEXT, Holds.UNKNOWN, List.of());
     }
 
     private static Type field(String flowName) {
-        return new Type(flowName, NameFrom.LABEL, true, List.of());
+        return new Type(flowName, NameFrom.LABEL, Holds.VALUE, List.of());
     }
 
     private static Type html(String flowName) {
-        return new Type(flowName, NameFrom.TEXT, false, List.of());
+        return new Type(flowName, NameFrom.TEXT, Holds.TEXT, List.of());
     }
 
     /** {@code split-layout} → {@code SplitLayout}. */

@@ -22,7 +22,8 @@ A prototype with four tools:
   Returns the new snapshot.
 - `click(ref)` — clicks the component; returns the snapshot once the server has handled the
   click.
-- `get_text(ref)` — the component's text.
+- `get_text(ref)` — a Button's or a Span's text.
+- `get_value(ref)` — a field's value, uncut; whether a Checkbox is ticked.
 
 Set ids on the components your tests touch: the snapshot shows them, so what an agent finds
 carries straight into a Java test.

@@ -16,7 +16,8 @@ import java.util.Map;
  * new StdioMCPServer(handler).runStdio(System.in, System.out);
  * }</pre>
  *
- * One class per tool — {@link SnapshotTool}, {@link NavigateTool}, {@link ClickTool}, {@link GetTextTool} — each
+ * One class per tool — {@link SnapshotTool}, {@link NavigateTool}, {@link ClickTool}, {@link GetTextTool},
+ * {@link GetValueTool} — each
  * holding its description and schema.
  */
 public final class UnifiedTestMCP {
@@ -30,7 +31,7 @@ public final class UnifiedTestMCP {
 
             1. `navigate` to the app's URL: it shows the components on the page, each with a `ref`; so does \
             `snapshot`, for the page as it is now.
-            2. Act on a component by its `ref` (`click`, `get_text`).
+            2. Act on a component by its `ref` (`click`, `get_text`, `get_value`).
             3. An action that changes the page (`click`, `navigate`) returns the new snapshot: read what it did \
             there, no need to call `snapshot` again.
 
@@ -57,6 +58,7 @@ public final class UnifiedTestMCP {
         handler.addTool(NavigateTool.DESCRIPTOR, new NavigateTool());
         handler.addTool(ClickTool.DESCRIPTOR, new ClickTool());
         handler.addTool(GetTextTool.DESCRIPTOR, new GetTextTool());
+        handler.addTool(GetValueTool.DESCRIPTOR, new GetValueTool());
         return handler;
     }
 }

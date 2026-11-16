@@ -166,5 +166,18 @@ are current; `navigate`'s snapshot starts with the URL the browser landed on, wh
 reroute, to a login view say, from the URL asked for. The Playwright MCP does the same. Why not
 swing-mcp's echo, "Dispatched …, call swing_snapshot to verify": every action would cost the
 agent a second call, and a second chance to act on a stale picture. The cost, a snapshot's tokens
-per action, stays within the promise: one line per component on the screen. A read, `get_text`,
-returns only what it read.
+per action, stays within the promise: one line per component on the screen. A read, `get_text`
+or `get_value`, returns only what it read.
+
+## D_text_or_value — Why does `get_text` refuse a field rather than return the field's DOM text?
+
+A field holds a value, not a text, as in Flow: `TextField` implements `HasValue`, not `HasText`.
+Its DOM text is its label, so `get_text` on the Name field would answer "Name", and an agent
+asked what the field says would report the label as its content, without an error to tell it
+otherwise. So the two reads split by what the component holds (`ComponentTypes.Holds`):
+`get_text` takes a Button, a Span, a Paragraph; `get_value` takes the fields and a Checkbox,
+whose value is whether it's ticked. Each refuses the other kind, naming the right tool. A type
+`ComponentTypes` doesn't list takes either. Why not one `read` tool that picks by type: a tester
+asks either "what does it say" or "what's in it", and a tool named after the question is the one
+an agent finds.
+

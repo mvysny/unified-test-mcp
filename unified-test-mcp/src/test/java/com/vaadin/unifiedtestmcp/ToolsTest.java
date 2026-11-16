@@ -105,6 +105,37 @@ public class ToolsTest {
     }
 
     @Test
+    public void getValueReadsFieldsAndCheckbox() throws IOException {
+        String form = navigate(client, "form");
+        assertEquals("Alice", call(client, "get_value", ref(ref(form, "id=name"))));
+        assertEquals("", call(client, "get_value", ref(ref(form, "TextField \"Email\""))));
+        assertEquals("true", call(client, "get_value", ref(ref(form, "Checkbox \"Subscribe\""))));
+    }
+
+    @Test
+    public void getTextRefusesWhatHoldsAValue() throws IOException {
+        String form = navigate(client, "form");
+        int name = ref(form, "id=name");
+        assertEquals("ref " + name + " is a TextField: it has a value, not a text. Call get_value; its label is its"
+                + " name in the snapshot.", error(client, "get_text", ref(name)));
+        int subscribe = ref(form, "Checkbox \"Subscribe\"");
+        assertEquals("ref " + subscribe + " is a Checkbox: it has a value, not a text. Call get_value; its label is"
+                + " its name in the snapshot.", error(client, "get_text", ref(subscribe)));
+        assertEquals("", call(client, "get_text", ref(ref(form, "id=close"))), "an icon-only Button has no text");
+    }
+
+    @Test
+    public void getValueRefusesWhatHoldsAText() throws IOException {
+        String form = navigate(client, "form");
+        int save = ref(form, "Button \"Save\"");
+        assertEquals("ref " + save + " is a Button: it has no value. Call get_text for its text.",
+                error(client, "get_value", ref(save)));
+        int status = ref(form, "Span \"Not saved\"");
+        assertEquals("ref " + status + " is a Span: it has no value. Call get_text for its text.",
+                error(client, "get_value", ref(status)));
+    }
+
+    @Test
     public void navigateOpensView() throws IOException {
         String second = navigate(client, "second");
         assertTrue(masked(second).startsWith("Navigated to APP/second\n\nURL: APP/second\n"), second);
