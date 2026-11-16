@@ -58,6 +58,7 @@ Every fact lives in exactly one of these; the others link to it.
 - `./gradlew :test-app:run` — the test app in dev mode on http://localhost:8080.
 - `./gradlew :unified-test-mcp:shadowJar` — the server's jar, `unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`; `java -jar` it to speak MCP on stdio.
 - `design/verify_design_tripwires.sh` — the doc layer.
+- CI: GitHub Actions, `.github/workflows/gradle.yml` — `./gradlew` on JDK 21 and 25, and the tripwires in a job of their own.
 
 ## Skills this project follows
 

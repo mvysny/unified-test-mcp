@@ -5,8 +5,8 @@ dependency inside, published only on this repository's GitHub releases page — 
 Central (`D_single_jar_release`). `master` always carries the next version with a `-SNAPSHOT`
 suffix; the steps use `1.0` → `1.1-SNAPSHOT`.
 
-1. **Start clean:** on `master`, `git status` empty and pulled. No dependency in
-   `gradle/libs.versions.toml` is a `-SNAPSHOT`.
+1. **Start clean:** on `master`, `git status` empty, pulled, and CI green on that commit. No
+   dependency in `gradle/libs.versions.toml` is a `-SNAPSHOT`.
 2. **Set the release version:** `build.gradle.kts`: `version = "1.0"`.
 3. **Build everything:** `./gradlew` on any JDK 21 or newer; `--release 21` makes the jar the
    same either way. It must be green; a red build stops the release.
