@@ -21,6 +21,6 @@ does the button with the X icon say? Last, what does the button with id `submit`
   descriptions tell it when one is worth the other?).
 - The Name field: `get_text` refuses it, "it has a value, not a text. Call get_value". Did it go
   straight to `get_value` or the snapshot's `value=`, or did the description keep it from trying?
-- The X button: `get_text` answers an empty string. Did the agent read that as "no text", or as
-  a failure, and retry?
+- The X button: `get_text` answers `(no text)`. Did the agent report it as an icon-only button,
+  named "Close" by its aria-label?
 - `submit`: does it try a ref it made up, and does that error tell it what to do next?

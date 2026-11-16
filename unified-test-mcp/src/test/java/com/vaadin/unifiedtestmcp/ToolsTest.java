@@ -107,8 +107,8 @@ public class ToolsTest {
     @Test
     public void getValueReadsFieldsAndCheckbox() throws IOException {
         String form = navigate(client, "form");
-        assertEquals("Alice", call(client, "get_value", ref(ref(form, "id=name"))));
-        assertEquals("", call(client, "get_value", ref(ref(form, "TextField \"Email\""))));
+        assertEquals("\"Alice\"", call(client, "get_value", ref(ref(form, "id=name"))));
+        assertEquals("\"\"", call(client, "get_value", ref(ref(form, "TextField \"Email\""))));
         assertEquals("true", call(client, "get_value", ref(ref(form, "Checkbox \"Subscribe\""))));
     }
 
@@ -129,12 +129,12 @@ public class ToolsTest {
     @Test
     public void getValueReadsSelectedItemsByTheirLabels() throws IOException {
         String choices = navigate(client, "choices");
-        assertEquals("Czechia", call(client, "get_value", ref(ref(choices, "id=country"))));
+        assertEquals("\"Czechia\"", call(client, "get_value", ref(ref(choices, "id=country"))));
         assertEquals("[\"Finland\",\"Sweden\"]",
                 call(client, "get_value", ref(ref(choices, "MultiSelectComboBox \"Visited\""))));
-        assertEquals("Czechia", call(client, "get_value", ref(ref(choices, "RadioButtonGroup \"Home\""))));
-        assertEquals("Sweden", call(client, "get_value", ref(ref(choices, "Select \"Favourite\""))));
-        assertEquals("", call(client, "get_value", ref(ref(choices, "ComboBox \"Next\""))));
+        assertEquals("\"Czechia\"", call(client, "get_value", ref(ref(choices, "RadioButtonGroup \"Home\""))));
+        assertEquals("\"Sweden\"", call(client, "get_value", ref(ref(choices, "Select \"Favourite\""))));
+        assertEquals("null", call(client, "get_value", ref(ref(choices, "ComboBox \"Next\""))));
     }
 
     @Test
@@ -146,7 +146,7 @@ public class ToolsTest {
         int subscribe = ref(form, "Checkbox \"Subscribe\"");
         assertEquals("ref " + subscribe + " is a Checkbox: it has a value, not a text. Call get_value; its label is"
                 + " its name in the snapshot.", error(client, "get_text", ref(subscribe)));
-        assertEquals("", call(client, "get_text", ref(ref(form, "id=close"))), "an icon-only Button has no text");
+        assertEquals("(no text)", call(client, "get_text", ref(ref(form, "id=close"))), "an icon-only Button");
     }
 
     @Test

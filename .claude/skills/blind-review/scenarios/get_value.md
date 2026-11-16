@@ -19,10 +19,12 @@ what's selected in each field, and which countries are picked in "Visited".
 
 - Whether it calls `get_value` at all, or reads the fields off the snapshot's `value=` and
   `checked` (both fine; did the descriptions say `get_value` is the uncut one?).
-- Email and Next: `get_value` answers an empty string. Did it read that as "empty", or as a
-  failure, and retry?
+- Email and Next: `get_value` answers `""` and `null`. Did it read those as "empty" and "nothing
+  selected" without guessing? (A plain empty answer showed as "(completed with no output)" and
+  left the agent inferring; hence JSON.)
 - Subscribe: `true`. Did it need to guess that means ticked?
-- Save and the status: `get_value` refuses them, "it has no value. Call get_text for its text".
-  Did it follow that to `get_text` in one step?
+- Save and the status: the description says they have a text, so the agent usually goes straight
+  to `get_text` and the refusal, "it has no value. Call get_text for its text", never runs; that's
+  the description working. If it does call `get_value`, did it follow the error in one step?
 - Visited: a JSON array from `get_value`, `Finland, Sweden` in the snapshot. Did either form
   trip it?

@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(libs.tinymcpserver)
+    implementation(libs.gson)
     implementation(libs.unified.test.playwright) {
         // there for an app under test running in the same JVM; ours runs elsewhere
         exclude(group = "com.vaadin", module = "vaadin-dev")

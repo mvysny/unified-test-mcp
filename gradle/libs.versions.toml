@@ -4,6 +4,8 @@ vaadin = "25.3.5"
 
 [libraries]
 tinymcpserver = "com.github.mvysny.tinymcpserver:mcp-server:1.0"
+# the version TinyMCPServer pulls in; get_value needs its own instance, without HTML escaping
+gson = "com.google.code.gson:gson:2.14.0"
 unified-test-playwright = "org.vaadin.addons:unified-test-playwright:0.1.0-alpha2"
 vaadin-core = { module = "com.vaadin:vaadin-core", version.ref = "vaadin" }
 vaadin-dev = { module = "com.vaadin:vaadin-dev", version.ref = "vaadin" }
