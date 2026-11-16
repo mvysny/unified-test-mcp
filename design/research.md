@@ -174,6 +174,8 @@ Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-butto
   Router behind a `setTimeout`, and deletes the flag in a `setTimeout` after the location changed.
   **[src, flow-server 25.3.7]**
 - The flag is Flow's internal, not an API. **[src, flow-server 25.3.7]**
+- The Unified API's Auto-Wait doesn't wait for it: parttio/unified-testing-tool#233.
+  **[verified 2026-11-16, unified-test-playwright 0.1.0-alpha2]**
 
 ## R_playwright_mcp_refs — the Playwright MCP's element refs
 
