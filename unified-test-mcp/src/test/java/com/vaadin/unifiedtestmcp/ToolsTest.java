@@ -61,7 +61,7 @@ public class ToolsTest {
     }
 
     @Test
-    public void clickChangesCaption() throws IOException {
+    public void clickChangesText() throws IOException {
         assertEquals("Click me", call(client, "get_text", id("clicker")));
         assertEquals("Clicked Button#clicker", call(client, "click", id("clicker")));
         assertEquals("Clicked 1 times", call(client, "get_text", id("clicker")));

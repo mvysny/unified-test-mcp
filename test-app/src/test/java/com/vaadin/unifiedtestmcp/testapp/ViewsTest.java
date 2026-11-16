@@ -24,7 +24,7 @@ public class ViewsTest {
     public void teardownVaadin() { MockVaadin.tearDown(); }
 
     @Test
-    public void clickCountsInCaption() {
+    public void clickCountsInText() {
         Button button = _get(Button.class, s -> s.withId("clicker"));
         assertEquals("Click me", button.getText());
         _click(button);

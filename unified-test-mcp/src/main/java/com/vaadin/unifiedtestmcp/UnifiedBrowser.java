@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * <pre>{@code
  * try (UnifiedBrowser browser = new UnifiedBrowser(
  *         Map.of("vaadin.testing.base-url", "http://localhost:8080"), Duration.ofSeconds(10))) {
- *     String caption = browser.call(page -> page.find(UnifiedButton.class).withId("clicker").single().getText());
+ *     String text = browser.call(page -> page.find(UnifiedButton.class).withId("clicker").single().getText());
  * }
  * }</pre>
  *

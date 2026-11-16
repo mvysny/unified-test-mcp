@@ -48,7 +48,7 @@ change.
 
 **Scenarios** — `.claude/skills/blind-review/scenarios/<tool>.md`, one per tool:
 - A task in a tester's words, naming what a tester sees (a view's path, a button's id or
-  caption), never a tool's name: whether it finds the right tool is half the test.
+  text), never a tool's name: whether it finds the right tool is half the test.
 - A success path and at least one failure path (a wrong id, a missing route), so the errors get
   read too.
 - What "done" looks like, so the report can say whether it got there.

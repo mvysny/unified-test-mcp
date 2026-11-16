@@ -5,7 +5,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 /**
- * One button, found by its id {@code clicker}, whose caption counts its clicks.
+ * One button, found by its id {@code clicker}, whose text counts its clicks.
  */
 @Route("")
 public class MainView extends VerticalLayout {

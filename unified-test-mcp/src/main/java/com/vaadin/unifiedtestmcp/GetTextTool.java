@@ -7,7 +7,7 @@ import com.github.mvysny.tinymcpserver.ToolFunction;
 import com.github.mvysny.tinymcpserver.ToolRequest;
 
 /**
- * {@code get_text(id)}: a Button's caption.
+ * {@code get_text(id)}: a Button's text.
  *
  * <pre>
  * get_text(id: "clicker")   → Clicked 2 times
@@ -15,7 +15,7 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
  */
 final class GetTextTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("get_text",
-            "The caption of a Vaadin Button, found by its id.",
+            "The text of a Vaadin Button, found by its id.",
             new InputSchemaBuilder().requiredString("id", "The Button's id").build());
 
     @Override

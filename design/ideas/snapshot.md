@@ -6,10 +6,37 @@ error should send the agent here ("call `snapshot` to see the components on the 
 The goal, swing-mcp style — one line per component, a handle for the ones you can act on:
 
 ```
-- VerticalLayout
-  - Button "Click me" [ref=1, id=clicker] actions: click
-  - TextField "Name" [ref=2, value="Alice", invalid] actions: set_value
+- Button "Save" [ref=3, id=save] actions: click
+- TextField "Name" [ref=4, id=name, value="Alice", invalid "Required"] actions: set_value
+- Button "Close" [ref=5, aria-label]
 ```
+
+## A line: the type, one name, the state, the actions
+
+The words are Flow's and the Unified API's, which agree; never Vaadin 8's "caption".
+
+**The name**, quoted: the one property a person tells the component apart by, chosen by type —
+- the text, for a `HasText` component (Button, Span): the Unified API's `withText`, `getText()`;
+- the label, for a `HasLabel` one (the fields, Checkbox, Tab): `withLabel`, `getLabel()`;
+- with neither, its `aria-label` (`HasAriaLabel`, an icon-only Button), then its placeholder
+  (`HasPlaceholder`), the bracket saying which (`[aria-label]`, `[placeholder]`).
+
+The tool description says where the name comes from per type, so an agent fixing a Java test
+writes `withText("Save")` for a Button and `withLabel("Name")` for a TextField.
+
+**The bracket**: the `ref`; the `id` and test id when set; the value, capped (`HasValue`); and
+only the flags that are on — disabled, invalid with its error message (`HasValidation`), checked,
+required, read-only. Helper text, and a placeholder that isn't the name, stay out until an agent
+needs them: one short line per component.
+
+**Actions: the ones that belong to the type**, from its Unified API wrapper's methods — Button
+`click`, TextField `set_value`, Checkbox `check, uncheck`. Any component can be clicked, so `click`
+on every Div would be noise; what the agent can't tell from the type is which tool fits, `select`
+on Tabs or `set_value` on a ComboBox. A layout or a Div lists none; `click` still takes any ref.
+
+**One table holds the per-type knowledge**, keyed by tag: the Flow class, the Unified API
+wrapper, which property is the name, the actions. The snapshot reads it to render a line, and a
+tool reads it to turn a ref into a wrapper; `ComponentLookup` grows into it.
 
 ## Handles: always a ref; the id shown, and used behind the ref
 
@@ -43,7 +70,7 @@ The agent never sees the difference; an app that sets ids just gets fewer stale 
 - a failed action leaves it alone too, so the agent can retry without a new snapshot (swing-mcp);
 - an element keeps its number from one snapshot to the next, since the stamp stays on the element
   (Playwright reuses refs too, but mints a new one when the accessible name changes; ours stays
-  through a caption change, the component being the same). So a ref the agent still holds after an
+  through a text change, the component being the same). So a ref the agent still holds after an
   action usually still works, and a second action sent with an old snapshot's ref doesn't fail
   just because the first replaced the map, as it does in swing-mcp.
 

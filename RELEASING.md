@@ -15,7 +15,7 @@ suffix; the steps use `1.0` → `1.1-SNAPSHOT`.
    ```bash
    claude mcp add vaadin-test -- java -jar /path/to/unified-test-mcp/build/libs/unified-test-mcp-1.0.jar
    ```
-   Start `claude` there, ask it to click the button `clicker` twice and read its caption:
+   Start `claude` there, ask it to click the button `clicker` twice and read its text:
    `Clicked 2 times`. Then `claude mcp remove vaadin-test` and stop the app.
 5. **Commit and tag:** `git commit -am "Release 1.0"`, then `git tag 1.0`.
 6. **Open the next version:** `build.gradle.kts`: `version = "1.1-SNAPSHOT"`, then

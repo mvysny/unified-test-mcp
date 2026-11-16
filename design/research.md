@@ -129,7 +129,7 @@ a claim came from, so the prose doesn't repeat it.
 Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-button` and its
 `vaadin-vertical-layout`, then real clicks.
 
-- The attribute survives a server round-trip that changes the component: on a caption change the
+- The attribute survives a server round-trip that changes the component: on a text change the
   server's response clears the button's children and splices a new text node in, and keeps the
   element, and the attribute on it. **[verified 2026-11-16, Vaadin 25.3.5]**
 - Flow doesn't send the attribute to the server: a click's UIDL request carries the event's data

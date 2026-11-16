@@ -12,7 +12,7 @@ A prototype with three tools; the component ones know Buttons only:
 - `navigate(path)` — opens the view at that path relative to the app's URL, `""` being the
   start view; a full page load.
 - `click(id)` — clicks the Button with that id; returns once the server has handled the click.
-- `get_text(id)` — the Button's caption.
+- `get_text(id)` — the Button's text.
 
 What's next is in [design/ideas/](design/ideas/).
 
@@ -40,5 +40,5 @@ http://localhost:8080. The start view has the button `clicker`; the view at `sec
 button `back`, which returns to the start view.
 
 Try it: start `test-app`, register the jar you built as above, start `claude`, and ask it to
-click the button `clicker` twice and tell you its caption, or to navigate to `second` and click
+click the button `clicker` twice and tell you its text, or to navigate to `second` and click
 `back`.

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * <pre>{@code
  * ToolCall.run(page -> page.navigate("second"));
- * String caption = ToolCall.get(page -> ComponentLookup.button(page, "clicker").getText());
+ * String text = ToolCall.get(page -> ComponentLookup.button(page, "clicker").getText());
  * }</pre>
  *
  * Call it from a tool's {@code call} only: the session is bound to that thread. A timed-out lookup throws
