@@ -16,6 +16,10 @@ The Unified API cannot list what's on a page: every lookup starts from a type
 (`R_unified_no_enumeration`). So the snapshot comes from somewhere else, and the actions should
 still go through the Unified API (auto-wait, component semantics).
 
+Seen with the Playwright MCP on `test-app` in dev mode: besides the one `button "Click me"`, its
+ARIA snapshot shows the Copilot dev toolbar — a `radiogroup "Mode"` with four radios and a
+`button "DevTools"` — noise the Unified API's `APP_CONTENT` rule already filters out.
+
 ## A bridge: JavaScript snapshot, attribute refs
 
 1. Through the escape hatch (`page.unwrap(Page.class).evaluate(...)`) one script walks the

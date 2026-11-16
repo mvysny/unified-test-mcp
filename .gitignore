@@ -5,6 +5,7 @@
 build/
 .gradle/
 target/
+**/src/main/frontend/generated/
 
 # IDE metadata
 .idea/

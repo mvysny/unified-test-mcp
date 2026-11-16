@@ -5,27 +5,10 @@ Playwright backend outside JUnit, opens a running Vaadin app, clicks a Button fo
 and reads its text back. The snapshot is on hold (`snapshot.md` beside this file); the agent is
 told the id, which is enough for a prototype.
 
-## The test app
-
-A Vaadin Boot app (`vaadin-boot-app` skill), no Spring, one view:
-
-```java
-@Route("")
-public class MainView extends VerticalLayout {
-    private int clicks;
-    public MainView() {
-        Button button = new Button("Click me");
-        button.setId("clicker");
-        button.addClickListener(e -> button.setText("Clicked " + ++clicks + " times"));
-        add(button);
-    }
-}
-```
-
-Vaadin 25.3.x, the line the Unified API is built and tested against
-(`R_unified_playwright_packaging`); Dramafinder reads Vaadin 25's DOM.
-
 ## The tools
+
+Against `test-app`'s `MainView`: one Button, id `clicker`, caption "Click me" → "Clicked 1 times".
+
 
 ```
 click(id: string)      → "Clicked Button#clicker"
@@ -73,10 +56,6 @@ The only entry point is the JUnit extension, and the session class is package-pr
 I'd do A for the spike, in one class, and open an issue/PR for B with the spike as the use
 case; when B lands, A is deleted.
 
-Dependencies: `unified-test-playwright` (drags `vaadin-dev` in — exclude it, our server runs no
-app), `vaadin-core` (the API needs `Button.class`; nothing of it runs), `junit-jupiter-api`
-(comes transitively, needed by A's proxy), TinyMCPServer.
-
 ## Process and transport
 
 `Q_process_model`: the server runs **outside** the app, as its own JVM, pointed at a URL —
@@ -84,9 +63,8 @@ unlike swing-mcp, which runs inside the Swing app. The app needs no change, and 
 needs its own process anyway. (Inside the app, as a `-javaagent`, would later allow the
 Browserless backend too — no browser at all. Not now.)
 
-`Q_transport`: stdio, spawned by Claude Code —
-`claude mcp add vaadin-test -- <install>/bin/unified-test-mcp --url http://localhost:8080`.
-The browser lives as long as the MCP session; it opens the URL lazily on the first tool call
+`Q_transport`: stdio, spawned by Claude Code (`Main` already serves stdio, no tools yet);
+`--url http://localhost:8080` names the app. The browser lives as long as the MCP session; it opens the URL lazily on the first tool call
 (so a not-yet-running app doesn't fail the server's start). HTTP transport later, if a
 long-lived browser across Claude restarts turns out useful.
 
@@ -97,16 +75,13 @@ is the obvious third tool once there's a second view; `page.navigate(String path
 Playwright setup); `--browser-executable /snap/bin/chromium` passes through to
 `vaadin.testing.playwright.executable`. `--headed` for watching it work.
 
-## Layout and build
+## The system test
 
-`Q_build_tool`: Gradle, like swing-mcp and TinyMCPServer (the Unified API is Maven, but we only
-consume its jars). Two subprojects:
-
-- `unified-test-mcp` — the server: `main()`, the tools, the bootstrap.
-- `test-app` — the Vaadin Boot app above, plus the system test: boot `test-app` in the test
-  JVM (Vaadin Boot on a free port), start the MCP server's tools against it, call `get_text`,
-  `click`, `get_text`, assert `"Click me"` → `"Clicked 1 times"`. Through TinyMCPServer's
-  client or calling the tool handlers directly — the latter is enough at first.
+`Q_system_test_home`: boot `test-app` in the test JVM (Vaadin Boot on a free port), open the
+tools against it, call `get_text`, `click`, `get_text`, assert `"Click me"` → `"Clicked 1 times"`
+— by calling the tool handlers directly at first, TinyMCPServer's client later. It lives in
+`unified-test-mcp`'s tests with `testImplementation(project(":test-app"))`; to check that Vaadin
+Boot finds the app's routes and frontend from another module's test classpath.
 
 ## To verify in the spike
 

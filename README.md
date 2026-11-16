@@ -7,5 +7,18 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 
 ## Status
 
-Design only, no code yet. The first prototype (click a Button by its id, read its text) is
-sketched in [design/ideas/first-tools.md](design/ideas/first-tools.md).
+Project structure only: the server starts but offers no tools yet. The first prototype (click
+a Button by its id, read its text) is sketched in
+[design/ideas/first-tools.md](design/ideas/first-tools.md).
+
+## Building
+
+A JDK 21 or newer. `./gradlew` builds everything and runs the tests.
+
+- `test-app` — a one-button Vaadin app to test against: `./gradlew :test-app:run`, then
+  http://localhost:8080.
+- `unified-test-mcp` — the MCP server: `./gradlew :unified-test-mcp:installDist`, then register
+  it with Claude Code:
+  ```bash
+  claude mcp add vaadin-test -- "$PWD/unified-test-mcp/build/install/unified-test-mcp/bin/unified-test-mcp"
+  ```

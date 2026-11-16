@@ -30,14 +30,21 @@ Every fact lives in exactly one of these; the others link to it.
 
 - The MCP protocol and its transports are [TinyMCPServer](https://github.com/mvysny/tinymcpserver), a separate product this depends on as `com.github.mvysny.tinymcpserver:mcp-server`.
 - The Vaadin component knowledge is the [Unified API](https://github.com/parttio/unified-testing-tool), depended on as `org.vaadin.addons:unified-test-playwright`. `unified-testing-tool/` is a gitignored clone of its repository, there to read its source; a change to it goes upstream as a PR.
+- `unified-test-mcp` — the MCP server itself: `main()`, the tools, and opening a Unified API page outside JUnit.
+- `test-app` — a one-view Vaadin Boot app the tools are tried and tested against.
 
 ## Conventions
 
-- **Java 21**, the Unified API's own floor (`R_unified_playwright_packaging`).
+- **Java 21**, the Unified API's own floor (`R_unified_playwright_packaging`); `--release 21`, not a toolchain, so any installed JDK 21+ builds it and none is downloaded.
+- **Gradle, Kotlin DSL; every version in `gradle/libs.versions.toml`.** Vaadin stays on the line the Unified API is built against.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.
 
 ## Commands
 
+- `./gradlew` — clean, build, all tests (the default tasks); needs a JDK 21 or newer.
+- `./gradlew :test-app:test --tests "com.vaadin.unifiedtestmcp.testapp.MainViewTest"` — one class; append `.methodName` for one method.
+- `./gradlew :test-app:run` — the test app in dev mode on http://localhost:8080.
+- `./gradlew :unified-test-mcp:installDist` — the server's launcher, `unified-test-mcp/build/install/unified-test-mcp/bin/unified-test-mcp`, speaking MCP on stdio.
 - `design/verify_design_tripwires.sh` — the doc layer.
 
 ## Skills this project follows
