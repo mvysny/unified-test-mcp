@@ -39,22 +39,23 @@ Every fact lives in exactly one of these; the others link to it.
 - The MCP protocol and its transports are [TinyMCPServer](https://github.com/mvysny/tinymcpserver), a separate product this depends on as `com.github.mvysny.tinymcpserver:mcp-server`.
 - The Vaadin component knowledge is the [Unified API](https://github.com/parttio/unified-testing-tool), depended on as `org.vaadin.addons:unified-test-playwright`. `unified-testing-tool/` is a gitignored clone of its repository, there to read its source; a change to it goes upstream as a PR.
 - `unified-test-mcp` — the MCP server itself: `main()`, the tools, and opening a Unified API page outside JUnit.
-- `test-app` — a one-view Vaadin Boot app the tools are tried and tested against.
+- `test-app` — a two-view Vaadin Boot app the tools are tried and tested against.
 
 ## Conventions
 
 - **Java 21**, the Unified API's own floor (`R_unified_playwright_packaging`); `--release 21`, not a toolchain, so any installed JDK 21+ builds it and none is downloaded.
 - **Gradle, Kotlin DSL; every version in `gradle/libs.versions.toml`.** Vaadin stays on the line the Unified API is built against.
-- **Tests: JUnit; a tool is tested end to end** — `test-app` booted in the test JVM, a real browser, the tool called over MCP's HTTP transport (`ButtonToolsTest`). No mocks of the Unified API or Playwright.
+- **Tests: JUnit; a tool is tested end to end** — `test-app` booted in the test JVM, a real browser, the tool called over MCP's HTTP transport (`ToolsTest`). No mocks of the Unified API or Playwright.
 - **Diagnostics go to `java.util.logging`**, never `System.out`: on stdio, stdout is the protocol.
 - **A tool failure is an `MCPErrorResponseException`** whose message says what was looked for; the Unified API's own message does that already.
 - **Released as one jar on GitHub Releases, never Maven Central**, every dependency and every OS's Playwright driver inside; steps in `RELEASING.md`, why in `D_single_jar_release`.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.
+- **Designing a tool, read swing-mcp's nearest one first** — its description and input schema in `swing-mcp/src/main/java/com/vaadin/swingmcp/tools/SwingTools.java`, its errors in `mcp/tools/Swing*Tool.java`: polished wording and tool-design tips. Inspiration, not a port: keep what fits a browser and the Unified API.
 
 ## Commands
 
 - `./gradlew` — clean, build, all tests (the default tasks); needs a JDK 21 or newer.
-- `./gradlew :unified-test-mcp:test --tests "com.vaadin.unifiedtestmcp.ButtonToolsTest"` — one class; append `.methodName` for one method. The first run downloads Playwright's browsers (`R_playwright_thread_safety`).
+- `./gradlew :unified-test-mcp:test --tests "com.vaadin.unifiedtestmcp.ToolsTest"` — one class; append `.methodName` for one method. The first run downloads Playwright's browsers (`R_playwright_thread_safety`).
 - `./gradlew :test-app:run` — the test app in dev mode on http://localhost:8080.
 - `./gradlew :unified-test-mcp:shadowJar` — the server's jar, `unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`; `java -jar` it to speak MCP on stdio.
 - `design/verify_design_tripwires.sh` — the doc layer.

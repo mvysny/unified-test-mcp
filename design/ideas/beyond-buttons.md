@@ -1,4 +1,4 @@
-# Beyond Buttons: more component types, navigation, faster failures
+# Beyond Buttons: more component types, faster failures
 
 What the click / get_text spike left open.
 
@@ -14,11 +14,8 @@ order I'd take them:
 thing is its value, not its text — later that's `get_value`/`set_value`, or a per-type `read`
 that returns what matters for that type.
 
-`Q_navigation`: with only `--url` the browser sits on the start page. A `navigate(path)` tool is
-the obvious next tool once there's a second view; `UnifiedPage.navigate(String path)` exists.
-
 `Q_timeout`: a missing id costs the full 10 s lookup timeout before the tool fails — slow for an
-agent probing, and for `ButtonToolsTest.unknownIdIsToolError`. A `--timeout` option, or a
+agent probing, and for `ToolsTest.unknownIdIsToolError`. A `--timeout` option, or a
 shorter timeout for reads than for actions (a read of something not there yet is rarer than an
 action on something still loading)?
 

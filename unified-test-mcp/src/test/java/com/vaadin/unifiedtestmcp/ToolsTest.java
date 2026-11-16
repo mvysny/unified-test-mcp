@@ -7,6 +7,7 @@ import com.github.mvysny.tinymcpserver.client.TinyMCPClient;
 import com.github.mvysny.vaadinboot.VaadinBoot;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * The tools end to end: test-app in this JVM, a real browser on it, the tools called over MCP's HTTP transport.
  */
-public class ButtonToolsTest {
+public class ToolsTest {
     private static VaadinBoot app;
     private static UnifiedBrowser browser;
     private static HttpMCPServer server;
@@ -56,32 +57,57 @@ public class ButtonToolsTest {
         }
     }
 
+    @BeforeEach
+    public void startOnMainView() throws IOException {
+        call("navigate", Map.of("path", ""));
+    }
+
     @Test
     public void clickChangesCaption() throws IOException {
-        assertEquals("Click me", call("get_text", "clicker"));
-        assertEquals("Clicked Button#clicker", call("click", "clicker"));
-        assertEquals("Clicked 1 times", call("get_text", "clicker"));
-        call("click", "clicker");
-        assertEquals("Clicked 2 times", call("get_text", "clicker"));
+        assertEquals("Click me", call("get_text", id("clicker")));
+        assertEquals("Clicked Button#clicker", call("click", id("clicker")));
+        assertEquals("Clicked 1 times", call("get_text", id("clicker")));
+        call("click", id("clicker"));
+        assertEquals("Clicked 2 times", call("get_text", id("clicker")));
+    }
+
+    @Test
+    public void navigateOpensView() throws IOException {
+        assertEquals("Navigated to /second", call("navigate", Map.of("path", "second")));
+        assertEquals("Back to main", call("get_text", id("back")));
+        call("click", id("back"));
+        assertEquals("Click me", call("get_text", id("clicker")));
+    }
+
+    @Test
+    public void navigateStartsViewAfresh() throws IOException {
+        call("click", id("clicker"));
+        assertEquals("Clicked 1 times", call("get_text", id("clicker")));
+        call("navigate", Map.of("path", "/"));
+        assertEquals("Click me", call("get_text", id("clicker")));
     }
 
     @Test
     public void unknownIdIsToolError() throws IOException {
-        MCPProtocol.CallToolResult result = client.callTool(request("get_text", "no-such-id"));
+        MCPProtocol.CallToolResult result = client.callTool(request("get_text", id("no-such-id")));
         assertEquals(Boolean.TRUE, result.getIsError());
         String message = result.getContent().get(0).getText();
         assertTrue(message.startsWith("No component matches "), message);
     }
 
-    private static String call(String tool, String id) throws IOException {
-        MCPProtocol.CallToolResult result = client.callTool(request(tool, id));
+    private static String call(String tool, Map<String, Object> arguments) throws IOException {
+        MCPProtocol.CallToolResult result = client.callTool(request(tool, arguments));
         String text = result.getContent().get(0).getText();
         assertTrue(result.getIsError() == null || !result.getIsError(), text);
         return text;
     }
 
-    private static ToolRequest request(String tool, String id) {
-        return new ToolRequest(tool, Map.<String, Object>of("id", id), Map.of(), null);
+    private static Map<String, Object> id(String id) {
+        return Map.of("id", id);
+    }
+
+    private static ToolRequest request(String tool, Map<String, Object> arguments) {
+        return new ToolRequest(tool, arguments, Map.of(), null);
     }
 
     private static int freePort() throws IOException {

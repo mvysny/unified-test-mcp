@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The MCP tools over a {@link UnifiedBrowser}. For now they know Buttons only, found by id.
+ * The MCP tools over a {@link UnifiedBrowser}. For now the component tools know Buttons only, found by id.
  */
 public final class UnifiedTestMCP {
     private static final Logger LOG = Logger.getLogger(UnifiedTestMCP.class.getName());
@@ -22,6 +22,8 @@ public final class UnifiedTestMCP {
     /**
      * A handler with the tools registered, ready for either transport:
      * <ul>
+     *   <li>{@code navigate(path)} — loads the view at {@code path} relative to the app's URL, {@code "orders?id=3"};
+     *       returns once the view is shown and the server is idle</li>
      *   <li>{@code click(id)} — clicks the Button, returns once the server has handled the click</li>
      *   <li>{@code get_text(id)} — the Button's caption</li>
      * </ul>
@@ -29,6 +31,20 @@ public final class UnifiedTestMCP {
     public static MCPHandler createHandler(UnifiedBrowser browser, String version) {
         MCPHandler handler = new MCPHandler(new MCPProtocol.Implementation("unified-test-mcp", version),
                 "Drives a running Vaadin app in a real browser. The browser opens the app on the first tool call.");
+
+        handler.addTool("navigate",
+                "Open a view of the Vaadin app by its path relative to the app's URL, as a user typing it into the "
+                        + "address bar would: \"orders\", \"orders/3\", \"orders?status=open\"; \"\" is the start view. "
+                        + "A full page load: the view starts afresh. Waits until the server is idle.",
+                new InputSchemaBuilder().requiredString("path", "The view's path, without the app's URL").build(),
+                request -> {
+                    String path = request.arguments().getString("path");
+                    call(browser, page -> {
+                        page.navigate(path);
+                        return null;
+                    });
+                    return MCPProtocol.Content.text("Navigated to /" + (path.startsWith("/") ? path.substring(1) : path));
+                });
 
         handler.addTool("click",
                 "Click a Vaadin Button, found by its id. Waits until the button is visible and enabled, clicks it, "

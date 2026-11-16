@@ -7,8 +7,10 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 
 ## Status
 
-A prototype with two tools, Buttons only:
+A prototype with three tools; the component ones know Buttons only:
 
+- `navigate(path)` — opens the view at that path relative to the app's URL, `""` being the
+  start view; a full page load.
 - `click(id)` — clicks the Button with that id; returns once the server has handled the click.
 - `get_text(id)` — the Button's caption.
 
@@ -33,8 +35,10 @@ start the app first, or at least before the first call.
 A JDK 21 or newer. `./gradlew` builds everything and runs the tests; the server's jar lands in
 `unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`.
 
-`test-app` is a one-button Vaadin app to test against: `./gradlew :test-app:run`, then
-http://localhost:8080.
+`test-app` is a two-view Vaadin app to test against: `./gradlew :test-app:run`, then
+http://localhost:8080. The start view has the button `clicker`; the view at `second` has the
+button `back`, which returns to the start view.
 
 Try it: start `test-app`, register the jar you built as above, start `claude`, and ask it to
-click the button `clicker` twice and tell you its caption.
+click the button `clicker` twice and tell you its caption, or to navigate to `second` and click
+`back`.
