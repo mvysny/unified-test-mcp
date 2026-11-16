@@ -41,7 +41,12 @@ final class Snapshot {
     private static final int VALUE_CAP = 80;
 
     private static final String SCRIPT = """
-            ({ next, layouts, skipped, fields, attribute }) => {
+            async ({ next, layouts, skipped, fields, attribute }) => {
+              // A server-side navigation changes the URL after the round-trip that an action waits for
+              // (R_flow_navigation_url): with React, once Flow clears its navigation flag; without, in a setTimeout.
+              const tick = ms => new Promise(resolve => setTimeout(resolve, ms));
+              for (let waited = 0; window.Vaadin?.Flow?.navigation && waited < 2000; waited += 10) await tick(10);
+              await tick(0);
               const LAYOUTS = new Set(layouts), SKIPPED = new Set(skipped), FIELDS = new Set(fields);
               // the light-DOM children a Vaadin component renders for itself: its input, label, messages
               const OWN_PARTS = new Set(['input', 'textarea', 'label', 'error-message', 'helper', 'tooltip']);

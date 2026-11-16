@@ -163,6 +163,18 @@ Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-butto
   Dramafinder's query, as it does for the RadioButtonGroup and the MultiSelectComboBox.
   **[verified 2026-11-16, unified-test-playwright 0.1.0-alpha2]**
 
+## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
+
+- `UI.navigate` from a listener updates the address bar only after the response that carries the
+  new view has been handled, so a wait for the server to be idle returns with the new view on
+  the page and the old URL in `location.href`. **[verified 2026-11-16, Vaadin 25.3.5]**
+- Without React, `History.pushState` sends `setTimeout(() => window.history.pushState(…))`.
+  With React (`flow-react` on the classpath, Vaadin 25's default), it dispatches `vaadin-navigate`;
+  `Flow.tsx` sets `window.Vaadin.Flow.navigation = true`, queues the navigation for React
+  Router behind a `setTimeout`, and deletes the flag in a `setTimeout` after the location changed.
+  **[src, flow-server 25.3.7]**
+- The flag is Flow's internal, not an API. **[src, flow-server 25.3.7]**
+
 ## R_playwright_mcp_refs — the Playwright MCP's element refs
 
 Read in playwright-core 1.66.0-alpha-2026-11-09 under `@playwright/mcp` 0.0.85.
