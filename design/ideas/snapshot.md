@@ -7,36 +7,57 @@ The goal, swing-mcp style — one line per component, a handle for the ones you 
 
 ```
 - VerticalLayout
-  - Button "Click me" [id=clicker] actions: click
+  - Button "Click me" [ref=1, id=clicker] actions: click
   - TextField "Name" [ref=2, value="Alice", invalid] actions: set_value
 ```
 
-## Handles: the id first, a stamped ref where there is none
+## Handles: always a ref; the id shown, and used behind the ref
 
-**Ids are the handle.** TestBench, the Unified API and Karibu-Testing all recommend that an app
-set ids on what tests touch; so does this server. A component with an id unique on the page is
-named by it. **A ref is the fallback**: a component with no id, or one whose id isn't unique,
-gets a ref from the snapshot.
+**Every tool names a component by a `ref`, minted by the snapshot for every component, id or
+not.** One kind of handle: every tool has the same schema, as in swing-mcp. An id is not
+something a person sees, and an agent's session is transient, not a recorded test, so nothing
+needs ids as handles.
 
-**The ref is a stamped attribute, `data-mcp-ref="7"`, not a Java handle** (`R_unified_lazy_elements`).
-A Unified API wrapper holds its lookup, not an element, so it never goes stale like TestBench's
-`ButtonElement` did; but for a component with no id, the only lookup left is positional
-(`all().get(i)`), which silently names a *different* component once one is added before it. The
-stamp pins the actual DOM node: `page.find(<wrapper>).withAttribute("data-mcp-ref", "7").single()`.
-When Flow re-creates the element, the attribute goes with the old node, the lookup finds nothing,
-and the tool says "stale ref, call `snapshot` again" instead of clicking the wrong button. A JS
-property would hide the stamp from the DOM, but the Unified API's filters can't query one.
+**The snapshot still shows the id** (`Button "Save" [ref=7, id=save]`): TestBench, the Unified API
+and Karibu-Testing all recommend that an app set ids on what tests touch, and so do we. An agent
+fixing a failing Java test reads the id there and writes it into the test.
 
-`Q_handle_parameter`: one parameter that takes either (`"clicker"` or `"ref=7"`), or `id` and
-`ref` as two optional parameters, exactly one given? swing-mcp has `ref` only.
+**How a ref resolves is ours, per session: a map ref → lookup** (`R_unified_lazy_elements`):
+- a component with an id unique on the page resolves by it, `withId("save")`: a wrapper re-runs
+  its lookup on every call, so Flow re-creating the element doesn't break the ref;
+- one without resolves by a stamped attribute, `data-mcp-ref="7"`:
+  `page.find(<wrapper>).withAttribute("data-mcp-ref", "7").single()`. Its only other lookup would
+  be positional (`all().get(i)`), which silently names a *different* component once one is added
+  before it; the stamp pins the actual DOM node. When Flow re-creates the element, the stamp goes
+  with the old node, the lookup finds nothing, and the tool says "stale ref, call `snapshot`
+  again" instead of clicking the wrong button. A JS property would hide the stamp from the DOM,
+  but the Unified API's filters can't query one.
 
-`Q_ref_lifetime`: swing-mcp clears refs after every successful mutation. Here a stamp survives
-until Flow replaces the element, and a stale one fails cleanly — so keep refs across actions, and
-only re-stamp on the next snapshot?
+The agent never sees the difference; an app that sets ids just gets fewer stale refs.
 
-`Q_stamp_safety`: Flow leaves an attribute it didn't set alone (to verify): it neither syncs it
-to the server nor removes it on the next round-trip. An app's own CSS matching `[data-mcp-ref]`
-is not a realistic worry.
+**Ref lifetime: a ref lives as long as it is in the latest snapshot.** From swing-mcp (its
+`AbstractSwingTool` and `SwingToolContext`) and the Playwright MCP (`R_playwright_mcp_refs`):
+- every snapshot — the `snapshot` tool's, or the one an action answers with — replaces the
+  session's ref map with the refs it shows;
+- a read (`get_text`) leaves the map alone, so refs hold across reads;
+- a failed action leaves it alone too, so the agent can retry without a new snapshot (swing-mcp);
+- an element keeps its number from one snapshot to the next, since the stamp stays on the element
+  (Playwright reuses refs too, but mints a new one when the accessible name changes; ours stays
+  through a caption change, the component being the same). So a ref the agent still holds after an
+  action usually still works, and a second action sent with an old snapshot's ref doesn't fail
+  just because the first replaced the map, as it does in swing-mcp.
+
+Errors, each naming the next step:
+- no snapshot yet: "no refs yet: call `snapshot`";
+- a ref not in the latest snapshot: "ref 7 isn't in the latest snapshot: refs 1–12 are; call
+  `snapshot`" (swing-mcp lists the valid refs too);
+- a ref in the map whose component is gone — removed, or re-created by Flow: "ref 7: the
+  component is gone from the page, re-created or removed; call `snapshot`".
+
+**Stamping is safe** (`R_flow_foreign_attributes`): Flow keeps an attribute it didn't set through
+round-trips that change the component, and never sends it to the server; a navigation's new
+view starts unstamped, so an old ref finds nothing rather than a new node. Still to check once
+the code exists: `withAttribute` through Dramafinder's Button query finds the stamped button.
 
 ## The gap
 
@@ -55,22 +76,30 @@ ARIA snapshot shows the Copilot dev toolbar — a `radiogroup "Mode"` with four 
    elements generally), skips the inside of Vaadin's own shadow roots and the dev tools (the
    `APP_CONTENT` rule the Unified API already uses), reads per element: tag, label / text /
    accessible name, value, disabled / invalid / checked, the id, and stamps `data-mcp-ref="N"`
-   on what has no unique id.
+   on every component — those with an id too, so a node keeps its number from one snapshot to
+   the next.
    One round trip for the whole page.
 2. An action takes a ref and resolves it with the Unified API:
    `page.find(<wrapper for the tag>).withAttribute("data-mcp-ref", "N").single()`.
 3. A ref that resolves to nothing — Flow re-created the element — is a "stale, snapshot again"
    error.
 
-`Q_component_identity`: name a component by its Flow class (`Button`, `TextField`) — what a Java
-developer writes — mapped from the tag through the wrappers' `@UnifiedComponent`; an unknown
-custom element shows its tag (`<my-rating>`).
+**Component identity: the Flow class.** A line names the component as a Java developer writes it
+(`Button`, `TextField`), not its tag (`vaadin-button`). The table comes from the Unified API's
+wrappers: each `@UnifiedComponent(Button.class)` names its Flow class, whose `@Tag` is the tag;
+the same table gives the wrapper an action tool looks the component up with
+(`page.find(UnifiedButton.class)`). There's no registry of the wrappers, so we list them (or
+scan the `component` package). A custom element with no wrapper shows its tag: `<my-rating>`.
 
-`Q_pruning`: layouts without a name are transparent (children promoted), as swing-mcp does with
-unnamed `JPanel`s? Or does the agent need to see `HorizontalLayout` to reason about the screen?
+**Pruning, until it bites: a layout without an id is transparent**, its children promoted a
+level, as swing-mcp does with unnamed `JPanel`s. A layout with an id stays, since the app named it.
+Revisit when an agent can't tell which of two identical forms it is looking at.
 
-`Q_after_action`: should `click` return the fresh snapshot (Playwright MCP does) to save a
-round trip?
+**An action returns the fresh snapshot**, as the Playwright MCP does: `click`, `navigate` and every
+later tool that changes the page answer with their echo line, then the snapshot taken after the
+server round-trip. The agent sees what its action did without a second call, and a ref it reads
+there is current. A read (`get_text`) returns only what it read. The size stays within the
+token promise: one line per component on the screen.
 
 Alternative rejected for now: snapshot by asking the Unified API for `all()` of every wrapper
 type — a flat list, no tree, misses components without a wrapper, one browser round trip per

@@ -123,3 +123,29 @@ a claim came from, so the prose doesn't repeat it.
   `unified-test-mcp`'s tests — `VaadinBoot.stop()` logs `stop() failed:
   java.nio.file.ClosedFileSystemException` from Jetty's `WebInfConfiguration.deconfigure`; the
   server has stopped anyway. **[verified 2026-11-16, Vaadin Boot 13.7]**
+
+## R_flow_foreign_attributes — Flow and an attribute the browser sets on a component's element
+
+Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-button` and its
+`vaadin-vertical-layout`, then real clicks.
+
+- The attribute survives a server round-trip that changes the component: on a caption change the
+  server's response clears the button's children and splices a new text node in, and keeps the
+  element, and the attribute on it. **[verified 2026-11-16, Vaadin 25.3.5]**
+- Flow doesn't send the attribute to the server: a click's UIDL request carries the event's data
+  only. **[verified 2026-11-16, Vaadin 25.3.5]**
+- Navigating to another view and back, by `UI.navigate` from a click, builds new elements: no
+  attribute survives anywhere on the page. **[verified 2026-11-16, Vaadin 25.3.5]**
+
+## R_playwright_mcp_refs — the Playwright MCP's element refs
+
+Read in playwright-core 1.66.0-alpha-2026-11-09 under `@playwright/mcp` 0.0.85.
+
+- A ref, `e<N>` from a page-wide counter, is kept as a JavaScript property on the element
+  (`_ariaRef`), with the role and accessible name it was minted for. A later snapshot gives the
+  element the same ref while its role and name are unchanged, and a new number otherwise. **[src]**
+- A ref resolves against the latest snapshot only, and only while its element is still in the
+  document; otherwise the tool fails with "Ref e7 not found in the current page snapshot. Try
+  capturing new snapshot." **[src]**
+- An action tool answers with a snapshot taken after the action, the whole page unless the
+  server is configured otherwise (`snapshot.mode`). **[src]**
