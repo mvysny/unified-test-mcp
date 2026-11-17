@@ -79,12 +79,28 @@ public class ToolsTest {
                 - Checkbox "Subscribe" [ref=N, helper="One email a month: what changed in the app, what is coming \
                 next, and how to get the most out of it. Unsubscribe at any t…", checked]
                 - Button "Save" [ref=N] actions: click
-                - Button "Close" [ref=N, id=close, aria-label, tooltip="Close without saving"] actions: click
+                - Button "Close" [ref=N, id=close, aria-label, icon="vaadin:close", tooltip="Close without saving"] \
+                actions: click
                 - Button "Delete" [ref=N, disabled] actions: click
                 - Span "Not saved" [ref=N]
                 """, masked(navigate(client, "form")));
         assertEquals(masked(call(client, "snapshot", Map.of())), masked(navigate(client, "form")).substring(
                 "Navigated to APP/form\n\n".length()));
+    }
+
+    @Test
+    public void snapshotShowsTheIconInFrontOfTheName() throws IOException {
+        assertEquals("""
+                URL: APP/icons
+                - Button "Search" [ref=N, icon="vaadin:search"] actions: click
+                - Button "Next" [ref=N] actions: click
+                - Button "Dismiss" [ref=N, aria-label, icon="lumo:cross"] actions: click
+                - TextField "Filter" [ref=N, icon="vaadin:search", value=""]
+                - Button "Home" [ref=N, icon="home"] actions: click
+                - Button "Profile" [ref=N, icon="fa-solid fa-user"] actions: click
+                - Button "Star" [ref=N] actions: click
+                - Button "Logo" [ref=N] actions: click
+                """, masked(snapshotOf("icons")));
     }
 
     @Test

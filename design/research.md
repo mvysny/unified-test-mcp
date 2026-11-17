@@ -208,6 +208,19 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   `BrowserQueries.ITEM_NAME`, a tab's or menu item's name, leaves out children in a named slot.
   **[src, unified-testing-tool `76ab776`]**
 
+## R_vaadin_icons — a Vaadin component's icon in the browser
+
+- An `Icon` is a `<vaadin-icon>` whose `icon` attribute is its set and name, `vaadin:close`;
+  `LumoIcon.CROSS.create()`'s is `lumo:cross`. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A `FontIcon` is a `<vaadin-icon>` too, its name, if any, in the `ligature` property, `home`, or
+  the `iconClass` property, `fa-solid fa-user`; one made by `setCharCode` has neither, `char`
+  instead. An `SvgIcon` has only `src`. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A Button with text puts its icon in the `prefix` slot, or `suffix` after `setIconAfterText`;
+  an icon-only Button's icon has no `slot` attribute (`Button.updateIconSlot`).
+  **[src, vaadin-button-flow 25.3.5]**
+- A field's `setPrefixComponent` puts the icon in the `prefix` slot.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+
 ## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
 
 - `UI.navigate` from a listener updates the address bar only after the response that carries the

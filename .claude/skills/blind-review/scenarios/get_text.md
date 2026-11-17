@@ -23,5 +23,6 @@ does the button with the X icon say? Last, what does the button with id `submit`
   straight to `get_value` or the snapshot's `value=`, or did the description keep it from trying?
 - The X button: `get_text` answers `(no text)`. Did the agent report it as an icon-only button,
   named "Close" by its aria-label? It has a tooltip, "Close without saving", shown as `tooltip=`:
-  did the agent report that as the button's text?
+  did the agent report that as the button's text? Its line shows `icon="vaadin:close"`: did the
+  agent use it to find "the button with the X icon", or guess?
 - `submit`: does it try a ref it made up, and does that error tell it what to do next?

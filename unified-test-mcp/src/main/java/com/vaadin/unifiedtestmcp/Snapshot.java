@@ -19,16 +19,22 @@ import java.util.Map;
  * - TextField "Email" [ref=2, value="", helper="We never share it", required]
  * - Checkbox "Subscribe" [ref=3, checked]
  * - Button "Save" [ref=4] actions: click
- * - Button "Close" [ref=5, id=close, aria-label] actions: click
- * &lt;type&gt;  &lt;name&gt;  [ref, id, value, the hints, the flags that are on]  &lt;the type's own tools&gt;
+ * - Button "Close" [ref=5, id=close, aria-label, icon="vaadin:close"] actions: click
+ * &lt;type&gt;  &lt;name&gt;  [ref, id, icon, value, the hints, the flags that are on]  &lt;the type's own tools&gt;
  * </pre>
  *
  * The name is what {@link ComponentTypes} says names that type: a Button's text, a field's label; with neither,
  * the {@code aria-label}, then the placeholder, the bracket saying which. A layout without an id, and plain HTML
  * with neither an id nor text of its own, stand aside: their children take their place. A hidden component isn't
- * shown, nor anything inside it. Every field has a {@code value=}, in {@code get_value}'s notation, {@link Json}:
- * {@code ""} empty, {@code null} nothing selected; a component without one isn't a field. A Slider's has {@code min=} and {@code max=} beside it. A Checkbox's
- * {@code checked} says its value; a CustomField has none, the fields inside it being shown with theirs.
+ * shown, nor anything inside it.
+ *
+ * {@code icon=} names the icon in front of the name, in the {@code prefix} slot or an icon-only Button's, as the app
+ * gave it: {@code "vaadin:close"}, {@code "lumo:cross"}, a FontIcon's ligature or classes. A hint for the agent to
+ * find "the X button" by, so an icon without a name, an SvgIcon, isn't shown (R_vaadin_icons).
+ *
+ * Every field has a {@code value=}, in {@code get_value}'s notation, {@link Json}: {@code ""} empty, {@code null}
+ * nothing selected; a component without one isn't a field. A Slider's has {@code min=} and {@code max=} beside it.
+ * A Checkbox's {@code checked} says its value; a CustomField has none, the fields inside it being shown with theirs.
  *
  * The hints, each cut at {@value #HINT_CAP} characters: {@code helper=}, the text below a field, which
  * {@code get_helper} reads uncut; {@code tooltip=}, which {@code get_tooltip} does.
@@ -66,6 +72,11 @@ final class Snapshot {
               // what the user sees selected, as Dramafinder reads it: the value property is Flow's key for the item
               const itemLabel = (e, i) => typeof i === 'string' ? i : String(i[e.itemLabelPath || 'label'] ?? '');
               const textOf = e => (e?.textContent || '').trim();
+              const iconOf = e => {
+                const icon = e.querySelector(':scope > vaadin-icon[slot=prefix]')
+                    ?? (e.localName === 'vaadin-button' ? e.querySelector(':scope > vaadin-icon:not([slot])') : null);
+                return icon ? str(icon.getAttribute('icon')) ?? str(icon.ligature) ?? str(icon.iconClass) : null;
+              };
               const valueOf = e => {
                 switch (e.localName) {
                   case 'vaadin-combo-box':
@@ -115,6 +126,7 @@ final class Snapshot {
                   label: custom ? str(e.label) : null,
                   ariaLabel: str(e.getAttribute('aria-label')),
                   placeholder: custom ? str(e.placeholder) : null,
+                  icon: custom ? iconOf(e) : null,
                   value: custom ? valueOf(e) : null,
                   min: SLIDERS.has(tag) ? e.min ?? null : null,
                   max: SLIDERS.has(tag) ? e.max ?? null : null,
@@ -197,6 +209,9 @@ final class Snapshot {
                 if (name.from() != null) {
                     bracket.add(name.from());
                 }
+            }
+            if (node.get("icon") != null) {
+                bracket.add("icon=" + quote((String) node.get("icon")));
             }
             String value = value(type.holds(), node.get("value"));
             if (value != null) {
