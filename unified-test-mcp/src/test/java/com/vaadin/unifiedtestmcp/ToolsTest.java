@@ -297,8 +297,9 @@ public class ToolsTest {
     public void refFromBeforeNavigationIsRejected() throws IOException {
         int clicker = ref(call(client, "snapshot", Map.of()), "id=clicker");
         int back = ref(navigate(client, "second"), "id=back");
-        assertEquals("ref " + clicker + " isn't in the latest snapshot; its refs are " + back
-                + ". Call snapshot to see the components on the page now.", error(client, "get_text", ref(clicker)));
+        assertEquals("ref " + clicker + " isn't in the latest snapshot, of " + appUrl + "/second; its refs are "
+                + back + ". A ref from another page needs that page again: navigate to it. Else call snapshot to see"
+                + " the components on this page now.", error(client, "get_text", ref(clicker)));
     }
 
     @Test

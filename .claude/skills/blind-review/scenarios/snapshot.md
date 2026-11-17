@@ -28,3 +28,6 @@ type into, and what range can the Volume slider be set to?
 - Whether it tells `helper=` from `tooltip=`, and notices Subscribe's is cut (`…`).
 - Phone's TextFields: did it notice they lack `readonly`, or assume the whole CustomField is
   read-only?
+- Whether it sends both navigations at once and then uses a `form` ref after `fields/readonly`
+  replaced the page. It did, before `navigate`'s description said the refs of the page before are
+  gone; did the stale-ref error, naming the current page, send it back in one step?

@@ -35,6 +35,8 @@ final class Refs {
     record Target(String flowName, @Nullable String uniqueId) {}
 
     private @Nullable Map<Integer, Target> latest;
+    /** The URL the latest snapshot was of. */
+    private String latestUrl = "";
     private int next = 1;
 
     /** The number the next newly stamped component gets. */
@@ -42,8 +44,12 @@ final class Refs {
         return next;
     }
 
-    /** Called by a snapshot: these are now the valid refs, and {@code next} the next number to stamp. */
-    void replace(Map<Integer, Target> refs, int next) {
+    /**
+     * Called by a snapshot of the page at {@code url}: these are now the valid refs, and {@code next} the next
+     * number to stamp.
+     */
+    void replace(String url, Map<Integer, Target> refs, int next) {
+        latestUrl = url;
         latest = Map.copyOf(refs);
         this.next = next;
     }
@@ -77,9 +83,10 @@ final class Refs {
         }
         Target target = latest.get(ref);
         if (target == null) {
-            throw new MCPErrorResponseException("ref " + ref + " isn't in the latest snapshot"
+            throw new MCPErrorResponseException("ref " + ref + " isn't in the latest snapshot, of " + latestUrl
                     + (latest.isEmpty() ? ", which showed no components" : "; its refs are " + ranges())
-                    + ". Call snapshot to see the components on the page now.");
+                    + ". A ref from another page needs that page again: navigate to it. Else call snapshot to see"
+                    + " the components on this page now.");
         }
         Q query = page.find(type);
         query = target.uniqueId() != null

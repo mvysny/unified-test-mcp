@@ -48,7 +48,8 @@ final class NavigateTool implements ToolFunction {
                     + "Waits until the server is idle, then returns the snapshot of the page, whose URL line says "
                     + "where the browser landed. A path with no view is not an error: the result starts \"No view "
                     + "at\" when the app shows Vaadin's own not-found page; an app's own not-found view shows only "
-                    + "in the snapshot.",
+                    + "in the snapshot. The browser has one page: the refs of the one before are gone, so use a "
+                    + "page's refs before navigating to the next.",
             new InputSchemaBuilder().requiredString("url", "The full URL, with its http:// or https://").build());
 
     private static final Pattern HAS_SCHEME = Pattern.compile("^[a-zA-Z][a-zA-Z0-9+.-]*://.*");

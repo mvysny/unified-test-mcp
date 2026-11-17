@@ -181,7 +181,7 @@ final class Snapshot {
             out.append("(no components)\n");
         }
         render(nodes, 0, out, targets);
-        refs.replace(targets, ((Number) result.get("next")).intValue());
+        refs.replace((String) result.get("url"), targets, ((Number) result.get("next")).intValue());
         return out.toString();
     }
 
