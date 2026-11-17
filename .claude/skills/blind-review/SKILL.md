@@ -27,12 +27,11 @@ the tool yet → write one first (below), and show it to the owner.
 
 What it does, so a failure can be read:
 
-1. Builds the jar (`:unified-test-mcp:shadowJar`).
-2. Finds `test-app`. **Already running** (the owner's `./gradlew :test-app:run`): the JVM whose
-   main class is `com.vaadin.unifiedtestmcp.testapp.Main`, its port from `ss -ltnp`; reused and
-   left running — a scenario that needs a `test-app` change needs the owner to restart it first.
-   **Not running**: started on a free port, handed over as `SERVER_PORT` (Vaadin Boot reads it),
-   stopped when the script exits.
+1. Builds the jar (`:unified-test-mcp:shadowJar`) and `test-app`.
+2. Stops a running `test-app` — the JVM whose main class is
+   `com.vaadin.unifiedtestmcp.testapp.Main`, the owner's `./gradlew :test-app:run` say — which may
+   serve classes from before the latest change. Then starts a fresh one on a free port, handed
+   over as `SERVER_PORT` (Vaadin Boot reads it), and stops it when the script exits.
 3. Writes an MCP config naming only this server into a scratch dir outside the checkout, so no
    project `AGENTS.md` loads.
 4. **Run 1, the task**: `claude -p "<the scenario's ## Task>"` from that dir, its `{{url}}`
@@ -55,8 +54,9 @@ What it does, so a failure can be read:
 
 In the scratch dir: `task.txt` and `critique.txt` (one line per event: `SAYS`, `CALL`, `OK`,
 `ERROR`, `END` with turns, time and cost), their raw `.jsonl`, and `ask.sh "<question>"`, which
-puts a follow-up to the same blind agent — for a suggestion too vague to triage. test-app has to
-be up for a follow-up that makes it call a tool.
+puts a follow-up to the same blind agent — for a suggestion too vague to triage. A follow-up that
+makes it call a tool needs test-app back on the task's port: `SERVER_PORT=<port> ./gradlew
+:test-app:run`, the port in `task.txt`'s URLs.
 
 ## 2. Report to the owner
 

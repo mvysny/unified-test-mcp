@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# The mechanical half of a blind review (SKILL.md has the rest): builds the server's jar, finds or
-# starts test-app, has an isolated `claude -p` do the scenario's task through this MCP server
+# The mechanical half of a blind review (SKILL.md has the rest): builds the server's jar, stops a
+# running test-app and starts a fresh one from the checkout, has an isolated `claude -p` do the scenario's task through this MCP server
 # only, then critique it from the same session.
 #
 #   run.sh <scenario>    e.g. run.sh navigate, for scenarios/navigate.md
@@ -9,7 +9,7 @@
 #   task.txt, critique.txt    each run's transcript, readable: SAYS / CALL / OK / ERROR / END lines
 #   task.jsonl, critique.jsonl    the same, raw stream-json
 #   ask.sh "<question>"       asks the blind agent a follow-up, in the same session
-#   test-app.log              test-app's output, when this script started it
+#   test-app.log              test-app's output
 set -euo pipefail
 
 skill_dir=$(cd "$(dirname "$0")" && pwd)
@@ -22,46 +22,47 @@ mkdir "$out/work"
 log() { printf '[blind-review] %s\n' "$*" >&2; }
 
 # --- the jar ---------------------------------------------------------------------------------
-log "building the jar"
-(cd "$repo" && ./gradlew -q :unified-test-mcp:shadowJar)
+log "building the jar and test-app"
+(cd "$repo" && ./gradlew -q :unified-test-mcp:shadowJar :test-app:classes)
 jar=$(ls "$repo"/unified-test-mcp/build/libs/unified-test-mcp-*.jar | grep -v -- '-plain\.jar$' | head -1)
 
-# --- test-app: reuse the owner's, or start one on a free port ----------------------------------
-listening_ports() { ss -ltnpH | awk -v p="pid=$1," 'index($0, p) { n = split($4, a, ":"); print a[n] }'; }
+# --- test-app: a fresh one, built from the checkout as it is now --------------------------------
 answers() { [ "$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:$1/")" = 200 ]; }
 
-port=
-started=
-# by process name, java: `pgrep -f` would match any shell whose command line mentions the class
-app_pid=$(ps -C java -o pid=,args= | awk '$NF == "com.vaadin.unifiedtestmcp.testapp.Main" { print $1; exit }')
-if [ -n "$app_pid" ]; then
-  for p in $(listening_ports "$app_pid"); do
-    if answers "$p"; then port=$p; break; fi
-  done
-  [ -n "$port" ] || { echo "test-app runs (pid $app_pid) but answers on no port it listens on" >&2; exit 1; }
-  log "reusing the running test-app on port $port; it stays running"
-else
-  port=$(python3 -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1])')
-  log "starting test-app on port $port"
-  # Vaadin Boot reads SERVER_PORT; Gradle hands the client's environment to the run task's JVM
-  (cd "$repo" && SERVER_PORT=$port exec ./gradlew -q --console=plain :test-app:run) >"$out/test-app.log" 2>&1 &
-  gradle_pid=$!
-  started=1
-  stop_app() {
-    local pid
-    pid=$(ss -ltnpH "sport = :$port" | grep -o 'pid=[0-9]*' | head -1 | cut -d= -f2 || true)
-    [ -z "$pid" ] || kill "$pid" 2>/dev/null || true
-    kill "$gradle_pid" 2>/dev/null || true
-    log "stopped test-app"
-  }
-  trap stop_app EXIT
-  for _ in $(seq 300); do
-    answers "$port" && break
-    kill -0 "$gradle_pid" 2>/dev/null || { tail -20 "$out/test-app.log" >&2; echo "test-app didn't start" >&2; exit 1; }
+# One already running serves the classes it started with, maybe from before the latest change.
+# By process name, java: `pgrep -f` would match any shell whose command line mentions the class.
+running=$(ps -C java -o pid=,args= | awk '$NF == "com.vaadin.unifiedtestmcp.testapp.Main" { print $1 }')
+if [ -n "$running" ]; then
+  log "stopping the running test-app (pid $(echo $running)): it may be stale"
+  kill $running
+  for _ in $(seq 30); do
+    alive=
+    for pid in $running; do kill -0 "$pid" 2>/dev/null && alive=1; done
+    [ -n "$alive" ] || break
     sleep 1
   done
-  answers "$port" || { echo "test-app didn't answer on port $port within 300 s" >&2; exit 1; }
+  [ -z "$alive" ] || { echo "test-app (pid $(echo $running)) didn't stop within 30 s" >&2; exit 1; }
 fi
+
+port=$(python3 -c 'import socket; s = socket.socket(); s.bind(("127.0.0.1", 0)); print(s.getsockname()[1])')
+log "starting test-app on port $port"
+# Vaadin Boot reads SERVER_PORT; Gradle hands the client's environment to the run task's JVM
+(cd "$repo" && SERVER_PORT=$port exec ./gradlew -q --console=plain :test-app:run) >"$out/test-app.log" 2>&1 &
+gradle_pid=$!
+stop_app() {
+  local pid
+  pid=$(ss -ltnpH "sport = :$port" | grep -o 'pid=[0-9]*' | head -1 | cut -d= -f2 || true)
+  [ -z "$pid" ] || kill "$pid" 2>/dev/null || true
+  kill "$gradle_pid" 2>/dev/null || true
+  log "stopped test-app"
+}
+trap stop_app EXIT
+for _ in $(seq 300); do
+  answers "$port" && break
+  kill -0 "$gradle_pid" 2>/dev/null || { tail -20 "$out/test-app.log" >&2; echo "test-app didn't start" >&2; exit 1; }
+  sleep 1
+done
+answers "$port" || { echo "test-app didn't answer on port $port within 300 s" >&2; exit 1; }
 
 # --- the isolated agent ----------------------------------------------------------------------
 jq -n --arg java "$(command -v java)" --arg jar "$jar" --arg name "$server" \
@@ -112,5 +113,6 @@ readable <"$out/critique.jsonl" >"$out/critique.txt"
 } >"$out/ask.sh"
 chmod +x "$out/ask.sh"
 
-if [ -n "$started" ]; then trap - EXIT; stop_app; fi
+trap - EXIT
+stop_app
 echo "$out"
