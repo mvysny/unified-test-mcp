@@ -167,8 +167,20 @@ Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-butto
 
 Observed on test-app's `fields` view, every field of `vaadin-core`.
 
-- A text or number field's `value` is a string as typed, `"42"`, `"9.90"`; a DatePicker's ISO,
-  `"2000-01-31"`; a DateTimePicker's `"2026-11-17T10:00"`. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A text or number field's `value` is a string as typed, `"42"`; a BigDecimalField's has the
+  locale's separator, `"9,90"` in `fi` (Flow's formatter puts it in, `_decimalSeparator`). A
+  DatePicker's is ISO, `"2000-01-31"`, a DateTimePicker's `"2026-11-17T10:00"`, while their
+  light-DOM `<input>` (`inputElement`) shows the locale's text, `31.1.2000`; a TimePicker in `fi`
+  shows `7.30`. A DateTimePicker's halves are a DatePicker and a TimePicker in its light DOM, slots
+  `date-picker` and `time-picker`, each with its own `<input>`. **[verified 2026-11-17, Vaadin 25.3.5]**
+- Without an `I18NProvider`, a UI's locale is the browser's language, so these texts differ
+  between machines; test-app sets `fi-FI` in a `UIInitListener`. **[verified 2026-11-17, Vaadin 25.3.5]**
+- Text a DatePicker can't parse, typed and committed with Enter, stays in its `<input>` while its
+  `value` is `""` and it shows invalid; the same for a DateTimePicker with one half filled.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- Dramafinder's `DatePickerElement.setValue(LocalDate)` and `TimePickerElement.setValue(LocalTime)`
+  set the `value` property from behind; `setValue(String)` fills the `<input>` and presses Enter.
+  **[src, Dramafinder 2.0.1]**
 - A Checkbox's and a Switch's `value` is `"on"`; `checked` holds the state. **[verified 2026-11-17, Vaadin 25.3.5]**
 - A CheckboxGroup's `value` is Flow's keys, `["1","3"]`; the ticked `<vaadin-checkbox>` children
   carry the `checked` attribute and their label as text. **[verified 2026-11-17, Vaadin 25.3.5]**

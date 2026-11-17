@@ -2,13 +2,13 @@
 
 What the click / get_text / snapshot work left open.
 
-`Q_custom_values`: a ComboBox with `allowCustomValue` takes a text that isn't among its items;
-`set_value` refuses one as it would any label the field doesn't offer. Type it in and press Enter
-when the ComboBox allows it, read back as for any other value?
+`Q_browser_locale`: a field's value is its text in the app's locale (`D_values_as_shown`), which
+without an `I18NProvider` is the browser's language, and Chromium follows the machine's. A
+`--locale` option for the browser context, for an app that follows the browser?
 
-`Q_typed_dates`: `set_value` takes a DatePicker's date as ISO, `"2026-11-16"`, and hands the
-Unified API a `LocalDate`; it refuses `"16.11.2026"`. An agent testing the picker's own parser
-would want to type the text as a user does, in the app's locale (`UnifiedDatePicker.typeText`).
+`Q_number_field_display`: a NumberField's `<input>` is `type=number`; does Chromium show it in
+the browser's locale (`72,5`) while its `value` stays `72.5`? If so, `value=` isn't what the user
+sees there.
 
 `Q_timeout`: a ref that isn't in the latest snapshot, or whose component is gone, fails at once.
 What still costs the full 10 s is an action on a component that is there but stays disabled or

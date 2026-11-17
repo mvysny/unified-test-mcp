@@ -39,9 +39,15 @@ final class ComponentTypes {
         TEXT,
         /**
          * A value, Flow's {@code HasValue}, in its {@code value} property: the fields. No text: a TextField's DOM
-         * text is its label.
+         * text is its label. A DatePicker's or a TimePicker's is the text its {@code <input>} shows,
+         * {@code "31.1.2000"}: its {@code value} property is ISO, the server's view, not the user's.
          */
         VALUE,
+        /**
+         * A DateTimePicker's: two texts, its date's and its time's as their {@code <input>}s show them,
+         * {@code ["17.11.2026","10.00"]}. Its {@code value} property is ISO.
+         */
+        DATE_AND_TIME,
         /**
          * A Checkbox's or a Switch's value is whether it's ticked, its {@code checked} property; {@code value} is
          * {@code "on"}.
@@ -88,7 +94,7 @@ final class ComponentTypes {
             Map.entry("vaadin-big-decimal-field", field("BigDecimalField")),
             Map.entry("vaadin-date-picker", field("DatePicker")),
             Map.entry("vaadin-time-picker", field("TimePicker")),
-            Map.entry("vaadin-date-time-picker", field("DateTimePicker")),
+            Map.entry("vaadin-date-time-picker", labelled("DateTimePicker", Holds.DATE_AND_TIME)),
             Map.entry("vaadin-combo-box", labelled("ComboBox", Holds.SELECTED_ITEM)),
             Map.entry("vaadin-select", labelled("Select", Holds.SELECTED_ITEM)),
             Map.entry("vaadin-radio-group", labelled("RadioButtonGroup", Holds.SELECTED_ITEM)),

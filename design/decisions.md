@@ -232,7 +232,36 @@ Why not a tool error when the field holds something else: the typing happened, t
 ran, the page may have changed, and that is often what the agent is testing — type 130 into Age,
 expect "At most 120". An error says nothing happened, and comes without the snapshot. So the echo
 line says what the field holds now and its error message when it shows invalid, and the snapshot
-follows (`D_action_returns_snapshot`). Why not swing-mcp's split into `set_text`, `set_value` and
+follows (`D_action_returns_snapshot`). A DatePicker's text it can't parse is the one case where
+what the field shows and what it holds part: the `<input>` keeps `dsdds` while the value is empty
+(`R_flow_field_states`), so the note says the field can't read it and holds none, rather than "it
+holds it". Why not swing-mcp's split into `set_text`, `set_value` and
 `set_selection`: those follow Swing's accessibility interfaces; here `get_value` already reads
 every field in one notation, and the tool that writes them mirrors it, as `get_value` mirrors
 `value=`.
+
+## D_values_as_shown — Why does a DatePicker's value read and take `"31.1.2000"`, the text the user sees, rather than ISO `"2000-01-31"`?
+
+The agent drives a browser, so it gets what a person there sees (**Vaadin components, not
+DOM**): a DatePicker in a `fi` app shows `31.1.2000`, and that is its value in the snapshot, in
+`get_value` and in `set_value`. A TimePicker the same, `7.30`; a DateTimePicker its two inputs,
+`["17.11.2026","10.00"]`, two texts because splitting one between two locale formats would be a
+guess (`7:30 AM` has a space). A BigDecimalField's `value` property already is the locale's text,
+`9,90` (`R_flow_field_states`), and a JSON number for it is typed with that separator. ISO is the
+server's view, right for a browserless test that sets a `LocalDate`; here it would be a format no
+user sees.
+
+`set_value` types the text as it is and presses Enter, unparsed, through `UnifiedDatePicker.typeText`
+or the field's `<input>`. So the app's own parser judges it, in its locale and with its custom
+`DatePickerI18n` format, and text it can't read, `dsdds` or a DateTimePicker's date alone, is how
+the agent tests its invalid input; the note says so (`D_set_value_reads_back`). Why not
+`UnifiedDatePicker.setValue(LocalDate)`: on Playwright it sets the `value` property from behind
+(`R_flow_field_states`), no typing, no parser, against **An agent drives the app the way a person
+does**. Why not a `type_text` tool beside an ISO `set_value`: two notations for one field, and the
+agent would read ISO in the snapshot and still have to guess what to type. A ComboBox that allows
+custom values follows the same rule: a text none of its items has is typed and committed, and the
+app's custom-value listener decides what it becomes.
+
+The cost: the value depends on the app's locale, which without an `I18NProvider` is the browser's
+language; test-app fixes `fi-FI`. A format that drops information (`MMM yyyy`, or `1/2/2026` read
+either way) leaves the agent to check the stored date where the app shows it.

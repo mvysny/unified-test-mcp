@@ -2,13 +2,16 @@ package com.vaadin.unifiedtestmcp.testapp;
 
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
+import com.vaadin.flow.component.combobox.dataview.ComboBoxListDataView;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.router.Route;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * At {@code choices}: a field of each kind whose value is an item, each showing it through an item label
@@ -20,6 +23,7 @@ import java.util.List;
  * Home      ( ) Finland (•) Czechia ( ) Sweden     (RadioButtonGroup)
  * Favourite [Sweden ▾]             (Select)
  * Next      [        ▾]            (ComboBox, nothing selected)
+ * Dream     [        ▾]            (ComboBox, nothing selected; a country typed in becomes an item, selected)
  * </pre>
  */
 @Route("choices")
@@ -53,6 +57,15 @@ public class ChoicesView extends VerticalLayout {
         ComboBox<Country> next = new ComboBox<>("Next", COUNTRIES);
         next.setItemLabelGenerator(Country::name);
 
-        add(country, visited, home, favourite, next);
+        ComboBox<Country> dream = new ComboBox<>("Dream");
+        dream.setItemLabelGenerator(Country::name);
+        ComboBoxListDataView<Country> dreams = dream.setItems(new ArrayList<>(COUNTRIES));
+        dream.addCustomValueSetListener(e -> {
+            Country typed = new Country(e.getDetail().toLowerCase(Locale.ROOT), e.getDetail());
+            dreams.addItem(typed);
+            dream.setValue(typed);
+        });
+
+        add(country, visited, home, favourite, next, dream);
     }
 }

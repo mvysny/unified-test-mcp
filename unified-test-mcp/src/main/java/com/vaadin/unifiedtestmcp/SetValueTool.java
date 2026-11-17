@@ -9,14 +9,11 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
 import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * {@code set_value(ref, value)}: changes a field as a user would, then answers with what it holds once the server has
@@ -27,14 +24,17 @@ import java.util.stream.Collectors;
  *                                          (the snapshot)
  * set_value(ref: 2, value: "admin")      → Set ref=2 to "admin"; it holds "alice" now, without showing invalid
  * set_value(ref: 3, value: 130)          → Set ref=3 to "130"; it holds it but shows invalid "At most 120"
+ * set_value(ref: 4, value: "dsdds")      → Set ref=4 to "dsdds"; it can't read that as a date, so holds none, and
+ *                                          shows invalid
  * set_value(ref: 5, value: "Norway")     → error: ref 5 is a Select without the item "Norway". Its items: …
  * </pre>
  *
- * {@code value} is in {@code get_value}'s notation, {@link Json}. Refused before anything is touched: a component
- * that isn't a field, a disabled or read-only one, a value of the wrong kind, a label the field doesn't offer. What
- * the app does with the change is no refusal, only a note on the first line (D_set_value_reads_back). The note says
- * what the field holds, never why: a listener putting the old value back, a {@code maxLength} and a parser's
- * normalising look the same from the browser, so "the app reverted it" would be a guess.
+ * {@code value} is in {@code get_value}'s notation, {@link Json}: what the user sees, a date in the app's format
+ * (D_values_as_shown). Refused before anything is touched: a component that isn't a field, a disabled or read-only
+ * one, a value of the wrong kind, a label the field doesn't offer. What the app does with the change is no refusal,
+ * only a note on the first line (D_set_value_reads_back). The note says what the field holds, never why: a listener
+ * putting the old value back, a {@code maxLength} and a parser's normalising look the same from the browser, so "the
+ * app reverted it" would be a guess.
  */
 final class SetValueTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = descriptor();
@@ -52,10 +52,13 @@ final class SetValueTool implements ToolFunction {
                 "Change a field's value, as a user would: types into a TextField, picks an item of a ComboBox or a "
                         + "Select, ticks a Checkbox. The value is what get_value answers, passed as itself rather than "
                         + "as JSON text: a text, \"value\": \"Alice\" (\"\" empties it); a number field's 42; a "
-                        + "DatePicker's \"2026-11-16\", a TimePicker's \"07:30\", a DateTimePicker's "
-                        + "\"2026-11-17T10:00\"; a Checkbox's or a Switch's true or false. An item by the label the "
+                        + "Checkbox's or a Switch's true or false. A DatePicker's or a TimePicker's text as the user "
+                        + "types it, in the app's format as get_value shows it, \"16.11.2026\"; a DateTimePicker's "
+                        + "date and time as two texts, [\"16.11.2026\",\"10.00\"]. Typed as it is, then Enter: text "
+                        + "the field can't read, \"dsdds\", tests its invalid input. An item by the label the "
                         + "user sees, \"Czechia\"; leave value out for none (a ComboBox only: no user can clear a "
-                        + "Select, a RadioButtonGroup or a ListBox). The whole selection of a MultiSelectComboBox, a "
+                        + "Select, a RadioButtonGroup or a ListBox); a ComboBox that allows custom values also takes "
+                        + "a text none of its items has. The whole selection of a MultiSelectComboBox, a "
                         + "CheckboxGroup or a MultiSelectListBox as an array of labels, [\"Finland\",\"Sweden\"]; [] "
                         + "for none. A Slider's number, 30, within its min and max; a RangeSlider's [8,17]. A "
                         + "CustomField has none of its own: set the fields inside it. Refuses a disabled or read-only "
@@ -109,16 +112,24 @@ final class SetValueTool implements ToolFunction {
                 return done + "; it is gone from the page now\n\n" + Snapshot.take(page, refs);
             }
             Object holds = FieldValue.read(after);
-            boolean kept = same(wanted, holds);
-            String outcome = kept ? done : done + "; it holds " + Json.of(holds) + " now";
+            boolean kept = same(field.holds(), wanted, holds);
+            String invalid = null;
             if (Boolean.TRUE.equals(after.element().getPropertyBoolean("invalid"))) {
                 String message = after.element().getProperty("errorMessage");
-                String invalid = message == null || message.isBlank() ? "shows invalid" : "shows invalid "
-                        + Json.of(message);
+                invalid = message == null || message.isBlank() ? "shows invalid" : "shows invalid " + Json.of(message);
+            }
+            String outcome;
+            if (FieldValue.unparsed(after)) {
+                // the input keeps the text, so "it holds it" would be wrong: the value under it is empty
+                outcome = done + (kept ? "" : "; it shows " + Json.of(holds)) + "; it can't read that as a "
+                        + FieldValue.parses(after) + ", so holds none"
+                        + (invalid == null ? ", without showing invalid" : ", and " + invalid);
+            } else if (invalid != null) {
                 // the field holding the value is news too: "shows invalid" alone reads as the value refused
-                outcome += kept ? "; it holds it but " + invalid : " and " + invalid;
-            } else if (!kept) {
-                outcome += ", without showing invalid";
+                outcome = kept ? done + "; it holds it but " + invalid
+                        : done + "; it holds " + Json.of(holds) + " now and " + invalid;
+            } else {
+                outcome = kept ? done : done + "; it holds " + Json.of(holds) + " now, without showing invalid";
             }
             return outcome + "\n\n" + Snapshot.take(page, refs);
         }));
@@ -133,25 +144,35 @@ final class SetValueTool implements ToolFunction {
     private static @Nullable Object wanted(FieldValue.Field field, @Nullable Object value, String what) {
         return switch (field.holds()) {
             case VALUE, UNKNOWN -> {
+                boolean decimal = field.tag().equals("vaadin-big-decimal-field");
                 String text = value == null ? "" : value instanceof Number n ? plain(n) : value instanceof String s
                         ? s : refuse(what, "a text, \"Alice\"", value);
-                if (!text.isEmpty()) {
-                    switch (field.tag()) {
-                        case "vaadin-integer-field", "vaadin-number-field", "vaadin-big-decimal-field" -> {
-                            try {
-                                new BigDecimal(text.strip());
-                            } catch (NumberFormatException e) {
-                                refuse(what, "a number, 42", value);
-                            }
-                        }
-                        case "vaadin-date-picker" -> parsed(() -> LocalDate.parse(text), what, "\"2026-11-16\"", value);
-                        case "vaadin-time-picker" -> parsed(() -> LocalTime.parse(text), what, "\"07:30\"", value);
-                        case "vaadin-date-time-picker" ->
-                                parsed(() -> LocalDateTime.parse(text), what, "\"2026-11-17T10:00\"", value);
-                        default -> {}
+                if (!text.isEmpty() && (decimal || field.tag().equals("vaadin-integer-field")
+                        || field.tag().equals("vaadin-number-field"))) {
+                    try {
+                        // a BigDecimalField shows the locale's separator, "9,90"
+                        new BigDecimal(text.strip().replace(',', '.'));
+                    } catch (NumberFormatException e) {
+                        refuse(what, "a number, 42", value);
                     }
                 }
+                if (decimal && value instanceof Number) {
+                    // typed as the user would, with the separator the field shows: Flow sets it from the locale
+                    String separator = field.element().getProperty("_decimalSeparator");
+                    yield separator == null || separator.isEmpty() ? text : text.replace(".", separator);
+                }
                 yield text;
+            }
+            case DATE_AND_TIME -> {
+                if (value == null) {
+                    yield List.of("", "");
+                }
+                if (!(value instanceof List<?> list) || list.size() != 2
+                        || !list.stream().allMatch(String.class::isInstance)) {
+                    yield refuse(what, "its date and its time as two texts, as get_value shows them, "
+                            + Json.of(FieldValue.read(field)), value);
+                }
+                yield list.stream().map(String.class::cast).toList();
             }
             case CHECKED -> value instanceof Boolean b ? b : refuse(what, "true or false", value);
             case SELECTED_ITEM -> {
@@ -165,8 +186,11 @@ final class SetValueTool implements ToolFunction {
                 if (!(value instanceof String label)) {
                     yield refuse(what, "an item's label, \"Czechia\"", value);
                 }
-                offered(field, List.of(label), what, field.tag().equals("vaadin-combo-box") && label.equals("null")
-                        ? " To empty it, leave value out." : "");
+                boolean combo = field.tag().equals("vaadin-combo-box");
+                if (!(combo && Boolean.TRUE.equals(field.element().getPropertyBoolean("allowCustomValue")))) {
+                    offered(field, List.of(label), what, combo && label.equals("null")
+                            ? " To empty it, leave value out." : "");
+                }
                 yield label;
             }
             case SELECTED_ITEMS -> {
@@ -221,43 +245,23 @@ final class SetValueTool implements ToolFunction {
         }
     }
 
-    private interface Parse {
-        void run();
-    }
-
-    private static void parsed(Parse parse, String what, String example, Object value) {
-        try {
-            parse.run();
-        } catch (DateTimeParseException e) {
-            refuse(what, "its value as get_value shows it, " + example, value);
-        }
-    }
-
     /** @throws MCPErrorResponseException always; typed to sit where a value is expected */
     private static <T> T refuse(String what, String takes, @Nullable Object value) {
         throw new MCPErrorResponseException(what + ": it takes " + takes + "; not " + Json.of(value) + ".");
     }
 
     /** Whether the field holds what was asked: a selection in any order, a number at any scale. */
-    private static boolean same(@Nullable Object wanted, @Nullable Object holds) {
-        if (wanted instanceof BigDecimal w && holds instanceof BigDecimal h) {
-            return w.compareTo(h) == 0;
-        }
-        if (wanted instanceof List<?> w && holds instanceof List<?> h) {
-            if (w.size() != h.size()) {
-                return false;
+    private static boolean same(ComponentTypes.Holds kind, @Nullable Object wanted, @Nullable Object holds) {
+        return switch (kind) {
+            case SELECTED_ITEMS -> new HashSet<>((List<?>) wanted).equals(new HashSet<>((List<?>) holds));
+            case NUMBER -> {
+                List<?> w = wanted instanceof List<?> list ? list : List.of(wanted);
+                List<?> h = holds instanceof List<?> list ? list : List.of(holds);
+                yield w.size() == h.size() && IntStream.range(0, w.size())
+                        .allMatch(i -> ((BigDecimal) w.get(i)).compareTo((BigDecimal) h.get(i)) == 0);
             }
-            if (!w.isEmpty() && w.get(0) instanceof BigDecimal) {
-                for (int i = 0; i < w.size(); i++) {
-                    if (!same(w.get(i), h.get(i))) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return new HashSet<>(w).equals(new HashSet<>(h));
-        }
-        return Objects.equals(wanted, holds);
+            default -> Objects.equals(wanted, holds);
+        };
     }
 
     /** {@code 42}, {@code 72.5}: a JSON number as a user types it, without the {@code .0} a double prints. */

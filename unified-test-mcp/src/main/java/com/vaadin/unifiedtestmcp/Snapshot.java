@@ -99,6 +99,13 @@ final class Snapshot {
                   case 'vaadin-slider':
                   case 'vaadin-range-slider':
                     return e.value ?? null;
+                  // the text the user sees, "31.1.2000": the value property is ISO
+                  case 'vaadin-date-picker':
+                  case 'vaadin-time-picker':
+                    return e.inputElement?.value ?? '';
+                  case 'vaadin-date-time-picker':
+                    return ['date-picker', 'time-picker']
+                        .map(slot => e.querySelector(`:scope > [slot=${slot}]`)?.inputElement?.value ?? '');
                   default:
                     return typeof e.value === 'string' ? e.value : null;
                 }
@@ -277,7 +284,7 @@ final class Snapshot {
             case TEXT, CHECKED, PARTS -> null;
             case VALUE -> Json.of(cap(value == null ? "" : (String) value, VALUE_CAP));
             case SELECTED_ITEM -> Json.of(value == null ? null : cap((String) value, VALUE_CAP));
-            case SELECTED_ITEMS, NUMBER -> cap(Json.of(value), VALUE_CAP);
+            case SELECTED_ITEMS, NUMBER, DATE_AND_TIME -> cap(Json.of(value), VALUE_CAP);
             case UNKNOWN -> value == null || ((String) value).isBlank() ? null
                     : Json.of(cap((String) value, VALUE_CAP));
         };

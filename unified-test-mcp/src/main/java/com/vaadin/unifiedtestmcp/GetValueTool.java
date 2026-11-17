@@ -14,6 +14,7 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
  * get_value(ref: 1)   → "Alice"
  * get_value(ref: 2)   → ""                       (an empty TextField)
  * get_value(ref: 3)   → true
+ * get_value(ref: 4)   → "31.1.2000"              (a DatePicker in a fi app: its text, not ISO)
  * get_value(ref: 5)   → "Czechia"                (a ComboBox: its selected item's label)
  * get_value(ref: 6)   → ["Finland","Sweden"]     (a MultiSelectComboBox)
  * get_value(ref: 7)   → null                     (a ComboBox with nothing selected)
@@ -29,8 +30,10 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
  */
 final class GetValueTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("get_value",
-            "The value of a field as JSON, as the field holds it: a TextField's text, \"Alice\", or \"\" when "
-                    + "empty; a DatePicker's date, \"2026-11-16\"; a Checkbox's true or false. A ComboBox's, a "
+            "The value of a field as JSON, as the user sees it: a TextField's text, \"Alice\", or \"\" when "
+                    + "empty; a DatePicker's or a TimePicker's text in the app's format, \"16.11.2026\"; a "
+                    + "DateTimePicker's date and time, [\"16.11.2026\",\"10.00\"]; a Checkbox's true or false. A "
+                    + "ComboBox's, a "
                     + "Select's or a RadioButtonGroup's selected item by the label the user sees, \"Czechia\", or "
                     + "null when none; a MultiSelectComboBox's, a CheckboxGroup's or a MultiSelectListBox's as an "
                     + "array of labels. A Slider's number, 30; a RangeSlider's [8,17]. A CustomField has none of its "

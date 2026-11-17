@@ -16,8 +16,6 @@ import com.vaadin.testing.unified.component.UnifiedTextField;
 import org.jspecify.annotations.Nullable;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,14 +29,17 @@ import java.util.Objects;
  * FieldValue.read(field)                  // => "Sweden", unless the app put something else back
  * }</pre>
  *
- * What each {@link ComponentTypes.Holds} holds: a {@code VALUE} field its {@code value} property, a text; a
- * {@code CHECKED} one {@code true} or {@code false}; a {@code SELECTED_ITEM} one an item's label, or {@code null};
- * a {@code SELECTED_ITEMS} one a list of labels; a {@code NUMBER} one a {@link BigDecimal}, or a list of two for a
- * RangeSlider. A field of another kind has none: {@link #read} and {@link #write} don't take it.
+ * What each {@link ComponentTypes.Holds} holds: a {@code VALUE} field a text, its {@code value} property or, for a
+ * DatePicker or a TimePicker, what its {@code <input>} shows, {@code "31.1.2000"}; a {@code DATE_AND_TIME} one its two
+ * inputs' texts; a {@code CHECKED} one {@code true} or {@code false}; a {@code SELECTED_ITEM} one an item's label, or
+ * {@code null}; a {@code SELECTED_ITEMS} one a list of labels; a {@code NUMBER} one a {@link BigDecimal}, or a list of
+ * two for a RangeSlider. A field of another kind has none: {@link #read} and {@link #write} don't take it.
  *
  * A write is clicks and typing through the Unified API, each waiting for the server's answer: a Select is opened and
  * its item clicked, a CheckboxGroup's boxes clicked, a Slider's {@code <input>} filled. The Unified API's wrapper
- * where it has one for the type, the generic element's actions where it has none.
+ * where it has one for the type, the generic element's actions where it has none. A date or a time is typed as it
+ * is and committed with Enter, unparsed: the field's own parser, in the app's locale, makes of it what it can
+ * ({@link #unparsed}).
  */
 final class FieldValue {
     private FieldValue() {}
@@ -74,9 +75,38 @@ final class FieldValue {
                         .map(input -> new BigDecimal(input.getProperty("value"))).toList();
                 yield numbers.size() == 1 ? numbers.get(0) : numbers;
             }
-            case VALUE, UNKNOWN -> element.getProperty("value");
+            case VALUE, UNKNOWN -> parses(field) != null ? shown(element) : element.getProperty("value");
+            case DATE_AND_TIME -> List.of(shown(half(element, "date-picker")), shown(half(element, "time-picker")));
             case TEXT, PARTS -> throw new IllegalArgumentException(field.type().flowName() + " has no value");
         };
+    }
+
+    /**
+     * What the field's parser makes of the text it shows: {@code "date"}, {@code "time"}, {@code "date and time"};
+     * {@code null} for a field whose value is its text as it is.
+     */
+    static @Nullable String parses(Field field) {
+        return switch (field.tag()) {
+            case "vaadin-date-picker" -> "date";
+            case "vaadin-time-picker" -> "time";
+            case "vaadin-date-time-picker" -> "date and time";
+            default -> null;
+        };
+    }
+
+    /**
+     * Whether the field shows a text its parser made nothing of: {@code "dsdds"} typed into a DatePicker, or only a
+     * DateTimePicker's date. Its input keeps the text while its value, and the server's, is empty.
+     */
+    static boolean unparsed(Field field) {
+        if (parses(field) == null) {
+            return false;
+        }
+        String value = field.element().getProperty("value");
+        Object shown = read(field);
+        boolean typed = shown instanceof List<?> halves ? halves.stream().anyMatch(h -> !((String) h).isEmpty())
+                : !((String) shown).isEmpty();
+        return typed && (value == null || value.isEmpty());
     }
 
     /** The labels of the items a {@code SELECTED_ITEM} or {@code SELECTED_ITEMS} field offers, in its order. */
@@ -94,14 +124,23 @@ final class FieldValue {
     /**
      * Changes the field to {@code value}, as a user would, and waits for the server's answer.
      *
-     * @param value in the notation {@link #read} answers in, checked to fit the field: a {@code VALUE} field's text
-     *              parsed as its type takes it, a label among the {@link #items}; a {@code SELECTED_ITEM} field other
-     *              than a ComboBox never takes {@code null}, no user can clear one
+     * @param value in the notation {@link #read} answers in, checked to fit the field: a number field's text a number,
+     *              a label among the {@link #items} unless a ComboBox allows custom values; a {@code SELECTED_ITEM}
+     *              field other than a ComboBox never takes {@code null}, no user can clear one
      */
     static void write(Field field, @Nullable Object value) {
         UnifiedElement element = field.element();
         switch (field.holds()) {
             case VALUE, UNKNOWN -> writeText(field, (String) value);
+            case DATE_AND_TIME -> {
+                @SuppressWarnings("unchecked") List<String> halves = (List<String>) value;
+                if (halves.stream().allMatch(String::isEmpty)) {
+                    field.refs().resolve(field.page(), field.ref(), UnifiedDateTimePicker.class).clear();
+                } else {
+                    type(half(element, "date-picker"), halves.get(0));
+                    type(half(element, "time-picker"), halves.get(1));
+                }
+            }
             case CHECKED -> {
                 boolean checked = (Boolean) value;
                 if (field.tag().equals("vaadin-checkbox")) {
@@ -120,8 +159,10 @@ final class FieldValue {
                         UnifiedComboBox box = field.refs().resolve(field.page(), field.ref(), UnifiedComboBox.class);
                         if (label == null) {
                             box.clear();
-                        } else {
+                        } else if (box.getItems().contains(label)) {
                             box.selectItem(label);
+                        } else {
+                            type(element, label); // a custom value: the app's listener decides what it becomes
                         }
                     }
                     case "vaadin-radio-group" ->
@@ -161,15 +202,7 @@ final class FieldValue {
                 if (text.isEmpty()) {
                     picker.clear();
                 } else {
-                    picker.setValue(LocalDate.parse(text));
-                }
-            }
-            case "vaadin-date-time-picker" -> {
-                UnifiedDateTimePicker picker = refs.resolve(page, ref, UnifiedDateTimePicker.class);
-                if (text.isEmpty()) {
-                    picker.clear();
-                } else {
-                    picker.setValue(LocalDateTime.parse(text));
+                    picker.typeText(text);
                 }
             }
             case "vaadin-text-field" -> refs.resolve(page, ref, UnifiedTextField.class).element().setValueAsUser(text);
@@ -180,14 +213,32 @@ final class FieldValue {
                     refs.resolve(page, ref, UnifiedNumberField.class).element().setValueAsUser(text);
             case "vaadin-big-decimal-field" ->
                     refs.resolve(page, ref, UnifiedBigDecimalField.class).element().setValueAsUser(text);
-            case "vaadin-time-picker" -> {
-                UnifiedElement input = field.element().findChildren("input").get(0);
-                input.setValueAsUser(text);
-                input.pressKey("Enter"); // it takes what was typed on Enter or blur, not on change
-            }
+            case "vaadin-time-picker" -> type(field.element(), text);
             // no wrapper: the generic element types into the field's <input>
             default -> field.element().setValueAsUser(text);
         }
+    }
+
+    /**
+     * Types into the field's {@code <input>} and presses Enter: a TimePicker, a DateTimePicker's half, a ComboBox's
+     * custom value are taken on Enter or blur, not on change. No Unified API wrapper types into these.
+     */
+    private static void type(UnifiedElement field, String text) {
+        UnifiedElement input = field.findChildren("input").get(0);
+        input.setValueAsUser(text);
+        input.pressKey("Enter");
+    }
+
+    /** The text the field's {@code <input>} shows. */
+    private static String shown(UnifiedElement field) {
+        String text = field.findChildren("input").get(0).getProperty("value");
+        return text == null ? "" : text;
+    }
+
+    /** A DateTimePicker's DatePicker or TimePicker, by its slot: {@code "date-picker"}, {@code "time-picker"}. */
+    private static UnifiedElement half(UnifiedElement picker, String slot) {
+        return picker.children().stream().filter(child -> slot.equals(child.getAttribute("slot"))).findFirst()
+                .orElseThrow(() -> new IllegalStateException("a DateTimePicker without its " + slot));
     }
 
     private static void writeMultiSelectComboBox(Field field, List<String> wanted) {

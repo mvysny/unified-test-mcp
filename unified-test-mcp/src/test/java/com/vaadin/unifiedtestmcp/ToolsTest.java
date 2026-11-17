@@ -143,6 +143,7 @@ public class ToolsTest {
                 - RadioButtonGroup "Home" [ref=N, value="Czechia"] actions: set_value
                 - Select "Favourite" [ref=N, value="Sweden"] actions: set_value
                 - ComboBox "Next" [ref=N, value=null] actions: set_value
+                - ComboBox "Dream" [ref=N, value=null] actions: set_value
                 """, masked(navigate(client, "choices")));
     }
 
@@ -166,10 +167,10 @@ public class ToolsTest {
               - EmailField "Email" [ref=N, value="alice@example.com"] actions: set_value
               - IntegerField "Age" [ref=N, value="42"] actions: set_value
               - NumberField "Weight" [ref=N, value="72.5"] actions: set_value
-              - BigDecimalField "Price" [ref=N, value="9.90"] actions: set_value
-              - DatePicker "Born" [ref=N, value="2000-01-31"] actions: set_value
-              - TimePicker "Alarm" [ref=N, value="07:30"] actions: set_value
-              - DateTimePicker "Meeting" [ref=N, value="2026-11-17T10:00"] actions: set_value
+              - BigDecimalField "Price" [ref=N, value="9,90"] actions: set_value
+              - DatePicker "Born" [ref=N, value="31.1.2000"] actions: set_value
+              - TimePicker "Alarm" [ref=N, value="7.30"] actions: set_value
+              - DateTimePicker "Meeting" [ref=N, value=["17.11.2026","10.00"]] actions: set_value
               - Checkbox "Agree" [ref=N, checked] actions: set_value
               - Switch "Dark mode" [ref=N, checked] actions: set_value
               - CheckboxGroup "Toppings" [ref=N, value=["Cheese","Olives"]] actions: set_value
@@ -207,7 +208,9 @@ public class ToolsTest {
         String fields = snapshotOf("fields");
         assertEquals("\"Line one\\nLine two\"", call(client, "get_value", ref(ref(fields, "TextArea"))));
         assertEquals("\"42\"", call(client, "get_value", ref(ref(fields, "IntegerField"))));
-        assertEquals("\"2026-11-17T10:00\"", call(client, "get_value", ref(ref(fields, "DateTimePicker"))));
+        assertEquals("\"31.1.2000\"", call(client, "get_value", ref(ref(fields, "DatePicker"))),
+                "what the user sees in a fi app, not ISO");
+        assertEquals("[\"17.11.2026\",\"10.00\"]", call(client, "get_value", ref(ref(fields, "DateTimePicker"))));
         assertEquals("true", call(client, "get_value", ref(ref(fields, "Switch"))));
         assertEquals("[\"Cheese\",\"Olives\"]", call(client, "get_value", ref(ref(fields, "CheckboxGroup"))));
         assertEquals("\"Medium\"", call(client, "get_value", ref(ref(fields, "aria-label=\"Size\""))));
@@ -301,10 +304,11 @@ public class ToolsTest {
         assertSets(fields, "EmailField", "bob@example.com", "\"bob@example.com\"");
         assertSets(fields, "IntegerField", 7, "\"7\"");
         assertSets(fields, "NumberField", 1.5, "\"1.5\"");
-        assertSets(fields, "BigDecimalField", "1.25", "\"1.25\"");
-        assertSets(fields, "DatePicker", "2001-02-03", "\"2001-02-03\"");
-        assertSets(fields, "TimePicker \"Alarm\"", "08:15", "\"08:15\"");
-        assertSets(fields, "DateTimePicker", "2027-01-02T03:04", "\"2027-01-02T03:04\"");
+        assertSets(fields, "BigDecimalField", "1,25", "\"1,25\"");
+        assertSets(fields, "BigDecimalField", 2.5, "\"2,5\"");
+        assertSets(fields, "DatePicker", "3.2.2001", "\"3.2.2001\"");
+        assertSets(fields, "TimePicker \"Alarm\"", "8.15", "\"8.15\"");
+        assertSets(fields, "DateTimePicker", List.of("2.1.2027", "3.04"), "[\"2.1.2027\",\"3.04\"]");
         assertSets(fields, "Checkbox \"Agree\"", false, "false");
         assertSets(fields, "Switch", false, "false");
         assertSets(fields, "CheckboxGroup", List.of("Ham"), "[\"Ham\"]");
@@ -318,6 +322,28 @@ public class ToolsTest {
     }
 
     @Test
+    public void setValueSaysTheFieldCantReadWhatWasTyped() throws IOException {
+        String fields = snapshotOf("fields");
+        int born = ref(fields, "DatePicker");
+        String after = call(client, "set_value", Map.of("ref", born, "value", "dsdds"));
+        assertTrue(after.startsWith("Set ref=" + born + " to \"dsdds\"; it can't read that as a date, so holds none,"
+                + " and shows invalid"), after);
+        assertTrue(after.contains("- DatePicker \"Born\" [ref=" + born + ", value=\"dsdds\", invalid"), after);
+        int meeting = ref(fields, "DateTimePicker");
+        String half = call(client, "set_value", Map.of("ref", meeting, "value", List.of("2.1.2027", "")));
+        assertTrue(half.startsWith("Set ref=" + meeting + " to [\"2.1.2027\",\"\"]; it can't read that as a date and"
+                + " time, so holds none"), half);
+    }
+
+    @Test
+    public void setValueSaysHowTheFieldShowsWhatWasTyped() throws IOException {
+        int born = ref(snapshotOf("fields"), "DatePicker");
+        String after = call(client, "set_value", Map.of("ref", born, "value", "03.02.2001"));
+        assertTrue(after.startsWith("Set ref=" + born + " to \"03.02.2001\"; it holds \"3.2.2001\" now, without"
+                + " showing invalid\n\n"), after);
+    }
+
+    @Test
     public void setValueSetsSelections() throws IOException {
         String choices = navigate(client, "choices");
         assertSets(choices, "id=country", "Finland", "\"Finland\"");
@@ -326,6 +352,7 @@ public class ToolsTest {
         assertSets(choices, "RadioButtonGroup", "Sweden", "\"Sweden\"");
         assertSets(choices, "Select \"Favourite\"", "Finland", "\"Finland\"");
         assertSets(choices, "ComboBox \"Next\"", "Czechia", "\"Czechia\"");
+        assertSets(choices, "ComboBox \"Dream\"", "Norway", "\"Norway\"");
         int next = ref(choices, "ComboBox \"Next\"");
         String cleared = call(client, "set_value", ref(next));
         assertTrue(cleared.startsWith("Set ref=" + next + " to null\n\n"), cleared);
@@ -351,9 +378,10 @@ public class ToolsTest {
         int age = ref(fields, "IntegerField");
         assertEquals("ref " + age + " is a IntegerField: it takes a number, 42; not \"abc\".",
                 error(client, "set_value", Map.of("ref", age, "value", "abc")));
-        int born = ref(fields, "DatePicker");
-        assertEquals("ref " + born + " is a DatePicker: it takes its value as get_value shows it, \"2026-11-16\";"
-                + " not \"31.1.2000\".", error(client, "set_value", Map.of("ref", born, "value", "31.1.2000")));
+        int meeting = ref(fields, "DateTimePicker");
+        assertEquals("ref " + meeting + " is a DateTimePicker: it takes its date and its time as two texts, as get_value"
+                + " shows them, [\"17.11.2026\",\"10.00\"]; not \"2027-01-02T03:04\".",
+                error(client, "set_value", Map.of("ref", meeting, "value", "2027-01-02T03:04")));
         int volume = ref(fields, "Slider \"Volume\"");
         assertEquals("ref " + volume + " is a Slider from 0 to 100: 150 is outside it.",
                 error(client, "set_value", Map.of("ref", volume, "value", 150)));
