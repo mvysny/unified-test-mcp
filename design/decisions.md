@@ -215,3 +215,24 @@ fallback. Each is read uncut by a tool named after its key, as `value=` is by `g
 texts when the agent wants one, and its name would say neither. The cut is swing-mcp's 120
 characters: a hint is advice, so its tail is cheap to lose; a name is never cut, as it says which
 component this is.
+
+## D_set_value_reads_back — Why does `set_value` read the field back and answer with a note, rather than trust its action or fail when the field didn't take the value?
+
+A field can refuse a value in two ways, and only one is known before acting. What the page says
+up front is refused before anything is touched: a disabled or read-only field, a value of the
+wrong kind, a label the field doesn't offer — that refusal lists the labels it does, the one thing
+an agent can't guess. The rest is the app's, past what any table of field types foresees: a
+value-change listener that puts the old value back, a `maxLength`, Flow's own validation, a
+TimePicker that takes typing only on Enter. So once the server has answered, `set_value` reads the
+field as `get_value` does and compares; `value` is in `get_value`'s notation, so the two compare as
+they are, a selection in any order, a number at any scale. The Unified API's `selectItem` does the
+same: it checks the label first and reads the selection after.
+
+Why not a tool error when the field holds something else: the typing happened, the app's listeners
+ran, the page may have changed, and that is often what the agent is testing — type 130 into Age,
+expect "At most 120". An error says nothing happened, and comes without the snapshot. So the echo
+line says what the field holds now and its error message when it shows invalid, and the snapshot
+follows (`D_action_returns_snapshot`). Why not swing-mcp's split into `set_text`, `set_value` and
+`set_selection`: those follow Swing's accessibility interfaces; here `get_value` already reads
+every field in one notation, and the tool that writes them mirrors it, as `get_value` mirrors
+`value=`.

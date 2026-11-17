@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  *
  * <pre>{@code
  * ComponentTypes.of("vaadin-button", false)        // => Button, named by its text, actions: click
+ * ComponentTypes.of("vaadin-text-field", false)    // => TextField, named by its label, actions: set_value
  * ComponentTypes.of("vaadin-split-layout", false)  // => SplitLayout: not listed, its name derived from the tag
  * ComponentTypes.of("vaadin-list-box", true)       // => MultiSelectListBox: the one tag two Flow classes share
  * ComponentTypes.of("my-rating", false)            // => <my-rating>: a custom element shows its tag
@@ -151,12 +152,12 @@ final class ComponentTypes {
     }
 
     private static Type field(String flowName) {
-        return new Type(flowName, NameFrom.LABEL, Holds.VALUE, List.of());
+        return labelled(flowName, Holds.VALUE);
     }
 
-    /** A field named by its label, holding something other than a text. */
+    /** A field named by its label, holding something other than a text; a CustomField takes no value of its own. */
     private static Type labelled(String flowName, Holds holds) {
-        return new Type(flowName, NameFrom.LABEL, holds, List.of());
+        return new Type(flowName, NameFrom.LABEL, holds, holds == Holds.PARTS ? List.of() : List.of("set_value"));
     }
 
     private static Type html(String flowName) {

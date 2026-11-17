@@ -25,6 +25,9 @@ A prototype with four tools:
 - `get_text(ref)` — a Button's or a Span's text.
 - `get_value(ref)` — a field's value as JSON, uncut; a ComboBox's item by the label the user
   sees; whether a Checkbox is ticked.
+- `set_value(ref, value)` — changes a field as a user would: types into it, picks an item,
+  ticks a Checkbox; `value` as `get_value` shows it. Returns the snapshot, saying first what the
+  field holds when the app didn't take the value as given.
 - `get_helper(ref)`, `get_tooltip(ref)` — the helper text below a field, a component's tooltip;
   uncut, where the snapshot cuts them at 120 characters.
 

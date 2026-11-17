@@ -2,15 +2,18 @@
 
 What the click / get_text / snapshot work left open.
 
-`Q_typed_actions`: a typed action — `set_value` on a TextField, `check` on a Checkbox — takes the
-type's own wrapper, `refs.resolve(page, ref, UnifiedTextField.class)`, as `get_value` does for a
-ComboBox. Which wrapper fits is the tag's: `ComponentTypes` gets a wrapper column then, or reads the
-`@UnifiedComponent` annotations on the wrappers if hand-listing it gets long.
+`Q_custom_values`: a ComboBox with `allowCustomValue` takes a text that isn't among its items;
+`set_value` refuses one as it would any label the field doesn't offer. Type it in and press Enter
+when the ComboBox allows it, read back as for any other value?
+
+`Q_typed_dates`: `set_value` takes a DatePicker's date as ISO, `"2026-11-16"`, and hands the
+Unified API a `LocalDate`; it refuses `"16.11.2026"`. An agent testing the picker's own parser
+would want to type the text as a user does, in the app's locale (`UnifiedDatePicker.typeText`).
 
 `Q_timeout`: a ref that isn't in the latest snapshot, or whose component is gone, fails at once.
 What still costs the full 10 s is an action on a component that is there but stays disabled or
-hidden: `click` on the snapshot's `Button "Delete" [disabled]` waits for it to be enabled. Fail at
-once on a component the snapshot showed disabled, or a `--timeout` option?
+hidden: `click` on the snapshot's `Button "Delete" [disabled]` waits for it to be enabled.
+`set_value` refuses a disabled field at once; `click` the same, or a `--timeout` option?
 
 `Q_browser_download`: Playwright downloads every browser on its first start, 1.3 GB
 (`R_playwright_thread_safety`). With `--browser-executable`, the server could set

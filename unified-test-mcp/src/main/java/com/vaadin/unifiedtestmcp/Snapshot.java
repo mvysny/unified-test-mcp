@@ -27,7 +27,8 @@ import java.util.Map;
  * with none has no quoted name, so an icon-only Button reads as one; its bracket shows its {@code aria-label=}, else
  * its {@code placeholder=}, for the agent to tell it by. A layout without an id, and plain HTML
  * with neither an id nor text of its own, stand aside: their children take their place. A hidden component isn't
- * shown, nor anything inside it.
+ * shown, nor anything inside it; nor the out-of-sight region where Vaadin announces to a screen reader what a
+ * component did.
  *
  * {@code icon=} names the icon in front of the name, in the {@code prefix} slot or an icon-only Button's, as the app
  * gave it: {@code "vaadin:close"}, {@code "lumo:cross"}, a FontIcon's ligature or classes. A hint for the agent to
@@ -107,6 +108,9 @@ final class Snapshot {
               const visit = (e, parentTag) => {
                 const tag = e.localName;
                 if (e.hidden || SKIPPED.has(tag) || tag.startsWith('copilot-')) return [];
+                // Vaadin's screen-reader announcements, "Czechia added to selection" (@vaadin/a11y-base announce.js)
+                if (parentTag === 'body' && tag === 'div' && e.style.position === 'fixed'
+                    && e.style.clip === 'rect(0px, 0px, 0px, 0px)') return [];
                 if (parentTag.startsWith('vaadin-') && OWN_PARTS.has(e.getAttribute('slot'))) return [];
                 const custom = tag.includes('-');
                 const text = ownText(e);
