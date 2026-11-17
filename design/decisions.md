@@ -166,6 +166,36 @@ whole inside, a ComboBox's scroller, a RadioButtonGroup's buttons), icons,
 the dev tools, and anything `hidden`. A layout with an id stays: the app named it. Revisit the
 pruning when an agent can't tell two identical forms apart.
 
+## D_modal_shows_alone — Why does a snapshot show only the modal dialog on top, rather than the whole page with it?
+
+While a modal Dialog or ConfirmDialog is open, the snapshot walks from the topmost modal only,
+and a line above it names the stack, top first: `Modal: Dialog "Why?" over Dialog "Delete
+order?" over the page; only the dialog on top is shown: nothing under it takes input`. This is
+swing-mcp's rule, that tools see only the windows a user could interact with right now: a ref
+addresses what a user could act on now. A Button under the backdrop can't be clicked: the Unified API would wait for it to become
+actionable and time out, and under `STRICT` modality the server ignores its event anyway
+(`R_vaadin_dialog_dom`). A ref on it misfires; a line for it is a non-option on the agent's
+decision surface.
+
+**Why the `Modal:` line**, as swing-mcp's modal-stack header: without it the page vanishes
+after a click, and the agent can't tell a dialog from a navigation, nor what closing it returns
+to. Why on every modal, where swing-mcp shows one only for a stack of two: a browser modal always
+has the page under it.
+
+**Why the topmost is the last open `aria-modal="true"` element in document order**: Flow appends
+a dialog to `<body>`, or inside the modal that opened it (`R_vaadin_dialog_dom`), so a later one
+is on top. Why `aria-modal` rather than a list of tags: Dialog and ConfirmDialog both set it, and
+so does any web component that tells a screen reader it is modal. One closed but still in the DOM
+is told by its `opened`.
+
+**Why not keep the page's lines and mark them blocked**: every tool would then need its own
+is-this-blocked check — swing-mcp rejected that too. The stamps stay on the page's elements, so
+once the dialog closes the page comes back with its old refs (`D_refs_not_ids`); swing-mcp,
+numbering from 1 on every snapshot, can't do that. A ref under the modal fails with an error
+naming the modal and how to get past it.
+
+A modeless dialog shows with the page, where its element is: the page still takes input.
+
 ## D_action_returns_snapshot — Why does an action answer with the whole snapshot rather than an echo?
 
 `click` and `navigate` answer with an echo line, then the snapshot taken once the server has

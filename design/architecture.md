@@ -24,7 +24,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 
 ## Flows
 
-**A snapshot**: `Snapshot.take` runs one script in the page that walks the light DOM from `<body>`, stamps each component it shows with `data-mcp-ref` (a stamp already there stays, a new one takes the next number from `Refs`), and returns the tree; Java renders a line per component through `ComponentTypes` and replaces the session's `Refs` with the refs it showed.
+**A snapshot**: `Snapshot.take` runs one script in the page that walks the light DOM from `<body>`, stamps each component it shows with `data-mcp-ref` (a stamp already there stays, a new one takes the next number from `Refs`), and returns the tree — while a modal dialog is open, the walk starts from the topmost one instead of `<body>` (`D_modal_shows_alone`); Java renders a line per component through `ComponentTypes` and replaces the session's `Refs` with the refs it showed.
 
 **A tool call** (`click(ref)`, say):
 

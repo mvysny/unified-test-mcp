@@ -233,6 +233,33 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
 - A field's `setPrefixComponent` puts the icon in the `prefix` slot.
   **[verified 2026-11-17, Vaadin 25.3.5]**
 
+## R_vaadin_dialog_dom — a Vaadin Dialog and ConfirmDialog in the browser
+
+- An open `Dialog` is a `<vaadin-dialog>`, its content its light-DOM children; the overlay,
+  `<vaadin-dialog-overlay popover="manual">` in its shadow root, slots them.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- A Dialog the app didn't add anywhere is attached on `open()` as the last child of `<body>`, and
+  removed once closed. One opened while a modal Dialog is open goes inside that dialog's
+  element instead, after its content. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A Dialog the app added to a layout stays there in the DOM while closed, content and all, its
+  `opened` property false. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A modal Dialog, the default, has `aria-modal="true"` and `with-backdrop`;
+  `setModality(ModalityMode.MODELESS)` sets `modeless` instead, with no `aria-modal`.
+  `setModal(boolean)` is deprecated for removal since 25.0. **[verified 2026-11-17, Vaadin 25.3.5]**
+- `ModalityMode.STRICT` blocks the server's handling of events from components outside the
+  dialog; `VISUAL` is the same in the browser, backdrop and focus trap, but doesn't block them.
+  **[docs]**
+- The page under a modal gets no `inert`; the backdrop is what stands in the pointer's way.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- A Dialog's `aria-label` is its header title, which the web component renders as
+  `<h2 slot="title">` while open; its footer's components sit in a
+  `<div slot="footer" style="display: contents">`. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A `ConfirmDialog` is a `<vaadin-confirm-dialog role="alertdialog" aria-modal="true">`, attached
+  to `<body>` like a Dialog: its header in `aria-label` and rendered as `<h3 slot="header">`, its
+  message a `<div>`, its buttons `<vaadin-button>`s in the slots `cancel-button`,
+  `reject-button` and `confirm-button`, those not shown `hidden`.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+
 ## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
 
 - `UI.navigate` from a listener updates the address bar only after the response that carries the

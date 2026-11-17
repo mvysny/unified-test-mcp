@@ -28,7 +28,17 @@ import java.util.Map;
  * its {@code placeholder=}, for the agent to tell it by. A layout without an id, and plain HTML
  * with neither an id nor text of its own, stand aside: their children take their place. A hidden component isn't
  * shown, nor anything inside it; nor the out-of-sight region where Vaadin announces to a screen reader what a
- * component did.
+ * component did. A dialog that isn't open isn't shown.
+ *
+ * A Dialog or a ConfirmDialog is named by its title. While a modal one is open, nothing under it takes input, so the
+ * snapshot shows the one on top alone, below a line naming the modal stack, top first:
+ *
+ * <pre>
+ * Modal: Dialog "Why?" over Dialog "Delete order?" over the page; only the dialog on top is shown: nothing under it takes input
+ * - Dialog "Why?" [ref=9]
+ *   - Span "Deleting can't be undone." [ref=10]
+ *   - Button "OK" [ref=11] actions: click
+ * </pre>
  *
  * {@code icon=} names the icon in front of the name, in the {@code prefix} slot or an icon-only Button's, as the app
  * gave it: {@code "vaadin:close"}, {@code "lumo:cross"}, a FontIcon's ligature or classes. A hint for the agent to
@@ -45,7 +55,7 @@ import java.util.Map;
  * inside a disabled layout too, but leaves those inside a read-only CustomField editable (R_flow_field_states).
  *
  * <h2>Implementation detail</h2>
- * One script, one round-trip: it walks the light DOM from {@code <body>}, stamps each component it shows with
+ * One script, one round-trip: it walks the light DOM from {@code <body>}, or from the modal on top, stamps each component it shows with
  * {@link Refs#ATTRIBUTE} (keeping a stamp already there, so a component keeps its ref), and returns the tree. The
  * Unified API can't list a page's components (R_unified_no_enumeration), hence the escape hatch.
  */
@@ -59,7 +69,7 @@ final class Snapshot {
     private static final int HINT_CAP = 120;
 
     private static final String SCRIPT = """
-            async ({ next, layouts, skipped, fields, attribute }) => {
+            async ({ next, layouts, skipped, fields, titleSlots, attribute }) => {
               // A server-side navigation changes the URL after the round-trip that an action waits for
               // (R_flow_navigation_url): with React, once Flow clears its navigation flag; without, in a setTimeout.
               // Drop once Auto-Wait waits for it: parttio/unified-testing-tool#233
@@ -119,6 +129,8 @@ final class Snapshot {
                 if (parentTag === 'body' && tag === 'div' && e.style.position === 'fixed'
                     && e.style.clip === 'rect(0px, 0px, 0px, 0px)') return [];
                 if (parentTag.startsWith('vaadin-') && OWN_PARTS.has(e.getAttribute('slot'))) return [];
+                if (titleSlots[parentTag] === e.getAttribute('slot')) return [];
+                if (tag in titleSlots && !e.opened) return [];
                 const custom = tag.includes('-');
                 const text = ownText(e);
                 const children = () => FIELDS.has(tag) ? [] : Array.from(e.children).flatMap(c => visit(c, tag));
@@ -136,6 +148,7 @@ final class Snapshot {
                   id: str(e.id), idUnique: !!e.id && document.querySelectorAll('#' + CSS.escape(e.id)).length === 1,
                   testId: str(e.getAttribute('data-testid')),
                   label: custom ? str(e.label) : null,
+                  title: tag in titleSlots ? str(e.getAttribute('aria-label')) : null,
                   ariaLabel: str(e.getAttribute('aria-label')),
                   placeholder: custom ? str(e.placeholder) : null,
                   icon: custom ? iconOf(e) : null,
@@ -155,8 +168,14 @@ final class Snapshot {
                   children: children()
                 }];
               };
-              const nodes = Array.from(document.body.children).flatMap(c => visit(c, 'body'));
-              return { url: location.href, title: document.title, next, nodes };
+              // a modal opened over another is after it in the DOM: Flow appends it to the body, or puts it inside
+              // the modal that opened it
+              const modals = Array.from(document.querySelectorAll('[aria-modal=true]'))
+                  .filter(e => e.opened !== false && !e.hidden).reverse();
+              const nodes = modals.length > 0 ? visit(modals[0], modals[0].parentElement.localName)
+                  : Array.from(document.body.children).flatMap(c => visit(c, 'body'));
+              return { url: location.href, title: document.title, next, nodes,
+                  modals: modals.map(e => ({ tag: e.localName, title: str(e.getAttribute('aria-label')) })) };
             }""";
 
     /** What a snapshot of the browser's empty first page says, instead of listing nothing. */
@@ -179,12 +198,18 @@ final class Snapshot {
         }
         Map<String, Object> arg = Map.of("next", refs.next(), "layouts", List.copyOf(ComponentTypes.LAYOUTS),
                 "skipped", List.copyOf(ComponentTypes.SKIPPED), "fields", List.copyOf(ComponentTypes.FIELDS),
-                "attribute", Refs.ATTRIBUTE);
+                "titleSlots", ComponentTypes.DIALOG_TITLE_SLOTS, "attribute", Refs.ATTRIBUTE);
         Map<?, ?> result = (Map<?, ?>) browser.evaluate(SCRIPT, arg);
         StringBuilder out = new StringBuilder("URL: ").append(result.get("url")).append('\n');
         String title = (String) result.get("title");
         if (!title.isBlank()) {
             out.append("Title: ").append(title.strip()).append('\n');
+        }
+        List<String> modals = ((List<?>) result.get("modals")).stream()
+                .map(m -> dialogName((Map<?, ?>) m)).toList();
+        if (!modals.isEmpty()) {
+            out.append("Modal: ").append(String.join(" over ", modals))
+                    .append(" over the page; only the dialog on top is shown: nothing under it takes input\n");
         }
         Map<Integer, Refs.Target> targets = new LinkedHashMap<>();
         List<?> nodes = (List<?>) result.get("nodes");
@@ -192,7 +217,8 @@ final class Snapshot {
             out.append("(no components)\n");
         }
         render(nodes, 0, out, targets);
-        refs.replace((String) result.get("url"), targets, ((Number) result.get("next")).intValue());
+        refs.replace((String) result.get("url"), modals.isEmpty() ? null : modals.get(0), targets,
+                ((Number) result.get("next")).intValue());
         return out.toString();
     }
 
@@ -266,7 +292,14 @@ final class Snapshot {
             case TEXT -> text;
             case LABEL -> label;
             case LABEL_OR_TEXT -> label != null ? label : text;
+            case TITLE -> (String) node.get("title");
         };
+    }
+
+    /** {@code Dialog "Delete order?"}; {@code Dialog} for one without a title. */
+    private static String dialogName(Map<?, ?> modal) {
+        String type = ComponentTypes.of((String) modal.get("tag"), false).flowName();
+        return modal.get("title") == null ? type : type + " " + quote((String) modal.get("title"));
     }
 
     private static void flag(Map<?, ?> node, String key, List<String> bracket) {

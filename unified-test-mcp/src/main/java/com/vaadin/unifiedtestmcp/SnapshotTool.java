@@ -24,7 +24,8 @@ final class SnapshotTool implements ToolFunction {
                     + "the states that are on: checked, "
                     + "disabled, readonly, required, invalid with its error message. `actions` lists "
                     + "the tools made for that type. A component the app has hidden isn't listed, nor anything inside "
-                    + "it. Every other tool names a component by its `ref` from here; "
+                    + "it, nor a dialog that isn't open. While a modal dialog is open, it alone is listed, below a "
+                    + "`Modal:` line naming what it's over: nothing under it takes input until it closes. Every other tool names a component by its `ref` from here; "
                     + "a ref stays valid as long as the latest snapshot shows it.",
             new InputSchemaBuilder().build());
 

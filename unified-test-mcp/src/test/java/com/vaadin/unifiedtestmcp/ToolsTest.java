@@ -106,6 +106,88 @@ public class ToolsTest {
     }
 
     @Test
+    public void snapshotShowsOnlyTheModalOnTop() throws IOException {
+        String page = snapshotOf("dialog");
+        assertEquals("""
+                URL: APP/dialog
+                - Button "Delete" [ref=N] actions: click
+                - Button "Notes" [ref=N] actions: click
+                - Button "Discard" [ref=N] actions: click
+                - Span "Not deleted" [ref=N]
+                """, masked(page), "a closed dialog isn't shown");
+        String delete = call(client, "click", ref(ref(page, "Button \"Delete\"")));
+        assertEquals("""
+                Clicked ref=N
+
+                URL: APP/dialog
+                Modal: Dialog "Delete order?" over the page; only the dialog on top is shown: nothing under it takes \
+                input
+                - Dialog "Delete order?" [ref=N]
+                  - TextField "Reason" [ref=N, value=""] actions: set_value
+                  - Button "Why?" [ref=N] actions: click
+                  - Button "Cancel" [ref=N] actions: click
+                  - Button "Delete" [ref=N] actions: click
+                """, masked(delete));
+        String why = call(client, "click", ref(ref(delete, "Button \"Why?\"")));
+        assertEquals("""
+                Clicked ref=N
+
+                URL: APP/dialog
+                Modal: Dialog "Why?" over Dialog "Delete order?" over the page; only the dialog on top is shown: \
+                nothing under it takes input
+                - Dialog "Why?" [ref=N]
+                  - Span "Deleting can't be undone." [ref=N]
+                  - Button "OK" [ref=N] actions: click
+                """, masked(why));
+        String back = call(client, "click", ref(ref(why, "Button \"OK\"")));
+        assertEquals(ref(delete, "Button \"Cancel\""), ref(back, "Button \"Cancel\""), "a component keeps its ref");
+        String closed = call(client, "click", ref(ref(back, "Button \"Cancel\"")));
+        assertEquals(page, closed.substring(closed.indexOf("URL: ")), "the page comes back with its refs");
+    }
+
+    @Test
+    public void refBehindAModalIsRefused() throws IOException {
+        String page = snapshotOf("dialog");
+        int discard = ref(page, "Button \"Discard\"");
+        String confirm = call(client, "click", ref(discard));
+        assertEquals("""
+                Clicked ref=N
+
+                URL: APP/dialog
+                Modal: ConfirmDialog "Discard changes?" over the page; only the dialog on top is shown: nothing under \
+                it takes input
+                - ConfirmDialog "Discard changes?" [ref=N]
+                  - Div "Unsaved changes will be lost." [ref=N]
+                  - Button "Cancel" [ref=N] actions: click
+                  - Button "Discard" [ref=N] actions: click
+                """, masked(confirm));
+        assertEquals("ref " + discard + " isn't in the latest snapshot, of " + appUrl + "/dialog, which shows only"
+                + " the modal ConfirmDialog \"Discard changes?\"; its refs are " + ref(confirm, "- ConfirmDialog")
+                + "-" + ref(confirm, "Button \"Discard\"") + ". What's under the dialog takes no input until it"
+                + " closes: close it with one of its buttons, and the page's components come back with their refs.",
+                error(client, "click", ref(discard)));
+        String discarded = call(client, "click", ref(ref(confirm, "Button \"Discard\"")));
+        assertTrue(discarded.contains("\n- Span \"Discarded\" ["), discarded);
+    }
+
+    @Test
+    public void snapshotShowsAModelessDialogWithThePage() throws IOException {
+        String notes = call(client, "click", ref(ref(navigate(client, "dialog"), "Button \"Notes\"")));
+        assertEquals("""
+                Clicked ref=N
+
+                URL: APP/dialog
+                - Button "Delete" [ref=N] actions: click
+                - Button "Notes" [ref=N] actions: click
+                - Button "Discard" [ref=N] actions: click
+                - Span "Not deleted" [ref=N]
+                - Dialog "Notes" [ref=N]
+                  - Span "Remember to call back." [ref=N]
+                  - Button "Close" [ref=N] actions: click
+                """, masked(notes));
+    }
+
+    @Test
     public void clickWithoutIdFindsTheStampedComponent() throws IOException {
         int save = ref(navigate(client, "form"), "Button \"Save\"");
         String after = call(client, "click", ref(save));

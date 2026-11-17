@@ -37,6 +37,8 @@ final class Refs {
     private @Nullable Map<Integer, Target> latest;
     /** The URL the latest snapshot was of. */
     private String latestUrl = "";
+    /** The modal dialog the latest snapshot showed alone, {@code Dialog "Delete order?"}; {@code null} for none. */
+    private @Nullable String latestModal;
     private int next = 1;
 
     /** The number the next newly stamped component gets. */
@@ -47,9 +49,12 @@ final class Refs {
     /**
      * Called by a snapshot of the page at {@code url}: these are now the valid refs, and {@code next} the next
      * number to stamp.
+     *
+     * @param modal the modal dialog the snapshot showed alone, as its line names it; {@code null} for none
      */
-    void replace(String url, Map<Integer, Target> refs, int next) {
+    void replace(String url, @Nullable String modal, Map<Integer, Target> refs, int next) {
         latestUrl = url;
+        latestModal = modal;
         latest = Map.copyOf(refs);
         this.next = next;
     }
@@ -82,6 +87,12 @@ final class Refs {
                     + " then use a ref from the snapshot either returns.");
         }
         Target target = latest.get(ref);
+        if (target == null && latestModal != null) {
+            throw new MCPErrorResponseException("ref " + ref + " isn't in the latest snapshot, of " + latestUrl
+                    + ", which shows only the modal " + latestModal + "; its refs are " + ranges()
+                    + ". What's under the dialog takes no input until it closes: close it with one of its buttons,"
+                    + " and the page's components come back with their refs.");
+        }
         if (target == null) {
             throw new MCPErrorResponseException("ref " + ref + " isn't in the latest snapshot, of " + latestUrl
                     + (latest.isEmpty() ? ", which showed no components" : "; its refs are " + ranges())

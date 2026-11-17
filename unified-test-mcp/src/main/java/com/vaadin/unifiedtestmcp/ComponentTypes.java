@@ -30,7 +30,9 @@ final class ComponentTypes {
         /** Its label, Flow's {@code HasLabel}: the fields, a Checkbox. */
         LABEL,
         /** The label if it has one, else its text: a type this table doesn't list. */
-        LABEL_OR_TEXT
+        LABEL_OR_TEXT,
+        /** Its title, a Dialog's header text: what its {@code aria-label} says. */
+        TITLE
     }
 
     /** What a component holds, and so which of {@code get_text} and {@code get_value} reads it. */
@@ -104,6 +106,8 @@ final class ComponentTypes {
             Map.entry("vaadin-slider", labelled("Slider", Holds.NUMBER)),
             Map.entry("vaadin-range-slider", labelled("RangeSlider", Holds.NUMBER)),
             Map.entry("vaadin-custom-field", labelled("CustomField", Holds.PARTS)),
+            Map.entry("vaadin-dialog", dialog("Dialog")),
+            Map.entry("vaadin-confirm-dialog", dialog("ConfirmDialog")),
             Map.entry("div", html("Div")),
             Map.entry("span", html("Span")),
             Map.entry("p", html("Paragraph")),
@@ -119,6 +123,13 @@ final class ComponentTypes {
     /** Layouts: without an id, their children take their place in the snapshot. */
     static final Set<String> LAYOUTS = Set.of("vaadin-vertical-layout", "vaadin-horizontal-layout",
             "vaadin-form-layout", "vaadin-form-item", "vaadin-form-row", "vaadin-scroller");
+
+    /**
+     * Dialogs: one that isn't open isn't shown, nor anything inside it. Each tag's own title element, a slot the
+     * dialog renders its title into, isn't shown either: the title is the dialog's name.
+     */
+    static final Map<String, String> DIALOG_TITLE_SLOTS = Map.of("vaadin-dialog", "title",
+            "vaadin-confirm-dialog", "header");
 
     /** A MultiSelectListBox: a {@code vaadin-list-box} with {@code multiple} set. */
     private static final Type MULTI_SELECT_LIST_BOX = labelled("MultiSelectListBox", Holds.SELECTED_ITEMS);
@@ -164,6 +175,10 @@ final class ComponentTypes {
     /** A field named by its label, holding something other than a text; a CustomField takes no value of its own. */
     private static Type labelled(String flowName, Holds holds) {
         return new Type(flowName, NameFrom.LABEL, holds, holds == Holds.PARTS ? List.of() : List.of("set_value"));
+    }
+
+    private static Type dialog(String flowName) {
+        return new Type(flowName, NameFrom.TITLE, Holds.TEXT, List.of());
     }
 
     private static Type html(String flowName) {
