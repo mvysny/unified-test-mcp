@@ -17,3 +17,7 @@ once on a component the snapshot showed disabled, or a `--timeout` option?
 `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` for itself — but the adapter calls `Playwright.create()`
 without options, so the variable has to be in the process environment: the launcher script, or
 an upstream option.
+
+`Q_rich_text_editor`: RichTextEditor (commercial, not in `vaadin-core`) is a field whose `value`
+property is its Delta JSON, while Flow's value is HTML. Show its text, as the user reads it? Not
+until test-app can run it.

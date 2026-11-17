@@ -27,7 +27,10 @@ import java.util.Map;
  * the {@code aria-label}, then the placeholder, the bracket saying which. A layout without an id, and plain HTML
  * with neither an id nor text of its own, stand aside: their children take their place. Every field has a
  * {@code value=}, in {@code get_value}'s notation, {@link Json}: {@code ""} empty, {@code null} nothing selected;
- * a component without one isn't a field. A Checkbox's {@code checked} says its value.
+ * a component without one isn't a field. A Checkbox's {@code checked} says its value; a CustomField has none, the
+ * fields inside it being shown with theirs. {@code disabled} and {@code readonly} are each component's own, as the
+ * browser has them: Flow disables the fields inside a disabled layout too, but leaves those inside a read-only
+ * CustomField editable (R_flow_field_states).
  *
  * <h2>Implementation detail</h2>
  * One script, one round-trip: it walks the light DOM from {@code <body>}, stamps each component it shows with
@@ -54,6 +57,7 @@ final class Snapshot {
               const str = v => typeof v === 'string' && v.trim() !== '' ? v : null;
               // what the user sees selected, as Dramafinder reads it: the value property is Flow's key for the item
               const itemLabel = (e, i) => typeof i === 'string' ? i : String(i[e.itemLabelPath || 'label'] ?? '');
+              const textOf = e => (e.textContent || '').trim();
               const valueOf = e => {
                 switch (e.localName) {
                   case 'vaadin-combo-box':
@@ -66,6 +70,14 @@ final class Snapshot {
                   }
                   case 'vaadin-select':
                     return str(e.querySelector(':scope > vaadin-select-value-button')?.textContent);
+                  case 'vaadin-checkbox-group':
+                    return Array.from(e.querySelectorAll(':scope > vaadin-checkbox[checked]')).map(textOf);
+                  case 'vaadin-list-box':
+                    return e.multiple ? (e.selectedValues || []).map(i => textOf(e.items[i]))
+                        : e.items?.[e.selected] ? textOf(e.items[e.selected]) : null;
+                  case 'vaadin-slider':
+                  case 'vaadin-range-slider':
+                    return e.value ?? null;
                   default:
                     return typeof e.value === 'string' ? e.value : null;
                 }
@@ -98,6 +110,8 @@ final class Snapshot {
                   value: custom ? valueOf(e) : null,
                   disabled: e.disabled === true || e.hasAttribute('disabled'),
                   checked: custom && e.checked === true,
+                  indeterminate: custom && e.indeterminate === true,
+                  multiple: custom && e.multiple === true,
                   invalid: custom && e.invalid === true,
                   errorMessage: custom ? str(e.errorMessage) : null,
                   required: custom && e.required === true,
@@ -149,7 +163,8 @@ final class Snapshot {
     private static void render(List<?> nodes, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
         for (Object o : nodes) {
             Map<?, ?> node = (Map<?, ?>) o;
-            ComponentTypes.Type type = ComponentTypes.of((String) node.get("tag"));
+            ComponentTypes.Type type = ComponentTypes.of((String) node.get("tag"),
+                    Boolean.TRUE.equals(node.get("multiple")));
             int ref = ((Number) node.get("ref")).intValue();
             String id = (String) node.get("id");
             targets.put(ref, new Refs.Target(type.flowName(),
@@ -175,10 +190,11 @@ final class Snapshot {
             if (value != null) {
                 bracket.add("value=" + value);
             }
-            flag(node, "disabled", bracket);
             flag(node, "checked", bracket);
-            flag(node, "required", bracket);
+            flag(node, "indeterminate", bracket);
+            flag(node, "disabled", bracket);
             flag(node, "readonly", bracket);
+            flag(node, "required", bracket);
             if (Boolean.TRUE.equals(node.get("invalid"))) {
                 Object message = node.get("errorMessage");
                 bracket.add(message == null ? "invalid" : "invalid " + quote((String) message));
@@ -230,10 +246,10 @@ final class Snapshot {
      */
     private static @Nullable String value(ComponentTypes.Holds holds, @Nullable Object value) {
         return switch (holds) {
-            case TEXT, CHECKED -> null;
+            case TEXT, CHECKED, PARTS -> null;
             case VALUE -> Json.of(cap(value == null ? "" : (String) value));
             case SELECTED_ITEM -> Json.of(value == null ? null : cap((String) value));
-            case SELECTED_ITEMS -> cap(Json.of(value));
+            case SELECTED_ITEMS, NUMBER -> cap(Json.of(value));
             case UNKNOWN -> value == null || ((String) value).isBlank() ? null : Json.of(cap((String) value));
         };
     }

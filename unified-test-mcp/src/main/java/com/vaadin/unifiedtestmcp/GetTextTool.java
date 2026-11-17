@@ -36,7 +36,7 @@ final class GetTextTool implements ToolFunction {
         int ref = request.arguments().getInt("ref");
         return MCPProtocol.Content.text(ToolCall.get((page, refs) -> {
             UnifiedElement element = refs.resolve(page, ref).element();
-            ComponentTypes.Type type = ComponentTypes.of(element.getTag());
+            ComponentTypes.Type type = ComponentTypes.of(element);
             if (!type.holds().hasText()) {
                 throw new MCPErrorResponseException("ref " + ref + " is a " + type.flowName()
                         + ": it has a value, not a text. Call get_value; its label is its name in the snapshot.");

@@ -1,5 +1,7 @@
 package com.vaadin.unifiedtestmcp;
 
+import com.vaadin.testing.unified.UnifiedElement;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -11,9 +13,10 @@ import java.util.stream.Collectors;
  * tools that act on it.
  *
  * <pre>{@code
- * ComponentTypes.of("vaadin-button")        // => Button, named by its text, actions: click
- * ComponentTypes.of("vaadin-split-layout")  // => SplitLayout: not listed, its name derived from the tag
- * ComponentTypes.of("my-rating")            // => <my-rating>: a custom element shows its tag
+ * ComponentTypes.of("vaadin-button", false)        // => Button, named by its text, actions: click
+ * ComponentTypes.of("vaadin-split-layout", false)  // => SplitLayout: not listed, its name derived from the tag
+ * ComponentTypes.of("vaadin-list-box", true)       // => MultiSelectListBox: the one tag two Flow classes share
+ * ComponentTypes.of("my-rating", false)            // => <my-rating>: a custom element shows its tag
  * }</pre>
  */
 final class ComponentTypes {
@@ -38,24 +41,30 @@ final class ComponentTypes {
          * text is its label.
          */
         VALUE,
-        /** A Checkbox's value is whether it's ticked, its {@code checked} property; {@code value} is {@code "on"}. */
+        /**
+         * A Checkbox's or a Switch's value is whether it's ticked, its {@code checked} property; {@code value} is
+         * {@code "on"}.
+         */
         CHECKED,
         /**
-         * One item, shown by its label: a ComboBox, a Select. Its {@code value} property is Flow's key for the item,
-         * {@code "3"}, meaningless to the user.
+         * One item, shown by its label: a ComboBox, a Select, a ListBox. Its {@code value} property is Flow's key for
+         * the item, {@code "3"}, meaningless to the user.
          */
         SELECTED_ITEM,
-        /** Items, shown by their labels: a MultiSelectComboBox. */
+        /** Items, shown by their labels: a MultiSelectComboBox, a CheckboxGroup, a MultiSelectListBox. */
         SELECTED_ITEMS,
+        /** A number, a Slider's {@code 30}; or two, a RangeSlider's {@code [8,17]}. */
+        NUMBER,
+        /**
+         * Nothing of its own: a CustomField's value is the fields inside it, each shown with its own. Its
+         * {@code value} property is theirs joined by a tab, not Flow's value.
+         */
+        PARTS,
         /** A type this table doesn't list: either may be there. */
         UNKNOWN;
 
         boolean hasText() {
             return this == TEXT || this == UNKNOWN;
-        }
-
-        boolean hasValue() {
-            return this != TEXT;
         }
     }
 
@@ -67,7 +76,8 @@ final class ComponentTypes {
 
     private static final Map<String, Type> TYPES = Map.ofEntries(
             Map.entry("vaadin-button", new Type("Button", NameFrom.TEXT, Holds.TEXT, List.of("click"))),
-            Map.entry("vaadin-checkbox", new Type("Checkbox", NameFrom.LABEL, Holds.CHECKED, List.of())),
+            Map.entry("vaadin-checkbox", labelled("Checkbox", Holds.CHECKED)),
+            Map.entry("vaadin-switch", labelled("Switch", Holds.CHECKED)),
             Map.entry("vaadin-text-field", field("TextField")),
             Map.entry("vaadin-text-area", field("TextArea")),
             Map.entry("vaadin-password-field", field("PasswordField")),
@@ -78,10 +88,15 @@ final class ComponentTypes {
             Map.entry("vaadin-date-picker", field("DatePicker")),
             Map.entry("vaadin-time-picker", field("TimePicker")),
             Map.entry("vaadin-date-time-picker", field("DateTimePicker")),
-            Map.entry("vaadin-combo-box", selection("ComboBox", Holds.SELECTED_ITEM)),
-            Map.entry("vaadin-select", selection("Select", Holds.SELECTED_ITEM)),
-            Map.entry("vaadin-radio-group", selection("RadioButtonGroup", Holds.SELECTED_ITEM)),
-            Map.entry("vaadin-multi-select-combo-box", selection("MultiSelectComboBox", Holds.SELECTED_ITEMS)),
+            Map.entry("vaadin-combo-box", labelled("ComboBox", Holds.SELECTED_ITEM)),
+            Map.entry("vaadin-select", labelled("Select", Holds.SELECTED_ITEM)),
+            Map.entry("vaadin-radio-group", labelled("RadioButtonGroup", Holds.SELECTED_ITEM)),
+            Map.entry("vaadin-multi-select-combo-box", labelled("MultiSelectComboBox", Holds.SELECTED_ITEMS)),
+            Map.entry("vaadin-checkbox-group", labelled("CheckboxGroup", Holds.SELECTED_ITEMS)),
+            Map.entry("vaadin-list-box", labelled("ListBox", Holds.SELECTED_ITEM)),
+            Map.entry("vaadin-slider", labelled("Slider", Holds.NUMBER)),
+            Map.entry("vaadin-range-slider", labelled("RangeSlider", Holds.NUMBER)),
+            Map.entry("vaadin-custom-field", labelled("CustomField", Holds.PARTS)),
             Map.entry("div", html("Div")),
             Map.entry("span", html("Span")),
             Map.entry("p", html("Paragraph")),
@@ -98,12 +113,15 @@ final class ComponentTypes {
     static final Set<String> LAYOUTS = Set.of("vaadin-vertical-layout", "vaadin-horizontal-layout",
             "vaadin-form-layout", "vaadin-form-item", "vaadin-form-row", "vaadin-scroller");
 
+    /** A MultiSelectListBox: a {@code vaadin-list-box} with {@code multiple} set. */
+    private static final Type MULTI_SELECT_LIST_BOX = labelled("MultiSelectListBox", Holds.SELECTED_ITEMS);
+
     /**
      * Fields: nothing inside one is the app's, so a snapshot shows none of it — a ComboBox's scroller, a
-     * RadioButtonGroup's buttons, a Select's list.
+     * RadioButtonGroup's buttons, a Select's list. Not a CustomField: the fields inside it are the app's.
      */
     static final Set<String> FIELDS = TYPES.entrySet().stream()
-            .filter(e -> e.getValue().holds() != Holds.TEXT)
+            .filter(e -> e.getValue().holds() != Holds.TEXT && e.getValue().holds() != Holds.PARTS)
             .map(Map.Entry::getKey)
             .collect(Collectors.toUnmodifiableSet());
 
@@ -111,7 +129,17 @@ final class ComponentTypes {
     static final Set<String> SKIPPED = Set.of("vaadin-icon", "svg", "img", "vaadin-tooltip", "script", "style",
             "template", "noscript", "link", "meta", "vaadin-dev-tools", "vaadin-connection-indicator");
 
-    static Type of(String tag) {
+    /** The type of a component the browser has: its tag, and for a {@code vaadin-list-box}, its {@code multiple}. */
+    static Type of(UnifiedElement element) {
+        String tag = element.getTag();
+        return of(tag, tag.equals("vaadin-list-box") && element.getPropertyBoolean("multiple"));
+    }
+
+    /** @param multiple whether a {@code vaadin-list-box} takes more than one item; ignored for any other tag */
+    static Type of(String tag, boolean multiple) {
+        if (multiple && tag.equals("vaadin-list-box")) {
+            return MULTI_SELECT_LIST_BOX;
+        }
         Type known = TYPES.get(tag);
         if (known != null) {
             return known;
@@ -126,7 +154,8 @@ final class ComponentTypes {
         return new Type(flowName, NameFrom.LABEL, Holds.VALUE, List.of());
     }
 
-    private static Type selection(String flowName, Holds holds) {
+    /** A field named by its label, holding something other than a text. */
+    private static Type labelled(String flowName, Holds holds) {
         return new Type(flowName, NameFrom.LABEL, holds, List.of());
     }
 

@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -135,6 +136,74 @@ public class ToolsTest {
         assertEquals("\"Czechia\"", call(client, "get_value", ref(ref(choices, "RadioButtonGroup \"Home\""))));
         assertEquals("\"Sweden\"", call(client, "get_value", ref(ref(choices, "Select \"Favourite\""))));
         assertEquals("null", call(client, "get_value", ref(ref(choices, "ComboBox \"Next\""))));
+    }
+
+    /** test-app's {@code fields} view as the snapshot shows it, enabled and editable; the URL left out. */
+    private static final String FIELDS = """
+            - VerticalLayout [ref=N, id=fields]
+              - TextField "Text" [ref=N, value="Alice"]
+              - TextArea "Notes" [ref=N, value="Line one\\nLine two"]
+              - PasswordField "Password" [ref=N, value="secret"]
+              - EmailField "Email" [ref=N, value="alice@example.com"]
+              - IntegerField "Age" [ref=N, value="42"]
+              - NumberField "Weight" [ref=N, value="72.5"]
+              - BigDecimalField "Price" [ref=N, value="9.90"]
+              - DatePicker "Born" [ref=N, value="2000-01-31"]
+              - TimePicker "Alarm" [ref=N, value="07:30"]
+              - DateTimePicker "Meeting" [ref=N, value="2026-11-17T10:00"]
+              - Checkbox "Agree" [ref=N, checked]
+              - Switch "Dark mode" [ref=N, checked]
+              - CheckboxGroup "Toppings" [ref=N, value=["Cheese","Olives"]]
+              - ListBox "Size" [ref=N, aria-label, value="Medium"]
+              - MultiSelectListBox "Days" [ref=N, aria-label, value=["Mon","Wed"]]
+              - Slider "Volume" [ref=N, value=30]
+              - Slider "Ratio" [ref=N, value=0.5]
+              - RangeSlider "Hours" [ref=N, value=[8,17]]
+              - CustomField "Phone" [ref=N]
+                - TextField "Prefix" [ref=N, value="+420"]
+                - TextField "Number" [ref=N, value="123456"]
+            """;
+
+    @Test
+    public void snapshotShowsEveryField() throws IOException {
+        assertEquals("URL: APP/fields\n" + FIELDS, masked(snapshotOf("fields")));
+    }
+
+    @Test
+    public void snapshotShowsDisabledFields() throws IOException {
+        assertEquals("URL: APP/fields/disabled\n" + flagged(FIELDS, "disabled", 1, 2),
+                masked(snapshotOf("fields/disabled")));
+        assertEquals("URL: APP/fields/disabled-parent\n" + flagged(FIELDS, "disabled", 0, 2),
+                masked(snapshotOf("fields/disabled-parent")), "Flow disables what is inside a disabled layout");
+    }
+
+    @Test
+    public void snapshotShowsReadOnlyFields() throws IOException {
+        assertEquals("URL: APP/fields/readonly\n" + flagged(FIELDS, "readonly", 1, 1),
+                masked(snapshotOf("fields/readonly")), "a read-only CustomField leaves its fields editable");
+    }
+
+    @Test
+    public void getValueReadsEveryField() throws IOException {
+        String fields = snapshotOf("fields");
+        assertEquals("\"Line one\\nLine two\"", call(client, "get_value", ref(ref(fields, "TextArea"))));
+        assertEquals("\"42\"", call(client, "get_value", ref(ref(fields, "IntegerField"))));
+        assertEquals("\"2026-11-17T10:00\"", call(client, "get_value", ref(ref(fields, "DateTimePicker"))));
+        assertEquals("true", call(client, "get_value", ref(ref(fields, "Switch"))));
+        assertEquals("[\"Cheese\",\"Olives\"]", call(client, "get_value", ref(ref(fields, "CheckboxGroup"))));
+        assertEquals("\"Medium\"", call(client, "get_value", ref(ref(fields, "ListBox \"Size\""))));
+        assertEquals("[\"Mon\",\"Wed\"]", call(client, "get_value", ref(ref(fields, "MultiSelectListBox"))));
+        assertEquals("30", call(client, "get_value", ref(ref(fields, "Slider \"Volume\""))));
+        assertEquals("0.5", call(client, "get_value", ref(ref(fields, "Slider \"Ratio\""))));
+        assertEquals("[8,17]", call(client, "get_value", ref(ref(fields, "RangeSlider"))));
+        assertEquals("\"+420\"", call(client, "get_value", ref(ref(fields, "TextField \"Prefix\""))));
+        int phone = ref(fields, "CustomField");
+        assertEquals("ref " + phone + " is a CustomField: its value is in the fields inside it. Call get_value on"
+                + " each; the snapshot shows them under it.", error(client, "get_value", ref(phone)));
+        String disabled = snapshotOf("fields/disabled");
+        assertEquals("\"Medium\"", call(client, "get_value", ref(ref(disabled, "ListBox \"Size\""))),
+                "a disabled ListBox's item loses its selected attribute; the index stays");
+        assertEquals("[\"Mon\",\"Wed\"]", call(client, "get_value", ref(ref(disabled, "MultiSelectListBox"))));
     }
 
     @Test
@@ -259,6 +328,20 @@ public class ToolsTest {
     /** Navigates to {@code path} in test-app: {@code "form"}, or {@code ""} for the start view. */
     private static String navigate(TinyMCPClient session, String path) throws IOException {
         return call(session, "navigate", Map.of("url", appUrl + "/" + path));
+    }
+
+    /** Navigates to {@code path} and answers the snapshot alone, without {@code navigate}'s echo line. */
+    private static String snapshotOf(String path) throws IOException {
+        String navigated = navigate(client, path);
+        return navigated.substring(navigated.indexOf("URL: "));
+    }
+
+    /** {@code flag} added to the bracket of each line nested {@code fromDepth} to {@code toDepth} deep. */
+    private static String flagged(String snapshot, String flag, int fromDepth, int toDepth) {
+        return snapshot.lines().map(line -> {
+            int depth = line.indexOf("- ") / 2;
+            return depth >= fromDepth && depth <= toDepth ? line.replaceFirst("]$", ", " + flag + "]") : line;
+        }).collect(Collectors.joining("\n", "", "\n"));
     }
 
     private static String error(TinyMCPClient session, String tool, Map<String, Object> arguments)

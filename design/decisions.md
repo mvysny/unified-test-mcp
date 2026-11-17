@@ -190,3 +190,12 @@ its rendered name. Each refuses the other kind, naming the right tool. A type
 asks either "what does it say" or "what's in it", and a tool named after the question is the one
 an agent finds.
 
+## D_password_shown — Why does a PasswordField show its password, where swing-mcp refuses to read one?
+
+The snapshot's `value=` and `get_value` show a PasswordField's value as it is, `"secret"`, like
+any TextField's. swing-mcp refuses to read a password field, so
+the server can't become a channel for reading credentials. Here, refusing would protect nothing:
+the password is the `value` property of an element in a browser the agent drives, which the
+Unified API reads (`UnifiedTextField.getValue()`), as does any script on the page or the
+browser's console. It would cost the agent the check it needs: did the login form get what I
+typed. The cost of showing it: a session's log holds the password typed.

@@ -163,6 +163,37 @@ Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-butto
   Dramafinder's query, as it does for the RadioButtonGroup and the MultiSelectComboBox.
   **[verified 2026-11-16, unified-test-playwright 0.1.0-alpha2]**
 
+## R_flow_field_states — Flow's fields in the browser: value, disabled, read-only
+
+Observed on test-app's `fields` view, every field of `vaadin-core`.
+
+- A text or number field's `value` is a string as typed, `"42"`, `"9.90"`; a DatePicker's ISO,
+  `"2000-01-31"`; a DateTimePicker's `"2026-11-17T10:00"`. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A Checkbox's and a Switch's `value` is `"on"`; `checked` holds the state. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A CheckboxGroup's `value` is Flow's keys, `["1","3"]`; the ticked `<vaadin-checkbox>` children
+  carry the `checked` attribute and their label as text. **[verified 2026-11-17, Vaadin 25.3.5]**
+- ListBox and MultiSelectListBox are both `<vaadin-list-box>`, the second with `multiple`. The
+  selection is an index into `items`: `selected`, `1`; `selectedValues`, `[0,2]`.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- A disabled single-select ListBox keeps `selected`, but the `<vaadin-item>` there loses its
+  `selected` attribute; a disabled MultiSelectListBox's items keep theirs.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- IntegerSlider and DecimalSlider are `<vaadin-slider>`, `value` a number, `30`; the range sliders
+  `<vaadin-range-slider>`, `value` `[8,17]`; each value also in a light-DOM `<input>`.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- A CustomField's `value` is its inner fields' values joined by a tab, `"+420\t123456"`; Flow's
+  value stays on the server. **[verified 2026-11-17, Vaadin 25.3.5]**
+- `setEnabled(false)` sets the `disabled` property and attribute; on a CustomField the attribute
+  only. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A disabled layout disables every field inside it the same way, the property and attribute on
+  each. **[verified 2026-11-17, Vaadin 25.3.5]**
+- `setReadOnly(true)` sets the `readonly` property on every field, and the attribute on all but
+  ListBox and CustomField, whose web components have no `readonly`.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- A read-only CustomField leaves its inner fields editable. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A read-only RadioButtonGroup disables its unchecked buttons (`RadioButtonGroup.updateEnabled`).
+  **[src, vaadin-radio-button-flow 25.3.5]**
+
 ## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
 
 - `UI.navigate` from a listener updates the address bar only after the response that carries the
