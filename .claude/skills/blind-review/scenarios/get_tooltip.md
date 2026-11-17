@@ -18,6 +18,8 @@ over the button with id `clicker`?
 
 - Whether it reads the tooltips off the snapshot's `tooltip=`, or calls `get_tooltip`; both fine.
   Did the description say `get_tooltip` is for a cut one?
+- Save, Delete, `clicker`: the snapshot shows no `tooltip=`, which the description says means none.
+  Did it still call `get_tooltip` on them to confirm? (It did, before the description said so.)
 - Whether it looks for a hover action and, finding none, guesses; the description says it reads
   "without hovering".
 - Save and `clicker`: `get_tooltip` answers `(no tooltip)`. Read as "none", or as a failure?

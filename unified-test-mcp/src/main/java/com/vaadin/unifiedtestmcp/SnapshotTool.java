@@ -17,8 +17,9 @@ final class SnapshotTool implements ToolFunction {
                     + "Button's or Span's text, a field's or Checkbox's label; a component with neither is named by "
                     + "its aria-label or placeholder, the bracket saying which. The bracket also shows the id when "
                     + "the app set one (a Java test finds the component by it), a field's value (a Slider's with its "
-                    + "min and max), the hints helper= (the text below a field) and tooltip=, each cut at 120 "
-                    + "characters (get_helper and get_tooltip read them uncut), and the states that are on: checked, "
+                    + "min and max), the hints helper= (the text below a field) and tooltip=, each only when the "
+                    + "component has one and cut at 120 characters (get_helper and get_tooltip read them uncut), and "
+                    + "the states that are on: checked, "
                     + "disabled, readonly, required, invalid with its error message. `actions` lists "
                     + "the tools made for that type. Every other tool names a component by its `ref` from here; "
                     + "a ref stays valid as long as the latest snapshot shows it.",
