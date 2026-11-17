@@ -13,7 +13,8 @@ import com.vaadin.flow.router.Route;
 /**
  * At {@code form}: one of each case a snapshot names differently — a field by its label and value, a button by
  * its text, an icon-only button by its {@code aria-label}, a disabled button, a component without an id. The
- * {@code Save} button, which has no id, sets the status text. The one view with a page title.
+ * {@code Save} button, which has no id, sets the status text. The one view with a page title. Hints: a field and
+ * a button with a tooltip, a field with a helper text, a Checkbox with one longer than the snapshot shows.
  */
 @Route("form")
 @PageTitle("Form")
@@ -22,11 +23,15 @@ public class FormView extends VerticalLayout {
         TextField name = new TextField("Name");
         name.setId("name");
         name.setValue("Alice");
+        name.setTooltipText("Your full name, as on your ID card");
 
         TextField email = new TextField("Email");
         email.setRequired(true);
+        email.setHelperText("We never share it");
 
         Checkbox subscribe = new Checkbox("Subscribe", true);
+        subscribe.setHelperText("One email a month: what changed in the app, what is coming next, and how to get"
+                + " the most out of it. Unsubscribe at any time, from the link at the bottom of every email.");
 
         Span status = new Span("Not saved");
         Button save = new Button("Save", e -> status.setText("Saved"));
@@ -34,6 +39,7 @@ public class FormView extends VerticalLayout {
         Button close = new Button(VaadinIcon.CLOSE.create());
         close.setAriaLabel("Close");
         close.setId("close");
+        close.setTooltipText("Close without saving");
 
         Button delete = new Button("Delete");
         delete.setEnabled(false);

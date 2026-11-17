@@ -194,6 +194,20 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
 - A read-only RadioButtonGroup disables its unchecked buttons (`RadioButtonGroup.updateEnabled`).
   **[src, vaadin-radio-button-flow 25.3.5]**
 
+## R_vaadin_hints — a Vaadin component's helper text and tooltip in the browser
+
+- `setHelperText` puts a `<div slot="helper">` holding the text in the component's light DOM, on
+  a field and on a Checkbox. **[verified 2026-11-17, Vaadin 25.3.5]**
+- `setTooltipText` puts a `<vaadin-tooltip slot="tooltip">` in the component's light DOM, its text
+  in the `text` property, no attribute; on a Button and on a field alike.
+  **[verified 2026-11-17, Vaadin 25.3.5]**
+- The component's `textContent` includes the tooltip's text: an icon-only Button's is "Close
+  without saving". **[verified 2026-11-17, Vaadin 25.3.5]**
+- So the Unified API's `getText()` includes it on Playwright, which reads `textContent`
+  (`BrowserQueries.TEXT`), but not on Browserless, which reads the server-side elements' text;
+  `BrowserQueries.ITEM_NAME`, a tab's or menu item's name, leaves out children in a named slot.
+  **[src, unified-testing-tool `76ab776`]**
+
 ## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
 
 - `UI.navigate` from a listener updates the address bar only after the response that carries the

@@ -74,11 +74,12 @@ public class ToolsTest {
 
                 URL: APP/form
                 Title: Form
-                - TextField "Name" [ref=N, id=name, value="Alice"]
-                - TextField "Email" [ref=N, value="", required]
-                - Checkbox "Subscribe" [ref=N, checked]
+                - TextField "Name" [ref=N, id=name, value="Alice", tooltip="Your full name, as on your ID card"]
+                - TextField "Email" [ref=N, value="", helper="We never share it", required]
+                - Checkbox "Subscribe" [ref=N, helper="One email a month: what changed in the app, what is coming \
+                next, and how to get the most out of it. Unsubscribe at any t…", checked]
                 - Button "Save" [ref=N] actions: click
-                - Button "Close" [ref=N, id=close, aria-label] actions: click
+                - Button "Close" [ref=N, id=close, aria-label, tooltip="Close without saving"] actions: click
                 - Button "Delete" [ref=N, disabled] actions: click
                 - Span "Not saved" [ref=N]
                 """, masked(navigate(client, "form")));
@@ -156,9 +157,9 @@ public class ToolsTest {
               - CheckboxGroup "Toppings" [ref=N, value=["Cheese","Olives"]]
               - ListBox "Size" [ref=N, aria-label, value="Medium"]
               - MultiSelectListBox "Days" [ref=N, aria-label, value=["Mon","Wed"]]
-              - Slider "Volume" [ref=N, value=30]
-              - Slider "Ratio" [ref=N, value=0.5]
-              - RangeSlider "Hours" [ref=N, value=[8,17]]
+              - Slider "Volume" [ref=N, value=30, min=0, max=100]
+              - Slider "Ratio" [ref=N, value=0.5, min=0, max=1]
+              - RangeSlider "Hours" [ref=N, value=[8,17], min=0, max=24]
               - CustomField "Phone" [ref=N]
                 - TextField "Prefix" [ref=N, value="+420"]
                 - TextField "Number" [ref=N, value="123456"]
@@ -204,6 +205,24 @@ public class ToolsTest {
         assertEquals("\"Medium\"", call(client, "get_value", ref(ref(disabled, "ListBox \"Size\""))),
                 "a disabled ListBox's item loses its selected attribute; the index stays");
         assertEquals("[\"Mon\",\"Wed\"]", call(client, "get_value", ref(ref(disabled, "MultiSelectListBox"))));
+    }
+
+    @Test
+    public void getHelperReadsItUncut() throws IOException {
+        String form = navigate(client, "form");
+        assertEquals("One email a month: what changed in the app, what is coming next, and how to get the most out"
+                + " of it. Unsubscribe at any time, from the link at the bottom of every email.",
+                call(client, "get_helper", ref(ref(form, "Checkbox \"Subscribe\""))));
+        assertEquals("We never share it", call(client, "get_helper", ref(ref(form, "TextField \"Email\""))));
+        assertEquals("(no helper text)", call(client, "get_helper", ref(ref(form, "id=name"))));
+    }
+
+    @Test
+    public void getTooltipReadsItWithoutHovering() throws IOException {
+        String form = navigate(client, "form");
+        assertEquals("Close without saving", call(client, "get_tooltip", ref(ref(form, "id=close"))));
+        assertEquals("Your full name, as on your ID card", call(client, "get_tooltip", ref(ref(form, "id=name"))));
+        assertEquals("(no tooltip)", call(client, "get_tooltip", ref(ref(form, "Button \"Save\""))));
     }
 
     @Test

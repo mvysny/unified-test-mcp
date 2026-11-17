@@ -199,3 +199,16 @@ the password is the `value` property of an element in a browser the agent drives
 Unified API reads (`UnifiedTextField.getValue()`), as does any script on the page or the
 browser's console. It would cost the agent the check it needs: did the login form get what I
 typed. The cost of showing it: a session's log holds the password typed.
+
+## D_hints_as_keys — Why does the snapshot show `helper=` and `tooltip=`, each read whole by its own tool, rather than swing-mcp's one description slot?
+
+swing-mcp puts a component's description, its `accessibleDescription` or else its tooltip, in a
+second quoted string after the name, cut at 120 characters, and reads it whole with
+`get_description`. Here each hint is a key in the bracket, `helper="We never share it"`,
+`tooltip="Close without saving"`: the agent knows where the text came from, below the field or on
+hover, without a legend, and a component with both shows both rather than one as the other's
+fallback. Each is read uncut by a tool named after its key, as `value=` is by `get_value`, so the
+`…` of a cut `helper=` points at `get_helper`. Why not one tool for both: its answer would mix two
+texts when the agent wants one, and its name would say neither. The cut is swing-mcp's 120
+characters: a hint is advice, so its tail is cheap to lose; a name is never cut, as it says which
+component this is.

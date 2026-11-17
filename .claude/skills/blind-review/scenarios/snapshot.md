@@ -5,16 +5,25 @@
 A Vaadin web app is running at {{url}}, and a browser is ready to drive it. Open its page at
 the path `form` and describe that form to me as a tester would before testing it: each field with its label and
 current value, which fields are required, which checkboxes are ticked, each button and whether I
-can press it, and any status text. Also: is there a "Phone" field on that page?
+can press it, any hint the form gives about a field or a button, and any status text. Also: is
+there a "Phone" field on that page? Last, on the page at `fields/readonly`: which fields can I
+type into, and what range can the Volume slider be set to?
 
 ## Done when
 
 - Name = "Alice" (id `name`); Email empty and required; Subscribe ticked.
 - Buttons Save, Close (icon-only, named by its aria-label), Delete (disabled); status "Not saved".
+- Hints: Name's tooltip "Your full name, as on your ID card", Email's helper "We never share it",
+  Subscribe's helper (cut in the snapshot), Close's tooltip "Close without saving".
 - No Phone field: said plainly, without a failed call or a guess.
+- `fields/readonly`: every field is read-only except the two inside Phone (Prefix and Number),
+  which a read-only CustomField leaves editable. Volume: 0 to 100.
 
 ## Watch for
 
 - Whether it calls `navigate` and reads the snapshot that comes back, or calls `snapshot` again.
 - Whether it composes the URL `{{url}}/form` at once, or first tries a bare path.
 - Whether it understands `[aria-label]` and the `actions:` suffix without guessing.
+- Whether it tells `helper=` from `tooltip=`, and notices Subscribe's is cut (`…`).
+- Phone's TextFields: did it notice they lack `readonly`, or assume the whole CustomField is
+  read-only?
