@@ -215,6 +215,9 @@ public class ToolsTest {
                 call(client, "get_helper", ref(ref(form, "Checkbox \"Subscribe\""))));
         assertEquals("We never share it", call(client, "get_helper", ref(ref(form, "TextField \"Email\""))));
         assertEquals("(no helper text)", call(client, "get_helper", ref(ref(form, "id=name"))));
+        int save = ref(form, "Button \"Save\"");
+        assertEquals("ref " + save + " is a Button: only a field has a helper text. A Button's hint is its tooltip:"
+                + " tooltip= in the snapshot, or get_tooltip.", error(client, "get_helper", ref(save)));
     }
 
     @Test
