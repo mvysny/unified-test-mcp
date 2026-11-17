@@ -113,7 +113,10 @@ public class FieldsView extends VerticalLayout implements HasUrlParameter<String
         }
     }
 
-    /** A CustomField of two TextFields, its value the two joined: {@code "+420 123456"}. */
+    /**
+     * A CustomField of two TextFields, its value the two joined: {@code "+420 123456"}. Read-only makes both
+     * read-only: Flow's CustomField doesn't pass it on by itself.
+     */
     static class PhoneField extends CustomField<String> {
         private final TextField prefix = new TextField("Prefix", "+420", "");
         private final TextField number = new TextField("Number", "123456", "");
@@ -121,6 +124,13 @@ public class FieldsView extends VerticalLayout implements HasUrlParameter<String
         PhoneField() {
             setLabel("Phone");
             add(prefix, number);
+        }
+
+        @Override
+        public void setReadOnly(boolean readOnly) {
+            super.setReadOnly(readOnly);
+            prefix.setReadOnly(readOnly);
+            number.setReadOnly(readOnly);
         }
 
         @Override

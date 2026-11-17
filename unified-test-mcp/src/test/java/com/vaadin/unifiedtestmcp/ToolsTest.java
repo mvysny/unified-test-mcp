@@ -281,8 +281,8 @@ public class ToolsTest {
 
     @Test
     public void snapshotShowsReadOnlyFields() throws IOException {
-        assertEquals("URL: APP/fields/readonly\n" + flagged(FIELDS, "readonly", 1, 1),
-                masked(snapshotOf("fields/readonly")), "a read-only CustomField leaves its fields editable");
+        assertEquals("URL: APP/fields/readonly\n" + flagged(FIELDS, "readonly", 1, 2),
+                masked(snapshotOf("fields/readonly")), "test-app's read-only CustomField makes its fields read-only");
     }
 
     @Test

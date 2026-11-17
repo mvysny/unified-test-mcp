@@ -52,7 +52,8 @@ import java.util.Map;
  * {@code get_helper} reads uncut; {@code tooltip=}, which {@code get_tooltip} does.
  *
  * {@code disabled} and {@code readonly} are each component's own, as the browser has them: Flow disables the fields
- * inside a disabled layout too, but leaves those inside a read-only CustomField editable (R_flow_field_states).
+ * inside a disabled layout too; a read-only CustomField's fields are read-only only if the app's subclass passes it
+ * on (R_flow_field_states).
  *
  * <h2>Implementation detail</h2>
  * One script, one round-trip: it walks the light DOM from {@code <body>}, or from the modal on top, stamps each component it shows with

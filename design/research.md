@@ -202,7 +202,8 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
 - `setReadOnly(true)` sets the `readonly` property on every field, and the attribute on all but
   ListBox and CustomField, whose web components have no `readonly`.
   **[verified 2026-11-17, Vaadin 25.3.5]**
-- A read-only CustomField leaves its inner fields editable. **[verified 2026-11-17, Vaadin 25.3.5]**
+- A read-only CustomField leaves its inner fields editable: the app's subclass has to pass
+  `setReadOnly` on to them. **[verified 2026-11-17, Vaadin 25.3.5]**
 - A read-only RadioButtonGroup disables its unchecked buttons (`RadioButtonGroup.updateEnabled`).
   **[src, vaadin-radio-button-flow 25.3.5]**
 
