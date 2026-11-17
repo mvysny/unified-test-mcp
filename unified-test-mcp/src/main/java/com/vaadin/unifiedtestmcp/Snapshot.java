@@ -19,12 +19,13 @@ import java.util.Map;
  * - TextField "Email" [ref=2, value="", helper="We never share it", required]
  * - Checkbox "Subscribe" [ref=3, checked]
  * - Button "Save" [ref=4] actions: click
- * - Button "Close" [ref=5, id=close, aria-label, icon="vaadin:close"] actions: click
+ * - Button [ref=5, id=close, aria-label="Close", icon="vaadin:close"] actions: click
  * &lt;type&gt;  &lt;name&gt;  [ref, id, icon, value, the hints, the flags that are on]  &lt;the type's own tools&gt;
  * </pre>
  *
- * The name is what {@link ComponentTypes} says names that type: a Button's text, a field's label; with neither,
- * the {@code aria-label}, then the placeholder, the bracket saying which. A layout without an id, and plain HTML
+ * The quoted name is what {@link ComponentTypes} says names that type: a Button's text, a field's label. A component
+ * with none has no quoted name, so an icon-only Button reads as one; its bracket shows its {@code aria-label=}, else
+ * its {@code placeholder=}, for the agent to tell it by. A layout without an id, and plain HTML
  * with neither an id nor text of its own, stand aside: their children take their place. A hidden component isn't
  * shown, nor anything inside it.
  *
@@ -203,12 +204,13 @@ final class Snapshot {
             if (node.get("testId") != null) {
                 bracket.add("testid=" + node.get("testId"));
             }
-            Name name = name(node, type.nameFrom());
+            String name = name(node, type.nameFrom());
             if (name != null) {
-                out.append(' ').append(quote(name.text()));
-                if (name.from() != null) {
-                    bracket.add(name.from());
-                }
+                out.append(' ').append(quote(name));
+            } else if (node.get("ariaLabel") != null) {
+                bracket.add("aria-label=" + quote((String) node.get("ariaLabel")));
+            } else if (node.get("placeholder") != null) {
+                bracket.add("placeholder=" + quote((String) node.get("placeholder")));
             }
             if (node.get("icon") != null) {
                 bracket.add("icon=" + quote((String) node.get("icon")));
@@ -245,30 +247,15 @@ final class Snapshot {
         }
     }
 
-    /**
-     * @param from where the name came from when it isn't the type's own naming property, {@code aria-label} or
-     *             {@code placeholder}; {@code null} when it is
-     */
-    private record Name(String text, @Nullable String from) {}
-
-    private static @Nullable Name name(Map<?, ?> node, ComponentTypes.NameFrom nameFrom) {
+    /** The type's own naming property, its text or its label; {@code null} for none. */
+    private static @Nullable String name(Map<?, ?> node, ComponentTypes.NameFrom nameFrom) {
         String label = (String) node.get("label");
         String text = (String) node.get("text");
-        String own = switch (nameFrom) {
+        return switch (nameFrom) {
             case TEXT -> text;
             case LABEL -> label;
             case LABEL_OR_TEXT -> label != null ? label : text;
         };
-        if (own != null) {
-            return new Name(own, null);
-        }
-        if (node.get("ariaLabel") != null) {
-            return new Name((String) node.get("ariaLabel"), "aria-label");
-        }
-        if (node.get("placeholder") != null) {
-            return new Name((String) node.get("placeholder"), "placeholder");
-        }
-        return null;
     }
 
     private static void flag(Map<?, ?> node, String key, List<String> bracket) {

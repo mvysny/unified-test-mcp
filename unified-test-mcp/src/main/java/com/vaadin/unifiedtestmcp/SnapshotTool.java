@@ -9,18 +9,16 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
 /**
  * {@code snapshot()}: the Vaadin components on the page, one line each, in the format {@link Snapshot} shows.
  * Its refs become the ones every other tool takes.
- *
- * Blind reviews ask for {@code aria-label="Close"} in place of the bare {@code aria-label}: no, the quoted name
- * already is its value, and the bracket says where the name came from.
  */
 final class SnapshotTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("snapshot",
             "The page's URL and title, then the Vaadin components on it, one line each, indented by nesting: "
                     + "`- Button \"Save\" [ref=3, id=save] actions: click`. The quoted name is what a user reads: a "
-                    + "Button's or Span's text, a field's or Checkbox's label; a component with neither is named by "
-                    + "its aria-label or placeholder, the bracket saying which. The bracket also shows the id when "
-                    + "the app set one (a Java test finds the component by it), the name of the icon in front of the "
-                    + "name, icon=\"vaadin:close\", a field's value (a Slider's with its "
+                    + "Button's or Span's text, a field's or Checkbox's label. A component with neither has no quoted "
+                    + "name, its bracket showing what tells it apart instead: `- Button [ref=5, aria-label=\"Close\", "
+                    + "icon=\"vaadin:close\"]`, an icon-only Button; else placeholder=. The bracket also shows the id "
+                    + "when the app set one (a Java test finds the component by it), the name of the icon in front "
+                    + "of the name, a field's value (a Slider's with its "
                     + "min and max), the hints helper= (the text below a field) and tooltip=, each only when the "
                     + "component has one and cut at 120 characters (get_helper and get_tooltip read them uncut), and "
                     + "the states that are on: checked, "

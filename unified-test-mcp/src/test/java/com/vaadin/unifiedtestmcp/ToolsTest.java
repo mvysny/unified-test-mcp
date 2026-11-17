@@ -79,7 +79,7 @@ public class ToolsTest {
                 - Checkbox "Subscribe" [ref=N, helper="One email a month: what changed in the app, what is coming \
                 next, and how to get the most out of it. Unsubscribe at any t…", checked]
                 - Button "Save" [ref=N] actions: click
-                - Button "Close" [ref=N, id=close, aria-label, icon="vaadin:close", tooltip="Close without saving"] \
+                - Button [ref=N, id=close, aria-label="Close", icon="vaadin:close", tooltip="Close without saving"] \
                 actions: click
                 - Button "Delete" [ref=N, disabled] actions: click
                 - Span "Not saved" [ref=N]
@@ -94,7 +94,7 @@ public class ToolsTest {
                 URL: APP/icons
                 - Button "Search" [ref=N, icon="vaadin:search"] actions: click
                 - Button "Next" [ref=N] actions: click
-                - Button "Dismiss" [ref=N, aria-label, icon="lumo:cross"] actions: click
+                - Button [ref=N, aria-label="Dismiss", icon="lumo:cross"] actions: click
                 - TextField "Filter" [ref=N, icon="vaadin:search", value=""]
                 - Button "Home" [ref=N, icon="home"] actions: click
                 - Button "Profile" [ref=N, icon="fa-solid fa-user"] actions: click
@@ -171,8 +171,8 @@ public class ToolsTest {
               - Checkbox "Agree" [ref=N, checked]
               - Switch "Dark mode" [ref=N, checked]
               - CheckboxGroup "Toppings" [ref=N, value=["Cheese","Olives"]]
-              - ListBox "Size" [ref=N, aria-label, value="Medium"]
-              - MultiSelectListBox "Days" [ref=N, aria-label, value=["Mon","Wed"]]
+              - ListBox [ref=N, aria-label="Size", value="Medium"]
+              - MultiSelectListBox [ref=N, aria-label="Days", value=["Mon","Wed"]]
               - Slider "Volume" [ref=N, value=30, min=0, max=100]
               - Slider "Ratio" [ref=N, value=0.5, min=0, max=1]
               - RangeSlider "Hours" [ref=N, value=[8,17], min=0, max=24]
@@ -208,7 +208,7 @@ public class ToolsTest {
         assertEquals("\"2026-11-17T10:00\"", call(client, "get_value", ref(ref(fields, "DateTimePicker"))));
         assertEquals("true", call(client, "get_value", ref(ref(fields, "Switch"))));
         assertEquals("[\"Cheese\",\"Olives\"]", call(client, "get_value", ref(ref(fields, "CheckboxGroup"))));
-        assertEquals("\"Medium\"", call(client, "get_value", ref(ref(fields, "ListBox \"Size\""))));
+        assertEquals("\"Medium\"", call(client, "get_value", ref(ref(fields, "aria-label=\"Size\""))));
         assertEquals("[\"Mon\",\"Wed\"]", call(client, "get_value", ref(ref(fields, "MultiSelectListBox"))));
         assertEquals("30", call(client, "get_value", ref(ref(fields, "Slider \"Volume\""))));
         assertEquals("0.5", call(client, "get_value", ref(ref(fields, "Slider \"Ratio\""))));
@@ -218,7 +218,7 @@ public class ToolsTest {
         assertEquals("ref " + phone + " is a CustomField: its value is in the fields inside it. Call get_value on"
                 + " each; the snapshot shows them under it.", error(client, "get_value", ref(phone)));
         String disabled = snapshotOf("fields/disabled");
-        assertEquals("\"Medium\"", call(client, "get_value", ref(ref(disabled, "ListBox \"Size\""))),
+        assertEquals("\"Medium\"", call(client, "get_value", ref(ref(disabled, "aria-label=\"Size\""))),
                 "a disabled ListBox's item loses its selected attribute; the index stays");
         assertEquals("[\"Mon\",\"Wed\"]", call(client, "get_value", ref(ref(disabled, "MultiSelectListBox"))));
     }

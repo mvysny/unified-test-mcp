@@ -12,7 +12,7 @@ type into, and what range can the Volume slider be set to?
 ## Done when
 
 - Name = "Alice" (id `name`); Email empty and required; Subscribe ticked.
-- Buttons Save, Close (icon-only, named by its aria-label), Delete (disabled); status "Not saved".
+- Buttons Save, Close (icon-only: no text, aria-label "Close"), Delete (disabled); status "Not saved".
 - Hints: Name's tooltip "Your full name, as on your ID card", Email's helper "We never share it",
   Subscribe's helper (cut in the snapshot), Close's tooltip "Close without saving".
 - No Phone field: said plainly, without a failed call or a guess.
@@ -23,7 +23,8 @@ type into, and what range can the Volume slider be set to?
 
 - Whether it calls `navigate` and reads the snapshot that comes back, or calls `snapshot` again.
 - Whether it composes the URL `{{url}}/form` at once, or first tries a bare path.
-- Whether it understands `[aria-label]` and the `actions:` suffix without guessing.
+- Whether it reads the Close button's line, no quoted name and `aria-label="Close"`, as an
+  icon-only button, and understands the `actions:` suffix, without guessing.
 - Whether it tells `helper=` from `tooltip=`, and notices Subscribe's is cut (`…`).
 - Phone's TextFields: did it notice they lack `readonly`, or assume the whole CustomField is
   read-only?

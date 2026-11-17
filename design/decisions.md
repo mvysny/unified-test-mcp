@@ -146,8 +146,11 @@ A line names the Flow class a Java developer writes (`TextField`, not `vaadin-te
 `ComponentTypes`; an unlisted `vaadin-*` tag gets a name derived from it (`SplitLayout`), any other
 custom element shows its tag. The quoted name is the property a person tells the component apart
 by, in Flow's and the Unified API's words, which agree: the text for a `HasText` component
-(`withText`), the label for a `HasLabel` one (`withLabel`), else the `aria-label`, then the
-placeholder, the bracket saying which. Never Vaadin 8's "caption". The bracket shows the id, a
+(`withText`), the label for a `HasLabel` one (`withLabel`). Never Vaadin 8's "caption". A component
+with neither has no quoted name, and its bracket shows `aria-label="Close"`, else
+`placeholder="…"`: an icon-only Button reads as one at a glance. Why not quote the aria-label as
+the name, the bracket marking it with a bare `aria-label`: two blind agents and the owner read
+that as an empty aria-label beside a caption. The bracket shows the id, a
 field's value, and only the states that are on. Every field shows `value=`, written as `get_value`
 answers it — `""` for an empty field, `null` for nothing selected, `["Finland","Sweden"]` — and
 capped at 80 characters (a name never is: it says which component this is). So a missing `value=`

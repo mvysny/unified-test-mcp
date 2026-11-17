@@ -12,7 +12,7 @@ import com.vaadin.flow.router.Route;
 
 /**
  * At {@code form}: one of each case a snapshot names differently — a field by its label and value, a button by
- * its text, an icon-only button by its {@code aria-label}, a disabled button, a component without an id. The
+ * its text, an icon-only button by its {@code aria-label} alone, a disabled button, a component without an id. The
  * {@code Save} button, which has no id, sets the status text. The one view with a page title. Hints: a field and
  * a button with a tooltip, a field with a helper text, a Checkbox with one longer than the snapshot shows.
  */
