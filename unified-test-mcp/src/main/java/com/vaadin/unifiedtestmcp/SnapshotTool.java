@@ -9,6 +9,9 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
 /**
  * {@code snapshot()}: the Vaadin components on the page, one line each, in the format {@link Snapshot} shows.
  * Its refs become the ones every other tool takes.
+ *
+ * Blind reviews ask for {@code aria-label="Close"} in place of the bare {@code aria-label}: no, the quoted name
+ * already is its value, and the bracket says where the name came from.
  */
 final class SnapshotTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("snapshot",
@@ -21,7 +24,8 @@ final class SnapshotTool implements ToolFunction {
                     + "component has one and cut at 120 characters (get_helper and get_tooltip read them uncut), and "
                     + "the states that are on: checked, "
                     + "disabled, readonly, required, invalid with its error message. `actions` lists "
-                    + "the tools made for that type. Every other tool names a component by its `ref` from here; "
+                    + "the tools made for that type. A component the app has hidden isn't listed, nor anything inside "
+                    + "it. Every other tool names a component by its `ref` from here; "
                     + "a ref stays valid as long as the latest snapshot shows it.",
             new InputSchemaBuilder().build());
 

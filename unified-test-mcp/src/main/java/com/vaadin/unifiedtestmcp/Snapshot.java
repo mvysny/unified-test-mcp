@@ -25,9 +25,9 @@ import java.util.Map;
  *
  * The name is what {@link ComponentTypes} says names that type: a Button's text, a field's label; with neither,
  * the {@code aria-label}, then the placeholder, the bracket saying which. A layout without an id, and plain HTML
- * with neither an id nor text of its own, stand aside: their children take their place. Every field has a
- * {@code value=}, in {@code get_value}'s notation, {@link Json}: {@code ""} empty, {@code null} nothing selected;
- * a component without one isn't a field. A Slider's has {@code min=} and {@code max=} beside it. A Checkbox's
+ * with neither an id nor text of its own, stand aside: their children take their place. A hidden component isn't
+ * shown, nor anything inside it. Every field has a {@code value=}, in {@code get_value}'s notation, {@link Json}:
+ * {@code ""} empty, {@code null} nothing selected; a component without one isn't a field. A Slider's has {@code min=} and {@code max=} beside it. A Checkbox's
  * {@code checked} says its value; a CustomField has none, the fields inside it being shown with theirs.
  *
  * The hints, each cut at {@value #HINT_CAP} characters: {@code helper=}, the text below a field, which
