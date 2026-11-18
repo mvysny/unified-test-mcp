@@ -325,6 +325,8 @@ None of these carries `hidden`.
 - The browser's `checkVisibility()` is false for a closed Details' or AccordionPanel's content, a
   never-opened Popover's, and a collapsed SideNavItem's children; but true for a closed drawer's
   SideNav. **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
+- `checkVisibility()` is false for an element with `display: contents`, which has no box of its
+  own, while its children's is true. **[verified 2026-11-18, Chromium]**
 - A `TabSheet` is the exception: only the selected tab's content is in the DOM, and selecting
   another tab replaces it. So is a `ContextMenu`: before it first opens, there is no
   `<vaadin-context-menu>` in the DOM, and its target is a plain child of its layout.
@@ -337,10 +339,20 @@ None of these carries `hidden`.
 
 - A `<vaadin-login-form>`'s fields are a `<vaadin-text-field id="vaadinLoginUsername">` and a
   `<vaadin-password-field id="vaadinLoginPassword">` in its light DOM, beside an
-  `<input id="csrf">`. **[verified 2026-11-18, Vaadin 25.3.5]**
-- After the app's `setError(true)`, the form's `error` property is true and its message is
-  rendered in the shadow DOM of a `<vaadin-login-form-wrapper>`, itself in the form's shadow
-  root; nothing in the light DOM changes. **[verified 2026-11-18, Vaadin 25.3.5]**
+  `<input id="csrf" type="hidden">`, whose `checkVisibility()` is false.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- Flow sends the form its whole `i18n`, there before any error. After the app's `setError(true)`,
+  the form's `error` property is true and its message is rendered in the shadow DOM of a
+  `<vaadin-login-form-wrapper>`, itself in the form's shadow root: `i18n.errorMessage.title` in a
+  `<strong part="error-message-title">`, `i18n.errorMessage.message` below it. Nothing in the
+  light DOM changes. **[verified 2026-11-18, Vaadin 25.3.5]**
+- The form's heading, "Log in", is its `i18n.form.title`, rendered in its shadow DOM as
+  `part="form-title"`; the form has no `aria-label`. **[verified 2026-11-18, Vaadin 25.3.5]**
+- An open `<vaadin-login-overlay>` has `role="dialog"` and `aria-modal="true"`, no `aria-label`:
+  its `aria-labelledby` names a `<div slot="title" role="heading">` in its light DOM holding the
+  title, its id generated, `title-vaadin-login-overlay-34`. Its `setTitle` and `setDescription` are
+  its `title` and `description` properties; the description is rendered in its shadow DOM only,
+  `part="description"`. **[verified 2026-11-18, Vaadin 25.3.5]**
 
 ## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
 
