@@ -379,6 +379,38 @@ None of these carries `hidden`.
   its `title` and `description` properties; the description is rendered in its shadow DOM only,
   `part="description"`. **[verified 2026-11-18, Vaadin 25.3.5]**
 
+## R_vaadin_app_layout_dom — a Vaadin AppLayout in the browser
+
+- A `<vaadin-app-layout>` holds the app's chrome and its view as light-DOM children, told apart
+  by `slot`: Flow's `addToNavbar` gives `navbar`, `addToNavbar(true, …)` `navbar
+  touch-optimized`, `addToDrawer` `drawer`; the view, `setContent`, has none.
+  **[verified 2026-11-18, Vaadin 25.3.5]** On a touch device the layout moves a `navbar
+  touch-optimized` child to `navbar-bottom`. **[src, @vaadin/app-layout 25.3.5]**
+- Its `drawerOpened` property is false once a `DrawerToggle` closes the drawer, whose content
+  stays in the DOM (`R_vaadin_hidden_in_dom`). **[verified 2026-11-18, Vaadin 25.3.5]**
+
+## R_vaadin_side_nav_dom — a Vaadin SideNav and Breadcrumbs in the browser
+
+- A `<vaadin-side-nav-item>`'s items are `<vaadin-side-nav-item slot="children">`s in its light
+  DOM, and while it's `expanded` its box holds them below its own row: a click at the box's centre
+  lands on one, on Archive with two items the first, and opens its page.
+  **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
+- Its row is a `<div part="content">` in its shadow DOM, an `<a part="link">` and a
+  `<button part="toggle-button">` in it. A click on the row, the toggle aside, follows the link
+  to its `path`; an item without one toggles `expanded` instead, if it has items (its
+  `has-children` attribute). Only the toggle button expands or collapses an item that has a
+  `path`. **[src, @vaadin/side-nav 25.3.5]**
+- An item is `current` while its `path`, or one of its `pathAliases`, is the browser's path; a
+  path below it only with `matchNested`. On becoming current, it expands if it has items, and its
+  parent items expand unless the SideNav has `noAutoExpand`. **[src, @vaadin/side-nav 25.3.5]** A
+  click on a collapsed item with a path opens its page with its items shown.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- A `<vaadin-breadcrumbs>` sets `current` on its last `<vaadin-breadcrumbs-item>` if it has no
+  `path`; such an item renders a `<span part="nolink">`, not a link. **[docs]** test-app's
+  "Inbox", added last without a path, is `current`. **[verified 2026-11-18, Vaadin 25.3.5]**
+- Either item's `path` property is the path the app gave Flow, relative to the app's root:
+  `"nav/archive"`, and `""` for the root itself. **[verified 2026-11-18, Vaadin 25.3.5]**
+
 ## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
 
 - `UI.navigate` from a listener updates the address bar only after the response that carries the

@@ -87,7 +87,10 @@ final class ComponentTypes {
     record Type(String flowName, NameFrom nameFrom, Holds holds, List<String> actions) {}
 
     private static final Map<String, Type> TYPES = Map.ofEntries(
-            Map.entry("vaadin-button", new Type("Button", NameFrom.TEXT, Holds.TEXT, List.of("click"))),
+            Map.entry("vaadin-button", clickable("Button")),
+            Map.entry("vaadin-drawer-toggle", clickable("DrawerToggle")),
+            Map.entry("vaadin-side-nav-item", clickable("SideNavItem")),
+            Map.entry("vaadin-breadcrumbs-item", clickable("BreadcrumbsItem")),
             Map.entry("vaadin-checkbox", labelled("Checkbox", Holds.CHECKED)),
             Map.entry("vaadin-switch", labelled("Switch", Holds.CHECKED)),
             Map.entry("vaadin-text-field", field("TextField")),
@@ -141,6 +144,11 @@ final class ComponentTypes {
      */
     static final Set<String> LOGINS = Set.of("vaadin-login-form", "vaadin-login-overlay");
 
+    /**
+     * What {@code toggle_expand} expands and collapses, when it has items: those have a {@code has-children} attribute.
+     */
+    static final Set<String> EXPANDABLE = Set.of("vaadin-side-nav-item");
+
     /** A MultiSelectListBox: a {@code vaadin-list-box} with {@code multiple} set. */
     private static final Type MULTI_SELECT_LIST_BOX = labelled("MultiSelectListBox", Holds.SELECTED_ITEMS);
 
@@ -176,6 +184,11 @@ final class ComponentTypes {
             return new Type(className(tag.substring("vaadin-".length())), NameFrom.LABEL_OR_TEXT, Holds.UNKNOWN, List.of());
         }
         return new Type("<" + tag + ">", NameFrom.LABEL_OR_TEXT, Holds.UNKNOWN, List.of());
+    }
+
+    /** A component named by its text, made to be clicked: a Button, a link in a SideNav or Breadcrumbs. */
+    private static Type clickable(String flowName) {
+        return new Type(flowName, NameFrom.TEXT, Holds.TEXT, List.of("click"));
     }
 
     private static Type field(String flowName) {

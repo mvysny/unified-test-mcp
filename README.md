@@ -7,7 +7,7 @@ Vaadin UI tests running on Playwright; this project owns the MCP tools on top of
 
 ## Status
 
-A prototype with four tools:
+A prototype with these tools:
 
 - `snapshot()` — the Vaadin components on the page, one line each, each with a `ref` the other
   tools take:
@@ -30,6 +30,8 @@ A prototype with four tools:
   field holds when the app didn't take the value as given.
 - `get_helper(ref)`, `get_tooltip(ref)` — the helper text below a field, a component's tooltip;
   uncut, where the snapshot cuts them at 120 characters.
+- `toggle_expand(ref)` — expands or collapses a SideNavItem, as a click on its arrow does,
+  without opening its page. Returns the snapshot.
 
 Set ids on the components your tests touch: the snapshot shows them, so what an agent finds
 carries straight into a Java test.

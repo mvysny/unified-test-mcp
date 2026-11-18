@@ -255,9 +255,113 @@ public class ToolsTest {
     public void clickClosingTheDrawerAnswersWithoutIt() throws IOException {
         String page = snapshotOf("nav");
         assertTrue(page.contains("SideNavItem \"Inbox\""), page);
-        assertFalse(page.contains("\"2025\""), "a collapsed item's children: " + page);
-        String closed = call(client, "click", ref(ref(page, "DrawerToggle")));
+        int toggle = ref(page, "DrawerToggle");
+        String closed = call(client, "click", ref(toggle));
         assertFalse(closed.contains("SideNav"), "answered once the drawer's transition ended: " + closed);
+        assertTrue(closed.contains("\n  - Drawer: closed; click the DrawerToggle, ref=" + toggle + ", to open it\n"),
+                closed);
+        String opened = call(client, "click", ref(toggle));
+        assertTrue(opened.contains("\n  - Drawer:\n    - SideNav [ref="), opened);
+    }
+
+    @Test
+    public void snapshotMarksTheCurrentAndTheCollapsedNavItems() throws IOException {
+        String page = snapshotOf("nav");
+        assertEquals("""
+                URL: APP/nav
+                - AppLayout [ref=N]
+                  - Navbar:
+                    - DrawerToggle [ref=N, aria-label="Toggle navigation panel"] actions: click
+                    - H1 "Mail" [ref=N]
+                  - Drawer:
+                    - SideNav [ref=N]
+                      - SideNavItem "Inbox" [ref=N, path="nav", current] actions: click
+                      - SideNavItem "Archive" [ref=N, path="nav/archive", collapsed] actions: click, toggle_expand
+                      - SideNavItem "Trash" [ref=N, collapsed, disabled] actions: click, toggle_expand
+                  - Content:
+                    - Breadcrumbs [ref=N]
+                      - BreadcrumbsItem "Home" [ref=N, path=""] actions: click
+                      - BreadcrumbsItem "Mail" [ref=N, path="nav"] actions: click
+                      - BreadcrumbsItem "Inbox" [ref=N, current] actions: click
+                    - H2 "nav" [ref=N]
+                """, masked(page));
+        String archive = call(client, "click", ref(ref(page, "SideNavItem \"Archive\"")));
+        assertEquals("""
+                Clicked ref=N
+
+                URL: APP/nav/archive
+                - AppLayout [ref=N]
+                  - Navbar:
+                    - DrawerToggle [ref=N, aria-label="Toggle navigation panel"] actions: click
+                    - H1 "Mail" [ref=N]
+                  - Drawer:
+                    - SideNav [ref=N]
+                      - SideNavItem "Inbox" [ref=N, path="nav"] actions: click
+                      - SideNavItem "Archive" [ref=N, path="nav/archive", current] actions: click, toggle_expand
+                        - SideNavItem "2025" [ref=N, path="nav/archive/2025"] actions: click
+                        - SideNavItem "2026" [ref=N, path="nav/archive/2026"] actions: click
+                      - SideNavItem "Trash" [ref=N, collapsed, disabled] actions: click, toggle_expand
+                  - Content:
+                    - Breadcrumbs [ref=N]
+                      - BreadcrumbsItem "Home" [ref=N, path=""] actions: click
+                      - BreadcrumbsItem "Mail" [ref=N, path="nav"] actions: click
+                      - BreadcrumbsItem "Inbox" [ref=N, current] actions: click
+                    - H2 "nav/archive" [ref=N]
+                """, masked(archive), "a click opens a collapsed item's page, and shows its items");
+    }
+
+    @Test
+    public void toggleExpandShowsAnItemsItemsWithoutOpeningItsPage() throws IOException {
+        String page = snapshotOf("nav");
+        int archive = ref(page, "SideNavItem \"Archive\"");
+        String expanded = call(client, "toggle_expand", ref(archive));
+        assertEquals("""
+                Expanded ref=N
+
+                URL: APP/nav
+                - AppLayout [ref=N]
+                  - Navbar:
+                    - DrawerToggle [ref=N, aria-label="Toggle navigation panel"] actions: click
+                    - H1 "Mail" [ref=N]
+                  - Drawer:
+                    - SideNav [ref=N]
+                      - SideNavItem "Inbox" [ref=N, path="nav", current] actions: click
+                      - SideNavItem "Archive" [ref=N, path="nav/archive"] actions: click, toggle_expand
+                        - SideNavItem "2025" [ref=N, path="nav/archive/2025"] actions: click
+                        - SideNavItem "2026" [ref=N, path="nav/archive/2026"] actions: click
+                      - SideNavItem "Trash" [ref=N, collapsed, disabled] actions: click, toggle_expand
+                  - Content:
+                    - Breadcrumbs [ref=N]
+                      - BreadcrumbsItem "Home" [ref=N, path=""] actions: click
+                      - BreadcrumbsItem "Mail" [ref=N, path="nav"] actions: click
+                      - BreadcrumbsItem "Inbox" [ref=N, current] actions: click
+                    - H2 "nav" [ref=N]
+                """, masked(expanded));
+        assertEquals("Collapsed ref=" + archive + "\n\n" + page, call(client, "toggle_expand", ref(archive)),
+                "back as it was, refs and all");
+    }
+
+    @Test
+    public void toggleExpandRefusesWhatDoesntExpand() throws IOException {
+        String page = snapshotOf("nav");
+        assertEquals("ref " + ref(page, "SideNavItem \"Inbox\"") + " is a SideNavItem without items under it:"
+                + " nothing to expand. Call click to open its page.",
+                error(client, "toggle_expand", ref(ref(page, "SideNavItem \"Inbox\""))));
+        assertEquals("ref " + ref(page, "SideNavItem \"Trash\"") + " is a disabled SideNavItem: a user can't expand"
+                + " or collapse it.", error(client, "toggle_expand", ref(ref(page, "SideNavItem \"Trash\""))));
+        assertEquals("ref " + ref(page, "DrawerToggle") + " is a DrawerToggle: it doesn't expand or collapse."
+                + " toggle_expand takes a SideNavItem with items under it; the snapshot lists toggle_expand in its"
+                + " actions.", error(client, "toggle_expand", ref(ref(page, "DrawerToggle"))));
+    }
+
+    @Test
+    public void clickOnAnExpandedNavItemLandsOnItsOwnRow() throws IOException {
+        String archive = call(client, "click", ref(ref(snapshotOf("nav"), "SideNavItem \"Archive\"")));
+        String again = call(client, "click", ref(ref(archive, "SideNavItem \"Archive\"")));
+        assertTrue(masked(again).contains("\nURL: APP/nav/archive\n"), "not on its first item, 2025: " + again);
+        String year = call(client, "click", ref(ref(again, "SideNavItem \"2025\"")));
+        assertTrue(year.contains("\n        - SideNavItem \"2025\" [ref=" + ref(again, "SideNavItem \"2025\"")
+                + ", path=\"nav/archive/2025\", current] actions: click\n"), year);
     }
 
     @Test

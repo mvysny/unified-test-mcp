@@ -385,3 +385,47 @@ app's custom-value listener decides what it becomes.
 The cost: the value depends on the app's locale, which without an `I18NProvider` is the browser's
 language; test-app fixes `fi-FI`. A format that drops information (`MMM yyyy`, or `1/2/2026` read
 either way) leaves the agent to check the stored date where the app shows it.
+
+## D_app_layout_regions — Why does an AppLayout show its navbar, drawer and content as regions, and a closed drawer as a line, rather than its children flat?
+
+Flat, the app's chrome and its view read as one list: the DrawerToggle, the app's title, every
+SideNavItem, then the view's first field, nothing saying where the view starts. An agent testing a
+view wants its content, one getting around wants the navbar and the drawer. So an AppLayout's
+children show under `- Navbar:`, `- Drawer:` and `- Content:`, its slots
+(`R_vaadin_app_layout_dom`): lines without a ref, as no tool acts on a region; one showing nothing
+is left out.
+
+A closed drawer's content isn't listed (`D_visible_only`), so nothing but the DrawerToggle's
+`aria-label` would say there is a drawer to open. `- Drawer: closed; click the DrawerToggle, ref=2,
+to open it` says it and names the way in; the ref only while the toggle is shown, as an app may
+open its drawer by other means.
+
+The cost: every line under an AppLayout is indented once more.
+
+## D_nav_item_states — Why does a SideNavItem show `path=` and `collapsed`, and expand by a `toggle_expand` tool, rather than hide where it links, or set a state through `expand` and `collapse`?
+
+`path=` shows where a SideNavItem or a BreadcrumbsItem links, as the app gave it
+(`R_vaadin_side_nav_dom`): a tester checks that a link leads where it should without following
+it. It tempts the agent to `navigate` straight there rather than click as a user does; but
+`navigate` takes any URL anyway, so leaving it out would keep nothing from the agent but that check.
+
+A collapsed item's items aren't listed (`D_visible_only`), so without a mark nothing tells the
+agent that "Archive" holds more; `collapsed` does, as the arrow tells a user. `expanded` isn't
+shown: the items listed under the item say it. `current` marks the SideNavItem and the
+BreadcrumbsItem of the page shown, as their highlight does for a user: the URL line says where the
+browser is, not which item that is.
+
+Two ways to show an item's items, as for a user (`R_vaadin_side_nav_dom`): `click` opens its page,
+and the item, now `current`, expands; `toggle_expand` clicks its arrow, which expands or collapses
+it where it is, and is the only way to collapse one with a page. A toggle, as the arrow is and as
+swing-mcp's `swing_toggle_expand` is for a JTree node. Why not `expand` and `collapse`, which say
+the state wanted and do nothing when it's there: the answer is the new snapshot
+(`D_action_returns_snapshot`), so the agent always toggles from the state it has just seen, and
+the answer's first line says which way it went. Why not `expand_nav_item`: a TreeGrid's rows want
+the same, and a tool per component would grow the list. Its `actions:` entry is the one listed by
+a component's state rather than its type: only an item with items expands.
+
+`click` and `toggle_expand` click a part of the item's shadow DOM, its link and its arrow:
+`click` at an expanded item's centre lands on its first item. No Unified API wrapper clicks
+either, so `ShadowParts` clicks through the escape hatch and waits for the server as the Unified
+API does, through Dramafinder's `AutoWait`.

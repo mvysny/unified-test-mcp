@@ -24,9 +24,10 @@ only for the types `ComponentTypes` knows hold one?
 
 ## Clickable without `actions: click`
 
-`click` works on `GridSorter`, `GridTreeToggle`, a grid cell, `SideNavItem`, `BreadcrumbsItem`,
-`DrawerToggle`, `Tab`, `MenuBarItem`, a Details' summary, `MessageInputButton`; none of them says
-so. `Q_actions`: list `click` for each of these types in `ComponentTypes`, so the agent knows.
+`click` works on `GridSorter`, `GridTreeToggle`, a grid cell, `Tab`, `MenuBarItem`, a Details'
+summary, `MessageInputButton`; none of them says so. `Q_actions`: list `click` for each of these
+types in `ComponentTypes`, so the agent knows, as for `SideNavItem`, `BreadcrumbsItem` and
+`DrawerToggle`.
 
 ## Lines nothing needs
 

@@ -22,7 +22,7 @@ import java.util.Map;
  * - Checkbox "Subscribe" [ref=3, checked]
  * - Button "Save" [ref=4] actions: click
  * - Button [ref=5, id=close, aria-label="Close", icon="vaadin:close"] actions: click
- * &lt;type&gt;  &lt;name&gt;  [ref, id, icon, value, the hints, the flags that are on]  &lt;the type's own tools&gt;
+ * &lt;type&gt;  &lt;name&gt;  [ref, id, icon, path, value, the hints, the flags that are on]  &lt;the type's own tools&gt;
  * </pre>
  *
  * The quoted name is what {@link ComponentTypes} says names that type: a Button's text, a field's label. A component
@@ -30,8 +30,32 @@ import java.util.Map;
  * its {@code placeholder=}, for the agent to tell it by. A layout without an id, and plain HTML
  * with neither an id nor text of its own, stand aside: their children take their place. A component the user can't
  * see, by {@link #isVisible}, isn't shown: one the app hid, a closed dialog's, Details' or menu's content, a closed
- * drawer's. What's inside it shows only if the user sees that, as a Dialog footer's buttons. Nor is the out-of-sight
- * region where Vaadin announces to a screen reader what a component did.
+ * drawer's, a collapsed SideNavItem's items. What's inside it shows only if the user sees that, as a Dialog footer's
+ * buttons. Nor is the out-of-sight region where Vaadin announces to a screen reader what a component did.
+ *
+ * An AppLayout shows what it holds under its regions, the app's chrome apart from the view; a closed drawer as a line
+ * naming what opens it (D_app_layout_regions). Navigation says where the user is, where each item links, and where
+ * more is hidden:
+ *
+ * <pre>
+ * - AppLayout [ref=1]
+ *   - Navbar:
+ *     - DrawerToggle [ref=2, aria-label="Toggle navigation panel"] actions: click
+ *   - Drawer:
+ *     - SideNav [ref=3]
+ *       - SideNavItem "Inbox" [ref=4, path="nav", current] actions: click
+ *       - SideNavItem "Archive" [ref=5, path="nav/archive", collapsed] actions: click, toggle_expand
+ *   - Content:
+ *     - H2 "Inbox" [ref=6]
+ * </pre>
+ * <pre>
+ *   - Drawer: closed; click the DrawerToggle, ref=2, to open it
+ * </pre>
+ *
+ * {@code path=} is where a SideNavItem or a BreadcrumbsItem links, as the app gave it; {@code current} marks the one
+ * of the page shown; {@code collapsed} a SideNavItem whose items aren't shown. One with items has
+ * {@code toggle_expand} among its actions, the one action listed by a component's state rather than its type
+ * (D_nav_item_states).
  *
  * A dialog is named by its title: a Dialog's or a ConfirmDialog's header, a LoginOverlay's title, its bracket showing
  * its {@code description=}. A LoginForm is named by its heading, {@code LoginForm "Log in"}. While a modal dialog is
@@ -95,7 +119,7 @@ final class Snapshot {
     private static final int HINT_CAP = 120;
 
     private static final String SCRIPT = """
-            async ({ next, layouts, skipped, fields, titleSlots, logins, attribute }) => {
+            async ({ next, layouts, skipped, fields, titleSlots, logins, expandable, attribute }) => {
               // A server-side navigation changes the URL after the round-trip that an action waits for
               // (R_flow_navigation_url): with React, once Flow clears its navigation flag; without, in a setTimeout.
               // Drop once Auto-Wait waits for it: parttio/unified-testing-tool#233
@@ -121,6 +145,8 @@ final class Snapshot {
               const isVisible = %s;
               const LOGINS = new Set(logins);
               const SLIDERS = new Set(['vaadin-slider', 'vaadin-range-slider']);
+              const NAV_ITEMS = new Set(['vaadin-side-nav-item', 'vaadin-breadcrumbs-item']);
+              const EXPANDABLE = new Set(expandable);
               // the light-DOM children a Vaadin component renders for itself: its input, label, messages
               const OWN_PARTS = new Set(['input', 'textarea', 'label', 'error-message', 'helper', 'tooltip']);
               const str = v => typeof v === 'string' && v.trim() !== '' ? v : null;
@@ -173,6 +199,21 @@ final class Snapshot {
               };
               const ownText = e => Array.from(e.childNodes).filter(n => n.nodeType === Node.TEXT_NODE)
                   .map(n => n.textContent).join(' ').replace(/\\s+/g, ' ').trim();
+              // an AppLayout's children by their slot, the view in none (R_vaadin_app_layout_dom)
+              const REGIONS = [['Navbar', slot => slot?.startsWith('navbar')], ['Drawer', slot => slot === 'drawer'],
+                  ['Content', slot => slot === null]];
+              const regions = layout => {
+                const nodes = REGIONS.map(([region, holds]) => {
+                  const members = Array.from(layout.children).filter(c => holds(c.getAttribute('slot')));
+                  return region === 'Drawer' && members.length > 0 && !layout.drawerOpened ? { region, closed: true }
+                      : { region, children: members.flatMap(c => visit(c, layout.localName)) };
+                });
+                // looked up once every region is visited: a toggle in the content has its ref only then
+                const toggle = layout.querySelector('vaadin-drawer-toggle');
+                const toggleRef = toggle && isVisible(toggle) ? toggle.getAttribute(attribute) : null;
+                return nodes.filter(n => n.closed || n.children.length > 0)
+                    .map(n => n.closed ? { ...n, toggleRef: toggleRef === null ? null : Number(toggleRef) } : n);
+              };
               const visit = (e, parentTag) => {
                 const tag = e.localName;
                 if (e.hidden || SKIPPED.has(tag) || tag.startsWith('copilot-')) return [];
@@ -185,7 +226,8 @@ final class Snapshot {
                 if (tag in titleSlots && !e.opened) return [];
                 const custom = tag.includes('-');
                 const text = ownText(e);
-                const children = () => FIELDS.has(tag) ? [] : Array.from(e.children).flatMap(c => visit(c, tag));
+                const children = () => FIELDS.has(tag) ? [] : tag === 'vaadin-app-layout' ? regions(e)
+                    : Array.from(e.children).flatMap(c => visit(c, tag));
                 // Flow's bootstrap wraps every view in <div id="outlet"><flow-container-root-…>: not the app's
                 const bootstrap = tag.startsWith('flow-container-') || (tag === 'div' && e.id === 'outlet');
                 // one the user can't see stands aside: what's inside may be seen, as a display: contents footer's
@@ -206,6 +248,8 @@ final class Snapshot {
                   ariaLabel: str(e.getAttribute('aria-label')),
                   placeholder: custom ? str(e.placeholder) : null,
                   icon: custom ? iconOf(e) : null,
+                  // "" is a link too, to the app's root
+                  path: NAV_ITEMS.has(tag) && typeof e.path === 'string' ? e.path : null,
                   value: custom ? valueOf(e) : null,
                   min: SLIDERS.has(tag) ? e.min ?? null : null,
                   max: SLIDERS.has(tag) ? e.max ?? null : null,
@@ -214,6 +258,9 @@ final class Snapshot {
                   disabled: e.disabled === true || e.hasAttribute('disabled'),
                   checked: custom && e.checked === true,
                   indeterminate: custom && e.indeterminate === true,
+                  current: custom && e.current === true,
+                  expandable: EXPANDABLE.has(tag) && e.hasAttribute('has-children'),
+                  collapsed: EXPANDABLE.has(tag) && e.hasAttribute('has-children') && !e.expanded,
                   multiple: custom && e.multiple === true,
                   invalid: custom && e.invalid === true,
                   error: LOGINS.has(tag) && e.error === true,
@@ -254,7 +301,7 @@ final class Snapshot {
         Map<String, Object> arg = Map.of("next", refs.next(), "layouts", List.copyOf(ComponentTypes.LAYOUTS),
                 "skipped", List.copyOf(ComponentTypes.SKIPPED), "fields", List.copyOf(ComponentTypes.FIELDS),
                 "titleSlots", ComponentTypes.DIALOG_TITLE_SLOTS, "logins", List.copyOf(ComponentTypes.LOGINS),
-                "attribute", Refs.ATTRIBUTE);
+                "expandable", List.copyOf(ComponentTypes.EXPANDABLE), "attribute", Refs.ATTRIBUTE);
         Map<?, ?> result = (Map<?, ?>) browser.evaluate(SCRIPT, arg);
         StringBuilder out = new StringBuilder("URL: ").append(result.get("url")).append('\n');
         String title = (String) result.get("title");
@@ -281,6 +328,10 @@ final class Snapshot {
     private static void render(List<?> nodes, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
         for (Object o : nodes) {
             Map<?, ?> node = (Map<?, ?>) o;
+            if (node.get("region") != null) {
+                renderRegion(node, depth, out, targets);
+                continue;
+            }
             ComponentTypes.Type type = ComponentTypes.of((String) node.get("tag"),
                     Boolean.TRUE.equals(node.get("multiple")));
             int ref = ((Number) node.get("ref")).intValue();
@@ -311,6 +362,9 @@ final class Snapshot {
             if (node.get("icon") != null) {
                 bracket.add("icon=" + quote((String) node.get("icon")));
             }
+            if (node.get("path") != null) {
+                bracket.add("path=" + quote((String) node.get("path")));
+            }
             String value = value(type.holds(), node.get("value"));
             if (value != null) {
                 bracket.add("value=" + value);
@@ -327,18 +381,40 @@ final class Snapshot {
             }
             flag(node, "checked", bracket);
             flag(node, "indeterminate", bracket);
+            flag(node, "current", bracket);
+            flag(node, "collapsed", bracket);
             flag(node, "disabled", bracket);
             flag(node, "readonly", bracket);
             flag(node, "required", bracket);
             flagWithMessage(node, "invalid", bracket);
             flagWithMessage(node, "error", bracket);
             out.append(" [").append(String.join(", ", bracket)).append(']');
-            if (!type.actions().isEmpty()) {
-                out.append(" actions: ").append(String.join(", ", type.actions()));
+            List<String> actions = new ArrayList<>(type.actions());
+            if (Boolean.TRUE.equals(node.get("expandable"))) {
+                actions.add("toggle_expand");
+            }
+            if (!actions.isEmpty()) {
+                out.append(" actions: ").append(String.join(", ", actions));
             }
             out.append('\n');
             render((List<?>) node.get("children"), depth + 1, out, targets);
         }
+    }
+
+    /** {@code - Navbar:} with what it holds under it; a closed drawer as {@code - Drawer: closed; click …}. */
+    private static void renderRegion(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
+        out.append("  ".repeat(depth)).append("- ").append(node.get("region")).append(':');
+        if (Boolean.TRUE.equals(node.get("closed"))) {
+            out.append(" closed");
+            if (node.get("toggleRef") != null) {
+                out.append("; click the DrawerToggle, ref=").append(((Number) node.get("toggleRef")).intValue())
+                        .append(", to open it");
+            }
+            out.append('\n');
+            return;
+        }
+        out.append('\n');
+        render((List<?>) node.get("children"), depth + 1, out, targets);
     }
 
     /** The type's own naming property, its text or its label; {@code null} for none. */

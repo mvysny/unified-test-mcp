@@ -91,8 +91,8 @@ its checkbox (multi), or a `select` action on the row? Is a Grid's selection its
 
 `Q_sort_state`: `click` on a header sorts today; the header line shows the direction, `Age ↑`?
 
-`Q_tree`: depth by indentation, `[expanded]` / `[collapsed]`, `click` on the row's toggle to
-expand?
+`Q_tree`: depth by indentation, `[collapsed]` as a SideNavItem's, and `toggle_expand` on the row,
+as on a SideNavItem (`D_nav_item_states`)?
 
 `Q_header_components`: a filter TextField in a header cell, a component in the footer: not in
 test-app yet; they must stay refs.
