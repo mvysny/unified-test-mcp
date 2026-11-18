@@ -31,7 +31,10 @@ final class ComponentTypes {
         LABEL,
         /** The label if it has one, else its text: a type this table doesn't list. */
         LABEL_OR_TEXT,
-        /** Its title, a Dialog's header text: what its {@code aria-label} says. */
+        /**
+         * Its title, the heading it shows: a Dialog's header, a LoginOverlay's title, a LoginForm's "Log in". A
+         * dialog's is its {@code aria-label}, else the text of its title element (D_login_from_i18n).
+         */
         TITLE
     }
 
@@ -106,8 +109,10 @@ final class ComponentTypes {
             Map.entry("vaadin-slider", labelled("Slider", Holds.NUMBER)),
             Map.entry("vaadin-range-slider", labelled("RangeSlider", Holds.NUMBER)),
             Map.entry("vaadin-custom-field", labelled("CustomField", Holds.PARTS)),
-            Map.entry("vaadin-dialog", dialog("Dialog")),
-            Map.entry("vaadin-confirm-dialog", dialog("ConfirmDialog")),
+            Map.entry("vaadin-dialog", titled("Dialog")),
+            Map.entry("vaadin-confirm-dialog", titled("ConfirmDialog")),
+            Map.entry("vaadin-login-overlay", titled("LoginOverlay")),
+            Map.entry("vaadin-login-form", titled("LoginForm")),
             Map.entry("div", html("Div")),
             Map.entry("span", html("Span")),
             Map.entry("p", html("Paragraph")),
@@ -129,7 +134,13 @@ final class ComponentTypes {
      * dialog renders its title into, isn't shown either: the title is the dialog's name.
      */
     static final Map<String, String> DIALOG_TITLE_SLOTS = Map.of("vaadin-dialog", "title",
-            "vaadin-confirm-dialog", "header");
+            "vaadin-confirm-dialog", "header", "vaadin-login-overlay", "title");
+
+    /**
+     * A LoginForm and a LoginOverlay: the error each shows after the app's {@code setError(true)}, its text from the
+     * component's {@code i18n} (D_login_from_i18n). A LoginForm's name, its heading, comes from its {@code i18n} too.
+     */
+    static final Set<String> LOGINS = Set.of("vaadin-login-form", "vaadin-login-overlay");
 
     /** A MultiSelectListBox: a {@code vaadin-list-box} with {@code multiple} set. */
     private static final Type MULTI_SELECT_LIST_BOX = labelled("MultiSelectListBox", Holds.SELECTED_ITEMS);
@@ -177,7 +188,8 @@ final class ComponentTypes {
         return new Type(flowName, NameFrom.LABEL, holds, holds == Holds.PARTS ? List.of() : List.of("set_value"));
     }
 
-    private static Type dialog(String flowName) {
+    /** A component named by the heading it shows: a dialog, a LoginForm. */
+    private static Type titled(String flowName) {
         return new Type(flowName, NameFrom.TITLE, Holds.TEXT, List.of());
     }
 

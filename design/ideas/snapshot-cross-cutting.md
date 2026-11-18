@@ -2,7 +2,7 @@
 
 What the survey of the components not yet covered (one test-app view per idea file: `grid.md`,
 `virtual-list.md`, `notification.md`, `navigation.md`, `disclosure.md`, `menus.md`, `upload.md`,
-`messages.md`, `login.md`, `display-only.md`) found in every group. Each is one change to `Snapshot`
+`messages.md`, `display-only.md`) found in every group. Each is one change to `Snapshot`
 or `ComponentTypes`, not a component's, so it gets fixed once.
 
 ## Hidden content shows
@@ -25,8 +25,8 @@ than being left out with them.
 ## Generated ids
 
 `id=content-vaadin-details-18`, `id=summary-vaadin-details-19`, `id=tabsheet-tab-8c7914ab-…`,
-`id=tabsheet-panel-42`, `id=vaadin-popover-18`, `id=card-title-vaadin-card-21`,
-`id=title-vaadin-login-overlay-34`: ids the web components give themselves, meaning nothing to
+`id=tabsheet-panel-42`, `id=vaadin-popover-18`, `id=card-title-vaadin-card-21`: ids the web
+components give themselves, meaning nothing to
 the app's developer and changing between page loads.
 
 `Q_generated_ids`: drop ids matching the web components' patterns (`vaadin-…-<n>`,

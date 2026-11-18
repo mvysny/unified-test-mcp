@@ -30,8 +30,10 @@ import java.util.Map;
  * shown, nor anything inside it; nor the out-of-sight region where Vaadin announces to a screen reader what a
  * component did. A dialog that isn't open isn't shown.
  *
- * A Dialog or a ConfirmDialog is named by its title. While a modal one is open, nothing under it takes input, so the
- * snapshot shows the one on top alone, below a line naming the modal stack, top first:
+ * A dialog is named by its title: a Dialog's or a ConfirmDialog's header, a LoginOverlay's title, its bracket showing
+ * its {@code description=}. A LoginForm is named by its heading, {@code LoginForm "Log in"}. While a modal dialog is
+ * open, nothing under it takes input, so the snapshot shows the one on top alone, below a line naming the modal stack,
+ * top first:
  *
  * <pre>
  * Modal: Dialog "Why?" over Dialog "Delete order?" over the page; only the dialog on top is shown: nothing under it takes input
@@ -55,6 +57,10 @@ import java.util.Map;
  * inside a disabled layout too; a read-only CustomField's fields are read-only only if the app's subclass passes it
  * on (R_flow_field_states).
  *
+ * A field that shows invalid has {@code invalid "At most 120"}, with its error message; a LoginForm or a LoginOverlay
+ * that shows its error has {@code error "Incorrect username or password: Check that you have entered…"}, the error's
+ * title and message as the user sees them.
+ *
  * <h2>Implementation detail</h2>
  * One script, one round-trip: it walks the light DOM from {@code <body>}, or from the modal on top, stamps each component it shows with
  * {@link Refs#ATTRIBUTE} (keeping a stamp already there, so a component keeps its ref), and returns the tree. The
@@ -70,7 +76,7 @@ final class Snapshot {
     private static final int HINT_CAP = 120;
 
     private static final String SCRIPT = """
-            async ({ next, layouts, skipped, fields, titleSlots, attribute }) => {
+            async ({ next, layouts, skipped, fields, titleSlots, logins, attribute }) => {
               // A server-side navigation changes the URL after the round-trip that an action waits for
               // (R_flow_navigation_url): with React, once Flow clears its navigation flag; without, in a setTimeout.
               // Drop once Auto-Wait waits for it: parttio/unified-testing-tool#233
@@ -78,6 +84,7 @@ final class Snapshot {
               for (let waited = 0; window.Vaadin?.Flow?.navigation && waited < 2000; waited += 10) await tick(10);
               await tick(0);
               const LAYOUTS = new Set(layouts), SKIPPED = new Set(skipped), FIELDS = new Set(fields);
+              const LOGINS = new Set(logins);
               const SLIDERS = new Set(['vaadin-slider', 'vaadin-range-slider']);
               // the light-DOM children a Vaadin component renders for itself: its input, label, messages
               const OWN_PARTS = new Set(['input', 'textarea', 'label', 'error-message', 'helper', 'tooltip']);
@@ -85,6 +92,14 @@ final class Snapshot {
               // what the user sees selected, as Dramafinder reads it: the value property is Flow's key for the item
               const itemLabel = (e, i) => typeof i === 'string' ? i : String(i[e.itemLabelPath || 'label'] ?? '');
               const textOf = e => (e?.textContent || '').trim();
+              // a LoginOverlay has aria-labelledby, no aria-label; a LoginForm's heading and a login's error are
+              // rendered in its shadow DOM from its i18n (D_login_from_i18n)
+              const titleOf = e => e.localName === 'vaadin-login-form' ? str(e.i18n?.form?.title)
+                  : str(e.getAttribute('aria-label'))
+                    ?? (e.localName in titleSlots
+                        ? str(textOf(e.querySelector(`:scope > [slot="${titleSlots[e.localName]}"]`))) : null);
+              const loginError = e => str([e.i18n?.errorMessage?.title, e.i18n?.errorMessage?.message]
+                  .filter(str).join(': '));
               const iconOf = e => {
                 const icon = e.querySelector(':scope > vaadin-icon[slot=prefix]')
                     ?? (e.localName === 'vaadin-button' ? e.querySelector(':scope > vaadin-icon:not([slot])') : null);
@@ -149,7 +164,8 @@ final class Snapshot {
                   id: str(e.id), idUnique: !!e.id && document.querySelectorAll('#' + CSS.escape(e.id)).length === 1,
                   testId: str(e.getAttribute('data-testid')),
                   label: custom ? str(e.label) : null,
-                  title: tag in titleSlots ? str(e.getAttribute('aria-label')) : null,
+                  title: tag in titleSlots || LOGINS.has(tag) ? titleOf(e) : null,
+                  description: tag === 'vaadin-login-overlay' ? str(e.description) : null,
                   ariaLabel: str(e.getAttribute('aria-label')),
                   placeholder: custom ? str(e.placeholder) : null,
                   icon: custom ? iconOf(e) : null,
@@ -163,7 +179,8 @@ final class Snapshot {
                   indeterminate: custom && e.indeterminate === true,
                   multiple: custom && e.multiple === true,
                   invalid: custom && e.invalid === true,
-                  errorMessage: custom ? str(e.errorMessage) : null,
+                  error: LOGINS.has(tag) && e.error === true,
+                  errorMessage: !custom ? null : LOGINS.has(tag) ? loginError(e) : str(e.errorMessage),
                   required: custom && e.required === true,
                   readonly: custom && e.readonly === true,
                   children: children()
@@ -176,7 +193,7 @@ final class Snapshot {
               const nodes = modals.length > 0 ? visit(modals[0], modals[0].parentElement.localName)
                   : Array.from(document.body.children).flatMap(c => visit(c, 'body'));
               return { url: location.href, title: document.title, next, nodes,
-                  modals: modals.map(e => ({ tag: e.localName, title: str(e.getAttribute('aria-label')) })) };
+                  modals: modals.map(e => ({ tag: e.localName, title: titleOf(e) })) };
             }""";
 
     /** What a snapshot of the browser's empty first page says, instead of listing nothing. */
@@ -199,7 +216,8 @@ final class Snapshot {
         }
         Map<String, Object> arg = Map.of("next", refs.next(), "layouts", List.copyOf(ComponentTypes.LAYOUTS),
                 "skipped", List.copyOf(ComponentTypes.SKIPPED), "fields", List.copyOf(ComponentTypes.FIELDS),
-                "titleSlots", ComponentTypes.DIALOG_TITLE_SLOTS, "attribute", Refs.ATTRIBUTE);
+                "titleSlots", ComponentTypes.DIALOG_TITLE_SLOTS, "logins", List.copyOf(ComponentTypes.LOGINS),
+                "attribute", Refs.ATTRIBUTE);
         Map<?, ?> result = (Map<?, ?>) browser.evaluate(SCRIPT, arg);
         StringBuilder out = new StringBuilder("URL: ").append(result.get("url")).append('\n');
         String title = (String) result.get("title");
@@ -250,6 +268,9 @@ final class Snapshot {
             } else if (node.get("placeholder") != null) {
                 bracket.add("placeholder=" + quote((String) node.get("placeholder")));
             }
+            if (node.get("description") != null) {
+                bracket.add("description=" + quote((String) node.get("description")));
+            }
             if (node.get("icon") != null) {
                 bracket.add("icon=" + quote((String) node.get("icon")));
             }
@@ -272,10 +293,8 @@ final class Snapshot {
             flag(node, "disabled", bracket);
             flag(node, "readonly", bracket);
             flag(node, "required", bracket);
-            if (Boolean.TRUE.equals(node.get("invalid"))) {
-                Object message = node.get("errorMessage");
-                bracket.add(message == null ? "invalid" : "invalid " + quote((String) message));
-            }
+            flagWithMessage(node, "invalid", bracket);
+            flagWithMessage(node, "error", bracket);
             out.append(" [").append(String.join(", ", bracket)).append(']');
             if (!type.actions().isEmpty()) {
                 out.append(" actions: ").append(String.join(", ", type.actions()));
@@ -306,6 +325,14 @@ final class Snapshot {
     private static void flag(Map<?, ?> node, String key, List<String> bracket) {
         if (Boolean.TRUE.equals(node.get(key))) {
             bracket.add(key);
+        }
+    }
+
+    /** {@code invalid "At most 120"}: a state that shows an error, with its message; {@code invalid} without one. */
+    private static void flagWithMessage(Map<?, ?> node, String key, List<String> bracket) {
+        if (Boolean.TRUE.equals(node.get(key))) {
+            Object message = node.get("errorMessage");
+            bracket.add(message == null ? key : key + " " + quote((String) message));
         }
     }
 

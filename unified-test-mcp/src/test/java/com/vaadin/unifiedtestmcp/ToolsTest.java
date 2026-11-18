@@ -188,6 +188,61 @@ public class ToolsTest {
     }
 
     @Test
+    public void snapshotShowsALoginFormsHeadingAndError() throws IOException {
+        String page = snapshotOf("login");
+        assertEquals("""
+                URL: APP/login
+                - LoginForm "Log in" [ref=N]
+                  - <input> [ref=N, id=csrf]
+                  - TextField "Username" [ref=N, id=vaadinLoginUsername, value="", required] actions: set_value
+                  - PasswordField "Password" [ref=N, id=vaadinLoginPassword, value="", required] actions: set_value
+                  - Button "Log in" [ref=N] actions: click
+                  - Button "Forgot password" [ref=N] actions: click
+                - Button "Sign in" [ref=N] actions: click
+                - Span "Signed out" [ref=N]
+                """, masked(page));
+        int form = ref(page, "LoginForm");
+        call(client, "set_value", Map.of("ref", ref(page, "TextField \"Username\""), "value", "alice"));
+        call(client, "set_value", Map.of("ref", ref(page, "PasswordField"), "value", "wrong"));
+        String failed = call(client, "click", ref(ref(page, "Button \"Log in\"")));
+        assertTrue(failed.contains("\n- LoginForm \"Log in\" [ref=" + form + ", error \"Incorrect username or"
+                + " password: Check that you have entered the correct username and password and try again.\"]\n"),
+                failed);
+        call(client, "set_value", Map.of("ref", ref(page, "PasswordField"), "value", "secret"));
+        String signedIn = call(client, "click", ref(ref(page, "Button \"Log in\"")));
+        assertTrue(signedIn.contains("\n- LoginForm \"Log in\" [ref=" + form + "]\n"), "the error is gone: " + signedIn);
+        assertTrue(signedIn.contains("\n- Span \"Signed in as alice\" ["), signedIn);
+    }
+
+    @Test
+    public void snapshotNamesALoginOverlayByItsTitle() throws IOException {
+        String overlay = call(client, "click", ref(ref(snapshotOf("login"), "Button \"Sign in\"")));
+        assertEquals("""
+                Clicked ref=N
+
+                URL: APP/login
+                Modal: LoginOverlay "Mail" over the page; only the dialog on top is shown: nothing under it takes \
+                input
+                - LoginOverlay "Mail" [ref=N, description="Your mail, anywhere"]
+                  - <input> [ref=N, id=csrf]
+                  - TextField "Username" [ref=N, id=vaadinLoginUsername, value="", required] actions: set_value
+                  - PasswordField "Password" [ref=N, id=vaadinLoginPassword, value="", required] actions: set_value
+                  - Button "Log in" [ref=N] actions: click
+                  - Button "Forgot password" [ref=N] actions: click
+                """, masked(overlay));
+        call(client, "set_value", Map.of("ref", ref(overlay, "TextField \"Username\""), "value", "alice"));
+        call(client, "set_value", Map.of("ref", ref(overlay, "PasswordField"), "value", "wrong"));
+        String failed = call(client, "click", ref(ref(overlay, "Button \"Log in\"")));
+        assertTrue(failed.contains("\n- LoginOverlay \"Mail\" [ref=" + ref(overlay, "- LoginOverlay")
+                + ", description=\"Your mail, anywhere\", error \"Incorrect username or password: Check that you have"
+                + " entered the correct username and password and try again.\"]\n"), failed);
+        call(client, "set_value", Map.of("ref", ref(overlay, "PasswordField"), "value", "secret"));
+        String signedIn = call(client, "click", ref(ref(overlay, "Button \"Log in\"")));
+        assertFalse(signedIn.contains("Modal:"), "the overlay closed: " + signedIn);
+        assertTrue(signedIn.contains("\n- Span \"Signed in as alice\" ["), signedIn);
+    }
+
+    @Test
     public void clickWithoutIdFindsTheStampedComponent() throws IOException {
         int save = ref(navigate(client, "form"), "Button \"Save\"");
         String after = call(client, "click", ref(save));

@@ -269,6 +269,32 @@ texts when the agent wants one, and its name would say neither. The cut is swing
 characters: a hint is advice, so its tail is cheap to lose; a name is never cut, as it says which
 component this is.
 
+## D_login_from_i18n — Why does the snapshot read a LoginForm's heading and error from its `i18n`, rather than the text its shadow DOM shows?
+
+A LoginForm renders both in its shadow DOM, and nothing in its light DOM changes when its error
+shows (`R_vaadin_login_dom`); the snapshot walks the light DOM only
+(`D_snapshot_from_javascript`). What the shadow DOM renders is the component's `i18n`, which
+Flow sends whole, so the script reads that, as it reads a field's `errorMessage` property rather
+than its rendered message: `LoginForm "Log in"`, and once the app's `setError(true)` lands,
+`error "Incorrect username or password: Check that you have entered…"`. A LoginOverlay's error
+the same. Why not the shadow DOM: its parts are the web component's internals, free to move
+between versions, and the property holds the same text.
+
+**Why `error "…"`, shaped as a field's `invalid "…"`**: one notation for "this shows an error,
+saying so", the state in Flow's word (`setError`), then its message. Why not `error="…"`, a key
+as `helper=` is: two notations for one thing, the agent learning both. **Why the title and the
+message both**, where a hint is cut: no tool reads the message otherwise, and an app may put the
+substance there, "Account locked for 15 minutes"; it costs tokens only while the error shows.
+
+**A LoginOverlay is named by its title**, as a Dialog by its header, on its line and on the
+`Modal:` line. It has no `aria-label`, its `aria-labelledby` naming its title element
+(`R_vaadin_login_dom`), so a dialog's name is its `aria-label`, else the text of its title
+element; the snapshot leaves that element out, as a Dialog's, so the text moves into the name
+rather than showing twice. **Its description shows as `description="Your mail, anywhere"`**,
+Flow's word, uncut as a name is. Why not `helper=`: that is the text below a field, and its `…`
+points at `get_helper`, which refuses anything but a field (`D_hints_as_keys`). Why show it at
+all: it is text the user sees, and an agent that can't find it may report it missing.
+
 ## D_set_value_reads_back — Why does `set_value` read the field back and answer with a note, rather than trust its action or fail when the field didn't take the value?
 
 A field can refuse a value in two ways, and only one is known before acting. What the page says
