@@ -285,6 +285,63 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   `reject-button` and `confirm-button`, those not shown `hidden`.
   **[verified 2026-11-17, Vaadin 25.3.5]**
 
+## R_vaadin_grid_dom — a Vaadin Grid and TreeGrid in the browser
+
+- Each cell's content, the header's included, is a `<vaadin-grid-cell-content>`, a light-DOM
+  child of the `<vaadin-grid>`; a component column's component is inside its cell's. A TreeGrid
+  is a `<vaadin-grid>` too. **[verified 2026-11-18, Vaadin 25.3.5]**
+- Only the rows in view have cells: a Grid of 200 items at its default height had 10 rows'.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- The cells are recycled: after a sort, the same `<vaadin-grid-cell-content>` element shows another
+  item's value. **[verified 2026-11-18, Vaadin 25.3.5]**
+- A sortable column's header cell holds a `<vaadin-grid-sorter>` with the header text, a
+  TreeGrid's hierarchy cell a `<vaadin-grid-tree-toggle>` with the item's text. A multi-select
+  Grid's selection column has a `<vaadin-checkbox>` per row and one `id=selectAllCheckbox` in the
+  header, `checked` and `indeterminate` once some rows are selected.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- A click on a cell selects its row in a single-select Grid; a click on a sorter sorts; a click
+  on a tree toggle expands the row, its children's cells added after its own. Each reaches the
+  server's listeners. **[verified 2026-11-18, Vaadin 25.3.5]**
+
+## R_vaadin_hidden_in_dom — what a Vaadin component keeps in the DOM while it doesn't show it
+
+None of these carries `hidden`.
+
+- A `Details` or an `AccordionPanel` keeps its content in its light DOM while closed. Its summary,
+  a `<vaadin-details-summary>` or `<vaadin-accordion-heading>` with a generated id, comes after the
+  content. **[verified 2026-11-18, Vaadin 25.3.5]**
+- A `Popover` with a target is in the DOM, content and all, before it was ever opened.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- An `AvatarGroup`'s avatars beyond `maxItemsVisible` are `<vaadin-avatar-group-menu-item>`s in a
+  `<vaadin-avatar-group-menu>` in its light DOM while its overflow menu is closed.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- A `MenuBar` renders a submenu once it opens, its items `<vaadin-menu-bar-item>`s in a
+  `<vaadin-menu-bar-list-box>` inside `<vaadin-menu-bar-submenu>`, in the bar's light DOM; they
+  are still there after a click on one of them. **[verified 2026-11-18, Vaadin 25.3.5]**
+- An `AppLayout`'s drawer content stays in the DOM after its `DrawerToggle` closes the drawer,
+  `drawerOpened` false, on a 1280×720 viewport. **[verified 2026-11-18, Vaadin 25.3.5]**
+- A `SideNavItem`'s child items are in its light DOM while it isn't `expanded`.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- The browser's `checkVisibility()` is false for a closed Details' or AccordionPanel's content, a
+  never-opened Popover's, and a collapsed SideNavItem's children; but true for a closed drawer's
+  SideNav. **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
+- A `TabSheet` is the exception: only the selected tab's content is in the DOM, and selecting
+  another tab replaces it. So is a `ContextMenu`: before it first opens, there is no
+  `<vaadin-context-menu>` in the DOM, and its target is a plain child of its layout.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+- While a MenuBar submenu is open, a click elsewhere on the page doesn't reach its target:
+  Playwright retries until its timeout, reporting that `<html>` intercepts pointer events.
+  **[verified 2026-11-18, Vaadin 25.3.5]**
+
+## R_vaadin_login_dom — a Vaadin LoginForm in the browser
+
+- A `<vaadin-login-form>`'s fields are a `<vaadin-text-field id="vaadinLoginUsername">` and a
+  `<vaadin-password-field id="vaadinLoginPassword">` in its light DOM, beside an
+  `<input id="csrf">`. **[verified 2026-11-18, Vaadin 25.3.5]**
+- After the app's `setError(true)`, the form's `error` property is true and its message is
+  rendered in the shadow DOM of a `<vaadin-login-form-wrapper>`, itself in the form's shadow
+  root; nothing in the light DOM changes. **[verified 2026-11-18, Vaadin 25.3.5]**
+
 ## R_flow_navigation_url — Flow: a server-side navigation changes the URL after its round-trip
 
 - `UI.navigate` from a listener updates the address bar only after the response that carries the

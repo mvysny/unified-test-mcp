@@ -42,7 +42,7 @@ Every fact lives in exactly one of these; the others link to it.
 - The MCP protocol and its transports are [TinyMCPServer](https://github.com/mvysny/tinymcpserver), a separate product this depends on as `com.github.mvysny.tinymcpserver:mcp-server`.
 - The Vaadin component knowledge is the [Unified API](https://github.com/parttio/unified-testing-tool), depended on as `org.vaadin.addons:unified-test-playwright`. `unified-testing-tool/` is a gitignored clone of its repository, there to read its source; a change to it goes upstream as a PR.
 - `unified-test-mcp` — the MCP server itself: `main()`, the tools, and opening a Unified API page outside JUnit.
-- `test-app` — a three-view Vaadin Boot app the tools are tried and tested against.
+- `test-app` — a Vaadin Boot app the tools are tried and tested against.
 
 ## Conventions
 

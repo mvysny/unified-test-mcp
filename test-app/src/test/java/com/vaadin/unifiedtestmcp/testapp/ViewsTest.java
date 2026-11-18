@@ -2,10 +2,13 @@ package com.vaadin.unifiedtestmcp.testapp;
 
 import com.github.mvysny.kaributesting.v10.MockVaadin;
 import com.github.mvysny.kaributesting.v10.Routes;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Span;
 import org.junit.jupiter.api.*;
+
+import java.util.List;
 
 import static com.github.mvysny.kaributesting.v10.LocatorJ.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,6 +42,16 @@ public class ViewsTest {
         UI.getCurrent().navigate(SecondView.class);
         _click(_get(Button.class, s -> s.withId("back")));
         _assertOne(MainView.class);
+    }
+
+    @Test
+    public void surveyViewsOpen() {
+        for (Class<? extends Component> view : List.of(GridView.class, VirtualListView.class,
+                NotificationView.class, NavigationView.class, DisclosureView.class, MenusView.class,
+                UploadView.class, MessagesView.class, LoginView.class, DisplayView.class)) {
+            UI.getCurrent().navigate(view);
+            _assertOne(view);
+        }
     }
 
     @Test

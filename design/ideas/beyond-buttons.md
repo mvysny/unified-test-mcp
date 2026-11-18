@@ -1,7 +1,6 @@
 # Beyond Buttons: more component types, faster failures
 
-What the tools so far leave open: the locale, a wait that can't succeed, a field outside
-`vaadin-core`.
+What the tools so far leave open: the locale, a wait that can't succeed.
 
 `Q_browser_locale`: a field's value is its text in the app's locale (`D_values_as_shown`), which
 without an `I18NProvider` is the browser's language, and Chromium follows the machine's. A
@@ -16,8 +15,5 @@ sees there.
 `Q_timeout`: a ref that isn't in the latest snapshot, or whose component is gone, fails at once.
 What still costs the full 10 s is an action on a component that is there but stays disabled or
 hidden: `click` on the snapshot's `Button "Delete" [disabled]` waits for it to be enabled.
-`set_value` refuses a disabled field at once; `click` the same, or a `--timeout` option?
-
-`Q_rich_text_editor`: RichTextEditor (commercial, not in `vaadin-core`) is a field whose `value`
-property is its Delta JSON, while Flow's value is HTML. Show its text, as the user reads it? Not
-until test-app can run it.
+`set_value` refuses a disabled field at once; `click` the same, or a `--timeout` option? A
+disabled MenuBarItem and a Button under an open menu wait the same 10 s (`menus.md`).
