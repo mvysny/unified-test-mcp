@@ -99,9 +99,11 @@ before.
 - **The apps** run on the host, in production mode: dev mode puts `<vaadin-dev-tools>` in the DOM
   the competitors snapshot, and Vite into the first load. The container reaches them by
   `--network=host`. Restarted for every run, `--benchmark.seed` the round's: H2 in memory, so a
-  fresh start is a fresh database (the CRM answers within ~12 s). `--management.server.port` turns
-  on `POST /actuator/benchmark/<scenario>`, `{"phase":"setup"}` then
-  `{"phase":"check","answer":…}`.
+  fresh start is a fresh database. Ready when `GET /login` answers on the app port: 9–15 s, no
+  health endpoint. `--management.server.port` turns on `POST /actuator/benchmark/<scenario>`,
+  `{"phase":"setup"}` then `{"phase":"check","answer":…}`; an explicit port, never 0 (Bakery's
+  login exemption matches the request's local port). "Today" is the app JVM's, so the container's
+  `TZ` must match it.
 - **Serial runs, arms interleaved** round-robin within each round, so drift in API latency hits
   every arm alike. Parallel runs would share the app's state and the CPU.
 - Blind-review's `run.sh` can move onto the same image and drop its accepted `CLAUDE.md` leak.

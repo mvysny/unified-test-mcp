@@ -136,8 +136,8 @@ of lowercase values.
 it says.
 **Done when:** the answer contains "User has been locked and cannot be modified or deleted"; Mary
 unchanged.
-**Watch for:** the refusal is a notification: transient or persistent — check. An arm that reads
-it late may miss it.
+**Watch for:** the refusal is a persistent notification with a Close button, so a slow arm can't
+miss it.
 
 ## The whole-toolset session
 
