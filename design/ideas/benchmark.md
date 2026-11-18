@@ -88,6 +88,10 @@ before.
   server's defaults. Nothing downloads a browser per run. `--shm-size=1g`, the image's non-root
   `node` user, `TZ` the host's, the app's JVM in `en-US` (Bakery's dates and times are
   US-formatted).
+- **Auth: the owner's subscription, not an API key.** A `claude setup-token` token in
+  `~/.config/unified-test-mcp-benchmark/oauth-token` (mode 600), handed in as
+  `CLAUDE_CODE_OAUTH_TOKEN`; `-p` needs no first-run state in the fresh HOME. Not the mounted
+  `~/.claude/.credentials.json`: a refresh inside the container could rotate the host's login away.
 - **The call.** An `mcp.json` naming only that arm; `--strict-mcp-config --tools ""
   --allowedTools "mcp__<arm>__*" --disable-slash-commands --output-format stream-json --verbose
   --model claude-sonnet-5-5`. `run.sh`'s `readable` for the transcript.
@@ -121,11 +125,6 @@ before.
 - Median and spread over N runs.
 
 ## Open questions
-
-`Q_auth`: a subscription, not an API key. `claude setup-token` into `CLAUDE_CODE_OAUTH_TOKEN`
-(lean), or mounting `~/.claude/.credentials.json` — whose refresh inside the container could
-rotate the host's refresh token away mid-benchmark, or fail on a read-only mount. Does a fresh HOME
-need `~/.claude.json`'s first-run state for `-p`?
 
 `Q_tool_deferral`: Claude Code may defer MCP tools behind ToolSearch, depending on how many tool
 tokens there are. If it does for one arm and not another, "leaner" quietly means something else.
