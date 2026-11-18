@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "unified-test-mcp": {
+      "type": "stdio",
+      "command": "java",
+      "args": ["-jar", "/opt/unified-test-mcp.jar", "--browser-executable", "/usr/bin/chromium"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "playwright-mcp",
+      "args": ["--headless", "--isolated", "--browser", "chromium", "--executable-path", "/usr/bin/chromium",
+               "--viewport-size", "1280x720", "--no-sandbox"]
+    },
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "chrome-devtools-mcp",
+      "args": ["--headless", "--isolated", "--executablePath", "/usr/bin/chromium", "--viewport", "1280x720",
+               "--chromeArg=--no-sandbox", "--no-usage-statistics", "--no-performance-crux"]
+    }
+  }
+}

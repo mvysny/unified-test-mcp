@@ -1,0 +1,9 @@
+{
+  "name": "benchmark-mcp-servers",
+  "private": true,
+  "description": "The two browser MCP servers the benchmark compares unified-test-mcp against, pinned",
+  "dependencies": {
+    "@playwright/mcp": "0.0.85",
+    "chrome-devtools-mcp": "1.13.0"
+  }
+}

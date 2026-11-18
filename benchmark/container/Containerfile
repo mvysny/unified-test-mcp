@@ -1,0 +1,28 @@
+# The benchmark's agent box: the three browser MCP servers, one Chromium they all drive, and a JRE
+# for unified-test-mcp. `claude` and unified-test-mcp's jar are mounted at run time, so neither a
+# Claude Code update nor a prototype step rebuilds the image. design/ideas/benchmark.md, "Harness".
+#
+#   env XDG_DATA_HOME=/home/mavi/.local/share podman build -t unified-test-mcp-benchmark benchmark/container
+FROM docker.io/library/node:26-slim
+
+# Debian's own packages: its chromium is a real one (Ubuntu's is a snap shim), tzdata for the
+# host's TZ, fonts so pages render as on a desktop.
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      chromium openjdk-21-jre-headless tzdata fonts-liberation ca-certificates \
+ && rm -rf /var/lib/apt/lists/*
+
+# The two competitors, at the versions package-lock.json pins; no browser downloads, they drive
+# Debian's chromium.
+WORKDIR /opt/mcp
+COPY package.json package-lock.json ./
+RUN PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 PUPPETEER_SKIP_DOWNLOAD=1 npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
+ && npm cache clean --force
+
+ENV PATH=/opt/mcp/node_modules/.bin:$PATH \
+    LANG=C.UTF-8 \
+    LANGUAGE=en_US \
+    DISABLE_AUTOUPDATER=1
+
+USER node
+WORKDIR /home/node/work

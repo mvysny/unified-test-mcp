@@ -18,9 +18,13 @@ critique.
   orders, an order editor with ComboBoxes, Date/TimePicker and a list of order items, confirm
   dialogs, notifications, users/products admin. Its dashboard is Vaadin Charts (commercial): no
   scenario touches it. The CRM tutorial (`vaadin/flow-crm-tutorial`) is the simple, neutral
-  baseline, Vaadin's own tutorial app. Both Unlicense, both on Vaadin 25.3.5 as of 2026-11; forked
-  to add seeding and a submit counter. `test-app` stays the testbed for the tools' own tests and
+  baseline, Vaadin's own tutorial app. Both Unlicense, both on Vaadin 25.3.5 as of 2026-11. Forked
+  to `mvysny/` for the benchmark's hooks (seeded data, a setup/check endpoint, attempt counts; each
+  fork's README, "Benchmark hooks"), and pinned here as submodules in `benchmark/apps/`: the commit
+  a measurement ran against is recorded. `test-app` stays the testbed for the tools' own tests and
   `/blind-review`: a public claim measured on an app built for these tools convinces nobody.
+- **Only the owner runs it**, to prove the project viable: commercial components (Bakery's Crud,
+  both dashboards' Charts) and the owner's Vaadin license are fine.
 - **Some scenarios we don't expect to win** — a plain button and text field. All wins reads as
   marketing.
 - **Black box.** The agent sees the running app only (`--tools ""`), no sources. With sources the
@@ -72,16 +76,18 @@ One podman image (`env XDG_DATA_HOME=/home/mavi/.local/share podman …`), a fre
 identical start: empty `~/.claude`, fresh browser profile, no Chromium left over from the run
 before.
 
-- **Inside.** A Debian base (check trixie's versions) with, from apt, `chromium` (Ubuntu's is a
-  snap shim, useless in a container), `openjdk-21-jre-headless`, `nodejs`; from npm, pinned in a
-  lockfile, `@playwright/mcp` and `chrome-devtools-mcp`. Mounted read-only: the `claude` binary at
-  a fixed version (`~/.local/share/claude/versions/<v>`, a glibc ELF, so not Alpine;
-  `DISABLE_AUTOUPDATER=1`), and this server's jar from the latest build — it changes with every
-  prototype step, the competitors don't.
-- **One Chromium for the three** — the Unified API's `vaadin.testing.playwright.executable`,
-  Playwright MCP's `--executable-path`, chrome-devtools-mcp's `--executablePath` (flags to
-  verify) — headless, the same viewport (it decides how many Grid rows exist in the DOM), the same
-  locale and time zone (en-US: Bakery's dates and times are US-formatted), a fresh profile. Nothing downloads a browser per run. `--shm-size=1g`, a non-root user.
+- **Inside** (`benchmark/container/Containerfile`): `node:26-slim` (Debian trixie), with from apt
+  `chromium` (Ubuntu's is a snap shim, useless in a container), `openjdk-21-jre-headless`,
+  `tzdata`; from npm, pinned in `package-lock.json`, `@playwright/mcp` and `chrome-devtools-mcp`.
+  Mounted read-only: the `claude` binary at a fixed version (`~/.local/share/claude/versions/<v>`,
+  a glibc ELF, so not Alpine; `DISABLE_AUTOUPDATER=1`), and this server's jar from the latest
+  build — it changes with every prototype step, the competitors don't.
+- **The arms** (`arms.json`, `claude --mcp-config`'s format; `smoke.mjs` proves each one opens a
+  page in the image): one Chromium for the three, Debian's, headless, 1280×720 (the viewport
+  decides how many Grid rows exist in the DOM), a fresh profile, no sandbox, otherwise each
+  server's defaults. Nothing downloads a browser per run. `--shm-size=1g`, the image's non-root
+  `node` user, `TZ` the host's, the app's JVM in `en-US` (Bakery's dates and times are
+  US-formatted).
 - **The call.** An `mcp.json` naming only that arm; `--strict-mcp-config --tools ""
   --allowedTools "mcp__<arm>__*" --disable-slash-commands --output-format stream-json --verbose
   --model claude-sonnet-5-5`. `run.sh`'s `readable` for the transcript.
@@ -92,7 +98,10 @@ before.
   apply — the same for all arms.
 - **The apps** run on the host, in production mode: dev mode puts `<vaadin-dev-tools>` in the DOM
   the competitors snapshot, and Vite into the first load. The container reaches them by
-  `--network=host`. Reset between runs.
+  `--network=host`. Restarted for every run, `--benchmark.seed` the round's: H2 in memory, so a
+  fresh start is a fresh database (the CRM answers within ~12 s). `--management.server.port` turns
+  on `POST /actuator/benchmark/<scenario>`, `{"phase":"setup"}` then
+  `{"phase":"check","answer":…}`.
 - **Serial runs, arms interleaved** round-robin within each round, so drift in API latency hits
   every arm alike. Parallel runs would share the app's state and the CPU.
 - Blind-review's `run.sh` can move onto the same image and drop its accepted `CLAUDE.md` leak.
@@ -118,26 +127,15 @@ need `~/.claude.json`'s first-run state for `-p`?
 
 `Q_tool_deferral`: Claude Code may defer MCP tools behind ToolSearch, depending on how many tool
 tokens there are. If it does for one arm and not another, "leaner" quietly means something else.
-How does `-p` behave; pin it alike for all arms, and record it.
-
-`Q_app_reset`: restart the app between runs (H2 in memory, fresh each start, seconds) or a reset
-endpoint in the fork? Seeding: Bakery's `DataGenerator` is `new Random(1L)`, its orders dated from
-today, so the seed becomes a property. The CRM's data is a fixed `data.sql` of ~50 contacts, so
-the fork generates it from a seed instead, ~200 contacts, more than the grid renders at once. Both
-forks get a setup endpoint that picks a scenario's `{{…}}` from the seeded data and a check
-endpoint for its "Done when", on a separate management port the browser never sees.
-
-`Q_commercial`: both apps depend on `vaadin`, commercial components included. Bakery's Users and
-Products views are `Crud`; both dashboards are Charts. A production build needs a license: fine
-here, but can anyone outside Vaadin reproduce the numbers?
-
-`Q_app_pinning`: for now the apps are gitignored clones in `benchmark/apps/`. Once forked, a git
-submodule per fork pins the exact commit the numbers came from.
+How does `-p` behave; pin it alike for all arms, and record it. What's at stake, from `smoke.mjs`:
+the tool lists are 6.8k characters (ours, 8 tools), 21k (Playwright MCP, 25), 32k (chrome-devtools,
+33) — on every turn unless deferred.
 
 `Q_n`: N per scenario and arm. Subscription rate limits (the 5-hour windows): the harness has to
 tell a rate-limited run from an agent's failure and re-run it.
 
-`Q_one_chromium_fair`: Playwright MCP pins its own Chromium build; does it work as well on Debian's?
-If not, each arm gets its own pinned build, and the report says so.
+`Q_one_chromium_fair`: Playwright MCP pins its own Chromium build (Playwright 1.66 alpha); it opens
+pages on Debian's Chromium 156 in the smoke test, but does it work as well? If not, each arm gets
+its own pinned build, and the report says so.
 
-`Q_results`: where the numbers live, and how they're published.
+`Q_results`: where the numbers live — a results folder per round, the transcripts beside them?

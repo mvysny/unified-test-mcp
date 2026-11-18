@@ -16,7 +16,16 @@ the expected outcome; its check endpoint decides "Done when". The Task is all th
 | **Notifications** (Bakery's last 4 s) | bakery-new-order, bakery-locked-user |
 | **Links and tabs**: CRM's drawer `RouterLink`s, Bakery's menu `Tabs` | any scenario whose agent navigates by clicking instead of by URL |
 | **A field without a label**, named by its prefix icon or placeholder | bakery-new-order, bakery-edit-items |
-| Login: `vaadin-login-form` (CRM), `vaadin-login-overlay` (Bakery) — check whether their fields already show | all |
+| Login: the CRM's `vaadin-login-form` shows already (`LoginForm "Log in"` with its two fields); Bakery's `vaadin-login-overlay` — check | all |
+
+What the competitors stumble on, from a first look in the browser (2026-11-18):
+
+- Playwright MCP's `browser_fill_form` fails on a Vaadin ComboBox ("Element is not a `<select>`
+  element"); typing into it and pressing Enter works. Its `browser_click` on a CSS target needs
+  `vaadin-button`, not `button`.
+- Playwright MCP snapshots right after `browser_navigate` before Vaadin has rendered: the login
+  page showed only "Online". Ours waits for the page to settle.
+- Its snapshot of the CRM's list holds ~38 of the 200 rows, as a `treegrid`.
 
 ## CRM (log in as `user` / `password`, shown on the login page)
 
@@ -54,11 +63,16 @@ promise against that rule.
 
 ### crm-invalid-email — a failure, read back
 **Task:** … Try to add a contact Jane Doe, email `jane.doe@`, at {{company}}, status Imported lead.
-If the app won't accept it, don't fix it: tell me exactly what the app says, and leave nothing
-saved.
-**Done when:** the answer contains "must be a well-formed email address"; no Jane Doe in the DB.
-**Watch for:** Save is disabled while the form is invalid. An agent that clicks it anyway: our
-`click` waits 10 s for a disabled button (`Q_timeout` in `beyond-buttons.md`).
+If the app won't accept it, don't fix it: tell me which field it objects to and how it shows that,
+and leave nothing saved.
+**Done when:** the answer names the Email field; no Jane Doe in the DB.
+**Watch for:**
+- The app shows no text: the EmailField's own check runs before the bean validator's "must be a
+  well-formed email address" and has an empty error message, so the field only turns invalid
+  (seen in the browser, 2026-11-18). A toolset has to show `invalid` without a message. A required
+  field left empty does say "must not be empty".
+- Save is disabled while the form is invalid. An agent that clicks it anyway: our `click` waits
+  10 s for a disabled button (`Q_timeout` in `beyond-buttons.md`).
 
 ## Bakery (barista: `barista@vaadin.com` / `barista`; admin: `admin@vaadin.com` / `admin`, shown on the login overlay)
 
