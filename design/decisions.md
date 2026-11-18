@@ -95,6 +95,29 @@ JVM, so two would fight; here sessions share nothing but the app's server. The c
 session launches a browser of its own, a second or two and a Chromium's memory; still lazy,
 on the session's first tool call.
 
+## D_browser_install — Why does the server install its browser itself rather than leave it to Playwright?
+
+Left to itself, `Playwright.create()` on a fresh machine downloads every browser it supports, 1.3
+GB, with `--browser-executable` too, and writes the download's progress to the process's stdout:
+on stdio, progress bars land in the protocol between the JSON-RPC lines, and the first tool call
+answers only once all of it is in (`R_playwright_thread_safety`). Playwright keeps both by design.
+So `BrowserInstall` asks for Playwright's driver first, without the download — the driver is one
+per JVM, and every `Playwright` the Unified API creates later shares it — and installs only the
+browser the settings open: Chromium's headless shell, 114 MB to download, or Chromium itself with
+`--headed`; nothing with `--browser-executable`. Its output goes to the log. It starts when the
+server does, so a first download is under way while the client is still connecting, and the
+first tool call waits only for what is left.
+
+Why not `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` in the README's `claude mcp add` line: every user
+would have to know it, one who doesn't gets a broken first session, and without an executable it
+still leaves the download to Playwright, onto stdout. Why not wait for the Unified API to skip the
+download when given an executable (parttio/unified-testing-tool#299): that covers the executable
+alone. Why not a `System.setOut` around the first browser: Playwright's install inherits the
+process's file descriptor, which `System.setOut` doesn't move. The cost: `Driver` is Playwright's
+internal class, `com.microsoft.playwright.impl.driver`, so a Playwright upgrade may change it
+without notice; a renamed method fails the build, but a driver that stops being one per JVM would
+bring the full download back silently.
+
 ## D_refs_not_ids — Why does every tool take a snapshot's ref rather than the component's id?
 
 Every tool that acts on a component takes a `ref`, a number the snapshot shows on the

@@ -98,6 +98,8 @@ a claim came from, so the prose doesn't repeat it.
   `--no-sandbox`, instead of Playwright's own download; `vaadin.testing.playwright.browser`
   picks `chromium` (default), `firefox` or `webkit`; `vaadin.testing.playwright.headless`
   defaults to `true`. **[src]**
+- The browser context is `browser.newContext()` without options: no setting reaches its locale,
+  timezone or viewport. **[src, unified-testing-tool `6c15e62`]**
 - Excluding `vaadin-dev` from it breaks nothing for an app that runs in another JVM.
   **[verified 2026-11-16, 0.1.0-alpha2]**
 
@@ -109,6 +111,28 @@ a claim came from, so the prose doesn't repeat it.
   Chromium, Chromium headless shell, Firefox, WebKit, and ffmpeg — into `~/.cache/ms-playwright`,
   1.3 GB unpacked. **[verified 2026-11-16, Playwright 1.63.0]**
 - `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` in the environment skips that download. **[docs]**
+- The download is decided once per JVM: `Playwright.create()` goes through
+  `Driver.ensureDriverInstalled(env, true)`, a singleton whose first call extracts the driver and
+  installs the browsers or not; a later call reuses it, whatever it passes. So
+  `Driver.ensureDriverInstalled(Map.of(), false)`, called first, skips the download for every
+  `Playwright` after it. **[src, Playwright 1.63.0; verified 2026-11-18, an empty
+  `PLAYWRIGHT_BROWSERS_PATH`]**
+- The driver's `install --only-shell chromium` fetches Chromium's headless shell (114 MiB) and
+  ffmpeg, 266 MB unpacked; a headless Chromium launches with nothing else.
+  `--no-shell chromium` fetches Chromium itself (187 MiB) instead; `--no-progress` leaves one line
+  per download. **[verified 2026-11-18, Playwright 1.63.0]**
+- The download runs the driver's `install` with stdout inherited: the JVM's file descriptor 1,
+  which `System.setOut` doesn't move. **[src, Playwright 1.63.0]**
+- So on stdio, a first start's progress bars land in the protocol between the JSON-RPC lines, with
+  `--browser-executable` too, and the first tool call, which opens the session's browser, answers
+  only once the download is done. **[verified 2026-11-18, Playwright 1.63.0, an empty
+  `PLAYWRIGHT_BROWSERS_PATH`]**
+- `Playwright.CreateOptions.setEnv` reaches that check before the process environment does, so
+  `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` there skips the download too. **[src, Playwright 1.63.0]**
+- Playwright's maintainers keep both as intended: every browser on `create()`, a narrower set
+  installed by hand behind `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` (playwright-java #1989); the driver's
+  output on the process's own stdout and stderr (#1149), no logging framework (#1418).
+  **[docs, issue tracker, 2026-11-18]**
 - The download's host check warns about libraries WebKit lacks (`libavif16`, `libmanette-0.2-0`
   on Ubuntu 26.04); Chromium runs without them. **[verified 2026-11-16, Playwright 1.63.0]**
 

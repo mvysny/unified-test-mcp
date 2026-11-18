@@ -40,10 +40,14 @@ public final class UnifiedTestMCP {
             to the next.""";
 
     /**
+     * Also starts {@link BrowserInstall} in the background, so a first download is under way before the first tool
+     * call.
+     *
      * @param settings what each session's {@link UnifiedBrowser} is created with
      * @param timeout  how long a lookup or an action waits before it fails
      */
     public static MCPHandler createHandler(Map<String, String> settings, Duration timeout, String version) {
+        BrowserInstall.start(settings);
         MCPHandler handler = new MCPHandler(new MCPProtocol.Implementation("unified-test-mcp", version), INSTRUCTIONS);
         handler.setOnSessionStarted(session -> {
             session.setAttribute(UnifiedBrowser.class, new UnifiedBrowser(settings, timeout));

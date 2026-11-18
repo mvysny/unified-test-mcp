@@ -27,7 +27,8 @@ import java.util.logging.Logger;
  * }
  * }</pre>
  *
- * The browser starts on the first {@link #call}, on an empty page: it goes nowhere until a call navigates.
+ * The browser starts on the first {@link #call}, on an empty page: it goes nowhere until a call navigates. That call
+ * first waits for {@link BrowserInstall} to put the browser in Playwright's cache.
  *
  * <p>Thread-safe.
  *
@@ -37,6 +38,7 @@ import java.util.logging.Logger;
 public final class UnifiedBrowser implements AutoCloseable {
     private static final Logger LOG = Logger.getLogger(UnifiedBrowser.class.getName());
 
+    private final Map<String, String> settings;
     private final JUnitFreeContext context;
     private final ExecutorService browserThread = Executors.newSingleThreadExecutor(r -> {
         Thread t = new Thread(r, "unified-browser");
@@ -54,6 +56,7 @@ public final class UnifiedBrowser implements AutoCloseable {
      * @param timeout  how long a lookup or an action waits before it fails
      */
     public UnifiedBrowser(Map<String, String> settings, Duration timeout) {
+        this.settings = Map.copyOf(settings);
         context = new JUnitFreeContext(settings, timeout);
     }
 
@@ -81,6 +84,7 @@ public final class UnifiedBrowser implements AutoCloseable {
 
     private UnifiedPage page() {
         if (page == null) {
+            BrowserInstall.await(settings);
             session = new PlaywrightAdapter().open(context);
             page = new UnifiedPageImpl(new TestRun(TestingTool.PLAYWRIGHT, session, context.timeout()));
         }

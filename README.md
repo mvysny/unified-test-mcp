@@ -46,7 +46,9 @@ claude mcp add vaadin-test -- java -jar /path/to/unified-test-mcp-<version>.jar
 ```
 
 Options, after the jar: `--browser-executable <path>` to use an installed Chromium instead of
-Playwright's own download, `--headed` to watch the browser. The browser starts on an empty page
+Playwright's own download, `--headed` to watch the browser. Without `--browser-executable`, the
+first start downloads Playwright's Chromium into `~/.cache/ms-playwright`: its headless shell,
+114 MB, or Chromium itself, 187 MB, with `--headed`. The browser starts on an empty page
 and goes where the agent navigates, so tell the agent the app's URL; the app needs to be up only
 by then.
 

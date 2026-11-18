@@ -16,10 +16,12 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 - **One `UnifiedBrowser` per MCP session** (`D_browser_per_session`): the handler creates it when a session starts, as the session's attribute, and closes it when the session closes. Beside it, the session's `Refs`: the refs its latest snapshot showed (`D_refs_not_ids`). A tool finds both through `ToolCall`, so the tools hold no state.
 - **The per-type knowledge is one table**, `ComponentTypes`, keyed by tag: the Flow class a line shows, which property names it, the tools made for it.
 - `UnifiedBrowser` opens its page through `JUnitFreeContext`, which stands in for the JUnit extension that normally opens a Unified API page (`D_junit_free_context`).
+- **The browser comes from `BrowserInstall`, never from Playwright's own download** (`D_browser_install`): once per JVM, before the first `Playwright` exists, it claims Playwright's driver without the download and installs the one browser the settings open. The handler starts it when the server starts; a `UnifiedBrowser` waits for it before opening its page.
 
 ## Threading
 
 - Each `UnifiedBrowser` owns one thread, `unified-browser`. Every touch of the page — opening it, every tool's lookup and action, closing it — is a task on that thread; the caller blocks for the result (`R_playwright_thread_safety`). A session's `Refs` is touched on that thread only.
+- `BrowserInstall` runs on a thread of its own, `browser-install`. It touches no Playwright object, only the driver's install process, so it stays off the browser threads.
 - Tool calls arrive on whatever thread the transport uses: stdio's read loop, or HTTP's pool. TinyMCPServer runs one session's calls one at a time, and they queue on that session's browser thread anyway; two sessions' calls run side by side, each in its own browser.
 
 ## Flows
@@ -30,7 +32,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 
 1. The transport hands `tools/call` to `MCPHandler`, which calls the tool's class, a TinyMCPServer `ToolFunction`.
 2. `ClickTool` hands `(page, refs) -> …` to `ToolCall`, which submits it to the calling session's `UnifiedBrowser.call`.
-3. On the browser thread, the session's first call opens the page: `PlaywrightAdapter.open` launches Playwright and the browser, on an empty page; only `navigate` sends it anywhere.
+3. On the browser thread, the session's first call waits for `BrowserInstall`, then opens the page: `PlaywrightAdapter.open` launches Playwright and the browser, on an empty page; only `navigate` sends it anywhere.
 4. `Refs.resolve` turns the ref into a Unified API wrapper: by the component's id if the snapshot saw it unique, else by its stamp. A ref not in the latest snapshot, or a component gone from the page, fails right away with what to do next.
 5. The Unified API waits until the component is visible and enabled, clicks, and waits for the server round-trip; then a snapshot, which the tool returns (`D_action_returns_snapshot`).
 6. A failure — a lookup that timed out, an app that isn't up — comes back as a tool error carrying the Unified API's own message, which the model reads.

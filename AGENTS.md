@@ -31,7 +31,8 @@ Every fact lives in exactly one of these; the others link to it.
 
 ## Invariants
 
-- **Every Playwright call runs on `UnifiedBrowser`'s thread**, through `UnifiedBrowser.call`; Playwright for Java is not thread-safe, and a call from a transport thread corrupts the session. The threading is in `design/architecture.md`.
+- **Every Playwright call runs on `UnifiedBrowser`'s thread**, through `UnifiedBrowser.call`; Playwright for Java is not thread-safe, and a call from a transport thread corrupts the session. The one exception is `BrowserInstall`, before any `Playwright` exists. The threading is in `design/architecture.md`.
+- **Playwright never downloads browsers on its own**: `BrowserInstall` claims its driver first and installs the one browser opened, output to the log (`D_browser_install`).
 - **Every tool reaches the browser through `ToolCall`**, which finds the calling MCP session's own browser (`D_browser_per_session`). A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `ToolCall` turns it into a tool error the model reads.
 - **The tools use the Unified API, not Playwright**; its escape hatch only for what no wrapper offers, as the snapshot's script (`D_snapshot_from_javascript`). See `D_unified_api_backend`.
 - **A tool names a component by its `ref` from the latest snapshot, never by its id**, and finds it through `Refs.resolve` (`D_refs_not_ids`). **A tool that changes the page answers with the new snapshot** (`D_action_returns_snapshot`).
@@ -59,7 +60,7 @@ Every fact lives in exactly one of these; the others link to it.
 ## Commands
 
 - `./gradlew` — clean, build, all tests (the default tasks); needs a JDK 21 or newer.
-- `./gradlew :unified-test-mcp:test --tests "com.vaadin.unifiedtestmcp.ToolsTest"` — one class; append `.methodName` for one method. The first run downloads Playwright's browsers (`R_playwright_thread_safety`).
+- `./gradlew :unified-test-mcp:test --tests "com.vaadin.unifiedtestmcp.ToolsTest"` — one class; append `.methodName` for one method. The first run downloads Chromium's headless shell into `~/.cache/ms-playwright` (`D_browser_install`).
 - `./gradlew :test-app:run` — the test app in dev mode on http://localhost:8080.
 - `./gradlew :unified-test-mcp:shadowJar` — the server's jar, `unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`; `java -jar` it to speak MCP on stdio.
 - `design/verify_design_tripwires.sh` — the doc layer.
