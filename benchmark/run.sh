@@ -10,9 +10,10 @@
 #
 # Starts the scenario's app from its fork's jar on free ports, sets the scenario up, has `claude -p`
 # do its Task in a fresh container with only that arm's MCP server, checks the outcome, stops the
-# app. Leaves <results-dir>/<scenario>.<arm>.s<seed>.<n>/ (the task, the raw and readable
-# transcript, setup.json, check.json, the app's log) and appends one line to <results-dir>/runs.jsonl.
-# Builds a jar that is missing or older than its sources first.
+# app. Leaves <results-dir>/<scenario>.<arm>.s<seed>.<n>/ (the task, the raw transcript without
+# its screenshots' bytes, the readable one, setup.json, check.json, summary.json, the app's log) and
+# appends one line to <results-dir>/runs.jsonl. Builds a jar that is missing or older than its
+# sources first.
 #
 # BENCHMARK_MODEL overrides the model (claude-sonnet-5-5); the token comes from
 # ~/.config/unified-test-mcp-benchmark/oauth-token (`claude setup-token`).
@@ -163,6 +164,12 @@ jq -cs --arg scenario "$scenario" --arg arm "$arm" --argjson seed "$seed" --arg 
      tools_loaded: ($init.tools // [] | length),
      mcp_tools_loaded: ($init.tools // [] | map(select(startswith("mcp__"))) | length)}' \
   "$out/task.jsonl" | tee -a "$results/runs.jsonl" >"$out/summary.json"
+
+# A screenshot's base64 is most of a raw transcript's bytes, and committed results keep it out;
+# the image block stays, so its count does too.
+jq -c 'walk(if type == "object" and .type == "image" and (.source.data? | type) == "string"
+  then .source.data = "<\(.source.data | length) base64 chars dropped>" else . end)' \
+  "$out/task.jsonl" >"$out/task.jsonl.tmp" && mv "$out/task.jsonl.tmp" "$out/task.jsonl"
 
 log "$(jq -r '"\(.outcome): \(.details // "")  (\(.turns) turns, \(.wall_s)s, $\(.cost_usd))"' "$out/summary.json")"
 echo "$out"

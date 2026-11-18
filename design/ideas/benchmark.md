@@ -96,8 +96,11 @@ before.
 - **The call** (`benchmark/run.sh <scenario> <arm> [seed]`, one run). An `mcp.json` naming only
   that arm; `--strict-mcp-config --tools "" --allowedTools "mcp__<arm>__*"
   --disable-slash-commands --output-format stream-json --verbose --model claude-sonnet-5-5`, a
-  20-minute timeout. Each run's transcript, setup and check land in `benchmark/results/`
-  (gitignored), one summary line in its `runs.jsonl`.
+  20-minute timeout. Each run's transcript, setup and check land in a folder per round in
+  `benchmark/results/`, one summary line in its `runs.jsonl`; `report.sh` makes the table.
+- **Results are committed, public**: public apps, public servers, a public repo, so anyone can
+  check a number against its transcript. Not the screenshots' base64 (most of a raw transcript's
+  bytes; their count stays), nor the apps' startup logs (noise with local paths).
 - **No tool deferral.** With `--tools ""` there's no ToolSearch: every MCP tool loads up front
   (the init event lists all 25 of Playwright MCP's), so each arm's whole tool list is paid on every
   turn — 6.8k characters ours (8 tools), 21k Playwright MCP (25), 32k chrome-devtools (33), from
@@ -139,5 +142,3 @@ tell a rate-limited run from an agent's failure and re-run it.
 `Q_one_chromium_fair`: Playwright MCP pins its own Chromium build (Playwright 1.66 alpha); it opens
 pages on Debian's Chromium 156 in the smoke test, but does it work as well? If not, each arm gets
 its own pinned build, and the report says so.
-
-`Q_results`: where the numbers live — a results folder per round, the transcripts beside them?

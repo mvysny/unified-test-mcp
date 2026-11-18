@@ -18,5 +18,6 @@ bin/
 # Playwright MCP snapshots and logs
 .playwright-mcp/
 
-# benchmark runs: transcripts and numbers (design/ideas/benchmark.md, Q_results)
-/benchmark/results/
+# benchmark runs are committed, but not the apps' startup logs: noise with local paths
+/benchmark/results/**/app.log
+/benchmark/results/**/build.log
