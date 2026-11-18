@@ -104,6 +104,10 @@ jq --arg arm "$arm" '{mcpServers: {($arm): .mcpServers[$arm]}}' "$here/container
 mounts=(-v "$claude_bin:/usr/local/bin/claude:ro" -v "$out/mcp.json:/home/node/mcp.json:ro")
 [ -z "$server_jar" ] || mounts+=(-v "$server_jar:/opt/unified-test-mcp.jar:ro")
 log "the agent is at it"
+# How much of the run the host spent stalled on I/O and on CPU (the kernel's pressure counters, in
+# microseconds): a busy machine stretches the times, not the tokens.
+stalled() { awk '/^some/ { sub("total=", "", $5); print $5 }' "/proc/pressure/$1" 2>/dev/null || echo 0; }
+io_before=$(stalled io) cpu_before=$(stalled cpu)
 started=$(date +%s)
 status=0
 CLAUDE_CODE_OAUTH_TOKEN=$(<"$token_file") timeout 1200 env XDG_DATA_HOME="$HOME/.local/share" \
@@ -113,6 +117,8 @@ CLAUDE_CODE_OAUTH_TOKEN=$(<"$token_file") timeout 1200 env XDG_DATA_HOME="$HOME/
     --model "$model" \
   >"$out/task.jsonl" 2>"$out/claude.stderr" || status=$?
 wall=$(($(date +%s) - started))
+percent() { awk -v a="$1" -v b="$2" -v w="$wall" 'BEGIN { printf "%.1f", w > 0 ? (b - a) / (w * 10000) : 0 }'; }
+io_stall=$(percent "$io_before" "$(stalled io)") cpu_stall=$(percent "$cpu_before" "$(stalled cpu)")
 
 # --- the check: the app decides, from its database and the agent's last words ---------------------
 answer=$(jq -rs 'map(select(.type == "result")) | last | .result // ""' "$out/task.jsonl")
@@ -135,6 +141,7 @@ jq -r --arg prefix "mcp__${arm}__" '
 
 jq -cs --arg scenario "$scenario" --arg arm "$arm" --argjson seed "$seed" --arg model "$model" \
   --arg run "$(basename "$out")" --argjson wall "$wall" --argjson status "$status" \
+  --argjson io_stall "$io_stall" --argjson cpu_stall "$cpu_stall" \
   --arg claude "$(basename "$claude_bin")" --arg head "$(git -C "$repo" describe --always --dirty)" \
   --slurpfile check "$out/check.json" --slurpfile setup "$out/setup.json" '
   (map(select(.type == "result")) | last) as $r
@@ -149,7 +156,7 @@ jq -cs --arg scenario "$scenario" --arg arm "$arm" --argjson seed "$seed" --arg 
                then "infra" elif $c.passed then "passed" else "failed" end),
      details: ($c.details // $c.error // null), attempts: ($c.attempts // null),
      expected: ($setup[0].expected // null), answer: ($r.result // null),
-     wall_s: $wall, exit: $status,
+     wall_s: $wall, exit: $status, io_stall_pct: $io_stall, cpu_stall_pct: $cpu_stall,
      duration_ms: $r.duration_ms, duration_api_ms: $r.duration_api_ms, turns: $r.num_turns,
      cost_usd: $r.total_cost_usd, usage: $r.usage,
      max_context: ([$said[].message.usage | (.input_tokens // 0) + (.cache_creation_input_tokens // 0)

@@ -3,12 +3,14 @@
 #
 #   report.sh <results-dir>
 #
-#   scenario           arm                runs  passed  infra  time_s  api_s  turns  calls  errors  cost_usd  context
-#   crm-add-contact    playwright            3       3      0    34.0   22.6     21     20       1    0.0991    21900
+#   scenario           arm                runs  passed  infra  time_s  api_s  turns  calls  errors  cost_usd  context  io%
+#   crm-add-contact    playwright            3       3      0    34.0   22.6     21     20       1    0.0991    21900  2.1
 #
 # time_s is the agent's whole run, api_s the model's part of it; context is the largest single
-# turn's input, in tokens. A run the app couldn't judge (no result: a rate limit, an API error)
-# counts as infra, not as failed, and stays out of the medians.
+# turn's input, in tokens; io% how much of the run the host spent stalled on I/O, `-` for a run
+# from before run.sh measured it. A high io% stretches the times, not the tokens. A run the app
+# couldn't judge (no result: a rate limit, an API error) counts as infra, not as failed, and stays
+# out of the medians.
 set -euo pipefail
 runs=${1:?usage: report.sh <results-dir>}/runs.jsonl
 [ -f "$runs" ] || { echo "no $runs" >&2; exit 1; }
@@ -18,7 +20,7 @@ jq -rs '
     elif length % 2 == 1 then .[length / 2 | floor]
     else (.[length / 2 - 1] + .[length / 2]) / 2 end;
   def fmt($d): if . == null then "-" else (. * pow(10; $d) | round) / pow(10; $d) | tostring end;
-  ["scenario", "arm", "runs", "passed", "infra", "time_s", "api_s", "turns", "calls", "errors", "cost_usd", "context"],
+  ["scenario", "arm", "runs", "passed", "infra", "time_s", "api_s", "turns", "calls", "errors", "cost_usd", "context", "io%"],
   (group_by([.scenario, .arm])[]
    | (map(select(.outcome != "infra"))) as $judged
    | [.[0].scenario, .[0].arm, length, (map(select(.outcome == "passed")) | length),
@@ -29,6 +31,7 @@ jq -rs '
       ($judged | map(.tool_calls) | median | fmt(0)),
       ($judged | map(.tool_errors) | median | fmt(0)),
       ($judged | map(.cost_usd) | median | fmt(4)),
-      ($judged | map(.max_context) | median | fmt(0))]
+      ($judged | map(.max_context) | median | fmt(0)),
+      ($judged | map(.io_stall_pct // empty) | median | fmt(1))]
    | map(tostring))
   | @tsv' "$runs" | column -t -s $'\t'
