@@ -22,3 +22,5 @@ happened with each.
 - After the first `toggle_expand`, does it read the answer's snapshot, or call `snapshot` again?
 - Inbox and Trash: does it call `toggle_expand` anyway, though their `actions:` don't list it on
   Inbox? Does each error say why, and what to do instead?
+- Trash: does it read `collapsed` as "has entries, hidden"? The first review's agent reported it
+  as unknown whether Trash has any.

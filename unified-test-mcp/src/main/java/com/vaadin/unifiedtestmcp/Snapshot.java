@@ -53,7 +53,7 @@ import java.util.Map;
  * </pre>
  *
  * {@code path=} is where a SideNavItem or a BreadcrumbsItem links, as the app gave it; {@code current} marks the one
- * of the page shown; {@code collapsed} a SideNavItem whose items aren't shown. One with items has
+ * of the page shown; {@code collapsed} a SideNavItem that has items, hidden. One with items has
  * {@code toggle_expand} among its actions, the one action listed by a component's state rather than its type
  * (D_nav_item_states).
  *

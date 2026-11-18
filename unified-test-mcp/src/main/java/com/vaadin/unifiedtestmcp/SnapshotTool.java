@@ -25,7 +25,7 @@ final class SnapshotTool implements ToolFunction {
                     + "the states that are on: checked, "
                     + "disabled, readonly, required, invalid with its error message; a LoginForm's error with its "
                     + "message; current, the SideNavItem or BreadcrumbsItem of the page shown; collapsed, a "
-                    + "SideNavItem whose items aren't shown (toggle_expand shows them, click opens its page). A "
+                    + "SideNavItem that has items, hidden (toggle_expand shows them, click opens its page). A "
                     + "dialog's quoted name is its title. An AppLayout lists what it holds under `- Navbar:`, `- Drawer:` and `- Content:`, the "
                     + "app's chrome apart from the view; a closed drawer as `- Drawer: closed`, with the ref of the "
                     + "DrawerToggle that opens it. `actions` lists "

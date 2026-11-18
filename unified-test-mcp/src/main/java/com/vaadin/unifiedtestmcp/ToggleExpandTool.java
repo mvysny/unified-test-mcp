@@ -25,6 +25,9 @@ import com.vaadin.testing.unified.UnifiedElement;
  * Unlike {@code click}, it doesn't open the item's page (D_nav_item_states). A toggle, as the arrow is: the answer
  * says which way it went. Refused before anything is touched: a component that doesn't expand, an item without
  * items, a disabled one.
+ *
+ * A disabled item lists {@code toggle_expand} among its actions all the same, as a disabled Button lists
+ * {@code click}: {@code disabled} beside it says it's refused, and the refusal comes at once.
  */
 final class ToggleExpandTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("toggle_expand",
