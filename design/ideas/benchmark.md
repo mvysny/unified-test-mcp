@@ -31,8 +31,10 @@ critique.
   gap. Opus 5.5 on a subset; if the gap shrinks there, that's a finding too. Haiku 5.5 as a
   stretch. The exact model id, never the alias `run.sh` uses.
 - **Timing.** Today's tools (click, set_value, the get_ tools, navigate, snapshot) can't do most
-  Bakery scenarios — no Grid. Write the scenarios now, run the two competitors now for baselines
-  and transcripts; every scenario we can't do yet is what the prototype implements next.
+  scenarios. There's no Grid, and the snapshot walks light DOM only, so it sees nothing inside
+  Bakery's Lit templates. Write the scenarios now, run the two competitors now for baselines and
+  transcripts; every scenario we can't do yet is what the prototype implements next. The draft and
+  the table of what each scenario needs: `benchmark/scenarios.md`, beside this file.
 
 ## Scenarios
 
@@ -78,8 +80,8 @@ before.
   prototype step, the competitors don't.
 - **One Chromium for the three** — the Unified API's `vaadin.testing.playwright.executable`,
   Playwright MCP's `--executable-path`, chrome-devtools-mcp's `--executablePath` (flags to
-  verify) — headless, the same viewport (it decides how many Grid rows exist in the DOM), a fresh
-  profile. Nothing downloads a browser per run. `--shm-size=1g`, a non-root user.
+  verify) — headless, the same viewport (it decides how many Grid rows exist in the DOM), the same
+  locale and time zone (en-US: Bakery's dates and times are US-formatted), a fresh profile. Nothing downloads a browser per run. `--shm-size=1g`, a non-root user.
 - **The call.** An `mcp.json` naming only that arm; `--strict-mcp-config --tools ""
   --allowedTools "mcp__<arm>__*" --disable-slash-commands --output-format stream-json --verbose
   --model claude-sonnet-5-5`. `run.sh`'s `readable` for the transcript.
@@ -119,14 +121,23 @@ tokens there are. If it does for one arm and not another, "leaner" quietly means
 How does `-p` behave; pin it alike for all arms, and record it.
 
 `Q_app_reset`: restart the app between runs (H2 in memory, fresh each start, seconds) or a reset
-endpoint in the fork? Does Bakery's data generator take a seed?
+endpoint in the fork? Seeding: Bakery's `DataGenerator` is `new Random(1L)`, its orders dated from
+today, so the seed becomes a property. The CRM's data is a fixed `data.sql` of ~50 contacts, so
+the fork generates it from a seed instead, ~200 contacts, more than the grid renders at once. Both
+forks get a setup endpoint that picks a scenario's `{{…}}` from the seeded data and a check
+endpoint for its "Done when", on a separate management port the browser never sees.
+
+`Q_commercial`: both apps depend on `vaadin`, commercial components included. Bakery's Users and
+Products views are `Crud`; both dashboards are Charts. A production build needs a license: fine
+here, but can anyone outside Vaadin reproduce the numbers?
+
+`Q_app_pinning`: for now the apps are gitignored clones in `benchmark/apps/`. Once forked, a git
+submodule per fork pins the exact commit the numbers came from.
 
 `Q_n`: N per scenario and arm. Subscription rate limits (the 5-hour windows): the harness has to
 tell a rate-limited run from an agent's failure and re-run it.
 
 `Q_one_chromium_fair`: Playwright MCP pins its own Chromium build; does it work as well on Debian's?
 If not, each arm gets its own pinned build, and the report says so.
-
-`Q_scenario_list`: the scenarios themselves, written after reading Bakery's and the CRM's views.
 
 `Q_results`: where the numbers live, and how they're published.
