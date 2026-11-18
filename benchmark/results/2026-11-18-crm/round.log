@@ -1,0 +1,32 @@
+crm-add-contact playwright s1: [benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, AutoZone, Inc., Contacted  (23 turns, 38s, $0.13670190000000004)
+crm-add-contact chrome-devtools s1: [benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, AutoZone, Inc., Contacted  (21 turns, 34s, $0.17996310000000001)
+crm-move-contact playwright s1: [benchmark] passed: as expected: Louisa Mercer at Laboratory Corporation of America Holdings (Rose Parkes's company), status Customer  (24 turns, 54s, $0.1216647)
+crm-move-contact chrome-devtools s1: [benchmark] passed: as expected: Louisa Mercer at Laboratory Corporation of America Holdings (Rose Parkes's company), status Customer  (21 turns, 53s, $0.19034410000000002)
+crm-count playwright s1: [benchmark] passed: as expected: the answer 7  (13 turns, 151s, $0.10834320000000001)
+crm-count chrome-devtools s1: [benchmark] passed: as expected: the answer 7  (22 turns, 253s, $0.19021110000000002)
+crm-delete-closed playwright s1: [benchmark] passed: as expected: 6 contacts at Laboratory Corporation of America Holdings deleted, the answer 6  (52 turns, 161s, $0.2684805)
+crm-delete-closed chrome-devtools s1: [benchmark] passed: as expected: 6 contacts at Laboratory Corporation of America Holdings deleted, the answer 6  (27 turns, 103s, $0.2653769)
+crm-invalid-email playwright s1: [benchmark] passed: as expected: the answer names the Email field, nothing saved  (21 turns, 40s, $0.11591379999999998)
+crm-invalid-email chrome-devtools s1: [benchmark] passed: as expected: the answer names the Email field, nothing saved  (30 turns, 53s, $0.2068464)
+crm-add-contact playwright s2: [benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Avaya Inc., Contacted  (23 turns, 45s, $0.09796070000000001)
+crm-add-contact chrome-devtools s2: [benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Avaya Inc., Contacted  (25 turns, 132s, $0.1547892)
+crm-move-contact playwright s2: [benchmark] passed: as expected: Rose Miles at Linens 'n Things Inc. (Nellie Miccinesi's company), status Customer  (23 turns, 47s, $0.1188247)
+crm-move-contact chrome-devtools s2: [benchmark] passed: as expected: Rose Miles at Linens 'n Things Inc. (Nellie Miccinesi's company), status Customer  (24 turns, 32s, $0.1783861)
+crm-count playwright s2: [benchmark] passed: as expected: the answer 11  (8 turns, 51s, $0.0573004)
+crm-count chrome-devtools s2: [benchmark] failed: answered 2, not 11  (8 turns, 135s, $0.0624218)
+crm-delete-closed playwright s2: [benchmark] passed: as expected: 7 contacts at Linens 'n Things Inc. deleted, the answer 7  (28 turns, 126s, $0.1661629)
+crm-delete-closed chrome-devtools s2: [benchmark] passed: as expected: 7 contacts at Linens 'n Things Inc. deleted, the answer 7  (34 turns, 174s, $0.2898651)
+crm-invalid-email playwright s2: [benchmark] passed: as expected: the answer names the Email field, nothing saved  (21 turns, 38s, $0.1298826)
+crm-invalid-email chrome-devtools s2: [benchmark] passed: as expected: the answer names the Email field, nothing saved  (15 turns, 35s, $0.1570958)
+crm-add-contact playwright s3: [benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Linens 'n Things Inc., Contacted  (25 turns, 42s, $0.15274099999999996)
+crm-add-contact chrome-devtools s3: [benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Linens 'n Things Inc., Contacted  (27 turns, 39s, $0.1662023)
+crm-move-contact playwright s3: [benchmark] passed: as expected: Mildred Halvorsen at Phillips Van Heusen Corp. (Louisa Castillo's company), status Customer  (25 turns, 201s, $0.1195818)
+crm-move-contact chrome-devtools s3: [benchmark] passed: as expected: Mildred Halvorsen at Phillips Van Heusen Corp. (Louisa Castillo's company), status Customer  (18 turns, 30s, $0.1526547)
+crm-count playwright s3: [benchmark] failed: answered 0, not 4  (7 turns, 27s, $0.0542161)
+crm-count chrome-devtools s3: [benchmark] passed: as expected: the answer 4  (18 turns, 60s, $0.1174196)
+crm-delete-closed playwright s3: [benchmark] infra: still there: Marguerite|Miccinesi|marguerite.miccinesi@avaya.example|Avaya Inc.|Closed (lost); still there: Hattie|Brennan|hattie.brennan@avaya.example|Avaya Inc.|Closed (lost); still there: Barbara|Ishii|barbara.ishii@avaya.example|Avaya Inc.|Closed (lost); still there: Ida|Castillo|ida.castillo@avaya.example|Avaya Inc.|Closed (lost); still there: Cora|Romoli|cora.romoli@avaya.example|Avaya Inc.|Closed (lost); still there: Cora|Matthieu|cora.matthieu@avaya.example|Avaya Inc.|Closed (lost); still there: Jack|Stokes|jack.stokes@avaya.example|Avaya Inc.|Closed (lost); still there: Lettie|Brennan|lettie.brennan@avaya.example|Avaya Inc.|Closed (lost); still there: Cora|Halvorsen|cora.halvorsen@avaya.example|Avaya Inc.|Closed (lost); still there: Hattie|Matthieu|hattie.matthieu@avaya.example|Avaya Inc.|Closed (lost); still there: Mildred|Halvorsen|mildred.halvorsen@avaya.example|Avaya Inc.|Closed (lost); answered no number, not 13  (null turns, 1201s, $null)
+crm-add-contact unified-test-mcp s1: [benchmark] building unified-test-mcp
+crm-move-contact unified-test-mcp s1: [benchmark] building unified-test-mcp
+crm-count unified-test-mcp s1: [benchmark] building unified-test-mcp
+crm-delete-closed unified-test-mcp s1: [benchmark] building unified-test-mcp
+crm-invalid-email unified-test-mcp s1: [benchmark] building unified-test-mcp

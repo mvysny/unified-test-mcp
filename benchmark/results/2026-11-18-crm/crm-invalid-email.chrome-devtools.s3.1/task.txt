@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:37549; log in as `user`, password `password`. Try to add a contact Jane Doe, email `jane.doe@`, at AutoZone, Inc., status Imported lead. If the app won't accept it, don't fix it: tell me which field it objects to and how it shows that, and leave nothing saved.

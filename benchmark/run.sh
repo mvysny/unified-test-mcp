@@ -117,7 +117,8 @@ CLAUDE_CODE_OAUTH_TOKEN=$(<"$token_file") timeout 1200 env XDG_DATA_HOME="$HOME/
     --model "$model" \
   >"$out/task.jsonl" 2>"$out/claude.stderr" || status=$?
 wall=$(($(date +%s) - started))
-percent() { awk -v a="$1" -v b="$2" -v w="$wall" 'BEGIN { printf "%.1f", w > 0 ? (b - a) / (w * 10000) : 0 }'; }
+# C locale: a decimal comma isn't JSON; parenthesized: a bare `>` in awk's printf redirects
+percent() { LC_ALL=C awk -v a="$1" -v b="$2" -v w="$wall" 'BEGIN { printf "%.1f", (w > 0 ? (b - a) / (w * 10000) : 0) }'; }
 io_stall=$(percent "$io_before" "$(stalled io)") cpu_stall=$(percent "$cpu_before" "$(stalled cpu)")
 
 # --- the check: the app decides, from its database and the agent's last words ---------------------
@@ -139,43 +140,13 @@ jq -r --arg prefix "mcp__${arm}__" '
     "END   turns=\(.num_turns) duration=\(.duration_ms / 1000 | floor)s cost=$\(.total_cost_usd) is_error=\(.is_error)"
   else empty end' "$out/task.jsonl" >"$out/transcript.txt" || true
 
-jq -cs --arg scenario "$scenario" --arg arm "$arm" --argjson seed "$seed" --arg model "$model" \
-  --arg run "$(basename "$out")" --argjson wall "$wall" --argjson status "$status" \
-  --argjson io_stall "$io_stall" --argjson cpu_stall "$cpu_stall" \
-  --arg claude "$(basename "$claude_bin")" --arg head "$(git -C "$repo" describe --always --dirty)" \
-  --slurpfile check "$out/check.json" --slurpfile setup "$out/setup.json" '
-  (map(select(.type == "result")) | last) as $r
-  | (map(select(.type == "system" and .subtype == "init")) | first) as $init
-  | map(select(.type == "assistant")) as $said
-  | [$said[].message.content[]? | select(.type == "tool_use")] as $calls
-  | [.[] | select(.type == "user") | .message.content | if type == "array" then .[] else empty end
-     | select(.type == "tool_result")] as $results
-  | ($check[0] // {}) as $c
-  | {run: $run, scenario: $scenario, arm: $arm, seed: $seed, model: $model, claude: $claude, head: $head,
-     outcome: (if $r == null or ($r.is_error and (($r.result // "") | test("limit|overloaded|API Error"; "i")))
-               then "infra" elif $c.passed then "passed" else "failed" end),
-     details: ($c.details // $c.error // null), attempts: ($c.attempts // null),
-     expected: ($setup[0].expected // null), answer: ($r.result // null),
-     wall_s: $wall, exit: $status, io_stall_pct: $io_stall, cpu_stall_pct: $cpu_stall,
-     duration_ms: $r.duration_ms, duration_api_ms: $r.duration_api_ms, turns: $r.num_turns,
-     cost_usd: $r.total_cost_usd, usage: $r.usage,
-     max_context: ([$said[].message.usage | (.input_tokens // 0) + (.cache_creation_input_tokens // 0)
-                    + (.cache_read_input_tokens // 0)] | max),
-     tool_calls: ($calls | length),
-     tool_errors: ([$results[] | select(.is_error)] | length),
-     calls: ($calls | group_by(.name) | map({key: .[0].name, value: length}) | from_entries),
-     result_chars: ([$results[].content | if type == "string" then length
-                     else (map(.text // "" | length) | add // 0) end] | add // 0),
-     images: ([$results[].content | if type == "array" then map(select(.type == "image")) | length else 0 end]
-              | add // 0),
-     tools_loaded: ($init.tools // [] | length),
-     mcp_tools_loaded: ($init.tools // [] | map(select(startswith("mcp__"))) | length)}' \
-  "$out/task.jsonl" | tee -a "$results/runs.jsonl" >"$out/summary.json"
+"$here/summarize.sh" "$out" "$wall" "$status" "$io_stall" "$cpu_stall" \
+  "$(git -C "$repo" describe --always --dirty)" >>"$results/runs.jsonl"
 
 # A screenshot's base64 is most of a raw transcript's bytes, and committed results keep it out;
 # the image block stays, so its count does too.
 jq -c 'walk(if type == "object" and .type == "image" and (.source.data? | type) == "string"
-  then .source.data = "<\(.source.data | length) base64 chars dropped>" else . end)' \
+  and (.source.data | startswith("<") | not) then .source.data = "<\(.source.data | length) base64 chars dropped>" else . end)' \
   "$out/task.jsonl" >"$out/task.jsonl.tmp" && mv "$out/task.jsonl.tmp" "$out/task.jsonl"
 
 log "$(jq -r '"\(.outcome): \(.details // "")  (\(.turns) turns, \(.wall_s)s, $\(.cost_usd))"' "$out/summary.json")"

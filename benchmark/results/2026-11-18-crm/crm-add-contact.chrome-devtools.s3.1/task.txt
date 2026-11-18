@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:33559; log in as `user`, password `password`. Add a new contact: Ada Lovelace, email ada@analytical.example, working at Linens 'n Things Inc., status Contacted. Tell me when it's saved.

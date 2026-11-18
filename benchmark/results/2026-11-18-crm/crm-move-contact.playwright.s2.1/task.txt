@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:60665; log in as `user`, password `password`. Rose Miles has moved to the company Nellie Miccinesi works for, and has become a customer. Update Rose Miles's record.

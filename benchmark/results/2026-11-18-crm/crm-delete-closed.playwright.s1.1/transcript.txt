@@ -1,0 +1,617 @@
+CALL  browser_navigate {"url":"http://localhost:59813"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:59813');
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/login
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-51-11-201Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:59813/login
+      - Page Title: Login | Vaadin CRM
+      ### Snapshot
+      ```yaml
+      - generic [ref=e1]:
+        - generic [ref=e4]:
+          - generic:
+            - heading "Vaadin CRM" [level=1] [ref=e5]
+            - generic [ref=e6]: "Username: user, Password: password"
+            - generic [ref=e7]: "Username: admin, Password: password"
+            - region "Log in" [ref=e9]:
+              - heading "Log in" [level=1] [ref=e10]
+              - generic [ref=e11]:
+                - generic [ref=e13]:
+                  - generic [ref=e14]:
+                    - generic: Username
+                    - generic [aria-hidden] [ref=e15]: "*"
+                  - textbox "Username" [active] [ref=e17]
+                - generic [ref=e19]:
+                  - generic [ref=e20]:
+                    - generic: Password
+                    - generic [aria-hidden] [ref=e21]: "*"
+                  - generic [ref=e22]:
+                    - textbox "Password" [ref=e23]
+                    - button "Show password" [ref=e25] [cursor=pointer]
+              - button "Log in" [ref=e26] [cursor=pointer]
+              - button "Forgot password" [ref=e28] [cursor=pointer]
+        - generic [ref=e30]: Online
+      ```
+CALL  browser_fill_form {"fields":[{"target":"e17","name":"Username","type":"textbox","value":"user"},{"target":"e23","name":"Password","type":"textbox","value":"password"}]}
+CALL  browser_click {"target":"e26"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Username' }).fill('user');
+      await page.getByRole('textbox', { name: 'Password' }).fill('password');
+      ```
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Log in' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-51-16-123Z.yml)
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-51-18-122Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-51-18-122Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-51-18-122Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009878136-vrexs7.png]
+CALL  browser_type {"target":"Filter by name...","text":"laboratory"}
+ERROR ### Error
+      Error: "Filter by name..." is not a valid target. Use a ref from the page snapshot (e.g. "e5"), a CSS selector, or a locator (e.g. "getByRole('button', { name: 'Submit' })").
+SAYS  I'm trying the name filter with "laboratory" to see whether it also matches email or company.
+CALL  browser_type {"target":"getByPlaceholder('Filter by name...')","text":"laboratory"}
+ERROR ### Error
+      Error: browserBackend.callTool: Error: strict mode violation: getByPlaceholder('Filter by name...') resolved to 2 elements:
+          1) <vaadin-text-field clear-button-visible="" placeholder="Filter by name...">…</vaadin-text-field> aka locator('vaadin-text-field')
+          2) <input type="text" slot="input" id="input-vaadin-text-field-8" placeholder="Filter by name..."/> aka getByLabel('', { exact: true })
+      
+      Call log:
+        - waiting for getByPlaceholder('Filter by name...')
+CALL  browser_type {"target":"input[slot=input]","text":"laboratory"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('input[slot=input]').fill('laboratory');
+      ```
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-51-26-247Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-51-26-247Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-51-26-247Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009886252-oi860n.png]
+CALL  browser_evaluate {"function":"async () => {\nconst tf=document.querySelector('vaadin-text-field'); tf.value=''; tf.dispatchEvent(new CustomEvent('value-changed',{detail:{value:''}}));\nawait new Promise(r=>setTimeout(r,1500));\nconst g=document.querySelector('vaadin-grid');\nconst seen=new Map();\nfor(let i=0;i<60;i++){\n g.shadowRoot.querySelectorAll('tr').forEach(()=>{});\n const rows=[...g.shadowRoot.querySelectorAll('tbody tr')];\n rows.forEach(r=>{const t=[...r.querySelectorAll('td')].map(c=>c.innerText.trim());if(t.length>4)seen.set(t[2],t)});\n g.scrollToIndex(i*8);\n await new Promise(r=>setTimeout(r,250));\n}\nreturn {n:seen.size, lost:[...seen.values()].filter(t=>t[4].startsWith('Laboratory')&&t[3].includes('Closed')).map(t=>t.join('|')), size:g.size, all:[...seen.values()].filter(t=>t[4].startsWith('Laboratory')).length};\n}"}
+OK    ### Result
+      {
+        "n": 1,
+        "lost": [],
+        "size": 0,
+        "all": 0
+      }
+      ### Ran Playwright code
+      ```js
+      await page.evaluate('async () => {\nconst tf=document.querySelector(\'vaadin-text-field\'); tf.value=\'\'; tf.dispatchEvent(new CustomEvent(\'value-changed\',{detail:{value:\'\'}}));\nawait new Promise(r=>setTimeout(r,1500));\nconst g=document.querySelector(\'vaadin-grid\');\nconst seen=new Map();\nfor(let i=0;i<60;i++){\n g.shadowRoot.querySelectorAll(\'tr\').forEach(()=>{});\n const rows=[...g.shadowRoot.querySelectorAll(\'tbody tr\')];\n rows.forEach(r=>{const t=[...r.querySelectorAll(\'td\')].map(c=>c.innerText.trim());if(t.length>4)seen.set(t[2],t)});\n g.scrollToIndex(i*8);\n await new Promise(r=>setTimeout(r,250));\n}\nreturn {n:seen.size, lost:[...seen.values()].filter(t=>t[4].startsWith(\'Laboratory\')&&t[3].includes(\'Closed\')).map(t=>t.join(\'|\')), size:g.size, all:[...seen.values()].filter(t=>t[4].startsWith(\'Laboratory\')).length};\n}');
+      ```
+SAYS  Too hacky. I'll reload the page and work through the UI directly.
+CALL  browser_navigate {"url":"http://localhost:59813"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:59813');
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-51-50-676Z.yml)
+CALL  browser_evaluate {"function":"async () => {\nconst g=document.querySelector('vaadin-grid');\nconst seen=new Map();\nconst n=g.size||g._effectiveSize;\nfor(let i=0;i<(n||400);i+=5){\n g.scrollToIndex(i);\n await new Promise(r=>setTimeout(r,200));\n [...g.shadowRoot.querySelectorAll('tbody tr')].forEach(r=>{const t=[...r.querySelectorAll('td')].map(c=>c.innerText.trim());if(t.length>4)seen.set(t[2],t)});\n}\nconst v=[...seen.values()];\nreturn {n:v.length,size:n,lab:v.filter(t=>t[4].startsWith('Laboratory')).map(t=>t[0]+' '+t[1]+'|'+t[3])};\n}"}
+OK    ### Result
+      {
+        "n": 1,
+        "size": 200,
+        "lab": []
+      }
+      ### Ran Playwright code
+      ```js
+      await page.evaluate('async () => {\nconst g=document.querySelector(\'vaadin-grid\');\nconst seen=new Map();\nconst n=g.size||g._effectiveSize;\nfor(let i=0;i<(n||400);i+=5){\n g.scrollToIndex(i);\n await new Promise(r=>setTimeout(r,200));\n [...g.shadowRoot.querySelectorAll(\'tbody tr\')].forEach(r=>{const t=[...r.querySelectorAll(\'td\')].map(c=>c.innerText.trim());if(t.length>4)seen.set(t[2],t)});\n}\nconst v=[...seen.values()];\nreturn {n:v.length,size:n,lab:v.filter(t=>t[4].startsWith(\'Laboratory\')).map(t=>t[0]+\' \'+t[1]+\'|\'+t[3])};\n}');
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+CALL  browser_evaluate {"function":"async () => {\nconst g=document.querySelector('vaadin-grid');\nconst seen=new Map();\nfor(let i=0;i<200;i+=4){\n g.scrollToIndex(i);\n await new Promise(r=>setTimeout(r,150));\n const rows=[...g.shadowRoot.querySelectorAll('tbody tr')];\n rows.forEach(r=>{const t=[...r.querySelectorAll('td slot')].map(s=>s.assignedNodes()[0]?.innerText?.trim()||'');if(t.length>4&&t[2])seen.set(t[2],t)});\n}\nconst v=[...seen.values()];\nreturn {n:v.length,lab:v.filter(t=>t[4].startsWith('Laboratory')).map(t=>t[0]+' '+t[1]+'|'+t[3])};\n}"}
+OK    ### Result
+      {
+        "n": 200,
+        "lab": [
+          "Barbara Lindqvist|Closed (lost)",
+          "Gene Mercer|Imported lead",
+          "Walter Brennan|Closed (lost)",
+          "Gene Miccinesi|Imported lead",
+          "Louisa Lindqvist|Closed (lost)",
+          "Jean Okafor|Customer",
+          "Barbara Gray|Imported lead",
+          "Hattie Romoli|Contacted",
+          "Louisa Gray|Contacted",
+          "Oscar Halvorsen|Customer",
+          "Gene Novak|Customer",
+          "Marguerite Bennett|Closed (lost)",
+          "Rose Miccinesi|Contacted",
+          "Ida Tesi|Imported lead",
+          "Marie Matthieu|Not contacted",
+          "Jack Brennan|Contacted",
+          "Ida Parkes|Contacted",
+          "Barbara Rodriquez|Contacted",
+          "Theodore Ishii|Customer",
+          "Mabel Ishii|Not contacted",
+          "Barry Miccinesi|Customer",
+          "Louisa Jacobs|Customer",
+          "Marguerite Lane|Customer",
+          "Eula Selvi|Closed (lost)",
+          "Louisa Novak|Imported lead",
+          "Mabel Goodman|Contacted",
+          "Eugenia Jacobs|Contacted",
+          "Jordan Novak|Closed (lost)",
+          "Cora Miles|Not contacted",
+          "Jean Miccinesi|Imported lead",
+          "Hattie Gray|Imported lead",
+          "Marguerite Romoli|Not contacted",
+          "Rose Parkes|Not contacted",
+          "Harvey Gray|Imported lead"
+        ]
+      }
+      ### Ran Playwright code
+      ```js
+      await page.evaluate('async () => {\nconst g=document.querySelector(\'vaadin-grid\');\nconst seen=new Map();\nfor(let i=0;i<200;i+=4){\n g.scrollToIndex(i);\n await new Promise(r=>setTimeout(r,150));\n const rows=[...g.shadowRoot.querySelectorAll(\'tbody tr\')];\n rows.forEach(r=>{const t=[...r.querySelectorAll(\'td slot\')].map(s=>s.assignedNodes()[0]?.innerText?.trim()||\'\');if(t.length>4&&t[2])seen.set(t[2],t)});\n}\nconst v=[...seen.values()];\nreturn {n:v.length,lab:v.filter(t=>t[4].startsWith(\'Laboratory\')).map(t=>t[0]+\' \'+t[1]+\'|\'+t[3])};\n}');
+      ```
+CALL  browser_type {"target":"input[slot=input]","text":"Lindqvist"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('input[slot=input]').fill('Lindqvist');
+      ```
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-22-487Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-22-487Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-22-487Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009942495-yk261w.png]
+CALL  browser_click {"target":"getByText('barbara.lindqvist@laboratory.example')"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByText('barbara.lindqvist@laboratory.example').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-25-658Z.yml)
+SAYS  I've opened Barbara Lindqvist's contact form and I'm checking for the Delete button.
+CALL  browser_click {"target":"getByRole('button', {name: 'Delete'})"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Delete' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-29-295Z.yml)
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-31-758Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-31-758Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-31-758Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009951770-itj8kn.png]
+SAYS  Works, no confirmation. Next ones, using emails to target the right row.
+CALL  browser_click {"target":"getByText('louisa.lindqvist@laboratory.example')"}
+CALL  browser_click {"target":"getByRole('button', {name: 'Delete'})"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByText('louisa.lindqvist@laboratory.example').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-35-788Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Delete' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-36-967Z.yml)
+SAYS  Now Brennan.
+CALL  browser_type {"target":"input[slot=input]","text":"Brennan"}
+ERROR ### Error
+      Error: browserBackend.callTool: Error: strict mode violation: locator('input[slot=input]') resolved to 6 elements:
+          1) <input type="text" slot="input" id="input-vaadin-text-field-8" placeholder="Filter by name..."/> aka getByLabel('', { exact: true })
+          2) <input type="text" required="" slot="input" id="input-vaadin-text-field-12" aria-labelledby="label-vaadin-text-field-9"/> aka getByLabel('First name', { exact: true })
+          3) <input type="text" required="" slot="input" id="input-vaadin-text-field-16" aria-labelledby="label-vaadin-text-field-13"/> aka getByLabel('Last name', { exact: true })
+          4) <input required="" slot="input" type="email" autocapitalize="off" id="input-vaadin-email-field-20" aria-labelledby="label-vaadin-email-field-17" pattern="^[a-zA-Z0-9_\-+]+(?:\.[a-zA-Z0-9_\-+]+)*@(?:[a-zA-Z0-9\-]+\.)+[a-zA-Z0-9\-]{2,}$"/> aka getByLabel('Email', { exact: true })
+          5) <input required="" slot="input" role="combobox" autocorrect="off" autocomplete="off" spellcheck="false" autocapitalize="off" aria-expanded="false" aria-autocomplete="list" id="input-vaadin-combo-box-25" aria-labelledby="label-vaadin-combo-box-21"/> aka getByLabel('Company')
+          6) <input required="" slot="input" role="combobox" autocorrect="off" autocomplete="off" spellcheck="false" autocapitalize="off" aria-expanded="false" aria-autocomplete="list" id="input-vaadin-combo-box-30" aria-labelledby="label-vaadin-combo-box-26"/> aka getByLabel('Status')
+      
+      Call log:
+        - waiting for locator('input[slot=input]')
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-39-166Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-39-166Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-39-166Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009959176-7ar6vc.png]
+SAYS  Form is hidden but still in DOM; use the specific filter input.
+CALL  browser_type {"target":"#input-vaadin-text-field-8","text":"Brennan"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-text-field-8').fill('Brennan');
+      ```
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-41-579Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-41-579Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-41-579Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009961588-r19xcr.png]
+SAYS  Filter is debounced; wait a moment.
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-44-159Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-44-159Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-44-159Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009964167-tgldm8.png]
+CALL  browser_click {"target":"getByText('walter.brennan@laboratory.example')"}
+CALL  browser_click {"target":"getByRole('button', {name: 'Delete'})"}
+CALL  browser_type {"target":"#input-vaadin-text-field-8","text":"Bennett"}
+CALL  browser_wait_for {"time":2}
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByText('walter.brennan@laboratory.example').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-47-401Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Delete' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-48-619Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-text-field-8').fill('Bennett');
+      ```
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-48-807Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-48-807Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-48-807Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009968820-5a2obs.png]
+OK    ### Result
+      Waited for 2 seconds
+      ### Ran Playwright code
+      ```js
+      await new Promise(f => setTimeout(f, 2 * 1000));
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-50-792Z.yml)
+SAYS  Walter deleted. Screenshot was stale; retake.
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-52-917Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-52-917Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-52-917Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009972933-9681s1.png]
+CALL  browser_click {"target":"getByText('marguerite.bennett@laboratory.example')"}
+CALL  browser_click {"target":"getByRole('button', {name: 'Delete'})"}
+CALL  browser_type {"target":"#input-vaadin-text-field-8","text":"Selvi"}
+CALL  browser_wait_for {"time":3}
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByText('marguerite.bennett@laboratory.example').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-56-122Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Delete' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-52-57-293Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-text-field-8').fill('Selvi');
+      ```
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-52-57-450Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-52-57-450Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-52-57-450Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009977460-fw2scy.png]
+OK    ### Result
+      Waited for 3 seconds
+      ### Ran Playwright code
+      ```js
+      await new Promise(f => setTimeout(f, 3 * 1000));
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-53-00-422Z.yml)
+SAYS  Marguerite deleted. Screenshots lag; retake.
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-53-02-930Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-53-02-930Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-53-02-930Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009982938-1ty5rf.png]
+CALL  browser_click {"target":"getByText('eula.selvi@laboratory.example')"}
+CALL  browser_click {"target":"getByRole('button', {name: 'Delete'})"}
+CALL  browser_type {"target":"#input-vaadin-text-field-8","text":"Novak"}
+CALL  browser_wait_for {"time":4}
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByText('eula.selvi@laboratory.example').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-53-06-339Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Delete' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-53-07-504Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-text-field-8').fill('Novak');
+      ```
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-53-07-658Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-53-07-658Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-53-07-658Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009987668-pqj2ow.png]
+OK    ### Result
+      Waited for 4 seconds
+      ### Ran Playwright code
+      ```js
+      await new Promise(f => setTimeout(f, 4 * 1000));
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-53-11-642Z.yml)
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-53-14-013Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-53-14-013Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-53-14-013Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795009994024-8c16br.png]
+CALL  browser_click {"target":"getByText('jordan.novak@laboratory.example')"}
+ERROR ### Error
+      Error: browserBackend.callTool: Error: strict mode violation: getByText('jordan.novak@laboratory.example') resolved to 2 elements:
+          1) <vaadin-grid-cell-content slot="vaadin-grid-cell-content-57">jordan.novak@laboratory.example</vaadin-grid-cell-content> aka getByText('jordan.novak@laboratory.').first()
+          2) <vaadin-grid-cell-content slot="vaadin-grid-cell-content-107">jordan.novak@laboratory.example</vaadin-grid-cell-content> aka getByText('jordan.novak@laboratory.').nth(1)
+      
+      Call log:
+        - waiting for getByText('jordan.novak@laboratory.example')
+CALL  browser_click {"target":"getByRole('button', {name: 'Delete'})"}
+ERROR ### Error
+      Error: "getByRole('button', {name: 'Delete'})" does not match any elements.
+CALL  browser_click {"target":"getByText('jordan.novak@laboratory.example').last()"}
+CALL  browser_take_screenshot {"scale":"css"}
+ERROR ### Error
+      TimeoutError: browserBackend.callTool: Timeout 5000ms exceeded.
+      Call log:
+        - waiting for getByText('jordan.novak@laboratory.example').last()
+          - locator resolved to <vaadin-grid-cell-content slot="vaadin-grid-cell-content-107">jordan.novak@laboratory.example</vaadin-grid-cell-content>
+        - attempting click action
+          2 × waiting for element to be visible, enabled and stable
+            - element is not visible
+          - retrying click action
+          - waiting 20ms
+          2 × waiting for element to be visible, enabled and stable
+            - element is not visible
+          - retrying click action
+            - waiting 100ms
+          10 × waiting for element to be visible, enabled and stable
+             - element is not visible
+           - retrying click action
+             - waiting 500ms
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-18T13-53-24-091Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-18T13-53-24-091Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-18T13-53-24-091Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/58f9eda6-74d5-4813-a387-10485ed7bf90/tool-results/mcp-playwright-blob-1795010004100-ch8dav.png]
+SAYS  The second match is a hidden recycled cell. I'll click the visible one by coordinates.
+CALL  browser_click {"target":"getByText('jordan.novak@laboratory.example').first()"}
+CALL  browser_click {"target":"getByRole('button', {name: 'Delete'})"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByText('jordan.novak@laboratory.example').first().click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-53-27-894Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Delete' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-53-29-084Z.yml)
+SAYS  Now verify by re-reading the whole list after a reload.
+CALL  browser_navigate {"url":"http://localhost:59813"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:59813');
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-18T13-53-31-969Z.yml)
+CALL  browser_evaluate {"function":"async () => {\nawait new Promise(r=>setTimeout(r,1500));\nconst g=document.querySelector('vaadin-grid');\nconst seen=new Map();\nfor(let i=0;i<200;i+=4){\n g.scrollToIndex(i);\n await new Promise(r=>setTimeout(r,150));\n [...g.shadowRoot.querySelectorAll('tbody tr')].forEach(r=>{const t=[...r.querySelectorAll('td slot')].map(s=>s.assignedNodes()[0]?.innerText?.trim()||'');if(t.length>4&&t[2])seen.set(t[2],t)});\n}\nconst v=[...seen.values()];\nreturn {n:v.length,size:g.size,lostLab:v.filter(t=>t[4].includes('Laboratory')&&t[3].includes('Closed')).length,lab:v.filter(t=>t[4].includes('Laboratory')).length};\n}"}
+OK    ### Result
+      {
+        "n": 194,
+        "size": 194,
+        "lostLab": 0,
+        "lab": 28
+      }
+      ### Ran Playwright code
+      ```js
+      await page.evaluate('async () => {\nawait new Promise(r=>setTimeout(r,1500));\nconst g=document.querySelector(\'vaadin-grid\');\nconst seen=new Map();\nfor(let i=0;i<200;i+=4){\n g.scrollToIndex(i);\n await new Promise(r=>setTimeout(r,150));\n [...g.shadowRoot.querySelectorAll(\'tbody tr\')].forEach(r=>{const t=[...r.querySelectorAll(\'td slot\')].map(s=>s.assignedNodes()[0]?.innerText?.trim()||\'\');if(t.length>4&&t[2])seen.set(t[2],t)});\n}\nconst v=[...seen.values()];\nreturn {n:v.length,size:g.size,lostLab:v.filter(t=>t[4].includes(\'Laboratory\')&&t[3].includes(\'Closed\')).length,lab:v.filter(t=>t[4].includes(\'Laboratory\')).length};\n}');
+      ```
+      ### Page
+      - Page URL: http://localhost:59813/
+      - Page Title: Contacts | Vaadin CRM
+SAYS  I deleted 6 contacts at Laboratory Corporation of America Holdings. All of them had the status Closed (lost):
+      
+      - Barbara Lindqvist
+      - Louisa Lindqvist
+      - Walter Brennan
+      - Marguerite Bennett
+      - Eula Selvi
+      - Jordan Novak
+      
+      After reloading, the list went from 200 contacts to 194. The company's other 28 contacts are still there, and none of them are Closed (lost). Closed (lost) contacts at other companies, such as Walter Selvi at AutoZone, were not touched.
+END   turns=52 duration=158s cost=$0.2684805 is_error=false

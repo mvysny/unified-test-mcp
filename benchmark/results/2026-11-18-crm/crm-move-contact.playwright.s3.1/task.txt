@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:40097; log in as `user`, password `password`. Mildred Halvorsen has moved to the company Louisa Castillo works for, and has become a customer. Update Mildred Halvorsen's record.

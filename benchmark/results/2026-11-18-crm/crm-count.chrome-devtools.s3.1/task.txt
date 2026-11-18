@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:42091; log in as `user`, password `password`. How many contacts at Linens 'n Things Inc. have the status Not contacted? Answer with the number only.
