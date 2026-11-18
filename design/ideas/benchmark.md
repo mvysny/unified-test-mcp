@@ -42,9 +42,10 @@ critique.
 
 ## Scenarios
 
-Goal-shaped, never tool-shaped, in a tester's words; one file each, like blind-review's: `## Task`,
-`## Done when`, and the oracle. No agent may get lucky: each must gather the same information, and
-no correct guess exists without looking at the app.
+Goal-shaped, never tool-shaped, in a tester's words; one file each in `benchmark/scenarios/`, like
+blind-review's: `## Task` (all the agent gets), `## Done when`, `## Watch for`; the oracle is the
+fork's check. No agent may get lucky: each must gather the same information, and no correct guess
+exists without looking at the app.
 
 1. **Values given.** The goal lists every value. The bare cost of operating the UI.
 2. **Values looked up.** They exist only in the app: "move customer X's next order one day later"
@@ -92,9 +93,15 @@ before.
   `~/.config/unified-test-mcp-benchmark/oauth-token` (mode 600), handed in as
   `CLAUDE_CODE_OAUTH_TOKEN`; `-p` needs no first-run state in the fresh HOME. Not the mounted
   `~/.claude/.credentials.json`: a refresh inside the container could rotate the host's login away.
-- **The call.** An `mcp.json` naming only that arm; `--strict-mcp-config --tools ""
-  --allowedTools "mcp__<arm>__*" --disable-slash-commands --output-format stream-json --verbose
-  --model claude-sonnet-5-5`. `run.sh`'s `readable` for the transcript.
+- **The call** (`benchmark/run.sh <scenario> <arm> [seed]`, one run). An `mcp.json` naming only
+  that arm; `--strict-mcp-config --tools "" --allowedTools "mcp__<arm>__*"
+  --disable-slash-commands --output-format stream-json --verbose --model claude-sonnet-5-5`, a
+  20-minute timeout. Each run's transcript, setup and check land in `benchmark/results/`
+  (gitignored), one summary line in its `runs.jsonl`.
+- **No tool deferral.** With `--tools ""` there's no ToolSearch: every MCP tool loads up front
+  (the init event lists all 25 of Playwright MCP's), so each arm's whole tool list is paid on every
+  turn — 6.8k characters ours (8 tools), 21k Playwright MCP (25), 32k chrome-devtools (33), from
+  `smoke.mjs`. Recorded per run as `mcp_tools_loaded`.
 - **Isolation.** The container's HOME has no global `CLAUDE.md`, skills, hooks, plugins, memory or
   earlier sessions. Overwriting `~/.claude/CLAUDE.md` for the duration was the alternative: it
   leaves hooks, skills and `settings.json` plugins in, and takes the owner's instructions away from
@@ -125,12 +132,6 @@ before.
 - Median and spread over N runs.
 
 ## Open questions
-
-`Q_tool_deferral`: Claude Code may defer MCP tools behind ToolSearch, depending on how many tool
-tokens there are. If it does for one arm and not another, "leaner" quietly means something else.
-How does `-p` behave; pin it alike for all arms, and record it. What's at stake, from `smoke.mjs`:
-the tool lists are 6.8k characters (ours, 8 tools), 21k (Playwright MCP, 25), 32k (chrome-devtools,
-33) — on every turn unless deferred.
 
 `Q_n`: N per scenario and arm. Subscription rate limits (the 5-hour windows): the harness has to
 tell a rate-limited run from an agent's failure and re-run it.

@@ -17,3 +17,6 @@ bin/
 
 # Playwright MCP snapshots and logs
 .playwright-mcp/
+
+# benchmark runs: transcripts and numbers (design/ideas/benchmark.md, Q_results)
+/benchmark/results/
