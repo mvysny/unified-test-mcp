@@ -1,0 +1,8 @@
+[submodule "benchmark/apps/bakery-app-starter-flow-spring"]
+	path = benchmark/apps/bakery-app-starter-flow-spring
+	url = https://github.com/mvysny/bakery-app-starter-flow-spring.git
+	branch = v25
+[submodule "benchmark/apps/flow-crm-tutorial"]
+	path = benchmark/apps/flow-crm-tutorial
+	url = https://github.com/mvysny/flow-crm-tutorial.git
+	branch = v25
