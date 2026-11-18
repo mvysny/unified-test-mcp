@@ -1,6 +1,9 @@
 # reference clone of https://github.com/parttio/unified-testing-tool, read for its source
 /unified-testing-tool/
 
+# reference clones of the benchmark's apps, Bakery and the CRM tutorial (design/ideas/benchmark.md)
+/benchmark/apps/
+
 # build output
 build/
 .gradle/
