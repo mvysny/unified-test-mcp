@@ -60,10 +60,11 @@ final class Refs {
     }
 
     /**
-     * The component the latest snapshot showed as {@code ref}, checked to be still on the page.
+     * The component the latest snapshot showed as {@code ref}, checked to be still on the page, where the user sees
+     * it ({@link Snapshot#isVisible}).
      *
      * @throws MCPErrorResponseException if there's no snapshot yet, the ref isn't in the latest one, or its
-     *         component is gone; each names the next step
+     *         component is gone or hidden; each names the next step
      */
     UnifiedContainer resolve(UnifiedPage page, int ref) {
         return resolve(page, ref, UnifiedContainer.class);
@@ -99,16 +100,27 @@ final class Refs {
                     + ". A ref from another page needs that page again: navigate to it. Else call snapshot to see"
                     + " the components on this page now.");
         }
-        Q query = page.find(type);
-        query = target.uniqueId() != null
-                ? query.withId(target.uniqueId())
-                : query.withAttribute(ATTRIBUTE, String.valueOf(ref));
+        Q query = locate(page, type, target, ref);
         if (!query.exists()) {
             throw new MCPErrorResponseException("ref " + ref + " (" + target.flowName()
                     + ") is gone from the page: the app removed it, or re-created it. Call snapshot to see the"
                     + " components on the page now.");
         }
+        // the page changes without a tool call too: a server push, a timer, a transition's end
+        if (!Snapshot.isVisible(locate(page, UnifiedContainer.class, target, ref).single().element())) {
+            throw new MCPErrorResponseException("ref " + ref + " (" + target.flowName()
+                    + ") isn't shown any more: the app hid it, or closed what holds it. Call snapshot to see the"
+                    + " components on the page now.");
+        }
         return query.single();
+    }
+
+    private static <W, Q extends Query<W, Q>> Q locate(UnifiedPage page, Class<? extends Findable<Q>> type,
+                                                        Target target, int ref) {
+        Q query = page.find(type);
+        return target.uniqueId() != null
+                ? query.withId(target.uniqueId())
+                : query.withAttribute(ATTRIBUTE, String.valueOf(ref));
     }
 
     /** {@code 1-4, 7, 9-12}. */

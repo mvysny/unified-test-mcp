@@ -186,7 +186,7 @@ an id and plain HTML with neither id nor text of its own (their children take th
 swing-mcp does with unnamed panels), Flow's bootstrap wrappers (`#outlet`, `flow-container-*`),
 the parts a Vaadin component renders into its own light DOM (its input, label, messages; a field's
 whole inside, a ComboBox's scroller, a RadioButtonGroup's buttons), icons,
-the dev tools, and anything `hidden`. A layout with an id stays: the app named it. Revisit the
+the dev tools, and anything the user can't see (`D_visible_only`). A layout with an id stays: the app named it. Revisit the
 pruning when an agent can't tell two identical forms apart.
 
 ## D_modal_shows_alone — Why does a snapshot show only the modal dialog on top, rather than the whole page with it?
@@ -218,6 +218,47 @@ numbering from 1 on every snapshot, can't do that. A ref under the modal fails w
 naming the modal and how to get past it.
 
 A modeless dialog shows with the page, where its element is: the page still takes input.
+
+## D_visible_only — Why does the snapshot list only what the user can see, by `checkVisibility()`, rather than everything not `hidden`?
+
+Vaadin hides most things without `hidden`: a closed Details' content, a closed drawer, a closed
+menu stay in the DOM (`R_vaadin_hidden_in_dom`). Listed, each is a non-option on the agent's
+decision surface, as `D_modal_shows_alone` says of what's under a modal: its fields offer
+`set_value`, and the Unified API waits for one to become actionable and times out. So a
+component shows only if the browser's `checkVisibility({ visibilityProperty: true })` holds: it
+has a box, and isn't `visibility: hidden`. That one function, `Snapshot.IS_VISIBLE`, is what
+`Refs` checks too before a tool acts: the page changes without a tool call, by a server push, a
+poll, a timer, and a ref to what has been hidden since fails at once, saying so, rather than after
+the Unified API's 10 s wait.
+
+**Why one the user can't see stands aside rather than taking what's inside with it**: a
+`display: contents` element has no box while its children have, a Dialog's footer `<div>` holding
+its buttons; and a child may be `visibility: visible` under a hidden parent. So each element
+answers for itself; a closed Details' content fails anyway, being under `display: none`.
+
+**Why `visibility` and not opacity**: a closed drawer is `visibility: hidden`, which the default
+`checkVisibility()` ignores. Opacity, which the other option catches only at exactly 0, hid
+nothing in test-app but the connection indicator, skipped anyway, and an overlay fading in would be
+missed on its first frame. Playwright ignores opacity too, so `click` and the snapshot agree. Why
+not Playwright's visible, a non-empty box: a zero-size element the app named, an empty status
+Span, would vanish.
+
+**Why the snapshot waits for animations, and only some**: what a transition hides is visible
+until it ends, a closing drawer's SideNav for 200 ms after the click, so the click's own answer
+would list it (`R_vaadin_animations`). So the snapshot waits, up to 1 s, for keyframe animations,
+an overlay opening or closing, and for transitions of `visibility` or `display`; it looks into the
+shadow roots, which `document.getAnimations()` leaves out. Not for the other transitions: a
+Button's 1.4 s fade after every click, a field's on focus, held up nearly every answer and change
+nothing it shows. Not for one that never ends, a spinner's. A dialog told to close, `opened`
+false, is left out at once: its exit animation may not have begun when the snapshot looks, so the
+click on Cancel would answer with the dialog still listed.
+
+**What it doesn't catch, accepted**: a component covered by another, a modal aside, which
+`aria-modal` gives away. Telling one apart takes hit-testing at a point, a guess for one partly
+covered or scrolled out of view; `click` meets it, Playwright reporting what intercepts the
+pointer. Opacity near 0, zero size, clipping, a component placed off screen: off the viewport
+can't be the test, as one below the fold is there for a user who scrolls. A hint isn't a
+component: `tooltip=` reads a tooltip that shows only on hover.
 
 ## D_action_returns_snapshot — Why does an action answer with the whole snapshot rather than an echo?
 

@@ -19,23 +19,19 @@ with a ContextMenu (Rename, Delete), and an Info button with a Popover.
 - Span "Right-click me" [ref=9]
 - Button "Info" [ref=10] actions: click
 - Span "Nothing chosen" [ref=11]
-- Popover [ref=12, id=vaadin-popover-18]
-  - Span "Opens on click, closes on Esc" [ref=13]
-  - Button "Got it" [ref=14] actions: click
 ```
 
 Works already: `click` on "File" opens its submenu, which the answer shows under `MenuBarSubmenu`,
-before the bar's buttons; `click` on "New" there runs its listener.
+before the bar's buttons; `click` on "New" there runs its listener, and the answer no longer lists
+the submenu's items. The Popover, never opened, isn't listed (`D_visible_only`).
 
 Doesn't:
 
-- After "New" the submenu's items are still listed (`R_vaadin_hidden_in_dom`); the snapshot can't
-  tell an open submenu from a closed one.
+- An empty `MenuBarSubmenu` line stays after the submenu closes (`snapshot-cross-cutting.md`).
 - `click` on the disabled "Paste" waits 10 s, then fails (`beyond-buttons.md`'s `Q_timeout`).
 - With Edit's submenu still open, `click` on "Info" fails after 10 s: the open submenu takes the
   pointer. The error is Playwright's whole call log, "`<html>` intercepts pointer events" 20 times.
 - Nothing says the Span has a context menu, and nothing opens one: `click` is a left click.
-- The Popover, never opened, shows its content and offers "Got it".
 
 `UnifiedMenuBar` has `clickItem(topLevel, nested…)`, `getItems(…)`, `isItemEnabled(…)`. Nothing
 for ContextMenu or Popover.
@@ -70,6 +66,5 @@ nothing in the DOM says so (`R_vaadin_hidden_in_dom`). And what opens it: a `rig
 
 `Q_disabled_fails_fast`: a disabled item, like a disabled Button, refused at once.
 
-`Q_popover`: leave a closed Popover out; show an open one alone if modal, inline after its target
-if not? Popovers that open on hover or focus need a `hover` tool, or none if test-app's only opens
+`Q_popover`: an open Popover: alone if modal, inline after its target if not? Popovers that open on hover or focus need a `hover` tool, or none if test-app's only opens
 on click.

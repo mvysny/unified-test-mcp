@@ -9,9 +9,6 @@ test-app's `notification` view: `Save` shows "Saved" for 5 s, `Fail` an error wi
 that stays until closed, `Delete` "Order deleted" with an Undo button for 10 s. After all three:
 
 ```
-- Notification [ref=5]
-- Notification [ref=8]
-- Notification [ref=12]
 - NotificationContainer [ref=6]
   - NotificationCard "Saved" [ref=7]
   - NotificationCard [ref=9]
@@ -23,9 +20,10 @@ that stays until closed, `Delete` "Order deleted" with an Undo button for 10 s. 
 ```
 
 Works already: each shows in the answer of the `click` that opened it, the snapshot is taken right
-away; `click` on Undo works; 6 s later "Saved" and its empty `Notification` line are gone.
+away; `click` on Undo works; 6 s later "Saved" is gone. The `<vaadin-notification>` elements
+themselves aren't listed: `display: none`, their content shown in the cards (`D_visible_only`).
 
-Doesn't: the empty `Notification` lines and the container are noise; nothing says which one is an
+Doesn't: the container is noise; nothing says which one is an
 error; a notification that came and went between two calls leaves no trace. `UnifiedNotification`
 has `getText()` and `isOpen()`.
 

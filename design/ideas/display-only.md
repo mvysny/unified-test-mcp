@@ -10,11 +10,6 @@ test-app's `display` view:
 ```
 - Avatar [ref=1, aria-label="Alice Smith (AS)"]
 - AvatarGroup [ref=2, aria-label="Currently 4 active users"]
-  - AvatarGroupMenu [ref=3]
-    - AvatarGroupMenuItem "Carol White" [ref=4, value="Carol White"]
-      - Avatar [ref=5, aria-label="Carol White (CW)"]
-    - AvatarGroupMenuItem "David Black" [ref=6, value="David Black"]
-      - Avatar [ref=7, aria-label="David Black (DB)"]
   - Avatar [ref=8, aria-label="AS", tooltip="Alice Smith"]
   - Avatar [ref=9, aria-label="BJ", tooltip="Bob Jones"]
   - Avatar [ref=10, aria-label="+2", tooltip="Carol White David Black"]
@@ -42,7 +37,7 @@ first ProgressBar: `"0.4"`, a string.
 
 - **Avatar**: named by its `aria-label`, "Alice Smith (AS)"; the name alone, "Alice Smith", from
   its `name` property?
-- **AvatarGroup**: the closed overflow menu's avatars show (`R_vaadin_hidden_in_dom`); the visible
+- **AvatarGroup**: the closed overflow menu's avatars aren't listed (`D_visible_only`); the visible
   ones are named by their initials, the full name in `tooltip=`. A group as its names,
   `AvatarGroup "Alice Smith, Bob Jones, +2"`?
 - **Badge**: "Unread" lacks its number 5, which the web component renders from its `number`

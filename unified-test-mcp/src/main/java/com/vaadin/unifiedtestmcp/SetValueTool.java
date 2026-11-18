@@ -108,8 +108,8 @@ final class SetValueTool implements ToolFunction {
             FieldValue.Field after;
             try {
                 after = FieldValue.Field.resolve(page, refs, ref);
-            } catch (MCPErrorResponseException gone) {
-                return done + "; it is gone from the page now\n\n" + Snapshot.take(page, refs);
+            } catch (MCPErrorResponseException goneOrHidden) {
+                return done + "; it isn't shown now\n\n" + Snapshot.take(page, refs);
             }
             Object holds = FieldValue.read(after);
             boolean kept = same(field.holds(), wanted, holds);

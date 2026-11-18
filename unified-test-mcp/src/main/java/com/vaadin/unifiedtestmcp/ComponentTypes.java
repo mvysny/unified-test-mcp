@@ -130,8 +130,7 @@ final class ComponentTypes {
             "vaadin-form-layout", "vaadin-form-item", "vaadin-form-row", "vaadin-scroller");
 
     /**
-     * Dialogs: one that isn't open isn't shown, nor anything inside it. Each tag's own title element, a slot the
-     * dialog renders its title into, isn't shown either: the title is the dialog's name.
+     * Dialogs, by the slot each renders its title into: that element isn't shown, the title being the dialog's name.
      */
     static final Map<String, String> DIALOG_TITLE_SLOTS = Map.of("vaadin-dialog", "title",
             "vaadin-confirm-dialog", "header", "vaadin-login-overlay", "title");

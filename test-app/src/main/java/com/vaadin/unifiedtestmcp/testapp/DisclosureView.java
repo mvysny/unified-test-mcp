@@ -1,5 +1,6 @@
 package com.vaadin.unifiedtestmcp.testapp;
 
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.details.Details;
@@ -12,6 +13,7 @@ import com.vaadin.flow.component.tabs.TabSheet;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.shared.Registration;
 
 /**
  * At {@code disclosure}: containers that show part of what they hold.
@@ -19,6 +21,7 @@ import com.vaadin.flow.router.Route;
  * <pre>
  * ▸ Shipping                Details, closed: Street [    ]
  * ▾ Billing                 Details, open: Account [    ]
+ * [Close Billing later]     closes Billing on a poll 1.5 s later: the page changing with no action of the agent's
  * Accordion: ▾ Personal: Name [    ]   ▸ Payment: Card number [    ]
  * Tabs: [Overview] Settings             bare Tabs; selecting one sets the status
  * TabSheet: [Info] Advanced              Info: "Version 1.0"; Advanced: Proxy [    ]
@@ -35,6 +38,16 @@ public class DisclosureView extends VerticalLayout {
         Details shipping = new Details("Shipping", new TextField("Street"));
         Details billing = new Details("Billing", new TextField("Account"));
         billing.setOpened(true);
+        Button closeLater = new Button("Close Billing later", e -> {
+            UI ui = UI.getCurrent();
+            ui.setPollInterval(1500);
+            Registration[] poll = new Registration[1];
+            poll[0] = ui.addPollListener(p -> {
+                billing.setOpened(false);
+                ui.setPollInterval(-1);
+                poll[0].remove();
+            });
+        });
 
         Accordion accordion = new Accordion();
         accordion.add("Personal", new TextField("Name"));
@@ -53,6 +66,6 @@ public class DisclosureView extends VerticalLayout {
         masterDetail.setMaster(new Button("Show detail", e -> masterDetail.setDetail(new TextField("Detail"))));
         masterDetail.setHeight("150px");
 
-        add(shipping, billing, accordion, tabs, sheet, split, masterDetail, status);
+        add(shipping, billing, closeLater, accordion, tabs, sheet, split, masterDetail, status);
     }
 }

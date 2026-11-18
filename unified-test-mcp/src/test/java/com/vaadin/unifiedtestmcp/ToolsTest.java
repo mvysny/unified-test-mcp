@@ -193,7 +193,6 @@ public class ToolsTest {
         assertEquals("""
                 URL: APP/login
                 - LoginForm "Log in" [ref=N]
-                  - <input> [ref=N, id=csrf]
                   - TextField "Username" [ref=N, id=vaadinLoginUsername, value="", required] actions: set_value
                   - PasswordField "Password" [ref=N, id=vaadinLoginPassword, value="", required] actions: set_value
                   - Button "Log in" [ref=N] actions: click
@@ -224,7 +223,6 @@ public class ToolsTest {
                 Modal: LoginOverlay "Mail" over the page; only the dialog on top is shown: nothing under it takes \
                 input
                 - LoginOverlay "Mail" [ref=N, description="Your mail, anywhere"]
-                  - <input> [ref=N, id=csrf]
                   - TextField "Username" [ref=N, id=vaadinLoginUsername, value="", required] actions: set_value
                   - PasswordField "Password" [ref=N, id=vaadinLoginPassword, value="", required] actions: set_value
                   - Button "Log in" [ref=N] actions: click
@@ -240,6 +238,47 @@ public class ToolsTest {
         String signedIn = call(client, "click", ref(ref(overlay, "Button \"Log in\"")));
         assertFalse(signedIn.contains("Modal:"), "the overlay closed: " + signedIn);
         assertTrue(signedIn.contains("\n- Span \"Signed in as alice\" ["), signedIn);
+    }
+
+    @Test
+    public void snapshotLeavesOutWhatTheUserCantSee() throws IOException {
+        String page = snapshotOf("disclosure");
+        assertFalse(page.contains("TextField \"Street\""), "a closed Details' content: " + page);
+        assertTrue(page.contains("- TextField \"Account\" ["), "an open one's: " + page);
+        assertTrue(page.contains("- TextField \"Name\" ["), "an open AccordionPanel's: " + page);
+        assertFalse(page.contains("TextField \"Card number\""), "a closed one's: " + page);
+        String opened = call(client, "click", ref(ref(page, "\"Shipping\"")));
+        assertTrue(opened.contains("- TextField \"Street\" ["), opened);
+    }
+
+    @Test
+    public void clickClosingTheDrawerAnswersWithoutIt() throws IOException {
+        String page = snapshotOf("nav");
+        assertTrue(page.contains("SideNavItem \"Inbox\""), page);
+        assertFalse(page.contains("\"2025\""), "a collapsed item's children: " + page);
+        String closed = call(client, "click", ref(ref(page, "DrawerToggle")));
+        assertFalse(closed.contains("SideNav"), "answered once the drawer's transition ended: " + closed);
+    }
+
+    @Test
+    public void snapshotLeavesOutAClosedMenu() throws IOException {
+        String open = call(client, "click", ref(ref(snapshotOf("menus"), "MenuBarItem \"File\"")));
+        assertTrue(open.contains("MenuBarItem \"New\""), open);
+        String chosen = call(client, "click", ref(ref(open, "MenuBarItem \"New\"")));
+        assertFalse(chosen.contains("MenuBarItem \"New\""), chosen);
+        assertTrue(chosen.contains("- Span \"New\" ["), chosen);
+    }
+
+    @Test
+    public void refHiddenSinceTheSnapshotIsRefused() throws IOException, InterruptedException {
+        String page = snapshotOf("disclosure");
+        int account = ref(page, "TextField \"Account\"");
+        String later = call(client, "click", ref(ref(page, "Button \"Close Billing later\"")));
+        assertTrue(later.contains("- TextField \"Account\" [ref=" + account + ","), later);
+        Thread.sleep(2500); // the app's poll closes Billing
+        assertEquals("ref " + account + " (TextField) isn't shown any more: the app hid it, or closed what holds it."
+                + " Call snapshot to see the components on the page now.",
+                error(client, "set_value", Map.of("ref", account, "value", "x")));
     }
 
     @Test

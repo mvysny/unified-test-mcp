@@ -323,10 +323,21 @@ None of these carries `hidden`.
 - A `SideNavItem`'s child items are in its light DOM while it isn't `expanded`.
   **[verified 2026-11-18, Vaadin 25.3.5]**
 - The browser's `checkVisibility()` is false for a closed Details' or AccordionPanel's content, a
-  never-opened Popover's, and a collapsed SideNavItem's children; but true for a closed drawer's
-  SideNav. **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
+  never-opened Popover's, and a collapsed SideNavItem's children. A closed drawer's SideNav is
+  `visibility: hidden`, which `checkVisibility()` ignores unless asked:
+  `checkVisibility({ visibilityProperty: true })` is false for it, as for a closed MenuBar
+  submenu's items and an AvatarGroup's overflow avatars. **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
+- A closed Dialog's element is `display: none`, its content too, whether attached on `open()` or
+  added to a layout; an open one's is `display: block`. A `<vaadin-notification>` is
+  `display: none` while open: its content shows in a `<vaadin-notification-card>`. A MenuBar's
+  overflow button, `<vaadin-menu-bar-button>` with "···", is `display: none` while every item fits.
+  **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
 - `checkVisibility()` is false for an element with `display: contents`, which has no box of its
-  own, while its children's is true. **[verified 2026-11-18, Chromium]**
+  own, while its children's is true: a Dialog's `<div slot="footer">` and `<h2 slot="title">` are
+  such. **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
+- A closing drawer turns `visibility: hidden` at the end of a 200 ms transition: right after a
+  click on its DrawerToggle, its SideNav is still visible. **[verified 2026-11-18, Vaadin 25.3.5,
+  Chromium]** (`R_vaadin_animations`)
 - A `TabSheet` is the exception: only the selected tab's content is in the DOM, and selecting
   another tab replaces it. So is a `ContextMenu`: before it first opens, there is no
   `<vaadin-context-menu>` in the DOM, and its target is a plain child of its layout.
@@ -334,6 +345,20 @@ None of these carries `hidden`.
 - While a MenuBar submenu is open, a click elsewhere on the page doesn't reach its target:
   Playwright retries until its timeout, reporting that `<html>` intercepts pointer events.
   **[verified 2026-11-18, Vaadin 25.3.5]**
+
+## R_vaadin_animations — what animates on a Vaadin page, and where the browser lists it
+
+- `document.getAnimations()`, and `getAnimations({ subtree: true })` on `<html>`, leave out the
+  animations in shadow roots; each shadow root's `getAnimations()` lists its own. A closing
+  drawer's `transform` and `visibility` transitions run on the `[part=drawer]` in AppLayout's
+  shadow root; the document lists only the layout's `padding-left`. **[verified 2026-11-18,
+  Vaadin 25.3.5, Chromium]**
+- A Dialog opens and closes with keyframe animations in its overlay's shadow root, the longest
+  `lumo-overlay-dummy-animation`, 250 ms; a ComboBox's or Select's dropdown closes in 140 ms.
+  **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
+- Transitions of no consequence to what shows run after most actions: a Button's opacity, 1.4 s
+  after a click; a field's input container's opacity, up to 1 s, and its label's colour, on focus;
+  in dev mode, Copilot's toolbar's width. **[verified 2026-11-18, Vaadin 25.3.5, Chromium]**
 
 ## R_vaadin_login_dom — a Vaadin LoginForm in the browser
 

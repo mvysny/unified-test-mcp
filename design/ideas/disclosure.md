@@ -8,19 +8,22 @@ hidden part, and how does it say what's open or selected.
 test-app's `disclosure` view:
 
 ```
-- Details [ref=1]
-  - Div [ref=2, id=content-vaadin-details-18]
-    - TextField "Street" [ref=3, value=""] actions: set_value
+- Details [ref=1]                      (Shipping, closed: its content left out)
   - DetailsSummary [ref=4, id=summary-vaadin-details-19]
     - Span "Shipping" [ref=5]
-- Details [ref=6]                      (Billing, open: the same lines)
+- Details [ref=6]
+  - Div [ref=7, id=content-vaadin-details-23]
+    - TextField "Account" [ref=8, value=""] actions: set_value
+  - DetailsSummary [ref=9, id=summary-vaadin-details-24]
+    - Span "Billing" [ref=10]
+- Button "Close Billing later" [ref=36] actions: click
 - Accordion [ref=11]
   - AccordionPanel [ref=12]
     - Div [ref=13, id=content-vaadin-accordion-panel-28]
       - TextField "Name" [ref=14, value=""] actions: set_value
     - AccordionHeading [ref=15, id=summary-vaadin-accordion-panel-29]
       - Span "Personal" [ref=16]
-  - AccordionPanel [ref=17]            (Payment, closed: the same lines)
+  - AccordionPanel [ref=17]            (Payment, closed: its heading alone)
 - Tabs [ref=22]
   - Tab "Overview" [ref=23, value="Overview"]
   - Tab "Settings" [ref=24, value="Settings"]
@@ -38,11 +41,10 @@ test-app's `disclosure` view:
 
 Works already: `click` on a Tab selects it; on a TabSheet's tab it swaps the content shown, only
 the selected tab's is in the DOM (`R_vaadin_hidden_in_dom`); MasterDetailLayout's detail appears
-under it once set. `click` on the "Shipping" Span toggles the Details, but the answer shows no
-change.
+under it once set. A closed Details' or panel's content isn't listed (`D_visible_only`); `click`
+on the "Shipping" Span opens the Details, and the answer lists its content.
 
-Doesn't: a closed Details' or panel's content shows like an open one's, its fields offering
-`set_value`; nothing says open, closed or selected; the summary comes after the content, the DOM's
+Doesn't: nothing says open, closed or selected; the summary comes after the content, the DOM's
 order; the generated ids and `value=` repeating the name are noise (`snapshot-cross-cutting.md`).
 `UnifiedDetails` has `open()`, `close()`, `isOpen()`, `getSummaryText()`; `UnifiedTabs` and
 `UnifiedTabSheet` `selectTab(label)` and `getSelectedTab()`. Nothing for Accordion.
@@ -59,10 +61,6 @@ order; the generated ids and `value=` repeating the name are noise (`snapshot-cr
 ```
 
 ## Open questions
-
-`Q_closed_content`: leave a closed Details' content out, as `D_modal_shows_alone` leaves out what
-takes no input? What does `set_value` on the closed "Street" do today: Playwright waits for it to
-be visible, so a 10 s timeout? Not tried.
 
 `Q_named_by_summary`: a Details or a panel named by its summary text, the summary line dropped,
 and `click` on the Details' ref toggles it.

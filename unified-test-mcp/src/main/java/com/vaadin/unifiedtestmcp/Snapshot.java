@@ -1,6 +1,8 @@
 package com.vaadin.unifiedtestmcp;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import com.vaadin.testing.unified.UnifiedElement;
 import com.vaadin.testing.unified.UnifiedPage;
 import org.jspecify.annotations.Nullable;
 
@@ -26,9 +28,10 @@ import java.util.Map;
  * The quoted name is what {@link ComponentTypes} says names that type: a Button's text, a field's label. A component
  * with none has no quoted name, so an icon-only Button reads as one; its bracket shows its {@code aria-label=}, else
  * its {@code placeholder=}, for the agent to tell it by. A layout without an id, and plain HTML
- * with neither an id nor text of its own, stand aside: their children take their place. A hidden component isn't
- * shown, nor anything inside it; nor the out-of-sight region where Vaadin announces to a screen reader what a
- * component did. A dialog that isn't open isn't shown.
+ * with neither an id nor text of its own, stand aside: their children take their place. A component the user can't
+ * see, by {@link #isVisible}, isn't shown: one the app hid, a closed dialog's, Details' or menu's content, a closed
+ * drawer's. What's inside it shows only if the user sees that, as a Dialog footer's buttons. Nor is the out-of-sight
+ * region where Vaadin announces to a screen reader what a component did.
  *
  * A dialog is named by its title: a Dialog's or a ConfirmDialog's header, a LoginOverlay's title, its bracket showing
  * its {@code description=}. A LoginForm is named by its heading, {@code LoginForm "Log in"}. While a modal dialog is
@@ -62,12 +65,28 @@ import java.util.Map;
  * title and message as the user sees them.
  *
  * <h2>Implementation detail</h2>
- * One script, one round-trip: it walks the light DOM from {@code <body>}, or from the modal on top, stamps each component it shows with
+ * One script, one round-trip: it waits for the page's animations to end, walks the light DOM from {@code <body>}, or
+ * from the modal on top, stamps each component it shows with
  * {@link Refs#ATTRIBUTE} (keeping a stamp already there, so a component keeps its ref), and returns the tree. The
  * Unified API can't list a page's components (R_unified_no_enumeration), hence the escape hatch.
  */
 final class Snapshot {
     private Snapshot() {}
+
+    /**
+     * Whether the user can see an element, as a JavaScript function of it: a snapshot shows a component only if so,
+     * and {@link Refs} acts on one only if so. False for one under {@code display: none} or {@code visibility:
+     * hidden}, which is how Vaadin hides a closed Details' content or a closed drawer (R_vaadin_hidden_in_dom); and
+     * for a {@code display: contents} element, which has no box of its own though its children may.
+     *
+     * Blind to what's covered by another element, to opacity, size and clipping (D_visible_only).
+     */
+    static final String IS_VISIBLE = "e => e.checkVisibility({ visibilityProperty: true })";
+
+    /** {@link #IS_VISIBLE} of the element in the browser. */
+    static boolean isVisible(UnifiedElement element) {
+        return Boolean.TRUE.equals(element.unwrap(Locator.class).evaluate(IS_VISIBLE));
+    }
 
     /** A value longer than this is cut, with {@code …}; a name never is: it says which component this is. */
     private static final int VALUE_CAP = 80;
@@ -84,6 +103,22 @@ final class Snapshot {
               for (let waited = 0; window.Vaadin?.Flow?.navigation && waited < 2000; waited += 10) await tick(10);
               await tick(0);
               const LAYOUTS = new Set(layouts), SKIPPED = new Set(skipped), FIELDS = new Set(fields);
+              // a component shows or hides at its animation's end, a drawer at its visibility transition's; a
+              // Button's 1.4 s fade isn't waited for (D_visible_only). A component's own animations run in its
+              // shadow root, which document.getAnimations() leaves out (R_vaadin_animations)
+              const roots = [document];
+              for (let i = 0; i < roots.length; i++) {
+                for (const e of roots[i].querySelectorAll('*')) {
+                  if (e.shadowRoot && !SKIPPED.has(e.localName) && !e.localName.startsWith('copilot-')) {
+                    roots.push(e.shadowRoot);
+                  }
+                }
+              }
+              const showsOrHides = a => a.playState === 'running' && a.effect?.getComputedTiming().endTime !== Infinity
+                  && (a.transitionProperty === undefined || ['visibility', 'display'].includes(a.transitionProperty));
+              for (let waited = 0; roots.some(root => root.getAnimations().some(showsOrHides)) && waited < 1000;
+                  waited += 10) await tick(10);
+              const isVisible = %s;
               const LOGINS = new Set(logins);
               const SLIDERS = new Set(['vaadin-slider', 'vaadin-range-slider']);
               // the light-DOM children a Vaadin component renders for itself: its input, label, messages
@@ -146,13 +181,15 @@ final class Snapshot {
                     && e.style.clip === 'rect(0px, 0px, 0px, 0px)') return [];
                 if (parentTag.startsWith('vaadin-') && OWN_PARTS.has(e.getAttribute('slot'))) return [];
                 if (titleSlots[parentTag] === e.getAttribute('slot')) return [];
+                // told to close, a dialog may show a while yet, its exit animation not waited for if not begun
                 if (tag in titleSlots && !e.opened) return [];
                 const custom = tag.includes('-');
                 const text = ownText(e);
                 const children = () => FIELDS.has(tag) ? [] : Array.from(e.children).flatMap(c => visit(c, tag));
                 // Flow's bootstrap wraps every view in <div id="outlet"><flow-container-root-…>: not the app's
                 const bootstrap = tag.startsWith('flow-container-') || (tag === 'div' && e.id === 'outlet');
-                const shown = !bootstrap && (custom ? !(LAYOUTS.has(tag) && !e.id) : !!(e.id || text));
+                // one the user can't see stands aside: what's inside may be seen, as a display: contents footer's
+                const shown = !bootstrap && (custom ? !(LAYOUTS.has(tag) && !e.id) : !!(e.id || text)) && isVisible(e);
                 if (!shown) return children();
                 let ref = e.getAttribute(attribute);
                 if (ref === null) {
@@ -194,7 +231,7 @@ final class Snapshot {
                   : Array.from(document.body.children).flatMap(c => visit(c, 'body'));
               return { url: location.href, title: document.title, next, nodes,
                   modals: modals.map(e => ({ tag: e.localName, title: titleOf(e) })) };
-            }""";
+            }""".formatted(IS_VISIBLE);
 
     /** What a snapshot of the browser's empty first page says, instead of listing nothing. */
     static final String NO_PAGE = "No page open yet: call navigate with the app's URL.";
