@@ -290,18 +290,53 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
 - Each cell's content, the header's included, is a `<vaadin-grid-cell-content>`, a light-DOM
   child of the `<vaadin-grid>`; a component column's component is inside its cell's. A TreeGrid
   is a `<vaadin-grid>` too. **[verified 2026-11-18, Vaadin 25.3.5]**
-- Only the rows in view have cells: a Grid of 200 items at its default height had 10 rows'.
-  **[verified 2026-11-18, Vaadin 25.3.5]**
+- Only the rows near the view have cells: a Grid of 200 items at its default height had 10 rows',
+  of which 7 were in its viewport, the last one in part, the rest a buffer below it. The viewport runs from the bottom
+  of its header (`grid.$.header`) to the top of its footer (`grid.$.footer`).
+  **[verified 2026-11-18 and 2026-11-19, Vaadin 25.3.5]**
+- A row is a `<tr>` in the grid's shadow DOM, each cell a `<td>` whose `<slot>` is assigned the
+  cell's `<vaadin-grid-cell-content>`. The `<tr>` has `index`, 0-based among every row, and the
+  attributes `selected`, `expanded`, `details-opened`, and in a TreeGrid `aria-level` from 1. The
+  details are a `<td part~="details-cell">`, hidden until open; Flow opens them on a click that
+  selects the row. **[verified 2026-11-19, Vaadin 25.3.5]**
+- `size` counts every row, not the rendered ones: 200. In a TreeGrid it counts an expanded row's
+  children too: 2 before expanding Engineering, 4 after. **[verified 2026-11-19, Vaadin 25.3.5]**
+- Flow puts the selection mode on the grid's shadow `<table>`, as `aria-multiselectable`: `"true"`
+  multi, `"false"` single, absent for none (`gridConnector.ts`, `#updateAriaMultiSelectable`).
+  `selectedItems` holds the item a click selected. **[src; verified 2026-11-19, Vaadin 25.3.5]**
+- Every header row is a row of `<vaadin-grid-column-group>`s in the browser, the captions'
+  included, one `<td>` per column with `colspan=1`. A joined cell, `prependHeaderRow().join(…)`,
+  is one `<td>` with `colspan=2`, so its row has fewer cells than columns. The first footer row is
+  the one `setFooter` fills; the group levels' rows after it are `hidden` while empty.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
 - The cells are recycled: after a sort, the same `<vaadin-grid-cell-content>` element shows another
   item's value. **[verified 2026-11-18, Vaadin 25.3.5]**
 - A sortable column's header cell holds a `<vaadin-grid-sorter>` with the header text, a
-  TreeGrid's hierarchy cell a `<vaadin-grid-tree-toggle>` with the item's text. A multi-select
+  TreeGrid's hierarchy cell a `<vaadin-grid-tree-toggle>` with the item's text, its `leaf` and
+  `expanded` properties saying whether it has children and shows them. A sorter's `direction`
+  goes `null` → `"asc"` → `"desc"` → `null`, a click each. A multi-select
   Grid's selection column has a `<vaadin-checkbox>` per row and one `id=selectAllCheckbox` in the
   header, `checked` and `indeterminate` once some rows are selected.
   **[verified 2026-11-18, Vaadin 25.3.5]**
 - A click on a cell selects its row in a single-select Grid; a click on a sorter sorts; a click
   on a tree toggle expands the row, its children's cells added after its own. Each reaches the
   server's listeners. **[verified 2026-11-18, Vaadin 25.3.5]**
+
+## R_testbench_grid_element — how TestBench's GridElement reaches rows, the ones out of view too
+
+TestBench's `GridElement`, `com.vaadin:vaadin-grid-testbench`, ships in flow-components under the
+Apache License 2.0, unlike TestBench itself: its code may be borrowed, with attribution.
+
+- `scrollToRow(i)` calls the grid's `scrollToIndex(i)`, a TreeGrid's `_scrollToFlatIndex(i)`, then
+  waits while `_dataProviderController.isLoading()` or `$connector.hasRootRequestQueue()`.
+- `getRows(first, last)` pages nothing: it filters `_getRenderedRows()` by `index`.
+- `getFirstVisibleRowIndex()` / `getLastVisibleRowIndex()` read the grid's `_firstVisibleIndex`
+  and `_lastVisibleIndex`.
+- Columns, in the order on screen: `_getColumns().filter(c => !c.hidden).sort((a, b) => a._order -
+  b._order)`.
+- Each is an internal property of `<vaadin-grid>`, not its API.
+
+**[src, the scripts in vaadin-grid-testbench 25.3.5's `GridElement.class`]**
 
 ## R_vaadin_hidden_in_dom — what a Vaadin component keeps in the DOM while it doesn't show it
 

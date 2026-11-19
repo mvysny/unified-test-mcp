@@ -2,23 +2,34 @@ package com.vaadin.unifiedtestmcp.testapp;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.HeaderRow;
+import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.treegrid.TreeGrid;
 import com.vaadin.flow.data.provider.hierarchy.HierarchicalDataProvider;
 import com.vaadin.flow.data.provider.hierarchy.TreeData;
 import com.vaadin.flow.data.provider.hierarchy.TreeDataProvider;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.IntStream;
 
 /**
  * At {@code grid}: a Grid with more rows than it shows, and a TreeGrid.
  *
  * <pre>
- * People: Name ⇅ | Age ⇅ | City | Actions      200 rows, single select; each row's [Edit] sets the status
- * Departments: Department | People             a TreeGrid, multi select: Engineering ▸ Backend, Frontend; Sales ▸ Nordics
+ * People:       Person          |      |                a header group over Name and Age
+ *               Name ⇅ | Age ⇅  | City | Actions        200 rows, single select; each row's [Edit] sets the status
+ *               [Filter]        |      |                filters by name as you type
+ *               ...
+ *               200 people      |      |                the footer, counting the rows the filter leaves
+ *               a selected row's details: "Alice Novak lives in Turku"
+ * Departments:  Department | People                     a TreeGrid, multi select: Engineering ▸ Backend, Frontend; Sales ▸ Nordics
  * Status: Nothing selected
  * </pre>
  */
@@ -49,12 +60,26 @@ public class GridView extends VerticalLayout {
         Span status = new Span("Nothing selected");
 
         Grid<Person> people = new Grid<>();
-        people.addColumn(Person::name).setHeader("Name").setSortable(true);
-        people.addColumn(Person::age).setHeader("Age").setSortable(true);
-        people.addColumn(Person::city).setHeader("City");
+        Grid.Column<Person> name = people.addColumn(Person::name).setHeader("Name").setSortable(true);
+        Grid.Column<Person> age = people.addColumn(Person::age).setHeader("Age").setSortable(true);
+        Grid.Column<Person> city = people.addColumn(Person::city).setHeader("City");
         people.addComponentColumn(person -> new Button("Edit", e -> status.setText("Editing " + person.name())))
                 .setHeader("Actions");
-        people.setItems(PEOPLE);
+        GridListDataView<Person> view = people.setItems(PEOPLE);
+        name.setFooter(PEOPLE.size() + " people");
+        people.prependHeaderRow().join(name, age).setText("Person");
+        HeaderRow filters = people.appendHeaderRow();
+        TextField filter = new TextField();
+        filter.setPlaceholder("Filter");
+        filter.setValueChangeMode(ValueChangeMode.EAGER);
+        filter.addValueChangeListener(e -> {
+            String part = e.getValue().toLowerCase(Locale.ROOT);
+            view.setFilter(person -> person.name().toLowerCase(Locale.ROOT).contains(part));
+            name.setFooter(view.getItemCount() + " people");
+        });
+        filters.getCell(name).setComponent(filter);
+        people.setItemDetailsRenderer(new ComponentRenderer<>(person ->
+                new Span(person.name() + " lives in " + person.city())));
         people.asSingleSelect().addValueChangeListener(e ->
                 status.setText(e.getValue() == null ? "Nothing selected" : "Selected " + e.getValue().name()));
 
