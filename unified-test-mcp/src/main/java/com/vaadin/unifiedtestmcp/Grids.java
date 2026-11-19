@@ -39,18 +39,20 @@ final class Grids {
     }
 
     /**
-     * Clicks the sorter of the column captioned {@code caption} until it shows {@code direction}, as a user does: a
-     * sorter goes none, ascending, descending, none, a click each (R_vaadin_grid_dom). Waits for the server after each
-     * click, as the Unified API does.
+     * Clicks the sorter of the column captioned {@code caption} until it shows {@code direction} and, on a grid
+     * sorting by several columns, comes first, as a user does: a sorter goes none, ascending, descending, none, a
+     * click each, and a click puts its column first (R_vaadin_grid_dom). One already so but not first is clicked round,
+     * through none. Waits for the server after each click, as the Unified API does.
      *
      * <h4>Implementation detail</h4>
      * The sorter, a light-DOM {@code <vaadin-grid-sorter>} holding the caption, clicked through the escape hatch: the
      * Unified API's {@code column(caption).sort(…)} fails on a grid with a header group row (R_unified_grid_headers).
      *
      * @param direction {@code "asc"}, {@code "desc"}, or {@code null} for not sorting by it
+     * @return whether it clicked: {@code false} if the column was so already
      * @throws MCPErrorResponseException if no column of the grid by that caption sorts, naming those that do
      */
-    static void sort(UnifiedPage page, UnifiedGrid grid, int ref, String caption, @Nullable String direction) {
+    static boolean sort(UnifiedPage page, UnifiedGrid grid, int ref, String caption, @Nullable String direction) {
         Locator sorters = grid.element().unwrap(Locator.class).locator("vaadin-grid-sorter");
         List<String> captions = sorters.allTextContents().stream().map(String::strip).toList();
         int found = Collections.frequency(captions, caption);
@@ -63,10 +65,23 @@ final class Grids {
                             + " apart.");
         }
         Locator sorter = sorters.nth(captions.indexOf(caption));
-        for (int clicks = 0; clicks < 3 && !Objects.equals(sorter.evaluate("s => s.direction"), direction); clicks++) {
-            sorter.click();
-            AutoWait.afterAction(page.unwrap(Page.class));
+        if (Objects.equals(sorter.evaluate("s => s.direction"), direction)) {
+            // the order the sorter shows: "" when it alone sorts, "1" first among several
+            Object order = sorter.evaluate("s => s.shadowRoot?.querySelector('[part=\"order\"]')?.textContent.trim()");
+            if (direction == null || order == null || "".equals(order) || "1".equals(order)) {
+                return false;
+            }
+            click(page, sorter);
         }
+        for (int clicks = 0; clicks < 3 && !Objects.equals(sorter.evaluate("s => s.direction"), direction); clicks++) {
+            click(page, sorter);
+        }
+        return true;
+    }
+
+    private static void click(UnifiedPage page, Locator sorter) {
+        sorter.click();
+        AutoWait.afterAction(page.unwrap(Page.class));
     }
 
     /** @throws MCPErrorResponseException if the grid of {@code size} rows has no row {@code row} */

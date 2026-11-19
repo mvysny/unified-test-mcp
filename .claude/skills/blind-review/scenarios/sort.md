@@ -19,9 +19,11 @@ age, and tell me who is first then.
 ## Watch for
 
 - Does it read `⇅` as "sorts", and find `sort` from it?
-- Age, then name: a column sorted anew comes first, so name has to be sorted before age. Does it
+- Age, then name: the column sorted comes first, so name has to be sorted before age. Does it
   read that from the description, or sort name second and read `Name ↑1 | Age ↓2` as wrong, and
-  fix it? How many calls?
+  fix it? How many calls? The first review's agent sorted name, then age, which was descending
+  already: the call clicked nothing and answered "Sorted" all the same, and two more calls fixed
+  it. `sort` now clicks such a column round to come first: two calls should do.
 - City: answered from the header line, or by a failed `sort`? Does the error, naming the columns
   that sort, send it on in one step?
 - Stopping: does it find `none`, or sort ascending and call that stopped?

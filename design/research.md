@@ -332,7 +332,10 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
 - A sortable column's header cell holds a `<vaadin-grid-sorter>` with the header text, a
   TreeGrid's hierarchy cell a `<vaadin-grid-tree-toggle>` with the item's text, its `leaf` and
   `expanded` properties saying whether it has children and shows them. A sorter's `direction`
-  goes `null` → `"asc"` → `"desc"` → `null`, a click each. A multi-select
+  goes `null` → `"asc"` → `"desc"` → `null`, a click each. On a multi-sort grid a click that
+  sorts a column puts it first, `Name ↑2 | Age ↑1` after Name then Age; a sorter shows its order
+  in its shadow `[part="order"]`, empty while it alone sorts. **[verified 2026-11-19, Vaadin
+  25.3.5]** A multi-select
   Grid's selection column has a `<vaadin-checkbox>` per row and one `id=selectAllCheckbox` in the
   header, `checked` and `indeterminate` once some rows are selected.
   **[verified 2026-11-18, Vaadin 25.3.5]**

@@ -905,11 +905,20 @@ public class ToolsTest {
                 "two clicks on Age, and a column sorted anew comes first: " + byAge);
         assertTrue(byAge.contains("\n  - row 0: Carol Berg | 64 |"), byAge);
         String again = call(client, "sort", Map.of("ref", people, "column", "Age", "direction", "descending"));
-        assertTrue(again.contains("\n  Header: | Name ↑2 | Age ↓1 | City | Tags | Actions |\n"),
-                "already so, no click: " + again);
+        assertTrue(again.startsWith("ref=" + people + " was sorted by Age, descending, first already: nothing"
+                + " clicked\n\n"), again);
+        assertTrue(again.contains("\n  Header: | Name ↑2 | Age ↓1 | City | Tags | Actions |\n"), again);
+        String nameFirst = call(client, "sort", Map.of("ref", people, "column", "Name", "direction", "ascending"));
+        assertTrue(nameFirst.startsWith("Sorted ref=" + people + " by Name, ascending\n\n"), nameFirst);
+        assertTrue(nameFirst.contains("\n  Header: | Name ↑1 | Age ↓2 | City | Tags | Actions |\n"),
+                "ascending already but second, clicked round to come first: " + nameFirst);
+        assertTrue(nameFirst.contains("\n  - row 0: Alice Berg | "), nameFirst);
         String unsorted = call(client, "sort", Map.of("ref", people, "column", "Age", "direction", "none"));
         assertTrue(unsorted.startsWith("Stopped sorting ref=" + people + " by Age\n\n"), unsorted);
         assertTrue(unsorted.contains("\n  Header: | Name ↑ | Age ⇅ | City | Tags | Actions |\n"), unsorted);
+        String stillUnsorted = call(client, "sort", Map.of("ref", people, "column", "Age", "direction", "none"));
+        assertTrue(stillUnsorted.startsWith("ref=" + people + " didn't sort by Age: nothing clicked\n\n"),
+                stillUnsorted);
     }
 
     @Test
