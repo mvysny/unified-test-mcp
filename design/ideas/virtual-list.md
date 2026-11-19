@@ -1,8 +1,8 @@
 # VirtualList
 
 A scrolling list whose every item is components, rendered only while in view. It shares the
-Grid's problem of items out of view (`grid.md`'s `Q_rows_beyond_view`); whichever lands first
-answers it for both. Unlike a Grid it has no columns, header or sort, and an item can hold any
+Grid's problem of items out of view, which the Grid answers with at most 10 rows in the snapshot
+and `get_rows` for the rest (`D_grid_as_rows`, `D_get_rows_scrolls`). Unlike a Grid it has no columns, header or sort, and an item can hold any
 components, so an item is closer to a small snapshot than to a row.
 
 ## Today
@@ -30,4 +30,5 @@ with its button, nor says there are 200. An earlier survey saw no items at all; 
 [ref=…]`, `aria-posinset` and `aria-setsize` give both numbers.
 
 `Q_item_refs`: the item elements are recycled while scrolling, as a Grid's cells are
-(`R_vaadin_grid_dom`)? Then the Grid's `Q_row_refs` answer applies.
+(`R_vaadin_grid_dom`)? Then the Grid's answer applies: the stamps move with them, accepted
+(`D_grid_as_rows`).

@@ -35,7 +35,7 @@ Every fact lives in exactly one of these; the others link to it.
 - **Playwright never downloads browsers on its own**: `BrowserInstall` claims its driver first and installs the one browser opened, output to the log (`D_browser_install`).
 - **Every tool reaches the browser through `ToolCall`**, which finds the calling MCP session's own browser (`D_browser_per_session`). A lookup that times out throws `AssertionError`, which TinyMCPServer does not catch; `ToolCall` turns it into a tool error the model reads.
 - **The tools use the Unified API, not Playwright**; its escape hatch only for what no wrapper offers, as the snapshot's script (`D_snapshot_from_javascript`). See `D_unified_api_backend`.
-- **A tool names a component by its `ref` from the latest snapshot, never by its id**, and finds it through `Refs.resolve` (`D_refs_not_ids`). **A tool that changes the page answers with the new snapshot** (`D_action_returns_snapshot`).
+- **A tool names a component by its `ref` from the latest snapshot, never by its id**, and finds it through `Refs.resolve` (`D_refs_not_ids`); a Grid's row, which takes no ref, by the Grid's ref and its number from 0 (`D_grid_as_rows`). **A tool that changes the page answers with the new snapshot** (`D_action_returns_snapshot`).
 
 ## Module map
 
@@ -50,7 +50,7 @@ Every fact lives in exactly one of these; the others link to it.
 - **Gradle, Kotlin DSL; every version in `gradle/libs.versions.toml`.** Vaadin stays on the line the Unified API is built against.
 - **Tests: JUnit; a tool is tested end to end** — `test-app` booted in the test JVM, a real browser, the tool called over MCP's HTTP transport (`ToolsTest`). No mocks of the Unified API or Playwright.
 - **Diagnostics go to `java.util.logging`**, never `System.out`: on stdio, stdout is the protocol.
-- **One class per tool**, `<Name>Tool implements ToolFunction` with its `DESCRIPTOR`, registered in `UnifiedTestMCP`; no base class — shared steps live in classes of their own (`ToolCall`, `Refs`, `Snapshot`, `ComponentTypes`), per the `cop` skill.
+- **One class per tool**, `<Name>Tool implements ToolFunction` with its `DESCRIPTOR`, registered in `UnifiedTestMCP`; no base class — shared steps live in classes of their own (`ToolCall`, `Refs`, `Snapshot`, `ComponentTypes`, `Grids`), per the `cop` skill.
 - **A tool failure is an `MCPErrorResponseException`** whose message says what was looked for; the Unified API's own message does that already.
 - **Released as one jar on GitHub Releases, never Maven Central**, every dependency and every OS's Playwright driver inside; steps in `RELEASING.md`, why in `D_single_jar_release`.
 - **A sibling of `../swing-mcp`:** where a tool shape, a ref scheme or an error posture is undecided here, start from what swing-mcp does.

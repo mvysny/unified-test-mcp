@@ -23,11 +23,12 @@ import java.util.stream.IntStream;
  * At {@code grid}: a Grid with more rows than it shows, and a TreeGrid.
  *
  * <pre>
- * People:       Person          |      |                a header group over Name and Age
- *               Name ⇅ | Age ⇅  | City | Actions        200 rows, single select; each row's [Edit] sets the status
- *               [Filter]        |      |                filters by name as you type
+ * People:       Person          |      |               |         a header group over Name and Age
+ *               Name ⇅ | Age ⇅  | City | Tags          | Actions 200 rows, single select, multi-sort; each [Edit] sets the status
+ *               [Filter]        |      |               |         filters by name as you type
+ *                               |      | Turku | 20s   |         Tags: a Span, its text holding a |
  *               ...
- *               200 people      |      |                the footer, counting the rows the filter leaves
+ *               200 people      |      |               |         the footer, counting the rows the filter leaves
  *               a selected row's details: "Alice Novak lives in Turku"
  * Departments:  Department | People                     a TreeGrid, multi select: Engineering ▸ Backend, Frontend; Sales ▸ Nordics
  * Status: Nothing selected
@@ -62,9 +63,12 @@ public class GridView extends VerticalLayout {
         Grid<Person> people = new Grid<>();
         Grid.Column<Person> name = people.addColumn(Person::name).setHeader("Name").setSortable(true);
         Grid.Column<Person> age = people.addColumn(Person::age).setHeader("Age").setSortable(true);
-        Grid.Column<Person> city = people.addColumn(Person::city).setHeader("City");
+        people.addColumn(Person::city).setHeader("City");
+        people.addComponentColumn(person -> new Span(person.city() + " | " + person.age() / 10 + "0s"))
+                .setHeader("Tags");
         people.addComponentColumn(person -> new Button("Edit", e -> status.setText("Editing " + person.name())))
                 .setHeader("Actions");
+        people.setMultiSort(true);
         GridListDataView<Person> view = people.setItems(PEOPLE);
         name.setFooter(PEOPLE.size() + " people");
         people.prependHeaderRow().join(name, age).setText("Person");

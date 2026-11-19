@@ -304,6 +304,24 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
 - Flow puts the selection mode on the grid's shadow `<table>`, as `aria-multiselectable`: `"true"`
   multi, `"false"` single, absent for none (`gridConnector.ts`, `#updateAriaMultiSelectable`).
   `selectedItems` holds the item a click selected. **[src; verified 2026-11-19, Vaadin 25.3.5]**
+- Selection beyond the loaded rows, test-app's `unloaded-rows`: `selectedItems` holds the
+  selected items among the pages the browser holds, and one the server has just selected. A
+  single-select grid: row 150 selected on the server before the grid showed is there, its `key`
+  no row index (`"1"`); gone once the grid scrolled to row 0 and that page left the cache, though
+  still selected on the server; back when the grid scrolled near it again. Row 1 a user clicked:
+  gone at row 150, back at row 0. **[verified 2026-11-19, Vaadin 25.3.5]**
+- A multi-select grid's `selectedItems` likewise. Row 180 selected on the server, out of view: `[]` until the grid scrolled there;
+  a row ticked at the top dropped out of it once the grid scrolled away. After `selectAll()`, the
+  server's or the header checkbox's: 50 of 200, then 100. A loaded row's `selected` attribute is
+  right every time. **[verified 2026-11-19, Vaadin 25.3.5]**
+- Of a multi-select grid's whole selection, the browser has its header checkbox: unchecked none,
+  `checked` all, `checked` and `indeterminate` some; the selection column's `selectAll` property
+  true only while all are. Deselecting one row after select-all makes it indeterminate.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- A lazy grid whose data provider gives no count: `size` 200, Flow's estimate, then 400 and 600
+  as the grid scrolls to its end; a counted one's 1000 from the start. Nothing in the browser
+  tells an estimate from a count: the connector's `updateSize(size)` sets `size` and nothing
+  else. **[src `gridConnector.ts`; verified 2026-11-19, Vaadin 25.3.5]**
 - Every header row is a row of `<vaadin-grid-column-group>`s in the browser, the captions'
   included, one `<td>` per column with `colspan=1`. A joined cell, `prependHeaderRow().join(…)`,
   is one `<td>` with `colspan=2`, so its row has fewer cells than columns. The first footer row is
@@ -331,7 +349,8 @@ Apache License 2.0, unlike TestBench itself: its code may be borrowed, with attr
   waits while `_dataProviderController.isLoading()` or `$connector.hasRootRequestQueue()`.
 - `getRows(first, last)` pages nothing: it filters `_getRenderedRows()` by `index`.
 - `getFirstVisibleRowIndex()` / `getLastVisibleRowIndex()` read the grid's `_firstVisibleIndex`
-  and `_lastVisibleIndex`.
+  and `_lastVisibleIndex`: 0 and 9 in a grid of 15 rendered rows, 118 and 127 after
+  `scrollToIndex(118)`. **[verified 2026-11-19, Vaadin 25.3.5]**
 - Columns, in the order on screen: `_getColumns().filter(c => !c.hidden).sort((a, b) => a._order -
   b._order)`.
 - Each is an internal property of `<vaadin-grid>`, not its API.

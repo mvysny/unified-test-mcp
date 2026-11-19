@@ -8,7 +8,8 @@ import com.github.mvysny.tinymcpserver.ToolRequest;
 
 /**
  * {@code snapshot()}: the Vaadin components on the page, one line each, in the format {@link Snapshot} shows.
- * Its refs become the ones every other tool takes.
+ * Its refs become the ones every other tool takes. {@code snapshot(ref)}: that component alone, in its full view
+ * ({@link Snapshot#full}); its refs join the latest ones.
  */
 final class SnapshotTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("snapshot",
@@ -28,20 +29,33 @@ final class SnapshotTool implements ToolFunction {
                     + "SideNavItem that has items, hidden (toggle_expand shows them, click opens its page). A "
                     + "dialog's quoted name is its title. An AppLayout lists what it holds under `- Navbar:`, `- Drawer:` and `- Content:`, the "
                     + "app's chrome apart from the view; a closed drawer as `- Drawer: closed`, with the ref of the "
-                    + "DrawerToggle that opens it. `actions` lists "
+                    + "DrawerToggle that opens it. A Grid lists how many rows= it has and its selection= single or "
+                    + "multi, then a `Header:` line per header row, `| Name ↑ | Age | "
+                    + "Actions |` (↑ or ↓ marks a sorted column, with its order when several are), up to 10 of the "
+                    + "rows in view, `- row 3 [selected]: Frank Rossi | 20 | Button \"Edit\" [ref=7]`, a line naming "
+                    + "the rows not shown (get_rows reads them), and a `Footer:` line. Rows are numbered from 0 and "
+                    + "take no ref: click and get_rows take the Grid's ref and the row's number. In a cell, a "
+                    + "component a user acts on shows with its ref, anything else as its text, parts joined by `; `, "
+                    + "a `|` inside a cell written `\\|`. `actions` lists "
                     + "the tools made for that type, and toggle_expand on a SideNavItem with items. A component the "
                     + "user can't see isn't listed: one the app hid, "
                     + "the content of a closed dialog, Details, menu or drawer. While a modal dialog is open, it alone "
                     + "is listed, below a `Modal:` line naming what it's over: nothing under it takes input until it "
                     + "closes. Every other tool names a component by its `ref` from here; a ref stays valid as long as "
-                    + "the latest snapshot shows it and the user still sees it.",
-            new InputSchemaBuilder().build());
+                    + "the latest snapshot shows it and the user still sees it. With a ref: that component alone, "
+                    + "in full: a Grid's every row in view, every component in its cells with its ref; the refs it "
+                    + "shows join the latest snapshot's.",
+            new InputSchemaBuilder().optionalInteger("ref",
+                    "A component's ref, from the latest snapshot: shows it alone, in full. Leave out for the page")
+                    .build());
 
     /** The {@code ref} parameter, as every tool that acts on a component declares it. */
     static final String REF_DESCRIPTION = "The component's ref, from the latest snapshot";
 
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
-        return MCPProtocol.Content.text(ToolCall.get(Snapshot::take));
+        Integer ref = request.arguments().getIntOrNull("ref");
+        return MCPProtocol.Content.text(ToolCall.get((page, refs) ->
+                ref == null ? Snapshot.take(page, refs) : Snapshot.full(page, refs, ref)));
     }
 }

@@ -1,5 +1,6 @@
 package com.vaadin.unifiedtestmcp;
 
+import com.microsoft.playwright.ElementHandle;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.vaadin.testing.unified.UnifiedElement;
@@ -7,6 +8,7 @@ import com.vaadin.testing.unified.UnifiedPage;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,11 +90,29 @@ import java.util.Map;
  * that shows its error has {@code error "Incorrect username or password: Check that you have entered…"}, the error's
  * title and message as the user sees them.
  *
+ * A Grid shows a line per row, at most {@value #GRID_ROWS} of those in view (D_grid_as_rows):
+ *
+ * <pre>
+ * - Grid [ref=1, id=people, rows=200, selection=single]
+ *   Header: | Name ↑ | Age | Tags | Actions |
+ *   Header: | TextField [ref=2, placeholder="Filter", value=""] | | | |
+ *   - row 0 [selected]: Frank Rossi | 20 | Lyon \| 20s | Button "Edit" [ref=3]
+ *   - rows 10–199 not shown: get_rows ref=1
+ *   Footer: | 200 people | | | |
+ * </pre>
+ *
+ * In a cell, a component a user acts on ({@link ComponentTypes#ACTED_ON}) shows in its short view, type, name and
+ * bracket; anything else as its text, cut at {@value #CELL_CAP} characters; parts joined by {@code ; }
+ * (D_component_views). {@link #full} shows one component with nothing cut; {@link #rows} reads a grid's rows beyond
+ * the view (D_get_rows_scrolls).
+ *
  * <h2>Implementation detail</h2>
- * One script, one round-trip: it waits for the page's animations to end, walks the light DOM from {@code <body>}, or
- * from the modal on top, stamps each component it shows with
+ * One script, one round-trip: it waits for the page's animations to end and its grids to load, walks the light DOM
+ * from {@code <body>}, or from the modal on top, stamps each component it shows with
  * {@link Refs#ATTRIBUTE} (keeping a stamp already there, so a component keeps its ref), and returns the tree. The
- * Unified API can't list a page's components (R_unified_no_enumeration), hence the escape hatch.
+ * Unified API can't list a page's components (R_unified_no_enumeration), hence the escape hatch. A Grid's rows come
+ * from its shadow DOM, its {@code <tr>}s, each cell's content the light-DOM element its {@code <slot>} shows
+ * (R_vaadin_grid_dom).
  */
 final class Snapshot {
     private Snapshot() {}
@@ -118,8 +138,20 @@ final class Snapshot {
     /** A helper text or a tooltip longer than this is cut, with {@code …}: advice, so nothing is lost to it. */
     private static final int HINT_CAP = 120;
 
+    /** A Grid shows at most this many of its rows in view: an overview, the rest is {@code get_rows}'. */
+    static final int GRID_ROWS = 10;
+
+    /** A run of text in a grid cell longer than this is cut, with {@code …}, outside the full view. */
+    private static final int CELL_CAP = 50;
+
+    /**
+     * Walks the page from {@code <body>} or the modal on top; from {@code root} alone, every row of a grid in view
+     * and every component in a cell named ({@code full}); or reads a grid's rows {@code offset} on ({@code rows}),
+     * stamping nothing.
+     */
     private static final String SCRIPT = """
-            async ({ next, layouts, skipped, fields, titleSlots, logins, expandable, attribute }) => {
+            async ({ next, layouts, skipped, fields, inline, titleSlots, logins, expandable, attribute, gridRows,
+                     root, full, rows: rowsWanted }) => {
               // A server-side navigation changes the URL after the round-trip that an action waits for
               // (R_flow_navigation_url): with React, once Flow clears its navigation flag; without, in a setTimeout.
               // Drop once Auto-Wait waits for it: parttio/unified-testing-tool#233
@@ -142,7 +174,19 @@ final class Snapshot {
                   && (a.transitionProperty === undefined || ['visibility', 'display'].includes(a.transitionProperty));
               for (let waited = 0; roots.some(root => root.getAnimations().some(showsOrHides)) && waited < 1000;
                   waited += 10) await tick(10);
+              // a grid fetching rows shows them empty; the wait TestBench's GridElement does (R_testbench_grid_element)
+              const loading = g => g._dataProviderController?.isLoading() || g.$connector?.hasRootRequestQueue?.()
+                  || !!g.$?.items?.querySelector(':scope > tr[loading]:not([hidden])');
+              const frame = () => Promise.race([new Promise(resolve => requestAnimationFrame(resolve)), tick(50)]);
+              const settle = async g => {
+                await tick(0);
+                for (let waited = 0; loading(g) && waited < 5000; waited += 10) await tick(10);
+                await frame();
+              };
+              for (const g of document.querySelectorAll('vaadin-grid')) await settle(g);
               const isVisible = %s;
+              const INLINE = new Set(inline);
+              const stamps = rowsWanted == null;
               const LOGINS = new Set(logins);
               const SLIDERS = new Set(['vaadin-slider', 'vaadin-range-slider']);
               const NAV_ITEMS = new Set(['vaadin-side-nav-item', 'vaadin-breadcrumbs-item']);
@@ -214,7 +258,70 @@ final class Snapshot {
                 return nodes.filter(n => n.closed || n.children.length > 0)
                     .map(n => n.closed ? { ...n, toggleRef: toggleRef === null ? null : Number(toggleRef) } : n);
               };
-              const visit = (e, parentTag) => {
+              // a Grid as rows (R_vaadin_grid_dom): each cell's content a light-DOM child slotted into its <td>
+              const contentOf = td => td?.querySelector('slot')?.assignedElements()[0] ?? null;
+              const cellsOf = tr => Array.from(tr?.children ?? [])
+                  .filter(td => !td.hidden && !td.matches('[part~="details-cell"]'));
+              const selectionOf = g => ({ true: 'multi', false: 'single' })[
+                  g.$?.table?.getAttribute('aria-multiselectable')] ?? null;
+              // a cell's runs of text, and in their places, in their short view, the components a user acts on; in
+              // the full view every component
+              const partsOf = content => {
+                const parts = [];
+                const text = t => {
+                  t = t.replace(/\\s+/g, ' ').trim();
+                  if (t === '') return;
+                  const last = parts[parts.length - 1];
+                  if (last?.text !== undefined) last.text += ' ' + t; else parts.push({ text: t });
+                };
+                const walk = (n, elementsOnly) => {
+                  for (const c of n.childNodes) {
+                    if (c.nodeType === Node.TEXT_NODE) {
+                      if (!elementsOnly) text(c.textContent);
+                      continue;
+                    }
+                    if (c.nodeType !== Node.ELEMENT_NODE) continue;
+                    const tag = c.localName;
+                    if (c.hidden || SKIPPED.has(tag) || tag.startsWith('copilot-')) continue;
+                    const actedOn = INLINE.has(tag);
+                    const nodes = actedOn || full ? visit(c, n.localName, true) : [];
+                    nodes.forEach(node => parts.push({ node }));
+                    if (actedOn || FIELDS.has(tag)) continue;
+                    // a shown component's own text is its name already
+                    if (getComputedStyle(c).display === 'contents' || isVisible(c)) walk(c, nodes.length > 0);
+                  }
+                };
+                if (content) walk(content, false);
+                return parts;
+              };
+              const rowOf = tr => ({ index: tr.index, selected: tr.hasAttribute('selected'),
+                  cells: cellsOf(tr).map(td => partsOf(contentOf(td))) });
+              const gridOf = g => {
+                const columns = cellsOf(g.$.header.lastElementChild).length;
+                // a header or footer row with a cell per column; a row of groups spans columns
+                const lineOf = tr => {
+                  const tds = cellsOf(tr);
+                  if (tr.hidden || tds.length !== columns
+                      || tds.some(td => Number(td.getAttribute('colspan') || 1) > 1)) return null;
+                  const cells = tds.map(td => {
+                    const content = contentOf(td);
+                    const sorter = content?.querySelector('vaadin-grid-sorter');
+                    return { parts: partsOf(content), sorted: sorter?.direction ?? null,
+                      order: str(sorter?.shadowRoot?.querySelector('[part="order"]')?.textContent) };
+                  });
+                  return cells.some(c => c.parts.length > 0) ? cells : null;
+                };
+                const inView = Array.from(g.$.items.children)
+                    .filter(tr => !tr.hidden && tr.index >= g._firstVisibleIndex && tr.index <= g._lastVisibleIndex
+                        && tr.index < g.size)
+                    .sort((a, b) => a.index - b.index);
+                return {
+                  header: Array.from(g.$.header.children).map(lineOf).filter(Boolean),
+                  rows: (full ? inView : inView.slice(0, gridRows)).map(rowOf),
+                  footer: Array.from(g.$.footer.children).map(lineOf).filter(Boolean).slice(0, 1)
+                };
+              };
+              const visit = (e, parentTag, short = false) => {
                 const tag = e.localName;
                 if (e.hidden || SKIPPED.has(tag) || tag.startsWith('copilot-')) return [];
                 // Vaadin's screen-reader announcements, "Czechia added to selection" (@vaadin/a11y-base announce.js)
@@ -226,20 +333,24 @@ final class Snapshot {
                 if (tag in titleSlots && !e.opened) return [];
                 const custom = tag.includes('-');
                 const text = ownText(e);
-                const children = () => FIELDS.has(tag) ? [] : tag === 'vaadin-app-layout' ? regions(e)
-                    : Array.from(e.children).flatMap(c => visit(c, tag));
+                const children = () => short || FIELDS.has(tag) || tag === 'vaadin-grid' ? []
+                    : tag === 'vaadin-app-layout' ? regions(e) : Array.from(e.children).flatMap(c => visit(c, tag));
                 // Flow's bootstrap wraps every view in <div id="outlet"><flow-container-root-…>: not the app's
                 const bootstrap = tag.startsWith('flow-container-') || (tag === 'div' && e.id === 'outlet');
                 // one the user can't see stands aside: what's inside may be seen, as a display: contents footer's
                 const shown = !bootstrap && (custom ? !(LAYOUTS.has(tag) && !e.id) : !!(e.id || text)) && isVisible(e);
                 if (!shown) return children();
-                let ref = e.getAttribute(attribute);
-                if (ref === null) {
-                  ref = String(next++);
-                  e.setAttribute(attribute, ref);
+                let ref = null;
+                if (stamps) {
+                  ref = e.getAttribute(attribute);
+                  if (ref === null) {
+                    ref = String(next++);
+                    e.setAttribute(attribute, ref);
+                  }
                 }
+                const grid = tag === 'vaadin-grid';
                 return [{
-                  tag, ref: Number(ref), text: str(text),
+                  tag, ref: ref === null ? null : Number(ref), text: str(text),
                   id: str(e.id), idUnique: !!e.id && document.querySelectorAll('#' + CSS.escape(e.id)).length === 1,
                   testId: str(e.getAttribute('data-testid')),
                   label: custom ? str(e.label) : null,
@@ -267,9 +378,39 @@ final class Snapshot {
                   errorMessage: !custom ? null : LOGINS.has(tag) ? loginError(e) : str(e.errorMessage),
                   required: custom && e.required === true,
                   readonly: custom && e.readonly === true,
+                  rows: grid ? e.size ?? 0 : null,
+                  // no count of the selected: the browser has only those among the rows it loaded (R_vaadin_grid_dom)
+                  selection: grid ? selectionOf(e) : null,
+                  grid: grid && !short ? gridOf(e) : null,
                   children: children()
                 }];
               };
+              // get_rows: a page of rendered rows at a time, scrolled to as TestBench does (R_testbench_grid_element)
+              if (rowsWanted != null) {
+                const end = Math.min(rowsWanted.offset + rowsWanted.length, root.size);
+                const read = [];
+                for (let i = rowsWanted.offset; i < end;) {
+                  root.scrollToIndex(i);
+                  await settle(root);
+                  const rendered = Array.from(root.$.items.children)
+                      .filter(tr => !tr.hidden && tr.index >= i && tr.index < end).sort((a, b) => a.index - b.index);
+                  const from = i;
+                  for (const tr of rendered) {
+                    if (tr.index !== i) break;
+                    read.push(rowOf(tr));
+                    i++;
+                  }
+                  if (i === from) throw new Error(`row ${i} didn't render after scrolling to it`);
+                }
+                root.scrollToIndex(rowsWanted.offset);
+                await settle(root);
+                return { next, size: root.size, rows: read };
+              }
+              if (root) {
+                // visited before next is read: the visit advances it
+                const nodes = visit(root, root.parentElement?.localName ?? 'body');
+                return { next, nodes };
+              }
               // a modal opened over another is after it in the DOM: Flow appends it to the body, or puts it inside
               // the modal that opened it
               const modals = Array.from(document.querySelectorAll('[aria-modal=true]'))
@@ -298,11 +439,7 @@ final class Snapshot {
         if (isBlank(browser)) {
             return NO_PAGE + "\n";
         }
-        Map<String, Object> arg = Map.of("next", refs.next(), "layouts", List.copyOf(ComponentTypes.LAYOUTS),
-                "skipped", List.copyOf(ComponentTypes.SKIPPED), "fields", List.copyOf(ComponentTypes.FIELDS),
-                "titleSlots", ComponentTypes.DIALOG_TITLE_SLOTS, "logins", List.copyOf(ComponentTypes.LOGINS),
-                "expandable", List.copyOf(ComponentTypes.EXPANDABLE), "attribute", Refs.ATTRIBUTE);
-        Map<?, ?> result = (Map<?, ?>) browser.evaluate(SCRIPT, arg);
+        Map<?, ?> result = evaluate(page, refs, null, false, null);
         StringBuilder out = new StringBuilder("URL: ").append(result.get("url")).append('\n');
         String title = (String) result.get("title");
         if (!title.isBlank()) {
@@ -319,77 +456,84 @@ final class Snapshot {
         if (nodes.isEmpty()) {
             out.append("(no components)\n");
         }
-        render(nodes, 0, out, targets);
-        refs.replace((String) result.get("url"), modals.isEmpty() ? null : modals.get(0), targets,
-                ((Number) result.get("next")).intValue());
+        render(nodes, 0, out, targets, false);
+        refs.replace((String) result.get("url"), modals.isEmpty() ? null : modals.get(0), targets, next(result));
         return out.toString();
     }
 
-    private static void render(List<?> nodes, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
+    /**
+     * The component the latest snapshot showed as {@code ref}, alone and in its full view: as in the snapshot, but a
+     * Grid with every row in view and every component in its cells in its short view. Its refs join the session's,
+     * the page's other refs staying valid.
+     *
+     * @throws com.github.mvysny.tinymcpserver.MCPErrorResponseException as {@link Refs#resolve(UnifiedPage, int)}
+     */
+    static String full(UnifiedPage page, Refs refs, int ref) {
+        Map<?, ?> result = evaluate(page, refs, refs.resolve(page, ref).element(), true, null);
+        StringBuilder out = new StringBuilder();
+        Map<Integer, Refs.Target> targets = new LinkedHashMap<>();
+        render((List<?>) result.get("nodes"), 0, out, targets, true);
+        refs.add(targets, next(result));
+        return out.toString();
+    }
+
+    /**
+     * A Grid's rows {@code offset} to {@code offset + length - 1}, or to its last, a line each as its snapshot writes
+     * them, without refs: reading them scrolls the grid a page at a time, and its cells then show other rows. Leaves
+     * the grid scrolled to {@code offset}.
+     *
+     * @param grid   a {@code vaadin-grid}
+     * @param offset one of its rows
+     */
+    static String rows(UnifiedPage page, Refs refs, UnifiedElement grid, int offset, int length) {
+        Map<?, ?> result = evaluate(page, refs, grid, false, Map.of("offset", offset, "length", length));
+        StringBuilder out = new StringBuilder();
+        renderRows((List<?>) result.get("rows"), 0, out, new LinkedHashMap<>(), false);
+        return out.toString();
+    }
+
+    /** Runs {@link #SCRIPT} from {@code root}, or the page if {@code null}; {@code rows} reads a grid's rows. */
+    private static Map<?, ?> evaluate(UnifiedPage page, Refs refs, @Nullable UnifiedElement root, boolean full,
+                                      @Nullable Map<String, Integer> rows) {
+        ElementHandle handle = root == null ? null : root.unwrap(Locator.class).elementHandle();
+        try {
+            Map<String, Object> arg = new HashMap<>();
+            arg.put("next", refs.next());
+            arg.put("layouts", List.copyOf(ComponentTypes.LAYOUTS));
+            arg.put("skipped", List.copyOf(ComponentTypes.SKIPPED));
+            arg.put("fields", List.copyOf(ComponentTypes.FIELDS));
+            arg.put("inline", List.copyOf(ComponentTypes.ACTED_ON));
+            arg.put("titleSlots", ComponentTypes.DIALOG_TITLE_SLOTS);
+            arg.put("logins", List.copyOf(ComponentTypes.LOGINS));
+            arg.put("expandable", List.copyOf(ComponentTypes.EXPANDABLE));
+            arg.put("attribute", Refs.ATTRIBUTE);
+            arg.put("gridRows", GRID_ROWS);
+            arg.put("root", handle);
+            arg.put("full", full);
+            arg.put("rows", rows);
+            return (Map<?, ?>) page.unwrap(Page.class).evaluate(SCRIPT, arg);
+        } finally {
+            if (handle != null) {
+                handle.dispose();
+            }
+        }
+    }
+
+    private static int next(Map<?, ?> result) {
+        return ((Number) result.get("next")).intValue();
+    }
+
+    /** @param full whether a Grid shows in its full view: every row in view, every component in a cell named */
+    private static void render(List<?> nodes, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
+                               boolean full) {
         for (Object o : nodes) {
             Map<?, ?> node = (Map<?, ?>) o;
             if (node.get("region") != null) {
-                renderRegion(node, depth, out, targets);
+                renderRegion(node, depth, out, targets, full);
                 continue;
             }
-            ComponentTypes.Type type = ComponentTypes.of((String) node.get("tag"),
-                    Boolean.TRUE.equals(node.get("multiple")));
-            int ref = ((Number) node.get("ref")).intValue();
-            String id = (String) node.get("id");
-            targets.put(ref, new Refs.Target(type.flowName(),
-                    Boolean.TRUE.equals(node.get("idUnique")) ? id : null));
-
-            out.append("  ".repeat(depth)).append("- ").append(type.flowName());
-            List<String> bracket = new ArrayList<>();
-            bracket.add("ref=" + ref);
-            if (id != null) {
-                bracket.add("id=" + id);
-            }
-            if (node.get("testId") != null) {
-                bracket.add("testid=" + node.get("testId"));
-            }
-            String name = name(node, type.nameFrom());
-            if (name != null) {
-                out.append(' ').append(quote(name));
-            } else if (node.get("ariaLabel") != null) {
-                bracket.add("aria-label=" + quote((String) node.get("ariaLabel")));
-            } else if (node.get("placeholder") != null) {
-                bracket.add("placeholder=" + quote((String) node.get("placeholder")));
-            }
-            if (node.get("description") != null) {
-                bracket.add("description=" + quote((String) node.get("description")));
-            }
-            if (node.get("icon") != null) {
-                bracket.add("icon=" + quote((String) node.get("icon")));
-            }
-            if (node.get("path") != null) {
-                bracket.add("path=" + quote((String) node.get("path")));
-            }
-            String value = value(type.holds(), node.get("value"));
-            if (value != null) {
-                bracket.add("value=" + value);
-            }
-            for (String key : List.of("min", "max")) {
-                if (node.get(key) != null) {
-                    bracket.add(key + "=" + Json.of(node.get(key)));
-                }
-            }
-            for (String key : List.of("helper", "tooltip")) {
-                if (node.get(key) != null) {
-                    bracket.add(key + "=" + quote(cap(collapse((String) node.get(key)), HINT_CAP)));
-                }
-            }
-            flag(node, "checked", bracket);
-            flag(node, "indeterminate", bracket);
-            flag(node, "current", bracket);
-            flag(node, "collapsed", bracket);
-            flag(node, "disabled", bracket);
-            flag(node, "readonly", bracket);
-            flag(node, "required", bracket);
-            flagWithMessage(node, "invalid", bracket);
-            flagWithMessage(node, "error", bracket);
-            out.append(" [").append(String.join(", ", bracket)).append(']');
-            List<String> actions = new ArrayList<>(type.actions());
+            out.append("  ".repeat(depth)).append("- ").append(shortView(node, targets));
+            List<String> actions = new ArrayList<>(type(node).actions());
             if (Boolean.TRUE.equals(node.get("expandable"))) {
                 actions.add("toggle_expand");
             }
@@ -397,12 +541,201 @@ final class Snapshot {
                 out.append(" actions: ").append(String.join(", ", actions));
             }
             out.append('\n');
-            render((List<?>) node.get("children"), depth + 1, out, targets);
+            if (node.get("grid") != null) {
+                renderGrid(node, depth + 1, out, targets, full);
+            }
+            render((List<?>) node.get("children"), depth + 1, out, targets, full);
         }
     }
 
+    /**
+     * A component's short view, its type, name and bracket, {@code Button "Edit" [ref=3]}; the bracket left out when
+     * empty, a row read by {@code get_rows} stamping no ref.
+     */
+    private static String shortView(Map<?, ?> node, Map<Integer, Refs.Target> targets) {
+        ComponentTypes.Type type = type(node);
+        String id = (String) node.get("id");
+        StringBuilder out = new StringBuilder(type.flowName());
+        List<String> bracket = new ArrayList<>();
+        if (node.get("ref") != null) {
+            int ref = ((Number) node.get("ref")).intValue();
+            targets.put(ref, new Refs.Target(type.flowName(), Boolean.TRUE.equals(node.get("idUnique")) ? id : null));
+            bracket.add("ref=" + ref);
+        }
+        if (id != null) {
+            bracket.add("id=" + id);
+        }
+        if (node.get("testId") != null) {
+            bracket.add("testid=" + node.get("testId"));
+        }
+        String name = name(node, type.nameFrom());
+        if (name != null) {
+            out.append(' ').append(quote(name));
+        } else if (node.get("ariaLabel") != null) {
+            bracket.add("aria-label=" + quote((String) node.get("ariaLabel")));
+        } else if (node.get("placeholder") != null) {
+            bracket.add("placeholder=" + quote((String) node.get("placeholder")));
+        }
+        if (node.get("description") != null) {
+            bracket.add("description=" + quote((String) node.get("description")));
+        }
+        if (node.get("icon") != null) {
+            bracket.add("icon=" + quote((String) node.get("icon")));
+        }
+        if (node.get("path") != null) {
+            bracket.add("path=" + quote((String) node.get("path")));
+        }
+        String value = value(type.holds(), node.get("value"));
+        if (value != null) {
+            bracket.add("value=" + value);
+        }
+        for (String key : List.of("min", "max")) {
+            if (node.get(key) != null) {
+                bracket.add(key + "=" + Json.of(node.get(key)));
+            }
+        }
+        if (node.get("rows") != null) {
+            bracket.add("rows=" + ((Number) node.get("rows")).intValue());
+        }
+        if (node.get("selection") != null) {
+            bracket.add("selection=" + node.get("selection"));
+        }
+        for (String key : List.of("helper", "tooltip")) {
+            if (node.get(key) != null) {
+                bracket.add(key + "=" + quote(cap(collapse((String) node.get(key)), HINT_CAP)));
+            }
+        }
+        flag(node, "checked", bracket);
+        flag(node, "indeterminate", bracket);
+        flag(node, "current", bracket);
+        flag(node, "collapsed", bracket);
+        flag(node, "disabled", bracket);
+        flag(node, "readonly", bracket);
+        flag(node, "required", bracket);
+        flagWithMessage(node, "invalid", bracket);
+        flagWithMessage(node, "error", bracket);
+        if (!bracket.isEmpty()) {
+            out.append(" [").append(String.join(", ", bracket)).append(']');
+        }
+        return out.toString();
+    }
+
+    private static ComponentTypes.Type type(Map<?, ?> node) {
+        return ComponentTypes.of((String) node.get("tag"), Boolean.TRUE.equals(node.get("multiple")));
+    }
+
+    /**
+     * A Grid's lines under its own: {@code Header:} lines, its rows, those not shown, its {@code Footer:} line.
+     *
+     * <pre>
+     *   Header: | Name ↑ | Age | Actions |
+     *   - row 0 [selected]: Frank Rossi | 20 | Button "Edit" [ref=3]
+     *   - rows 10–199 not shown: get_rows ref=1
+     *   Footer: | 200 people | | |
+     * </pre>
+     */
+    private static void renderGrid(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
+                                   boolean full) {
+        Map<?, ?> grid = (Map<?, ?>) node.get("grid");
+        String indent = "  ".repeat(depth);
+        for (Object line : (List<?>) grid.get("header")) {
+            out.append(indent).append("Header: ").append(headerLine((List<?>) line, targets, full)).append('\n');
+        }
+        List<?> rows = (List<?>) grid.get("rows");
+        renderRows(rows, depth, out, targets, full);
+        String notShown = notShown(rows, ((Number) node.get("rows")).intValue());
+        if (notShown != null) {
+            out.append(indent).append("- ").append(notShown).append(" not shown: get_rows ref=")
+                    .append(((Number) node.get("ref")).intValue()).append('\n');
+        }
+        for (Object line : (List<?>) grid.get("footer")) {
+            out.append(indent).append("Footer: ").append(headerLine((List<?>) line, targets, full)).append('\n');
+        }
+    }
+
+    /** {@code - row 0 [selected]: Frank Rossi | 20 | | Button "Edit" [ref=3]}, a line per row. */
+    private static void renderRows(List<?> rows, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
+                                   boolean full) {
+        for (Object o : rows) {
+            Map<?, ?> row = (Map<?, ?>) o;
+            out.append("  ".repeat(depth)).append("- row ").append(((Number) row.get("index")).intValue());
+            if (Boolean.TRUE.equals(row.get("selected"))) {
+                out.append(" [selected]");
+            }
+            out.append(':');
+            List<?> cells = (List<?>) row.get("cells");
+            for (int i = 0; i < cells.size(); i++) {
+                if (i > 0) {
+                    out.append(" |");
+                }
+                String text = cell((List<?>) cells.get(i), targets, full);
+                if (!text.isEmpty()) {
+                    out.append(' ').append(text);
+                }
+            }
+            out.append('\n');
+        }
+    }
+
+    /** {@code | Name ↑2 | Age | |}: a header or footer row, a sorted column with its arrow and its order. */
+    private static String headerLine(List<?> cells, Map<Integer, Refs.Target> targets, boolean full) {
+        StringBuilder line = new StringBuilder("|");
+        for (Object o : cells) {
+            Map<?, ?> cell = (Map<?, ?>) o;
+            String sorted = (String) cell.get("sorted");
+            String arrow = sorted == null ? "" : (sorted.equals("asc") ? " ↑" : " ↓")
+                    + (cell.get("order") == null ? "" : cell.get("order"));
+            String text = (cell((List<?>) cell.get("parts"), targets, full) + arrow).strip();
+            line.append(text.isEmpty() ? " |" : " " + text + " |");
+        }
+        return line.toString();
+    }
+
+    /**
+     * A cell's parts joined by {@code ; }: runs of text, cut at {@value #CELL_CAP} characters outside the full view,
+     * and components in their short view; each {@code |} in it written {@code \|}, the cells' own separator.
+     */
+    private static String cell(List<?> parts, Map<Integer, Refs.Target> targets, boolean full) {
+        List<String> shown = new ArrayList<>();
+        for (Object o : parts) {
+            Map<?, ?> part = (Map<?, ?>) o;
+            String text = (String) part.get("text");
+            String shownPart = text != null ? (full ? text : cap(text, CELL_CAP))
+                    : shortView((Map<?, ?>) part.get("node"), targets);
+            shown.add(shownPart.replace("|", "\\|"));
+        }
+        return String.join("; ", shown);
+    }
+
+    /**
+     * {@code rows 0–49, 60–199}: the rows around those shown, {@code row 199} for one; {@code null} when every row is
+     * shown.
+     */
+    private static @Nullable String notShown(List<?> shown, int size) {
+        if (shown.size() == size) {
+            return null;
+        }
+        List<int[]> ranges = new ArrayList<>();
+        if (shown.isEmpty()) {
+            ranges.add(new int[] {0, size - 1});
+        } else {
+            int first = ((Number) ((Map<?, ?>) shown.get(0)).get("index")).intValue();
+            int last = ((Number) ((Map<?, ?>) shown.get(shown.size() - 1)).get("index")).intValue();
+            if (first > 0) {
+                ranges.add(new int[] {0, first - 1});
+            }
+            if (last < size - 1) {
+                ranges.add(new int[] {last + 1, size - 1});
+            }
+        }
+        boolean one = ranges.size() == 1 && ranges.get(0)[0] == ranges.get(0)[1];
+        return (one ? "row " : "rows ") + String.join(", ", ranges.stream()
+                .map(r -> r[0] == r[1] ? String.valueOf(r[0]) : r[0] + "–" + r[1]).toList());
+    }
+
     /** {@code - Navbar:} with what it holds under it; a closed drawer as {@code - Drawer: closed; click …}. */
-    private static void renderRegion(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
+    private static void renderRegion(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
+                                     boolean full) {
         out.append("  ".repeat(depth)).append("- ").append(node.get("region")).append(':');
         if (Boolean.TRUE.equals(node.get("closed"))) {
             out.append(" closed");
@@ -414,7 +747,7 @@ final class Snapshot {
             return;
         }
         out.append('\n');
-        render((List<?>) node.get("children"), depth + 1, out, targets);
+        render((List<?>) node.get("children"), depth + 1, out, targets, full);
     }
 
     /** The type's own naming property, its text or its label; {@code null} for none. */

@@ -20,8 +20,12 @@ A prototype with these tools:
   ```
 - `navigate(url)` — opens that URL, a full page load; says so when the app has no view there.
   Returns the new snapshot.
+- `snapshot(ref)` — that component alone, nothing cut: a Grid's every row in view, every
+  component in its cells.
 - `click(ref)` — clicks the component; returns the snapshot once the server has handled the
-  click.
+  click. `click(ref, row)` clicks a Grid's row, by its number from the snapshot.
+- `get_rows(ref, offset, length)` — a Grid's rows beyond the 10 the snapshot shows, scrolling the
+  grid as a user would; returns them, then the snapshot.
 - `get_text(ref)` — a Button's or a Span's text.
 - `get_value(ref)` — a field's value as JSON, uncut; a ComboBox's item by the label the user
   sees; whether a Checkbox is ticked.

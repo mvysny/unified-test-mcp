@@ -17,8 +17,8 @@ import java.util.Map;
  * }</pre>
  *
  * One class per tool — {@link SnapshotTool}, {@link NavigateTool}, {@link ClickTool}, {@link GetTextTool},
- * {@link GetValueTool}, {@link SetValueTool}, {@link GetHelperTool}, {@link GetTooltipTool}, {@link ToggleExpandTool}
- * — each holding its description and schema.
+ * {@link GetValueTool}, {@link SetValueTool}, {@link GetHelperTool}, {@link GetTooltipTool}, {@link ToggleExpandTool},
+ * {@link GetRowsTool} — each holding its description and schema.
  */
 public final class UnifiedTestMCP {
     private UnifiedTestMCP() {}
@@ -32,9 +32,10 @@ public final class UnifiedTestMCP {
             1. `navigate` to the app's URL: it shows the components on the page, each with a `ref`; so does \
             `snapshot`, for the page as it is now.
             2. Act on a component by its `ref` (`click`, `set_value`, `toggle_expand`, `get_text`, `get_value`, \
-            `get_helper`, `get_tooltip`).
-            3. An action that changes the page (`click`, `set_value`, `toggle_expand`, `navigate`) returns the new \
-            snapshot: read what it did there, no need to call `snapshot` again.
+            `get_helper`, `get_tooltip`). A Grid's rows take no ref: `click` and `get_rows` take the Grid's ref and \
+            a row's number.
+            3. An action that changes the page (`click`, `set_value`, `toggle_expand`, `get_rows`, `navigate`) returns \
+            the new snapshot: read what it did there, no need to call `snapshot` again.
 
             A ref stays valid as long as the latest snapshot shows it; a component keeps its ref from one snapshot \
             to the next.""";
@@ -68,6 +69,7 @@ public final class UnifiedTestMCP {
         handler.addTool(GetHelperTool.DESCRIPTOR, new GetHelperTool());
         handler.addTool(GetTooltipTool.DESCRIPTOR, new GetTooltipTool());
         handler.addTool(ToggleExpandTool.DESCRIPTOR, new ToggleExpandTool());
+        handler.addTool(GetRowsTool.DESCRIPTOR, new GetRowsTool());
         return handler;
     }
 }

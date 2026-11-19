@@ -38,8 +38,8 @@ No `actions:` on the MessageInput or its Send button. No Unified API wrapper.
 `Q_send`: `set_value` and then `click` on Send, as a user does; does Enter in the input send too,
 and should `set_value` press it?
 
-`Q_long_lists`: a chat of hundreds of messages runs into the Grid's token problem. The last N, as
-the user sees the bottom of it?
+`Q_long_lists`: a chat of hundreds of messages, as a Grid's rows: at most N in view, the rest by a
+tool (`D_grid_as_rows`)? The last N, as the user sees the bottom of it?
 
 `Q_markdown`: a MessageList in markdown mode renders each message's HTML; its text as the name
 still?

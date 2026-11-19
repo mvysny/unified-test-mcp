@@ -11,7 +11,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 ## Wiring
 
 - The server is a process of its own, pointed at the app's URL; the app under test needs no change (`D_separate_process`).
-- Dependencies point down: `Main` → `UnifiedTestMCP` (the handler) → one class per tool (`ClickTool`, …) → `Snapshot`, `Refs`, `ComponentTypes`, `FieldValue`, `ShadowParts` → `UnifiedBrowser` → the Unified API's `PlaywrightAdapter`. The tools see a `UnifiedPage` and the Unified API's wrappers; only `Snapshot` reaches Playwright, through the escape hatch (`D_snapshot_from_javascript`); `GetTextTool`, until the Unified API's text leaves a tooltip out (`R_vaadin_hints`, parttio/unified-testing-tool#267); and `ShadowParts`, for a SideNavItem's link and arrow (`D_nav_item_states`).
+- Dependencies point down: `Main` → `UnifiedTestMCP` (the handler) → one class per tool (`ClickTool`, …) → `Snapshot`, `Refs`, `ComponentTypes`, `FieldValue`, `ShadowParts`, `Grids` → `UnifiedBrowser` → the Unified API's `PlaywrightAdapter`. The tools see a `UnifiedPage` and the Unified API's wrappers; only `Snapshot` reaches Playwright, through the escape hatch (`D_snapshot_from_javascript`); `GetTextTool`, until the Unified API's text leaves a tooltip out (`R_vaadin_hints`, parttio/unified-testing-tool#267); and `ShadowParts`, for a SideNavItem's link and arrow (`D_nav_item_states`).
 - `Main` constructs one `MCPHandler` and serves it on stdio; the system test serves the same handler over HTTP instead. The transport is the seam.
 - **One `UnifiedBrowser` per MCP session** (`D_browser_per_session`): the handler creates it when a session starts, as the session's attribute, and closes it when the session closes. Beside it, the session's `Refs`: the refs its latest snapshot showed (`D_refs_not_ids`). A tool finds both through `ToolCall`, so the tools hold no state.
 - **The per-type knowledge is one table**, `ComponentTypes`, keyed by tag: the Flow class a line shows, which property names it, the tools made for it.
@@ -26,7 +26,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 
 ## Flows
 
-**A snapshot**: `Snapshot.take` runs one script in the page that walks the light DOM from `<body>`, stamps each component it shows with `data-mcp-ref` (a stamp already there stays, a new one takes the next number from `Refs`), and returns the tree — while a modal dialog is open, the walk starts from the topmost one instead of `<body>` (`D_modal_shows_alone`); Java renders a line per component through `ComponentTypes` and replaces the session's `Refs` with the refs it showed.
+**A snapshot**: `Snapshot.take` runs one script in the page that walks the light DOM from `<body>`, stamps each component it shows with `data-mcp-ref` (a stamp already there stays, a new one takes the next number from `Refs`), and returns the tree — while a modal dialog is open, the walk starts from the topmost one instead of `<body>` (`D_modal_shows_alone`); Java renders a line per component through `ComponentTypes` and replaces the session's `Refs` with the refs it showed. A Grid comes back as its header, rows and footer, a cell as its text and the components a user acts on (`D_grid_as_rows`, `D_component_views`). The same script, handed a component, walks it alone with nothing cut, `snapshot(ref)`, its refs added to the session's; handed a grid and a range, it scrolls the grid a page at a time and returns those rows, stamping nothing, `get_rows` (`D_get_rows_scrolls`).
 
 **A tool call** (`click(ref)`, say):
 

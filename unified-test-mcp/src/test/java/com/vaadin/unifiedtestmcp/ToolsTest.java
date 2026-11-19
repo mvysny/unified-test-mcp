@@ -778,6 +778,151 @@ public class ToolsTest {
         assertEquals(1, handler.getSessionCount());
     }
 
+    /** test-app's {@code grid} view as the snapshot shows it on arrival. */
+    private static final String GRID = """
+            URL: APP/grid
+            - Grid [ref=N, rows=200, selection=single]
+              Header: | Name | Age | City | Tags | Actions |
+              Header: | TextField [ref=N, placeholder="Filter", value=""] | | | | |
+              - row 0: Alice Novak | 20 | Turku | Turku \\| 20s | Button "Edit" [ref=N]
+              - row 1: Bob Novak | 27 | Brno | Brno \\| 20s | Button "Edit" [ref=N]
+              - row 2: Carol Novak | 34 | Oslo | Oslo \\| 30s | Button "Edit" [ref=N]
+              - row 3: David Novak | 41 | Lyon | Lyon \\| 40s | Button "Edit" [ref=N]
+              - row 4: Eve Novak | 48 | Porto | Porto \\| 40s | Button "Edit" [ref=N]
+              - rows 5–199 not shown: get_rows ref=N
+              Footer: | 200 people | | | | |
+            - Grid [ref=N, rows=2, selection=multi]
+              Header: | Checkbox [ref=N, id=selectAllCheckbox] | Department | People |
+              - row 0: Checkbox [ref=N] | Engineering | 12
+              - row 1: Checkbox [ref=N] | Sales | 4
+            - Span "Nothing selected" [ref=N]
+            """;
+
+    @Test
+    public void snapshotShowsAGridAsRows() throws IOException {
+        assertEquals(GRID, masked(snapshotOf("grid")),
+                "the header group skipped, a Span's text in a cell with its | escaped, the rows in view");
+    }
+
+    @Test
+    public void clickOnARowSelectsIt() throws IOException {
+        int people = ref(snapshotOf("grid"), "rows=200");
+        String clicked = call(client, "click", Map.of("ref", people, "row", 1));
+        assertTrue(clicked.startsWith("Clicked row 1 of ref=" + people + "\n\n"), clicked);
+        assertTrue(clicked.contains("\n  - row 1 [selected]: Bob Novak | 27 | Brno |"), clicked);
+        assertTrue(clicked.contains("\n- Span \"Selected Bob Novak\" [ref="), clicked);
+        String edited = call(client, "click", ref(ref(clicked, "- row 0: Alice Novak")));
+        assertTrue(edited.contains("\n- Span \"Editing Alice Novak\" [ref="), "a row's Edit button: " + edited);
+    }
+
+    @Test
+    public void getRowsReadsRowsBeyondTheView() throws IOException {
+        int people = ref(snapshotOf("grid"), "rows=200");
+        String rows = call(client, "get_rows", Map.of("ref", people, "offset", 150, "length", 3));
+        assertTrue(masked(rows).startsWith("""
+                Rows 150–152 of 200 in ref=N, the grid now scrolled to row 150:
+                - row 150: Alice Popescu | 35 | Turku | Turku \\| 30s | Button "Edit"
+                - row 151: Bob Popescu | 42 | Brno | Brno \\| 40s | Button "Edit"
+                - row 152: Carol Popescu | 49 | Oslo | Oslo \\| 40s | Button "Edit"
+
+                URL: APP/grid
+                - Grid [ref=N, rows=200, selection=single]
+                  Header: | Name | Age | City | Tags | Actions |
+                  Header: | TextField [ref=N, placeholder="Filter", value=""] | | | | |
+                  - row 150: Alice Popescu | 35 | Turku | Turku \\| 30s | Button "Edit" [ref=N]
+                """), rows);
+        assertTrue(rows.contains("\n  - rows 0–149, 155–199 not shown: get_rows ref=" + people + "\n"), rows);
+        String edited = call(client, "click", ref(ref(rows, "  - row 151: Bob Popescu")));
+        assertTrue(edited.contains("\n- Span \"Editing Bob Popescu\" [ref="), "row 151's Edit, now in view: " + edited);
+    }
+
+    @Test
+    public void getRowsReadsEveryRowScrollingAPageAtATime() throws IOException {
+        int people = ref(snapshotOf("grid"), "rows=200");
+        String all = call(client, "get_rows", Map.of("ref", people, "offset", 0, "length", 200));
+        List<String> rows = all.substring(0, all.indexOf("\n\nURL: ")).lines().skip(1).toList();
+        assertEquals(200, rows.size(), all);
+        for (int i = 0; i < 200; i++) {
+            assertTrue(rows.get(i).startsWith("- row " + i + ": "), rows.get(i));
+        }
+        assertTrue(rows.get(0).startsWith("- row 0: Alice Novak | "), rows.get(0));
+        assertTrue(rows.get(100).startsWith("- row 100: Alice Meyer | "), rows.get(100));
+        assertTrue(rows.get(199).startsWith("- row 199: Judy Ortiz | "), rows.get(199));
+        String tail = call(client, "get_rows", Map.of("ref", people, "offset", 195, "length", 50));
+        assertTrue(tail.startsWith("Rows 195–199 of 200 in ref=" + people + ", the grid now scrolled to row 195:\n"),
+                tail);
+    }
+
+    @Test
+    public void gridRowToolsRefuseWhatIsntThere() throws IOException {
+        String page = snapshotOf("grid");
+        int people = ref(page, "rows=200");
+        int status = ref(page, "Span \"Nothing selected\"");
+        assertEquals("ref " + status + " is a Span, not a Grid: get_rows reads a Grid's rows.",
+                error(client, "get_rows", Map.of("ref", status, "offset", 0, "length", 5)));
+        assertEquals("ref " + people + " has 200 rows, 0–199: no row 200.",
+                error(client, "get_rows", Map.of("ref", people, "offset", 200, "length", 5)));
+        assertEquals("ref " + status + " is a Span, not a Grid: row picks a row of a Grid. Leave row out to click the"
+                + " component itself.", error(client, "click", Map.of("ref", status, "row", 0)));
+        assertEquals("ref " + people + " has 200 rows, 0–199: no row 250.",
+                error(client, "click", Map.of("ref", people, "row", 250)));
+    }
+
+    @Test
+    public void snapshotWithARefShowsTheGridInFull() throws IOException {
+        String page = snapshotOf("grid");
+        int people = ref(page, "rows=200");
+        String full = call(client, "snapshot", Map.of("ref", people));
+        assertEquals("""
+                - Grid [ref=N, rows=200, selection=single]
+                  Header: | GridSorter "Name" [ref=N] | GridSorter "Age" [ref=N] | City | Tags | Actions |
+                  Header: | TextField [ref=N, placeholder="Filter", value=""] | | | | |
+                  - row 0: Alice Novak | 20 | Turku | Span "Turku \\| 20s" [ref=N] | Button "Edit" [ref=N]
+                  - row 1: Bob Novak | 27 | Brno | Span "Brno \\| 20s" [ref=N] | Button "Edit" [ref=N]
+                  - row 2: Carol Novak | 34 | Oslo | Span "Oslo \\| 30s" [ref=N] | Button "Edit" [ref=N]
+                  - row 3: David Novak | 41 | Lyon | Span "Lyon \\| 40s" [ref=N] | Button "Edit" [ref=N]
+                  - row 4: Eve Novak | 48 | Porto | Span "Porto \\| 40s" [ref=N] | Button "Edit" [ref=N]
+                  - rows 5–199 not shown: get_rows ref=N
+                  Footer: | 200 people | | | | |
+                """, masked(full), "every component in a cell named, the page around it left out");
+        assertEquals("Turku | 20s", call(client, "get_text", ref(ref(full, "row 0:"))),
+                "a ref the full view showed works");
+        assertEquals("Nothing selected", call(client, "get_text", ref(ref(page, "Span \"Nothing selected\""))),
+                "so does one from the snapshot before it");
+    }
+
+    @Test
+    public void headerMarksTheSortedColumnsInTheirOrder() throws IOException {
+        int people = ref(snapshotOf("grid"), "rows=200");
+        String byName = call(client, "click", ref(sorter(people, "Name")));
+        assertTrue(byName.contains("\n  Header: | Name ↑ | Age | City | Tags | Actions |\n"), byName);
+        assertTrue(byName.contains("\n  - row 0: Alice Berg | "), byName);
+        String byAge = call(client, "click", ref(sorter(people, "Age")));
+        assertTrue(byAge.contains("\n  Header: | Name ↑2 | Age ↑1 | City | Tags | Actions |\n"), byAge);
+        String descending = call(client, "click", ref(sorter(people, "Age")));
+        assertTrue(descending.contains("\n  Header: | Name ↑2 | Age ↓1 | City | Tags | Actions |\n"), descending);
+    }
+
+    /** The ref of a Grid's sorter, which only its full view shows, its header line holding every sorter. */
+    private static int sorter(int grid, String caption) throws IOException {
+        String full = call(client, "snapshot", Map.of("ref", grid));
+        Matcher m = Pattern.compile("GridSorter \"" + caption + "\" \\[ref=(\\d+)").matcher(full);
+        assertTrue(m.find(), full);
+        return Integer.parseInt(m.group(1));
+    }
+
+    @Test
+    public void multiSelectShowsItsCheckboxColumn() throws IOException {
+        String page = snapshotOf("unloaded-rows");
+        String all = call(client, "click", ref(ref(page, "Button \"Select all\"")));
+        assertTrue(all.contains("\n- Grid [ref=" + ref(page, "id=everyone") + ", id=everyone, rows=200, selection=multi]\n"
+                + "  Header: | Checkbox [ref="), all);
+        assertTrue(masked(all).contains("""
+                  Header: | Checkbox [ref=N, id=selectAllCheckbox, checked] | Name | Age |
+                  - row 0 [selected]: Checkbox [ref=N, checked] | Alice Novak | 20
+                """), all);
+    }
+
     private static TinyMCPClient connect() throws IOException {
         TinyMCPClient connected = new TinyMCPClient(URI.create(server.getUrl()));
         connected.initialize();

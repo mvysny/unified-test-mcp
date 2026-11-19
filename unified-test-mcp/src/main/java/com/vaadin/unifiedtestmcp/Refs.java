@@ -7,6 +7,7 @@ import com.vaadin.testing.unified.component.UnifiedContainer;
 import com.vaadin.testing.unified.query.Query;
 import org.jspecify.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
 
@@ -56,6 +57,17 @@ final class Refs {
         latestUrl = url;
         latestModal = modal;
         latest = Map.copyOf(refs);
+        this.next = next;
+    }
+
+    /**
+     * Called by the full view of one component, {@code snapshot(ref)}: its refs join the latest snapshot's, which
+     * stay valid, and {@code next} is the next number to stamp.
+     */
+    void add(Map<Integer, Target> refs, int next) {
+        Map<Integer, Target> all = new HashMap<>(latest == null ? Map.of() : latest);
+        all.putAll(refs);
+        latest = Map.copyOf(all);
         this.next = next;
     }
 

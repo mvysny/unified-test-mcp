@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * What the snapshot knows about a component by its tag: the Flow class it shows, which property names it, and the
@@ -159,6 +160,15 @@ final class ComponentTypes {
     static final Set<String> FIELDS = TYPES.entrySet().stream()
             .filter(e -> e.getValue().holds() != Holds.TEXT && e.getValue().holds() != Holds.PARTS)
             .map(Map.Entry::getKey)
+            .collect(Collectors.toUnmodifiableSet());
+
+    /**
+     * What a user acts on: a type with tools of its own, a link, a Grid. In a grid's cell, header or footer, one shows
+     * in its short view, {@code Button "Edit" [ref=3]}; anything else as its text, a Span's {@code Frank Rossi}.
+     */
+    static final Set<String> ACTED_ON = Stream.concat(
+                    TYPES.entrySet().stream().filter(e -> !e.getValue().actions().isEmpty()).map(Map.Entry::getKey),
+                    Stream.of("a", "vaadin-grid"))
             .collect(Collectors.toUnmodifiableSet());
 
     /** Never in a snapshot, nor anything inside them: decoration, and the dev tools. */

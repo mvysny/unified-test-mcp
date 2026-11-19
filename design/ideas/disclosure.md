@@ -72,4 +72,4 @@ VerticalLayout? Their splitter and overlay mode take no input an agent needs.
 
 `Q_tab_preview`: a Tab holding an Anchor, Bakery's `Tab [value="Storefront"]` over `Anchor
 "Storefront"` (`benchmark-gaps.md` §4), as one line with the Anchor in its preview
-(`component-views.md`), `Tab "Storefront" [ref=23, selected]`? A badge in a Tab, `Inbox 3`, too.
+(`D_component_views`), `Tab "Storefront" [ref=23, selected]`? A badge in a Tab, `Inbox 3`, too.

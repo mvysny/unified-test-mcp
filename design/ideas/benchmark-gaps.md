@@ -81,19 +81,19 @@ but nothing in the browser tells the two apart. Walk all, and look at what an ad
 
 Of the 195 lines in the probe's CRM snapshot, 180 were `GridCellContent`, and every action answers
 with the snapshot (`D_action_returns_snapshot`): a 51k-token context on crm-add-contact where
-Playwright MCP's was 29k, though ours took fewer turns. What the benchmark needs of `grid.md`:
+Playwright MCP's was 29k, though ours took fewer turns. Built since, untried on the benchmark yet:
 
-- **A row a line**, its shape: the context, in all five CRM scenarios.
-- **Rows beyond the rendered ones** (`Q_rows_beyond_view`): crm-count and crm-delete-closed read
-  all 200 contacts, of which the CRM's grid renders ~36–38. The probe's agent filtered by each last
-  name in turn instead. The Unified API's `columnTexts(column)` pages through a lazy grid a page at
-  a time (Dramafinder).
-- **A row's text from the flat tree** (§1), not the Unified API's `cellText`: an order card's text
-  is in its shadow root, which `textContent` doesn't reach.
-- **Row refs that fail once the row is gone** (`Q_row_refs`): crm-delete-closed deletes rows one
-  after another; a ref bound to a recycled cell then names another contact, without an error.
-- **A component in a row stays a ref** (`Q_cells_with_components`): the Crud's
-  `CrudEdit [aria-label="Edit"]` in every row, telling its row by nothing but its position.
+- **A row a line**, at most 10 in view (`D_grid_as_rows`): the context, in all five CRM scenarios.
+- **Rows beyond the rendered ones**, `get_rows` (`D_get_rows_scrolls`): crm-count and
+  crm-delete-closed read all 200 contacts, of which the CRM's grid renders ~36–38. The probe's
+  agent filtered by each last name in turn instead.
+- **A component in a row stays a ref**: the Crud's `CrudEdit [aria-label="Edit"]` in every row.
+- **A row clicked by its number**, `click(ref, row)`: the CRM opens a contact's form so.
+- **Refs in cells move with the recycled cells**, accepted (`D_grid_as_rows`): crm-delete-closed
+  deletes rows one after another, each action answering with the snapshot of the rows now.
+
+Still to do: **a row's text from the flat tree** (§1): an order card's text is in its shadow
+root, which `textContent` doesn't reach.
 
 The storefront has 158 orders, 23 cards rendered: bakery-today-count's "Today" group sits on top,
 and bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered

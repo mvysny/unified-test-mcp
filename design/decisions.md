@@ -144,7 +144,9 @@ element, so for a component without an id there is nothing stable to hold.
 
 A ref is valid while the latest snapshot shows it: every snapshot (the `snapshot` tool's, or
 the one an action returns) replaces the session's refs; a read or a failed action leaves them,
-so the agent can retry without a new snapshot. The script keeps a stamp already on an element,
+so the agent can retry without a new snapshot. `snapshot(ref)`, a closer look at one component,
+adds its refs to them instead (`D_component_views`). A Grid reuses its cell elements for other
+rows, so a stamp in a cell moves with them (`D_grid_as_rows`). The script keeps a stamp already on an element,
 so a component keeps its number from one snapshot to the next, through a text change too (the
 Playwright MCP mints a new ref when the accessible name changes, `R_playwright_mcp_refs`; ours
 names the element, not its text). So a second action sent with an older snapshot's ref still
@@ -429,3 +431,108 @@ a component's state rather than its type: only an item with items expands.
 `click` at an expanded item's centre lands on its first item. No Unified API wrapper clicks
 either, so `ShadowParts` clicks through the escape hatch and waits for the server as the Unified
 API does, through Dramafinder's `AutoWait`.
+
+## D_grid_as_rows — Why does a Grid show a line per row, its rows numbered and without refs, at most 10 of them, rather than a line per cell, a ref per row, or every row?
+
+```
+- Grid [ref=1, id=people, rows=200, selection=single]
+  Header: | Name ↑ | Age | City | Actions |
+  Header: | TextField [ref=2, placeholder="Filter", value=""] | | | |
+  - row 0 [selected]: Frank Rossi | 20 | Lyon | Button "Edit" [ref=3]
+  - rows 10–199 not shown: get_rows ref=1
+  Footer: | 200 people | | | |
+```
+
+A row a line, as swing-mcp shows a JTable (`row 0: 1 | Alice | NY`). Why not a line per cell, the
+light DOM's `<vaadin-grid-cell-content>`s: of the 195 lines of the first CRM round's snapshot, 180
+were cells, in the answer to every action (`D_action_returns_snapshot`); and the cells said
+nothing of which row they made up, nor of the rows out of view. Unlike swing-mcp's table, whose
+cells are painted, a Grid's cells hold real components, and a row's Edit button is what an agent
+clicks most: a component a user acts on stays in the row with its ref, anything else shows as its
+text (`D_component_views`). Cells are joined by ` | `, a cell's parts by `; `, and a `|` inside a
+cell is written `\|`, Markdown's table escape, so where a cell ends reads plainly.
+
+**A row takes no ref.** It is no component; a tool names it by the Grid's ref and its number from
+0, as the snapshot shows it: `click(ref, row)`, `get_rows(ref, offset, length)`. Why not a ref per
+row: a row out of view has no element to stamp, and `get_rows` reaches rows the snapshot never
+showed; a number names both. The Grid reuses its row and cell elements for other items
+(`R_vaadin_grid_dom`), so the stamps of the components in its cells move with them: after a sort,
+ref 3 is the same Edit button in another row. Accepted: every action answers with the snapshot,
+which shows ref 3 where it is now; dropping the stamps in a grid on every scroll would make an
+older ref fail loudly, but no benchmark scenario needs it, and the app moves rows itself too, by
+a delete or a refresh.
+
+**At most 10 of the rows in view**, the grid's `_firstVisibleIndex` to `_lastVisibleIndex`
+(`R_testbench_grid_element`): an overview of the data, a Grid being usually a view's centrepiece;
+a grid showing all its rows has them all in its viewport, hence the cap. Then a line naming the
+rows not shown, which `get_rows` reads (`D_get_rows_scrolls`).
+
+**Every line says what it is**: `Header:`, `- row 3`, `Footer:`, so a header row can't read as a
+data row, nor the footer as the last row. A header or footer row shows when it has a cell per
+column, a filter row too; a row of column groups, a cell spanning columns, doesn't (every header
+row is a row of column groups in the browser, the captions' included, so a group row is told by a
+cell's `colspan`, `R_vaadin_grid_dom`); the footer shows its first row. No row numbers on them:
+no tool takes one. ↑ or ↓ marks a sorted column, with its order when several are, as the sorter
+shows it, `| Name ↑2 | Age ↓1 |`: the order the rows are in. Not `⇅` on a sortable column: the
+snapshot offers nothing a tool can't do, and no tool sorts yet. Every column, however long the
+row (swing-mcp stops at 10): a long line costs no more than its cells.
+
+**No count of the selected rows.** The browser has only those among the rows it has loaded, a
+single-select grid's too: a selected row drops out of `selectedItems` once the grid scrolls far
+from it (`R_vaadin_grid_dom`), and `0 selected` beside a selected row would lie. Each row in view
+says `selected`, which a loaded row's `selected` attribute has right every time. A multi-select
+grid's selection column shows as a column like any other: its checkboxes are short views that
+`set_value` ticks, and its header checkbox says none, some or all.
+
+**`rows=` is the Grid's `size`**, every row, not the rendered ones: for a lazy grid without a count,
+Flow's estimate, growing as the user scrolls to its end, which nothing in the browser tells from
+a count (`R_vaadin_grid_dom`).
+
+## D_component_views — Why does a component show in one of four views, preview, short, middle or full, by where it shows, rather than as one line wherever it is?
+
+| View | Where | A Span | A Button |
+|---|---|---|---|
+| preview | in a grid cell, header or footer, a component no user acts on | `foo` | its short view |
+| short | in a grid cell, a component a user acts on | `Span "foo" [ref=4, id=x]` | `Button "Edit" [ref=3]` |
+| middle | the snapshot: a line, its actions, then its contents | `- Span "foo" [ref=4]` | `- Button "Edit" [ref=3] actions: click` |
+| full | `snapshot(ref)`: the middle view, nothing cut | as the middle | as the middle |
+
+A Grid's cells hold components, but a line per component would bring back a line per cell
+(`D_grid_as_rows`): inside a cell, a component shows as one fragment, or as text. **A user acts on**
+a component whose type has tools of its own in `ComponentTypes`, a link, a Grid: those keep their
+short view, the type, name and whole bracket, ref included; a Span, a badge, an Avatar, a sorter
+shows as its preview, the text a user reads off it, cut at 50 characters, and takes no ref. The
+short view carries no `actions:`: two in one cell would run together (`Button "Edit" [ref=3]
+actions: click Button "Delete"` reads as an action "click Button"), and the type says the action,
+the snapshot's own lines teaching which; the `; ` between a cell's parts keeps room for them if
+agents miss it. The whole bracket, for every type: a Grid in a cell reads `Grid [ref=9, rows=3,
+selection=single]`, with no exception to remember.
+
+**The middle view cuts only what grows with the data**: a grid's rows, a preview's length.
+**The full view**, `snapshot(ref)`, cuts nothing: a Grid's every row in view, every component in
+its cells in its short view, previews only for bare text, and its children in their full view.
+Why one tool, not `get_grid`: each type with a full view, someday a Select's items or a MenuBar's
+submenus, would want one of its own. Its refs join the latest snapshot's rather than replacing
+them (`D_refs_not_ids`): the page's other refs stay good, the full view being a closer look, not a
+new picture.
+
+## D_get_rows_scrolls — Why does `get_rows` scroll the grid, leave it scrolled, and answer with the snapshot, rather than read the rows from behind or put the scroll back?
+
+A Grid has rows only near its view, the rest never loaded (`R_vaadin_grid_dom`); crm-count reads
+all 200 contacts. `get_rows` scrolls to `offset`, waits for the rows, reads every rendered row
+from there, scrolls to the first row not read, and so on, a page at a time; as a user does, and as
+TestBench's `GridElement` does to reach one row (`R_testbench_grid_element`), its scroll call and
+its wait borrowed. One script in the page, the snapshot's own: the rows are written by the same
+code, so `get_rows` and the snapshot write a row the same.
+
+Why not the Unified API's `getCellTexts()`, which pages too: a column at a time, so a pass per
+column, and text only, where a row's line names the components a user acts on. Why not TestBench's
+`getRows(first, last)`: it filters the rendered rows and pages nothing. Why not reading Flow's
+items from behind: the browser has only the loaded pages, and a cell's text is what its renderer
+made of the item, which only rendering shows.
+
+**It leaves the grid at `offset` and answers with the snapshot**: the scroll changed the page
+(`D_action_returns_snapshot`), and scrolling back would undo nothing, the grid having reused its
+cells for other rows; the snapshot shows plainly what the grid shows now, its first rows those
+read, their components with refs. The rows read take no refs: once scrolled on, the grid shows
+other rows in those cells. At most 500 rows a call.
