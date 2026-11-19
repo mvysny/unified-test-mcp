@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,6 +29,8 @@ import java.util.stream.IntStream;
  * set_value(ref: 4, value: "dsdds")      → Set ref=4 to "dsdds"; it can't read that as a date, so holds none, and
  *                                          shows invalid
  * set_value(ref: 5, value: "Norway")     → error: ref 5 is a Select without the item "Norway". Its items: …
+ * set_value(ref: 6, value: "Vanilla")    → Set ref=6 to "Vanilla"; it isn't shown now
+ *                                          (the app hid it, or replaced it as it took the value)
  * </pre>
  *
  * {@code value} is in {@code get_value}'s notation, {@link Json}: what the user sees, a date in the app's format
@@ -37,6 +41,7 @@ import java.util.stream.IntStream;
  * app reverted it" would be a guess.
  */
 final class SetValueTool implements ToolFunction {
+    private static final Logger LOG = Logger.getLogger(SetValueTool.class.getName());
     static final ToolDescriptor DESCRIPTOR = descriptor();
 
     private static ToolDescriptor descriptor() {
@@ -102,14 +107,32 @@ final class SetValueTool implements ToolFunction {
             }
             Object wanted = wanted(field, value, what);
 
-            FieldValue.write(field, wanted);
+            Throwable failed = null;
+            try {
+                FieldValue.write(field, wanted);
+            } catch (MCPErrorResponseException refused) {
+                throw refused;
+            } catch (RuntimeException | AssertionError e) {
+                failed = e;
+            }
 
             String done = "Set ref=" + ref + " to " + Json.of(wanted);
             FieldValue.Field after;
             try {
                 after = FieldValue.Field.resolve(page, refs, ref);
             } catch (MCPErrorResponseException goneOrHidden) {
+                if (failed != null) {
+                    // the app replaced the field as it took the value, so the Unified API's check after the write,
+                    // on the old element, failed though the write went through
+                    LOG.log(Level.FINE, "ref " + ref + " was replaced as it took the value", failed);
+                }
                 return done + "; it isn't shown now\n\n" + Snapshot.take(page, refs);
+            }
+            if (failed instanceof RuntimeException e) {
+                throw e;
+            }
+            if (failed instanceof AssertionError e) {
+                throw e;
             }
             Object holds = FieldValue.read(after);
             boolean kept = same(field.holds(), wanted, holds);

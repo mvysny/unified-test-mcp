@@ -155,7 +155,8 @@ works if its component survived, where swing-mcp, clearing its refs after each a
 The numbers come from a per-session counter in Java that never goes back, not from the page: a
 counter in the page would start again at 1 after every reload, and an agent's ref from before a
 `navigate` would name a different component after it. Each way a ref fails names the next step:
-no snapshot yet, a ref not in the latest snapshot (listing those that are), a component gone.
+no snapshot yet, a ref not in the latest snapshot (listing those that are), a component gone, an
+id no longer unique (a template rendered again repeats its ids).
 
 ## D_snapshot_from_javascript — Why is the snapshot one script in the page rather than Unified API lookups?
 
@@ -389,6 +390,12 @@ holds it". Why not swing-mcp's split into `set_text`, `set_value` and
 `set_selection`: those follow Swing's accessibility interfaces; here `get_value` already reads
 every field in one notation, and the tool that writes them mirrors it, as `get_value` mirrors
 `value=`.
+
+A field the app hides or replaces as it takes the value has nothing to read back: the note says
+"it isn't shown now", and the snapshot shows what took its place. Bakery re-creates its order's
+item editors on each product pick. The Unified API checks a pick on the element it picked in, so
+Playwright waits 10 s for one that is gone and fails, though the pick went through: a failed write
+whose ref is gone after it answers the same way, not as an error the agent would retry.
 
 ## D_values_as_shown — Why does a DatePicker's value read and take `"31.1.2000"`, the text the user sees, rather than ISO `"2000-01-31"`?
 

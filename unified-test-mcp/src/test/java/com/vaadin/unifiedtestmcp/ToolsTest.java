@@ -997,9 +997,6 @@ public class ToolsTest {
                       - <order-item-editor> [ref=N]
                         - ComboBox [ref=N, id=products, placeholder="Product", value=null] actions: set_value
                         - IntegerField [ref=N, id=amount, value="1"] actions: set_value
-                      - <order-item-editor> [ref=N]
-                        - ComboBox [ref=N, id=products, placeholder="Product", value=null] actions: set_value
-                        - IntegerField [ref=N, id=amount, value="1"] actions: set_value
                     - <buttons-bar> [ref=N]
                       - Button "Cancel" [ref=N] actions: click
                       - Button "Save" [ref=N] actions: click
@@ -1011,19 +1008,43 @@ public class ToolsTest {
     }
 
     @Test
+    public void setValueSaysWhenTheAppReplacedTheField() throws IOException {
+        String dialog = call(client, "click", ref(ref(snapshotOf("template"), "Button \"New order\"")));
+        int first = ref(dialog, "id=products");
+        String picked = call(client, "set_value", Map.of("ref", first, "value", "Strawberry Bun"));
+        assertTrue(picked.startsWith("Set ref=" + first + " to \"Strawberry Bun\"; it isn't shown now\n"),
+                "found by its id, which the re-created editors repeat: " + picked);
+        assertTrue(masked(picked).contains("""
+                      - <order-item-editor> [ref=N]
+                        - ComboBox [ref=N, id=products, placeholder="Product", value="Strawberry Bun"] actions: set_value
+                        - IntegerField [ref=N, id=amount, value="1"] actions: set_value
+                      - <order-item-editor> [ref=N]
+                        - ComboBox [ref=N, id=products, placeholder="Product", value=null] actions: set_value
+                """), "the app re-created the item editors, a new empty one after them: " + picked);
+
+        int second = refs(picked, "id=products").get(1);
+        String again = call(client, "set_value", Map.of("ref", second, "value", "Vanilla Cracker"));
+        assertTrue(again.startsWith("Set ref=" + second + " to \"Vanilla Cracker\"; it isn't shown now\n"),
+                "found by its stamp, gone with the old editor though the Unified API checks the pick there: " + again);
+        assertTrue(masked(again).contains("""
+                        - ComboBox [ref=N, id=products, placeholder="Product", value="Vanilla Cracker"] actions: set_value
+                """), again);
+    }
+
+    @Test
     public void refsInTemplatesFindTheirComponents() throws IOException {
         String dialog = call(client, "click", ref(ref(snapshotOf("template"), "Button \"New order\"")));
         call(client, "set_value", Map.of("ref", ref(dialog, "TextField \"Customer\""), "value", "Linus Torvalds"));
-        List<Integer> products = refs(dialog, "id=products");
-        List<Integer> amounts = refs(dialog, "id=amount");
-        call(client, "set_value", Map.of("ref", products.get(0), "value", "Strawberry Bun"));
-        call(client, "set_value", Map.of("ref", products.get(1), "value", "Vanilla Cracker"));
-        assertEquals("\"Vanilla Cracker\"", call(client, "get_value", ref(products.get(1))),
+        String picked = call(client, "set_value", Map.of("ref", ref(dialog, "id=products"), "value", "Strawberry Bun"));
+        List<Integer> products = refs(picked, "id=products");
+        call(client, "set_value", Map.of("ref", products.get(0), "value", "Vanilla Cracker"));
+        assertEquals("\"Vanilla Cracker\"", call(client, "get_value", ref(products.get(0))));
+        assertEquals("null", call(client, "get_value", ref(products.get(1))),
                 "the second of two components with one id");
-        call(client, "set_value", Map.of("ref", amounts.get(1), "value", 3));
-        String saved = call(client, "click", ref(ref(dialog, "Button \"Save\"")));
-        assertTrue(saved.contains("\n    - row 3: Linus Torvalds New 1 × Strawberry Bun, 3 × "), saved);
-        assertEquals("Saved order for Linus Torvalds: 1 × Strawberry Bun, 3 × Vanilla Cracker",
+        call(client, "set_value", Map.of("ref", refs(picked, "id=amount").get(0), "value", 3));
+        String saved = call(client, "click", ref(ref(picked, "Button \"Save\"")));
+        assertTrue(saved.contains("\n    - row 3: Linus Torvalds New 3 × Vanilla Cracker\n"), saved);
+        assertEquals("Saved order for Linus Torvalds: 3 × Vanilla Cracker",
                 call(client, "get_text", ref(ref(saved, "id=status"))),
                 "the page's one id=status, though each card's shadow root has one too");
     }

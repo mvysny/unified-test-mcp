@@ -14,11 +14,11 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.Route;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -36,7 +36,8 @@ import java.util.stream.Collectors;
  *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status in a span with id=status
  *   Dialog "New order"              its content an &lt;order-editor&gt;:
  *     Customer [    ]
- *     &lt;order-item-editor&gt; ×2       [Product ▾] [1]: the ids products and amount in each
+ *     &lt;order-item-editor&gt; …        [Product ▾] [1]: the ids products and amount in each; an empty one
+ *                                   last, a product picked in it re-creating them all, as Bakery's
  *     &lt;buttons-bar&gt;                 [Cancel] [Save]: Flow's light DOM, in its slots left and right
  *   No order saved                  a span with id=status, the view's light DOM in its shadow root's slot
  * </pre>
@@ -107,41 +108,63 @@ public class TemplateView extends Component {
         }
     }
 
-    /** A new order's customer, two items and the buttons that save it or cancel. */
+    /**
+     * A new order's customer, its items and the buttons that save it or cancel. As Bakery's, an empty item editor
+     * comes last, and a product picked in it re-creates every item's editor, a new empty one after them.
+     */
     @Tag("order-editor")
     static class OrderEditor extends Component {
+        private final List<Item> items = new ArrayList<>();
+        private final Div itemsContainer = new Div();
+
         OrderEditor(Consumer<Order> onSave, Runnable onCancel) {
             TextField customer = new TextField("Customer");
             customer.setId("customer");
-            List<OrderItemEditor> items = List.of(new OrderItemEditor(), new OrderItemEditor());
-            Div itemsContainer = new Div(items.toArray(Component[]::new));
             itemsContainer.setId("items");
-            Button save = new Button("Save", e -> onSave.accept(new Order(customer.getValue(), "New",
-                    items.stream().map(OrderItemEditor::item).flatMap(Optional::stream).toList())));
+            showItems();
+            Button save = new Button("Save",
+                    e -> onSave.accept(new Order(customer.getValue(), "New", List.copyOf(items))));
             getElement().attachShadow().appendChild(customer.getElement(), itemsContainer.getElement(),
                     new ButtonsBar(new Button("Cancel", e -> onCancel.run()), save).getElement());
+        }
+
+        private void showItems() {
+            itemsContainer.removeAll();
+            for (int i = 0; i < items.size(); i++) {
+                int index = i;
+                itemsContainer.add(new OrderItemEditor(items.get(i), item -> items.set(index, item)));
+            }
+            itemsContainer.add(new OrderItemEditor(null, item -> {
+                items.add(item);
+                showItems();
+            }));
         }
     }
 
     /** A product and its amount; the same ids in every one, as a template's. */
     @Tag("order-item-editor")
     static class OrderItemEditor extends Component {
-        private final ComboBox<String> product = new ComboBox<>();
-        private final IntegerField amount = new IntegerField();
-
-        OrderItemEditor() {
+        /**
+         * @param item     {@code null} for an empty editor
+         * @param onChange gets the item on each change of its product or amount, once it has a product
+         */
+        OrderItemEditor(@Nullable Item item, Consumer<Item> onChange) {
+            ComboBox<String> product = new ComboBox<>();
             product.setId("products");
             product.setPlaceholder("Product");
             product.setItems(PRODUCTS);
+            IntegerField amount = new IntegerField();
             amount.setId("amount");
-            amount.setValue(1);
+            product.setValue(item == null ? null : item.product());
+            amount.setValue(item == null ? 1 : item.amount());
+            Runnable changed = () -> {
+                if (product.getValue() != null) {
+                    onChange.accept(new Item(product.getValue(), amount.getValue() == null ? 1 : amount.getValue()));
+                }
+            };
+            product.addValueChangeListener(e -> changed.run());
+            amount.addValueChangeListener(e -> changed.run());
             getElement().attachShadow().appendChild(product.getElement(), amount.getElement());
-        }
-
-        /** The item, if a product is chosen. */
-        Optional<Item> item() {
-            return Optional.ofNullable(product.getValue())
-                    .map(chosen -> new Item(chosen, amount.getValue() == null ? 1 : amount.getValue()));
         }
     }
 

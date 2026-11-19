@@ -76,7 +76,7 @@ final class Refs {
      * it ({@link Snapshot#isVisible}).
      *
      * @throws MCPErrorResponseException if there's no snapshot yet, the ref isn't in the latest one, or its
-     *         component is gone or hidden; each names the next step
+     *         component is gone, hidden, or not the only match of its id now; each names the next step
      */
     UnifiedContainer resolve(UnifiedPage page, int ref) {
         return resolve(page, ref, UnifiedContainer.class);
@@ -113,9 +113,16 @@ final class Refs {
                     + " the components on this page now.");
         }
         W wrapper = locate(page, type, target, ref);
-        if (wrapper.all().isEmpty()) {
+        int found = wrapper.all().size();
+        if (found == 0) {
             throw new MCPErrorResponseException("ref " + ref + " (" + target.flowName()
                     + ") is gone from the page: the app removed it, or re-created it. Call snapshot to see the"
+                    + " components on the page now.");
+        }
+        if (found > 1) {
+            // its id, unique at the snapshot, isn't now: a template rendered again repeats its ids
+            throw new MCPErrorResponseException("ref " + ref + " (" + target.flowName() + ") matches " + found
+                    + " components now: the app re-created it, or added another like it. Call snapshot to see the"
                     + " components on the page now.");
         }
         // the page changes without a tool call too: a server push, a timer, a transition's end

@@ -2,8 +2,9 @@
 
 The benchmark's 12 scenarios (`benchmark/scenarios/`, `benchmark.md`) through this server: which
 pass today, which can't, and what each needs. From the first CRM round's probe
-(`benchmark/results/2026-11-18-crm/`), and on 2026-11-19 a walk through Bakery (seed 1) with the
-server as of 5f4434c, driven over stdio, its DOM looked up in Playwright beside it.
+(`benchmark/results/2026-11-18-crm/`), and on 2026-11-19 two walks through Bakery (seed 1), driven
+over stdio, its DOM looked up beside it: with the server as of 5f4434c, and as of e3010d1, which
+walks the templates' shadow roots.
 
 Two kinds of gap: a **blocker** leaves a scenario undoable through our tools; a **cost** lets it
 pass at many times a competitor's tokens, which is what the benchmark measures.
@@ -20,27 +21,36 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 | bakery-locked-user | passes in the scripted walk: Edit, Role, Save, the persistent notification in Save's answer | — |
 | bakery-price-cap | untried since §1 | the Crud editor shows inline, no `Modal:` line (§1) |
 | bakery-new-user | untried since §1 | the same |
-| bakery-new-order | untried since §1 | — |
-| bakery-edit-items | untried since §1 | — |
-| bakery-reschedule | blocked | the comment's Send button, in a field's suffix (§4) |
-| bakery-today-count | untried since §1 | a Delivered badge shows only an icon (§4) |
+| bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (§1) |
+| bakery-edit-items | untried since §1 | its picks and deletes re-create the item editors, as new-order's (§1) |
+| bakery-reschedule | blocked | the comment's Send button, in a field's suffix (§4); a card's row takes no `click(ref, row)` (§1) |
+| bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | a Delivered badge shows only an icon (§4) |
 
 Ours: the probe, one run each, of a work-in-progress tree (its `NOTES.md`). In brackets: Playwright
 MCP's median, the cheaper competitor in every CRM scenario.
 
-## 1. Lit templates — walked on test-app, untried on Bakery
+## 1. Lit templates — walked on Bakery
 
 Built: the snapshot walks the app's shadow roots (`D_app_shadow_roots`), test-app's `template`
 view its test; the Unified API's lookups reach into them only in the local `-shadow` build
-(`R_unified_no_enumeration`). Bakery's DOM: `R_bakery_template_dom`. Left:
+(`R_unified_no_enumeration`). Bakery's DOM: `R_bakery_template_dom`. On Bakery, Lit's own
+rendering shows whole: the search bar, the order editor and details, `<buttons-bar>`'s slotted
+buttons, each `<order-item-editor>`'s repeated ids with refs of their own. Left:
 
 - **Upstream**: parttio/unified-testing-tool#347 asks whether an app template's shadow root may be
   searched on every Testing Tool, the spec saying not since their #251; once they answer, a PR
   from the clone's `shadow-dom-queries-alpha3`, ported to `main`. Until a release has it, the
   build needs the `-shadow` in `~/.m2`.
-- **Lit's own rendering**: test-app's templates are shadow roots attached from Java
-  (`R_flow_shadow_root`); Lit's comment markers and its render after the element upgrades are
-  untried. Bakery's first round tries them.
+- **A row of a template takes no `click(ref, row)`** — blocks bakery-reschedule: "Cannot click
+  row 0: the row has no data cell with a spot free of interactive content". Dramafinder's
+  `freePoint` (`GridElement`, 2.2.0) counts every custom element on the hit's path as
+  interactive, and `<order-card>` fills the cell. A click on the card's own ref, from
+  `snapshot(ref)`, opens the order. parttio/dramafinder#298: look inside an app's custom element,
+  its shadow root's `elementFromPoint`, and test what that hits.
+- **A field the app replaces while it takes the value** waits 10 s: `set_value` answers "it isn't
+  shown now" (`D_set_value_reads_back`), but first the Unified API checks the pick on the old
+  element (`SelectionSupport.select`, `access.selectedItems()`), and Playwright waits its timeout
+  for it. parttio/unified-testing-tool#377: no check on a field the lookup no longer finds.
 - **The Crud editor** shows inline at the end of the page, no `Modal:` line, the grid under it
   listed as if it took clicks: its `<vaadin-crud-dialog>` is in `<vaadin-crud>`'s shadow root, a
   Vaadin component's, which no walk enters. Crud is commercial; price-cap and new-user may pass
@@ -63,7 +73,10 @@ Playwright MCP's was 29k, though ours took fewer turns. Built since, untried on 
 
 The storefront has 158 orders, 23 cards rendered: bakery-today-count's "Today" group sits on top,
 and bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered
-ones on seed 1.
+ones on seed 1. A row is one `<order-card>`, its preview cut at 50 characters in the snapshot
+and in `get_rows`: `This week Fri, Nov 20 - Sun, Nov 22 ready Fri 20 8…` loses the location
+and the customer on a group's first row. `snapshot(ref)` cuts nothing but gives each Span its ref,
+~15 a row.
 
 ## 3. Settling before the answer — extra calls in every scenario
 
@@ -117,7 +130,7 @@ only what's generic, §1's search bar and §2's rows.
 
 ## Order
 
-1. §1's upstream PR.
+1. §1: the row click (#298), the upstream PR, the replaced field's 10 s (#377).
 2. §3: drops the extra calls from every scenario, the storefront's search included.
 3. §2: the CRM's cost, crm-count and crm-delete-closed; the storefront's cards as rows.
 4. §4's suffix components (reschedule) and lone icons (today-count), then the rest of §4.
