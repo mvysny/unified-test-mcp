@@ -25,8 +25,8 @@ the agent already has: it sees DOM and ARIA, so how each Vaadin component is bui
 overlays, a Grid's lazily loaded and recycled rows) would be ours to reverse-engineer, and to
 follow on every Vaadin release; the Unified API and Dramafinder maintain that. Why not
 TestBench: it drives Selenium only and needs a license; we revisit it once TestBench can drive
-Playwright. The cost we carry: the Unified API is a 0.1.0 alpha whose only entry point is a
-JUnit extension (`R_unified_junit_bound`), and it has no query that lists the components on a
+Playwright. The cost we carry: the Unified API is a 0.1.0 alpha that opens a page only from a
+Test Runner (`R_unified_page_lifecycle`), and it has no query that lists the components on a
 page (`R_unified_no_enumeration`), so a snapshot cannot come from it alone.
 
 ## D_separate_process — Why run as a process of its own rather than inside the app, as swing-mcp does?
@@ -44,23 +44,24 @@ app's classes and session in the same JVM; when that becomes worth having, it is
 point, not a rewrite of the tools. Why stdio rather than HTTP: the client owns the process, so
 the browser lives exactly as long as the client's session and nothing listens on a port.
 
-## D_junit_free_context — Why open the Unified API page through a fake JUnit context rather than wait for an upstream entry point?
+## D_junit_free_context — Why open the Unified API page through our own adapter context rather than wait for an upstream entry point?
 
-The only way the Unified API opens a page is its JUnit extension; the adapter it calls takes an
-`AdapterContext` whose `extensionContext()` is a JUnit `ExtensionContext`, and the Playwright
-adapter keeps its browser in that context's root store (`R_unified_junit_bound`).
-`JUnitFreeContext` hands the adapter a proxy that answers `getRoot()` and `getStore(..)` with a
-map-backed store and throws on anything else, then wraps the session in the API's own
-`UnifiedPageImpl`. That is one class, and it works on 0.1.0-alpha2. Why not wait for upstream:
-a JUnit-free factory (say `UnifiedPages.open(tool, settings)`, with `extensionContext()`
-optional) is the right fix and worth asking for, but the tools should not wait on it. Why not
-copy the adapter's code: it would fork the part — the session, the Dramafinder bridge — the
-Unified API exists to maintain (`D_unified_api_backend`). The cost we carry: we lean on the
-`internal` package (`UnifiedPageImpl`, `TestRun`) and on which `ExtensionContext` methods the
-adapter happens to call, so an upgrade of the Unified API is checked by `ToolsTest` before
-anything else. When upstream gains the entry point, asked for in
-[unified-testing-tool#219](https://github.com/parttio/unified-testing-tool/issues/219), this
-class is deleted.
+The Unified API opens a page only from a Test Runner integration, its JUnit extension, through
+`TestLifecycle` in its `internal` package (`R_unified_page_lifecycle`). The adapter it calls is
+Test Runner-neutral: an `AdapterContext` gives it the settings, the timeout, and
+`runScoped(..)`, where the Playwright adapter keeps its browser for the run. `JUnitFreeContext`
+is such a context whose run is one MCP session, closing the browser and Playwright when the
+session closes; `UnifiedBrowser` wraps the session in the API's own `UnifiedPageImpl`. Why not
+`TestLifecycle`: it is `internal` as well, and what it adds over the adapter is a test's ending,
+User Steps and failure evidence written to an evidence directory, and printed to stdout, which
+on stdio is the protocol. Why not wait for upstream: a public factory (say
+`UnifiedPages.open(tool, settings)`) is the right fix and worth asking for, but the tools should
+not wait on it; [unified-testing-tool#219](https://github.com/parttio/unified-testing-tool/issues/219)
+made the adapter SPI neutral and left opening a page `internal`. Why not copy the adapter's
+code: it would fork the part — the session, the Dramafinder bridge — the Unified API exists to
+maintain (`D_unified_api_backend`). The cost we carry: we lean on the `internal` package
+(`UnifiedPageImpl`, `TestRun`), so an upgrade of the Unified API is checked by `ToolsTest` before
+anything else. When upstream gains a public entry point, this class is deleted.
 
 ## D_single_jar_release — Why release one jar with every dependency on GitHub Releases, rather than a zip of start scripts, a jar per OS, or Maven Central?
 

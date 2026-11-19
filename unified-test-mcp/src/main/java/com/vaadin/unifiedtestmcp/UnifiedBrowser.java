@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * <pre>{@code
  * try (UnifiedBrowser browser = new UnifiedBrowser(Map.of(), Duration.ofSeconds(10))) {
  *     browser.call(page -> { page.navigate("http://localhost:8080"); return null; });
- *     String text = browser.call(page -> page.find(UnifiedButton.class).withId("clicker").single().getText());
+ *     String text = browser.call(page -> page.find(UnifiedButton.class).withId("clicker").getText());
  * }
  * }</pre>
  *

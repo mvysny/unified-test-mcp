@@ -1,7 +1,6 @@
 package com.vaadin.unifiedtestmcp;
 
 import com.github.mvysny.tinymcpserver.InputSchemaBuilder;
-import com.microsoft.playwright.Locator;
 import com.github.mvysny.tinymcpserver.MCPErrorResponseException;
 import com.github.mvysny.tinymcpserver.MCPProtocol;
 import com.github.mvysny.tinymcpserver.ToolDescriptor;
@@ -22,11 +21,6 @@ import com.vaadin.testing.unified.UnifiedElement;
  * would take for what the field holds (D_text_or_value). No text answers {@value #NO_TEXT}, not nothing: an MCP
  * client shows an empty result as "no output", which an agent can't tell from a call that failed quietly. A
  * tooltip's text isn't the component's: {@link GetTooltipTool} reads it. A read: the refs stay as they are.
- *
- * <h2>Implementation detail</h2>
- * The text is read through the escape hatch, not {@code UnifiedElement.getText()}: on Playwright, that reads
- * {@code textContent}, a slotted {@code <vaadin-tooltip>}'s text included (R_vaadin_hints).
- * Drop once the fix is released: parttio/unified-testing-tool#267
  */
 final class GetTextTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("get_text",
@@ -36,15 +30,6 @@ final class GetTextTool implements ToolFunction {
             new InputSchemaBuilder().requiredInteger("ref", SnapshotTool.REF_DESCRIPTION).build());
 
     static final String NO_TEXT = "(no text)";
-
-    /** {@code textContent} without a {@code <vaadin-tooltip>}'s, whitespace collapsed, as the Unified API's own. */
-    private static final String TEXT = """
-            e => {
-              const text = n => n.nodeType === Node.TEXT_NODE ? n.textContent
-                  : n.nodeType === Node.ELEMENT_NODE && n.localName !== 'vaadin-tooltip'
-                      ? Array.from(n.childNodes).map(text).join('') : '';
-              return text(e).replace(/\\s+/g, ' ').trim();
-            }""";
 
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
@@ -56,7 +41,7 @@ final class GetTextTool implements ToolFunction {
                 throw new MCPErrorResponseException("ref " + ref + " is a " + type.flowName()
                         + ": it has a value, not a text. Call get_value; its label is its name in the snapshot.");
             }
-            String text = (String) element.unwrap(Locator.class).evaluate(TEXT);
+            String text = element.getText();
             return text.isEmpty() ? NO_TEXT : text;
         }));
     }

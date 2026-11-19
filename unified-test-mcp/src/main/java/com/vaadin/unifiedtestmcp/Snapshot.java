@@ -154,7 +154,7 @@ final class Snapshot {
                      root, full, rows: rowsWanted }) => {
               // A server-side navigation changes the URL after the round-trip that an action waits for
               // (R_flow_navigation_url): with React, once Flow clears its navigation flag; without, in a setTimeout.
-              // Drop once Auto-Wait waits for it: parttio/unified-testing-tool#233
+              // The Unified API's own actions wait for it; a click through the escape hatch (ShadowParts) doesn't
               const tick = ms => new Promise(resolve => setTimeout(resolve, ms));
               for (let waited = 0; window.Vaadin?.Flow?.navigation && waited < 2000; waited += 10) await tick(10);
               await tick(0);

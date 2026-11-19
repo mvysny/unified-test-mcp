@@ -115,9 +115,9 @@ polls:
 
 `Q_debounce`: nothing in the browser says a debounced event is pending, nor which mode a field has.
 Wait until Flow's client is idle and no grid is `loading`, after a pause past the longest default
-debounce? Or flush it: does a blur send a LAZY field's value at once? The navigation wait already
-in `Snapshot` (parttio/unified-testing-tool#233) is the same problem; the fix may belong upstream,
-in Auto-Wait.
+debounce? Or flush it: does a blur send a LAZY field's value at once? The navigation wait in
+`Snapshot` was the same problem, and upstream fixed that one in Auto-Wait
+(`AdapterSession.settle()`, parttio/unified-testing-tool#233); this fix may belong there too.
 
 ## 4. Smaller, each found walking Bakery
 

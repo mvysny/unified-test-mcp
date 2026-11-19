@@ -11,11 +11,11 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 ## Wiring
 
 - The server is a process of its own, pointed at the app's URL; the app under test needs no change (`D_separate_process`).
-- Dependencies point down: `Main` → `UnifiedTestMCP` (the handler) → one class per tool (`ClickTool`, …) → `Snapshot`, `Refs`, `ComponentTypes`, `FieldValue`, `ShadowParts`, `Grids` → `UnifiedBrowser` → the Unified API's `PlaywrightAdapter`. The tools see a `UnifiedPage` and the Unified API's wrappers; only `Snapshot` reaches Playwright, through the escape hatch (`D_snapshot_from_javascript`); `GetTextTool`, until the Unified API's text leaves a tooltip out (`R_vaadin_hints`, parttio/unified-testing-tool#267); `ShadowParts`, for a SideNavItem's link and arrow (`D_nav_item_states`); and `Grids`, for a Grid's sorter, which the Unified API can't find under a header group row (`R_unified_grid_headers`).
+- Dependencies point down: `Main` → `UnifiedTestMCP` (the handler) → one class per tool (`ClickTool`, …) → `Snapshot`, `Refs`, `ComponentTypes`, `FieldValue`, `ShadowParts`, `Grids` → `UnifiedBrowser` → the Unified API's `PlaywrightAdapter`. The tools see a `UnifiedPage` and the Unified API's wrappers; only `Snapshot` reaches Playwright, through the escape hatch (`D_snapshot_from_javascript`); `ShadowParts`, for a SideNavItem's link and arrow (`D_nav_item_states`); and `Grids`, for a Grid's sorter, which the Unified API can't find under a header group row (`R_unified_grid_headers`).
 - `Main` constructs one `MCPHandler` and serves it on stdio; the system test serves the same handler over HTTP instead. The transport is the seam.
 - **One `UnifiedBrowser` per MCP session** (`D_browser_per_session`): the handler creates it when a session starts, as the session's attribute, and closes it when the session closes. Beside it, the session's `Refs`: the refs its latest snapshot showed (`D_refs_not_ids`). A tool finds both through `ToolCall`, so the tools hold no state.
 - **The per-type knowledge is one table**, `ComponentTypes`, keyed by tag: the Flow class a line shows, which property names it, the tools made for it.
-- `UnifiedBrowser` opens its page through `JUnitFreeContext`, which stands in for the JUnit extension that normally opens a Unified API page (`D_junit_free_context`).
+- `UnifiedBrowser` opens its page through `JUnitFreeContext`, the adapter context whose run is one MCP session, where the JUnit extension's is one test run (`D_junit_free_context`).
 - **The browser comes from `BrowserInstall`, never from Playwright's own download** (`D_browser_install`): once per JVM, before the first `Playwright` exists, it claims Playwright's driver without the download and installs the one browser the settings open. The handler starts it when the server starts; a `UnifiedBrowser` waits for it before opening its page.
 
 ## Threading
@@ -37,7 +37,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 5. The Unified API waits until the component is visible and enabled, clicks, and waits for the server round-trip; then a snapshot, which the tool returns (`D_action_returns_snapshot`).
 6. A failure — a lookup that timed out, an app that isn't up — comes back as a tool error carrying the Unified API's own message, which the model reads.
 
-**A session's end**: on stdio, the client closes stdin, and `runStdio` closes every session before it returns; over HTTP, the client's DELETE, a 30-minute idle eviction, or the server's `stop()`. Each runs `onSessionClosed` → the session's `UnifiedBrowser.close()`, which on its thread closes the tab, then `JUnitFreeContext`'s store closes the browser and Playwright.
+**A session's end**: on stdio, the client closes stdin, and `runStdio` closes every session before it returns; over HTTP, the client's DELETE, a 30-minute idle eviction, or the server's `stop()`. Each runs `onSessionClosed` → the session's `UnifiedBrowser.close()`, which on its thread closes the tab, then `JUnitFreeContext` closes the browser and Playwright, what the adapter kept for the run.
 
 ## Where to start reading
 

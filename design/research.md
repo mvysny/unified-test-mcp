@@ -4,39 +4,44 @@ What the things we don't own actually do. About *them*, never us: a sentence sta
 is a `D_`. `## R_<slug> — <title>`, one claim per bullet, one provenance marker per claim —
 **[docs]**, **[src]**, **[verified <date>, <version>]**, **[unverified]** (a hypothesis; a design
 built on it says so). A claim is earned by its provenance, or by having cost real work to find
-out. Checked against unified-testing-tool 0.1.0-alpha2 (`main` at `76ab776`), Dramafinder 2.0.2,
-Vaadin 25.3.5; a version-sensitive claim names the version it was seen on. Cite by slug,
+out. Checked against unified-testing-tool 0.1.0-alpha3, Dramafinder 2.2.0, Vaadin 25.3.5; a
+version-sensitive claim names the version it was seen on. Cite by slug,
 `R_<slug>`, never by position; `grep '^## R_' design/research.md` is the index. When you have
 written an entry, re-read it against the one above for consistency; a marker already says where
 a claim came from, so the prose doesn't repeat it.
 
 ---
 
-## R_unified_junit_bound — Unified API: a page is opened only by its JUnit extension
+## R_unified_page_lifecycle — Unified API: how a page is opened, and what an adapter is given
 
-- A `UnifiedPage` is made only by `UnifiedExtension.resolveParameter`: it loads the
-  `TestingToolAdapter` for the run's tool through `ServiceLoader`, calls
-  `adapter.open(AdapterContext)`, and closes the returned `AdapterSession` in `afterEach`. **[src]**
-- `AdapterContext.extensionContext()` returns a JUnit `ExtensionContext`. `PlaywrightAdapter.open`
-  keeps one `Playwright` and one `Browser` per JVM in its root store
-  (`getRoot().getStore(GLOBAL).computeIfAbsent(...)`), which JUnit closes at the end of the run. **[src]**
+- A `UnifiedPage` is made by `TestLifecycle.open(AdapterContext, StepRecorder)`, in package
+  `com.vaadin.testing.unified.internal`: it loads the `TestingToolAdapter` for the run's tool
+  through `ServiceLoader`, calls `adapter.open(context)`, and wraps the `AdapterSession`. Its one
+  caller is the JUnit extension, `internal.junit.UnifiedExtension`; no public API opens a page
+  outside a Test Runner. **[src]**
+- `AdapterContext` names no Test Runner type (ADR 0008): `configuration(key)`, `timeout()`,
+  `testClass()`, `testMethod()`, `springContext()`, and `runScoped(key, create)`, one instance
+  per run and key, closed when the run ends. **[src]**
+- `PlaywrightAdapter.open` keeps one `Playwright` and one `Browser` per run, through
+  `runScoped(SharedBrowser.class, …)`. **[src]**
 - Each `open` makes a fresh `BrowserContext` and `Page`. The session class, `PlaywrightSession`,
   is package-private: only the adapter can make one. **[src]**
-- `UnifiedPageImpl` and `TestRun` are public, in package `com.vaadin.testing.unified.internal`;
+- `UnifiedPageImpl` and `TestRun` are public, in package `internal`;
   `new UnifiedPageImpl(new TestRun(TestingTool.PLAYWRIGHT, session, timeout))` wraps any
-  `AdapterSession`. **[src]**
-- The base URL is Spring's port when `spring-test` is on the classpath, else the
+  `AdapterSession`, with a `StepRecorder` of its own. **[src]**
+- The `StepRecorder` keeps every User Step of the page in memory. Only `TestLifecycle`'s close
+  writes them out: to `user-steps.txt` / `.json`, and to stdout as
+  `vaadin.testing.user-steps.log` says. **[src]**
+- The base URL is the Spring context's port when `springContext()` has one, else the
   `vaadin.testing.base-url` setting, else `http://localhost:8080`; settings come through
-  `AdapterContext.configuration(key)`, which the extension backs with JUnit configuration
+  `AdapterContext.configuration(key)`, which the JUnit extension backs with configuration
   parameters and system properties. **[src]**
 - The test-user login (`LoginSupport`) is skipped when `unified-test-spring` is not on the
   classpath. **[src]**
-- Of the `ExtensionContext`, opening a page and a whole click / read session call only
-  `getRoot()` and `getStore(GLOBAL)`. **[verified 2026-11-16, 0.1.0-alpha2]**
-- Of the store, the adapter calls only `computeIfAbsent(key, creator, type)`. **[src]**
-- A lookup that never singles out a component throws `AssertionError`, not an exception, after
-  the timeout: `No component matches page.find(UnifiedButton).withId("x").single() (waited
-  10000 ms)`; several matches read `N components match …, expected exactly one`. **[src]**
+- Every Unified failure is a `UnifiedAssertionError`, an `AssertionError`, thrown once a lookup
+  or an action has waited out the timeout. Its message is labelled lines: `Expected`, `Found`,
+  `Nearby` (the components close to a match), `Did you mean` (a Java lookup), `Waited`, `Tool`,
+  `Code` (the call sites), the failed User Step. **[src]**
 
 ## R_unified_no_enumeration — Unified API: every lookup starts from a component type
 
@@ -44,12 +49,13 @@ a claim came from, so the prose doesn't repeat it.
   adapter's `QuerySpec` carries exactly one `componentType`; no call lists every component on a
   page, and none finds by id alone. **[src]**
 - On Playwright, a type with a Dramafinder element (e.g. `Button`) is found through Dramafinder's
-  `ElementQueries.find`; any other type through a CSS selector built from its `@Tag` or
-  `@UnifiedComponent(tag, selector)`; a type with neither fails. **[src]**
+  `ElementQueries.find(page, elementClass)`; any other type through Dramafinder's tag query on
+  its `@Tag` or `@UnifiedComponent(tag)`, with the filters CSS can express, the rest checked in
+  the page in one round trip; a type with neither fails. **[src]**
 - On the Dramafinder path the filters map to Dramafinder query methods by reflection: id →
-  `withId`, text → `withText` / `withTextContaining`, label → `withLabel`, attribute →
-  `withAttribute`; a Dramafinder query lacking the method fails with
-  `UnsupportedOperationException`. **[src]**
+  `withId`, text → `withText` / `withTextContaining`, attribute → `withAttribute`; a Dramafinder
+  query lacking the method fails with `UnsupportedOperationException`. A label is checked in the
+  page instead, so a FormLayout item's label matches too. **[src]**
 - Dramafinder's Button query has `withId`: `page.find(UnifiedButton.class).withId("clicker")`
   finds `<vaadin-button id="clicker">`. **[verified 2026-11-16, Dramafinder 2.0.2]**
 - Both paths drop matches inside the shadow DOM of a `vaadin-*` or `copilot-*` host — the dev
@@ -57,22 +63,23 @@ a claim came from, so the prose doesn't repeat it.
 - `UnifiedElement.findChildren` / `findDescendants(tag)` walk light DOM only; in a browser that
   includes the light DOM web components add themselves, such as a text field's `input` and
   `label`. **[docs]**
-- `UnifiedButton.getText()` is `element().getText()`: the DOM `textContent`, whitespace collapsed
-  and trimmed. **[src]**
+- `UnifiedButton.getText()` is `element().getText()`: the DOM's text nodes, a slotted tooltip's
+  left out (`BrowserQueries.TEXT`), whitespace collapsed and trimmed. **[src]**
 - Escape hatch: `UnifiedPage.unwrap(com.microsoft.playwright.Page.class)` returns the session's
   Playwright `Page`; a wrapper unwraps to its Dramafinder element or a `Locator`. **[src]**
 - `UnifiedContainer` is bound to any tag (`@UnifiedComponent(tag = "*")`): `page.find(UnifiedContainer.class)`
   with `withAttribute(name, value)` or `withId(id)` finds an element of any type by a CSS selector,
-  `*[data-mcp-ref="3"]`. **[verified 2026-11-16, unified-test-playwright 0.1.0-alpha2]**
-- `Query.exists()` reads the page once, without waiting; `single()` waits, on first use, until
-  exactly one matches. **[src]**
+  `*[data-mcp-ref="3"]`. **[verified 2026-11-19, unified-test-playwright 0.1.0-alpha3]**
+- `find(type)` returns the wrapper itself, and each filter a new wrapper (ADR 0007); every use
+  of it waits until exactly one component matches. `all()` reads the page once, without
+  waiting; `assertThat(wrapper).exists()` waits. **[src]**
 
 ## R_unified_lazy_elements — Unified API: a wrapper holds its query, not an element
 
 - A wrapper such as `UnifiedButton` sits on a `LazyElement`, which keeps the lookup (component
   type, filters) and, after `all().get(i)`, an index; it holds no element. Every read and action
-  runs the lookup again, waiting until exactly one component matches (`single()`) or the indexed
-  one exists. **[src]**
+  runs the lookup again, waiting until exactly one component matches or the indexed one
+  exists. **[src]**
 - So a wrapper never goes stale the way a Selenium `WebElement` or TestBench's `ButtonElement`
   does: when Vaadin re-renders a component, the next call finds the new element. An adapter
   that loses an element mid-call throws `StaleElementException`, and the core finds the element
@@ -89,8 +96,8 @@ a claim came from, so the prose doesn't repeat it.
 ## R_unified_playwright_packaging — unified-test-playwright as a dependency
 
 - Compiled for Java 21 (`maven.compiler.release`) against the Vaadin 25.3.5 BOM and Dramafinder
-  2.0.2. **[src]**
-- `unified-test-api` depends on `junit-jupiter-api` at compile scope and on `vaadin-core` as
+  2.2.0, which brings Playwright 1.63.0. **[src]**
+- `unified-test-api` depends on `junit-jupiter-api` as `optional` and on `vaadin-core` as
   `provided`: a consumer brings Vaadin itself. **[src]**
 - `unified-test-playwright` depends on `vaadin-dev` at compile scope, so that an app under test
   in the same JVM runs in dev mode. **[src]**
@@ -101,7 +108,7 @@ a claim came from, so the prose doesn't repeat it.
 - The browser context is `browser.newContext()` without options: no setting reaches its locale,
   timezone or viewport. **[src, unified-testing-tool `6c15e62`]**
 - Excluding `vaadin-dev` from it breaks nothing for an app that runs in another JVM.
-  **[verified 2026-11-16, 0.1.0-alpha2]**
+  **[verified 2026-11-19, 0.1.0-alpha3]**
 
 ## R_playwright_thread_safety — Playwright for Java: threads and browser downloads
 
@@ -180,7 +187,8 @@ Tried on `test-app` in dev mode: `data-mcp-ref` set by script on a `vaadin-butto
   `ComboBoxElement.getSelectedItemLabel()`; Browserless applies the component's
   `ItemLabelGenerator` to `getValue()` on the server. **[src]**
 - Dramafinder's `ComboBoxElement.getValue()` reads the input's text instead: a typed filter, or a
-  custom value no item matches, shows there while `getSelectedItemLabel()` is `null`. **[src]**
+  custom value no item matches, shows there while `getSelectedItemLabel()` is `null`.
+  **[src, Dramafinder 2.0.2]**
 - The Unified API has no wrapper for a Select (Dramafinder has `SelectElement`).
   **[src, unified-testing-tool `76ab776`]**
 - `find(UnifiedComboBox.class).withAttribute(name, value)` finds a stamped element through
@@ -240,10 +248,10 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   **[verified 2026-11-17, Vaadin 25.3.5]**
 - The component's `textContent` includes the tooltip's text: an icon-only Button's is "Close
   without saving". **[verified 2026-11-17, Vaadin 25.3.5]**
-- So the Unified API's `getText()` includes it on Playwright, which reads `textContent`
-  (`BrowserQueries.TEXT`), but not on Browserless, which reads the server-side elements' text;
-  `BrowserQueries.ITEM_NAME`, a tab's or menu item's name, leaves out children in a named slot.
-  **[src, unified-testing-tool `76ab776`]**
+- The Unified API's `getText()` leaves it out on every tool: on Playwright,
+  `BrowserQueries.TEXT` skips a `<vaadin-tooltip slot="tooltip">`, as Browserless's server-side
+  text does; `BrowserQueries.ITEM_NAME`, a tab's or menu item's name, leaves out children in a
+  named slot. **[src, unified-testing-tool 0.1.0-alpha3]**
 
 ## R_vaadin_icons — a Vaadin component's icon in the browser
 
@@ -492,8 +500,9 @@ None of these carries `hidden`.
   Router behind a `setTimeout`, and deletes the flag in a `setTimeout` after the location changed.
   **[src, flow-server 25.3.7]**
 - The flag is Flow's internal, not an API. **[src, flow-server 25.3.7]**
-- The Unified API's Auto-Wait doesn't wait for it: parttio/unified-testing-tool#233.
-  **[verified 2026-11-16, unified-test-playwright 0.1.0-alpha2]**
+- The Unified API's Auto-Wait waits for it after each of its own actions: `AdapterSession.settle()`,
+  on Playwright while the flag is set (at most 2 s), then until Vaadin is idle. A click through
+  the escape hatch gets no such wait. **[src, unified-testing-tool 0.1.0-alpha3]**
 
 ## R_playwright_mcp_refs — the Playwright MCP's element refs
 

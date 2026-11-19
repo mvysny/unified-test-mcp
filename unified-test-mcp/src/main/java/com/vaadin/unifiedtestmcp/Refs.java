@@ -1,10 +1,10 @@
 package com.vaadin.unifiedtestmcp;
 
 import com.github.mvysny.tinymcpserver.MCPErrorResponseException;
-import com.vaadin.testing.unified.Findable;
 import com.vaadin.testing.unified.UnifiedPage;
+import com.vaadin.testing.unified.UnifiedWrapper;
 import com.vaadin.testing.unified.component.UnifiedContainer;
-import com.vaadin.testing.unified.query.Query;
+import com.vaadin.testing.unified.query.CommonFilters;
 import org.jspecify.annotations.Nullable;
 
 import java.util.HashMap;
@@ -94,7 +94,7 @@ final class Refs {
      *             component that's gone
      * @throws MCPErrorResponseException as {@link #resolve(UnifiedPage, int)}
      */
-    <W, Q extends Query<W, Q>> W resolve(UnifiedPage page, int ref, Class<? extends Findable<Q>> type) {
+    <W extends UnifiedWrapper & CommonFilters<W>> W resolve(UnifiedPage page, int ref, Class<W> type) {
         if (latest == null) {
             throw new MCPErrorResponseException("No refs yet: call snapshot if a page is open, or navigate to the app's URL;"
                     + " then use a ref from the snapshot either returns.");
@@ -112,27 +112,27 @@ final class Refs {
                     + ". A ref from another page needs that page again: navigate to it. Else call snapshot to see"
                     + " the components on this page now.");
         }
-        Q query = locate(page, type, target, ref);
-        if (!query.exists()) {
+        W wrapper = locate(page, type, target, ref);
+        if (wrapper.all().isEmpty()) {
             throw new MCPErrorResponseException("ref " + ref + " (" + target.flowName()
                     + ") is gone from the page: the app removed it, or re-created it. Call snapshot to see the"
                     + " components on the page now.");
         }
         // the page changes without a tool call too: a server push, a timer, a transition's end
-        if (!Snapshot.isVisible(locate(page, UnifiedContainer.class, target, ref).single().element())) {
+        if (!Snapshot.isVisible(locate(page, UnifiedContainer.class, target, ref).element())) {
             throw new MCPErrorResponseException("ref " + ref + " (" + target.flowName()
                     + ") isn't shown any more: the app hid it, or closed what holds it. Call snapshot to see the"
                     + " components on the page now.");
         }
-        return query.single();
+        return wrapper;
     }
 
-    private static <W, Q extends Query<W, Q>> Q locate(UnifiedPage page, Class<? extends Findable<Q>> type,
-                                                        Target target, int ref) {
-        Q query = page.find(type);
+    private static <W extends UnifiedWrapper & CommonFilters<W>> W locate(UnifiedPage page, Class<W> type,
+                                                                         Target target, int ref) {
+        W wrapper = page.find(type);
         return target.uniqueId() != null
-                ? query.withId(target.uniqueId())
-                : query.withAttribute(ATTRIBUTE, String.valueOf(ref));
+                ? wrapper.withId(target.uniqueId())
+                : wrapper.withAttribute(ATTRIBUTE, String.valueOf(ref));
     }
 
     /** {@code 1-4, 7, 9-12}. */
