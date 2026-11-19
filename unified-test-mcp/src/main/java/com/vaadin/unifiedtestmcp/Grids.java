@@ -47,6 +47,7 @@ final class Grids {
      * <h4>Implementation detail</h4>
      * The sorter, a light-DOM {@code <vaadin-grid-sorter>} holding the caption, clicked through the escape hatch: the
      * Unified API's {@code column(caption).sort(…)} fails on a grid with a header group row (R_unified_grid_headers).
+     * Drop once it doesn't: parttio/unified-testing-tool#338.
      *
      * @param direction {@code "asc"}, {@code "desc"}, or {@code null} for not sorting by it
      * @return whether it clicked: {@code false} if the column was so already

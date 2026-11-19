@@ -351,6 +351,10 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   here the group row, whose cells span columns and number fewer than the columns
   (`R_vaadin_grid_dom`). **[verified 2026-11-19, unified-test-playwright 0.1.0-alpha2, Vaadin
   25.3.5]**
+- The adapter's `columnHeaders()` and `headerCell(column)` call Dramafinder's
+  `getHeaderCellContents()` and `findHeaderCell(column)`, both reading the first header row;
+  upstream `main` still does, on Dramafinder 2.2.0. Filed as parttio/unified-testing-tool#338.
+  **[src, unified-testing-tool `0d35489`]**
 
 ## R_testbench_grid_element — how TestBench's GridElement reaches rows, the ones out of view too
 
