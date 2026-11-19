@@ -69,3 +69,7 @@ and `click` on the Details' ref toggles it.
 
 `Q_split_and_master_detail`: SplitLayout and MasterDetailLayout as layouts, standing aside like
 VerticalLayout? Their splitter and overlay mode take no input an agent needs.
+
+`Q_tab_preview`: a Tab holding an Anchor, Bakery's `Tab [value="Storefront"]` over `Anchor
+"Storefront"` (`benchmark-gaps.md` §4), as one line with the Anchor in its preview
+(`component-views.md`), `Tab "Storefront" [ref=23, selected]`? A badge in a Tab, `Inbox 3`, too.
