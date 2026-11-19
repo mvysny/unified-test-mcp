@@ -57,8 +57,8 @@ A line: `- `, the short view, ` actions: …`, then the component's contents, in
 - a container, a layout or a dialog: its children, each in its middle view, lines of their own.
   Today's snapshot.
 - a field: nothing; its insides are its own.
-- a Grid: its `Header:` lines, at most 10 of the rows in view, each with its `Details:`, a line
-  naming the rows not shown, its `Footer:` line. In a cell, header, footer or details, each
+- a Grid: its `Header:` lines, at most 10 of the rows in view, in v2 each with its `Details:`, a
+  line naming the rows not shown, its `Footer:` line. In a cell, header, footer or details, each
   component in its preview (`grid.md`).
 
 The middle view cuts only what grows with the data: a grid's rows, a preview's length; someday a
