@@ -513,6 +513,48 @@ None of these carries `hidden`.
   on Playwright while the flag is set (at most 2 s), then until Vaadin is idle. A click through
   the escape hatch gets no such wait. **[src, unified-testing-tool 0.1.0-alpha3]**
 
+## R_flow_idle_wait — Flow: what Auto-Wait's "idle" sees, and a page load it misses
+
+- Dramafinder's `AutoWait.waitForVaadinIdle` waits until no client in `window.Vaadin.Flow.clients`
+  is `isActive()`; a page without `Vaadin.Flow.clients` counts as idle. An "Execution context was
+  destroyed" during the wait makes it wait for `load` and ask again. **[src, Dramafinder 2.2.0]**
+- After a click that loads a page (a LoginForm's POST to Spring Security, `Page.setLocation`), it
+  returns while the page is leaving or before Flow runs in the new one: a snapshot then found no
+  components on Bakery and the CRM, and on test-app failed, reading a property of null.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- For `Page.setLocation`, the browser's request for the next page can come after Flow is idle and
+  the Unified API's wait has returned: in 3 of 25 tries on test-app, after the snapshot began.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- `Flow`'s constructor registers a client named `TypeScript`, active only while `flowInit` runs;
+  that runs when the router asks for the server's routes, and registers the UI's own client under
+  its app id, `ROOT`. **[src, Flow 25.3.7]**
+- Between the page's `load` and `flowInit`, no client is active: waited for right after `load`,
+  the idle check returned with an empty page in 6 of 25 tries on test-app.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- A load can end within the Unified API's own wait, its evaluate cut off by the navigation, which
+  then hits that gap: Bakery's Logout link answered with no components in 1 of 4 tries.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- The Navigation API's `navigate` event fires in the page as it asks to leave, a location change,
+  a link, a form's submit, before the request goes out; `destination.sameDocument` is false for
+  another document, true for `pushState`. **[docs]**
+- Neither Flow's client nor the frontends of test-app and Bakery listen to `navigate`. **[src]**
+
+## R_flow_debounce — Flow: a debounced change in the browser
+
+- A TextField sends its value on the event `ValueChangeMode.eventForMode` names: `input` for
+  EAGER, LAZY and TIMEOUT, `blur` for ON_BLUR, `change` for ON_CHANGE, the default. LAZY debounces
+  `input` by the field's timeout, `HasValueChangeMode.DEFAULT_CHANGE_TIMEOUT`, 400 ms; TIMEOUT
+  throttles it. **[src, flow-data 25.3.7]**
+- `@DomEvent(debounce = …)` debounces an event of the app's own: Bakery's search sends
+  `value-changed` 300 ms after the last one, and its TextField is EAGER besides. **[src]**
+- While the timer runs, nothing is queued: Flow's client isn't active, and Auto-Wait's idle wait
+  (`R_flow_idle_wait`) returns at once. `set_value` on the CRM's filter, Bakery's search and a
+  LAZY field in test-app answered with the grid before its filter. **[verified 2026-11-19, Vaadin 25.3.5]**
+- The client keeps its pending debouncers in a private static map, and sends them early only
+  before an event it sends at once (`Debouncer.flushAll`); a LAZY TextField listens to `input`
+  alone, so nothing flushes it. Seen in the client's TypeScript port; the live page still runs the
+  GWT client. **[src, Flow 25.3.7]**
+
 ## R_flow_shadow_root — Flow: a shadow root attached from Java
 
 - `Element.attachShadow()` gives the element an open shadow root in the browser; elements
@@ -563,3 +605,11 @@ Read in playwright-core 1.66.0-alpha-2026-11-09 under `@playwright/mcp` 0.0.85.
   capturing new snapshot." **[src]**
 - An action tool answers with a snapshot taken after the action, the whole page unless the
   server is configured otherwise (`snapshot.mode`). **[src]**
+
+## R_playwright_mcp_settle — the Playwright MCP's wait after an action
+
+- After every action it waits 500 ms (`timeouts.settle`), noting the requests the page makes
+  meanwhile. **[src, playwright-core 1.66.0-alpha-2026-11-18]**
+- After a navigation request among them, it waits for `load`, 10 s at most; otherwise for their
+  responses, 5 s at most, then, if there were any, 500 ms more.
+  **[src, playwright-core 1.66.0-alpha-2026-11-18]**

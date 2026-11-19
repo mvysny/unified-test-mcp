@@ -302,6 +302,33 @@ agent a second call, and a second chance to act on a stale picture. The cost, a 
 per action, stays within the promise: one line per component on the screen. A read, `get_text`
 or `get_value`, returns only what it read.
 
+## D_settle_after_action — Why does a snapshot wait for a page load, and `set_value` 450 ms more, past the Unified API's own wait?
+
+The Unified API waits after each action until Flow's client is idle (`R_flow_idle_wait`), and an
+answer read then comes too early twice over: after a click that loads a page, a login's POST, and
+after typing into a field that debounces its change, a LAZY filter (`R_flow_debounce`). The agent
+then calls `snapshot` again, or polls: the CRM probe's agent read its filter 53 times.
+
+**A page load:** `PageLoads` notes the page asking to leave, by the Navigation API's `navigate`
+event, and its request for the next page; `Snapshot.take` waits for that page's `load`, then,
+after any load since the last snapshot, for Flow to register its UI's client and be idle; every
+snapshot, the `snapshot` tool's too. Why the event, not only the request: the request can go out
+after the Unified API's wait, even after the snapshot began, and the event fires as the page asks.
+Why not `document.readyState`: until the server answers, the page loaded is the one leaving. Why
+wait for the UI's client: after `load`, Flow's stand-in client is idle until its router starts
+the UI, and the Unified API's wait may have seen the page through its load into that gap
+(`R_flow_idle_wait`). A Flow page whose view is no Flow UI waits out the timeout once per load.
+
+**A debounce:** nothing in the browser says a change is pending, nor which mode a field is in, so
+`set_value` waits 450 ms after typing text, past Flow's default 400 ms, then for Flow to be idle;
+the snapshot then waits for the grids it set loading. Why not only when the typing sent nothing:
+Bakery's search sends its value at once and a debounced event besides. Why not flush it: Flow
+sends a debounced change early only before an event it sends at once, and a LAZY field has none.
+Why only after typing, not after every action as the Playwright MCP's 500 ms
+(`R_playwright_mcp_settle`): typing is what debounces, and a click needn't pay. The cost is wall
+time, not tokens. An app debouncing longer still answers early; the agent's next snapshot
+catches up.
+
 ## D_text_or_value — Why does `get_text` refuse a field rather than return the field's DOM text?
 
 A field holds a value, not a text, as in Flow: `TextField` implements `HasValue`, not `HasText`.

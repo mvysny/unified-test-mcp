@@ -16,15 +16,15 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 | crm-add-contact | passes, $0.24 (Playwright MCP $0.14) | cost: the grid's cells in every answer (§2) |
 | crm-invalid-email | passes, $0.19 ($0.12) | the same |
 | crm-move-contact | passes, $0.16 ($0.12) | the same |
-| crm-count | passes, 210 turns, $1.23 ($0.06) | cost: rows beyond the rendered ones (§2); the snapshot lagging the filter (§3) |
+| crm-count | passes, 210 turns, $1.23 ($0.06) | cost: rows beyond the rendered ones (§2) |
 | crm-delete-closed | passes, 130 turns, $1.06 ($0.22) | the same |
 | bakery-locked-user | passes in the scripted walk: Edit, Role, Save, the persistent notification in Save's answer | — |
 | bakery-price-cap | untried since §1 | the Crud editor shows inline, no `Modal:` line (§1) |
 | bakery-new-user | untried since §1 | the same |
 | bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (§1) |
 | bakery-edit-items | untried since §1 | its picks and deletes re-create the item editors, as new-order's (§1) |
-| bakery-reschedule | blocked | the comment's Send button, in a field's suffix (§4); a card's row takes no `click(ref, row)` (§1) |
-| bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | a Delivered badge shows only an icon (§4) |
+| bakery-reschedule | blocked | the comment's Send button, in a field's suffix (§3); a card's row takes no `click(ref, row)` (§1) |
+| bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | a Delivered badge shows only an icon (§3) |
 
 Ours: the probe, one run each, of a work-in-progress tree (its `NOTES.md`). In brackets: Playwright
 MCP's median, the cheaper competitor in every CRM scenario.
@@ -78,27 +78,7 @@ and in `get_rows`: `This week Fri, Nov 20 - Sun, Nov 22 ready Fri 20 8…` loses
 and the customer on a group's first row. `snapshot(ref)` cuts nothing but gives each Span its ref,
 ~15 a row.
 
-## 3. Settling before the answer — extra calls in every scenario
-
-An action's answer is taken too early in two cases, and the agent calls `snapshot` again, or
-polls:
-
-- **A full page load**: the login form POSTs, and the page after it loads anew. Each CRM probe
-  run's login `click` answered `URL: …/?continue` and `(no components)`, and the agent's next call
-  was `snapshot`; on Bakery three snapshots back to back after the login still showed no
-  components.
-- **A debounced value change, and the grid fetch it starts**: the CRM's filter is
-  `ValueChangeMode.LAZY` (400 ms), Bakery's search a `@DomEvent` debounced 300 ms. `set_value
-  "Brennan"` answered with an empty grid; the probe's agent: "Filtering works, but the snapshot
-  lags". crm-delete-closed's 53 `get_value` calls on the filter were its way to wait.
-
-`Q_debounce`: nothing in the browser says a debounced event is pending, nor which mode a field has.
-Wait until Flow's client is idle and no grid is `loading`, after a pause past the longest default
-debounce? Or flush it: does a blur send a LAZY field's value at once? The navigation wait in
-`Snapshot` was the same problem, and upstream fixed that one in Auto-Wait
-(`AdapterSession.settle()`, parttio/unified-testing-tool#233); this fix may belong there too.
-
-## 4. Smaller, each found walking Bakery
+## 3. Smaller, each found walking Bakery
 
 - **A field's own prefix and suffix components** — blocks bakery-reschedule. The order details'
   comment field holds its Send button in its `suffix` slot, and `FIELDS` show none of their
@@ -131,8 +111,7 @@ only what's generic, §1's search bar and §2's rows.
 ## Order
 
 1. §1: the row click (#298), the upstream PR, the replaced field's 10 s (#377).
-2. §3: drops the extra calls from every scenario, the storefront's search included.
-3. §2: the CRM's cost, crm-count and crm-delete-closed; the storefront's cards as rows.
-4. §4's suffix components (reschedule) and lone icons (today-count), then the rest of §4.
+2. §2: the CRM's cost, crm-count and crm-delete-closed; the storefront's cards as rows.
+3. §3's suffix components (reschedule) and lone icons (today-count), then the rest of §3.
 
 Then a CRM round on a committed tree, and Bakery's first.

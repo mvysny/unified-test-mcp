@@ -462,12 +462,14 @@ final class Snapshot {
     }
 
     /**
-     * Snapshots the page and makes its refs the session's valid ones.
+     * Snapshots the page and makes its refs the session's valid ones. A page an action started loading is waited for
+     * first ({@link PageLoads}).
      *
      * @return the snapshot's text, starting with the browser's URL; {@link #NO_PAGE} before any navigation
      */
     static String take(UnifiedPage page, Refs refs) {
         Page browser = page.unwrap(Page.class);
+        PageLoads.of(browser).await();
         if (isBlank(browser)) {
             return NO_PAGE + "\n";
         }

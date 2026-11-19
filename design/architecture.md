@@ -34,7 +34,7 @@ code. Not here: why (`decisions.md` — cite the `D_`), what upstream does (`res
 2. `ClickTool` hands `(page, refs) -> …` to `ToolCall`, which submits it to the calling session's `UnifiedBrowser.call`.
 3. On the browser thread, the session's first call waits for `BrowserInstall`, then opens the page: `PlaywrightAdapter.open` launches Playwright and the browser, on an empty page; only `navigate` sends it anywhere.
 4. `Refs.resolve` turns the ref into a Unified API wrapper: by the component's id if the snapshot saw it unique, else by its stamp. A ref not in the latest snapshot, or a component gone from the page, fails right away with what to do next.
-5. The Unified API waits until the component is visible and enabled, clicks, and waits for the server round-trip; then a snapshot, which the tool returns (`D_action_returns_snapshot`).
+5. The Unified API waits until the component is visible and enabled, clicks, and waits for the server round-trip; then a snapshot, which the tool returns (`D_action_returns_snapshot`). The snapshot first waits for a page the click started loading, `PageLoads`; `set_value` waits out a debounce before it (`D_settle_after_action`).
 6. A failure — a lookup that timed out, an app that isn't up — comes back as a tool error carrying the Unified API's own message, which the model reads.
 
 **A session's end**: on stdio, the client closes stdin, and `runStdio` closes every session before it returns; over HTTP, the client's DELETE, a 30-minute idle eviction, or the server's `stop()`. Each runs `onSessionClosed` → the session's `UnifiedBrowser.close()`, which on its thread closes the tab, then `JUnitFreeContext` closes the browser and Playwright, what the adapter kept for the run.

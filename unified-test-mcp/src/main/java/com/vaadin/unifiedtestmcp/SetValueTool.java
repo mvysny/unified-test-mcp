@@ -6,7 +6,9 @@ import com.github.mvysny.tinymcpserver.MCPProtocol;
 import com.github.mvysny.tinymcpserver.ToolDescriptor;
 import com.github.mvysny.tinymcpserver.ToolFunction;
 import com.github.mvysny.tinymcpserver.ToolRequest;
+import com.microsoft.playwright.Page;
 import org.jspecify.annotations.Nullable;
+import org.vaadin.addons.dramafinder.AutoWait;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -77,6 +79,12 @@ final class SetValueTool implements ToolFunction {
     /** How many of a field's items a refusal lists: a ComboBox may have thousands. */
     private static final int ITEMS_SHOWN = 20;
 
+    /**
+     * How long typed text may take to reach the server: past Flow's default debounce, a LAZY TextField's 400 ms
+     * ({@code HasValueChangeMode.DEFAULT_CHANGE_TIMEOUT}).
+     */
+    private static final int DEBOUNCE_MILLIS = 450;
+
     @Override
     public MCPProtocol.Content call(ToolRequest request) {
         int ref = request.arguments().getInt("ref");
@@ -114,6 +122,9 @@ final class SetValueTool implements ToolFunction {
                 throw refused;
             } catch (RuntimeException | AssertionError e) {
                 failed = e;
+            }
+            if (field.holds() == ComponentTypes.Holds.VALUE || field.holds() == ComponentTypes.Holds.UNKNOWN) {
+                awaitDebounced(page.unwrap(Page.class));
             }
 
             String done = "Set ref=" + ref + " to " + Json.of(wanted);
@@ -156,6 +167,16 @@ final class SetValueTool implements ToolFunction {
             }
             return outcome + "\n\n" + Snapshot.take(page, refs);
         }));
+    }
+
+    /**
+     * Waits out a debounced change the typing set going, then the round trip it starts. Nothing in the browser says
+     * whether one is pending, and a field may send its value at once and a debounced event besides, as Bakery's search
+     * does: so after any typed text.
+     */
+    private static void awaitDebounced(Page browser) {
+        browser.waitForTimeout(DEBOUNCE_MILLIS);
+        AutoWait.waitForVaadinIdle(browser);
     }
 
     /**

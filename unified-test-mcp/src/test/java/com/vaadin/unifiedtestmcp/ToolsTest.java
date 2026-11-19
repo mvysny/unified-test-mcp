@@ -198,6 +198,7 @@ public class ToolsTest {
                   - Button "Log in" [ref=N] actions: click
                   - Button "Forgot password" [ref=N] actions: click
                 - Button "Sign in" [ref=N] actions: click
+                - Button "Log out" [ref=N] actions: click
                 - Span "Signed out" [ref=N]
                 """, masked(page));
         int form = ref(page, "LoginForm");
@@ -211,6 +212,16 @@ public class ToolsTest {
         String signedIn = call(client, "click", ref(ref(page, "Button \"Log in\"")));
         assertTrue(signedIn.contains("\n- LoginForm \"Log in\" [ref=" + form + "]\n"), "the error is gone: " + signedIn);
         assertTrue(signedIn.contains("\n- Span \"Signed in as alice\" ["), signedIn);
+    }
+
+    @Test
+    public void clickWaitsForThePageItLoads() throws IOException {
+        String page = snapshotOf("login");
+        call(client, "set_value", Map.of("ref", ref(page, "TextField \"Username\""), "value", "alice"));
+        call(client, "set_value", Map.of("ref", ref(page, "PasswordField"), "value", "secret"));
+        call(client, "click", ref(ref(page, "Button \"Log in\"")));
+        String loggedOut = call(client, "click", ref(ref(page, "Button \"Log out\"")));
+        assertTrue(loggedOut.contains("\n- Span \"Signed out\" ["), "the page loaded anew: " + loggedOut);
     }
 
     @Test

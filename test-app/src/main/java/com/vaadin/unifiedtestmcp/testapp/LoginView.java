@@ -15,6 +15,7 @@ import com.vaadin.flow.router.Route;
  * <pre>
  * Log in: Username [    ] Password [    ] [Log in] [Forgot password]
  * [Sign in]   opens the LoginOverlay "Mail"
+ * [Log out]   loads the page anew, as an app's logout does: Signed out again
  * Status: Signed out
  * </pre>
  */
@@ -36,7 +37,8 @@ public class LoginView extends VerticalLayout {
             }
         });
 
-        add(form, new Button("Sign in", e -> overlay.setOpened(true)), status);
+        Button logOut = new Button("Log out", e -> getUI().ifPresent(ui -> ui.getPage().setLocation("login")));
+        add(form, new Button("Sign in", e -> overlay.setOpened(true)), logOut, status);
     }
 
     private boolean logIn(AbstractLogin login, AbstractLogin.LoginEvent e) {

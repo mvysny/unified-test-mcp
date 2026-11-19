@@ -12,6 +12,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  * &lt;order-view&gt;                     the route
  *   Orders                          an H2
  *   &lt;search-bar id=search&gt;          a template in the template
- *     [Search]  [New order]         filters the orders by customer; opens the dialog
+ *     [Search]  [New order]         filters the orders by customer as typing pauses, as Bakery's; opens the dialog
  *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status in a span with id=status
  *   Dialog "New order"              its content an &lt;order-editor&gt;:
  *     Customer [    ]
@@ -79,12 +80,13 @@ public class TemplateView extends Component {
                 grid.getElement(), dialog.getElement(), new Element("slot"));
     }
 
-    /** A search field and an action button, as Bakery's {@code <search-bar>}. */
+    /** A search field and an action button, as Bakery's {@code <search-bar>}, which debounces its search too. */
     @Tag("search-bar")
     static class SearchBar extends Component {
         SearchBar(String action, Consumer<String> onSearch, Runnable onAction) {
             TextField field = new TextField();
             field.setPlaceholder("Search");
+            field.setValueChangeMode(ValueChangeMode.LAZY);
             field.addValueChangeListener(e -> onSearch.accept(e.getValue()));
             getElement().attachShadow().appendChild(field.getElement(),
                     new Button(action, e -> onAction.run()).getElement());
