@@ -73,9 +73,10 @@ What it takes:
 - Unlabelled fields need nothing more: the bracket already shows `id=dueTime,
   icon="vaadin:clock"`, `id=products`, `placeholder="Details"`; the template's `@Id`s name them.
 
-`Q_which_shadow_roots`: every non-`vaadin-*` custom element's shadow root, or only an app
-template's? A third-party add-on's shadow DOM is its implementation, as a Vaadin component's is,
-but nothing in the browser tells the two apart. Walk all, and look at what an add-on then shows?
+Decided: walk every non-`vaadin-*` custom element's shadow root, an add-on's too. A third-party
+add-on's shadow DOM is its implementation, as a Vaadin component's is, but nothing in the browser
+tells it from an app template: being a Lit element doesn't, since Vaadin's components and many
+add-ons are Lit elements too. Revisit when an add-on's insides show up as noise.
 
 ## 2. Grid — the CRM's cost, and the storefront's cards
 
