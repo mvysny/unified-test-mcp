@@ -318,6 +318,8 @@ Why not `document.readyState`: until the server answers, the page loaded is the 
 wait for the UI's client: after `load`, Flow's stand-in client is idle until its router starts
 the UI, and the Unified API's wait may have seen the page through its load into that gap
 (`R_flow_idle_wait`). A Flow page whose view is no Flow UI waits out the timeout once per load.
+Upstream, parttio/unified-testing-tool#397: once Auto-Wait waits for a page load itself,
+`PageLoads` goes.
 
 **A debounce:** nothing in the browser says a change is pending, nor which mode a field is in, so
 `set_value` waits 450 ms after typing text, past Flow's default 400 ms, then for Flow to be idle;
