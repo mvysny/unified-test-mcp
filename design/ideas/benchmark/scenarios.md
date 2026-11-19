@@ -4,19 +4,11 @@ The scenarios themselves are `benchmark/scenarios/*.md`; their checks, each fork
 `BenchmarkEndpoint`. Read from the apps' code at `vaadin/flow-crm-tutorial` 7db838e and
 `vaadin/bakery-app-starter-flow-spring` 59c7c46 (both 2026-11-03).
 
-## What our server lacks, by scenario
+What our server lacks, scenario by scenario: `benchmark-gaps.md`.
 
-| Capability | Scenarios that need it |
-|---|---|
-| **Components inside a Lit template's shadow root.** `Snapshot` walks `e.children`, light DOM only; Bakery's storefront, order editor and search bar are `LitTemplate`s with `@Id` fields, so today the snapshot sees nothing inside them. `idUnique` asks `document.querySelectorAll`, which doesn't reach them either. | every Bakery storefront scenario |
-| **Grid**: read rows, rows beyond the rendered ones, open a row, renderer-made content (Bakery's order cards) | crm-move-contact, crm-count, crm-delete-closed, bakery-reschedule, bakery-today-count, bakery-edit-items |
-| **Crud** (`vaadin-crud`, commercial): the edit column's icon buttons, the editor, its Save / Delete | bakery-price-cap, bakery-new-user, bakery-locked-user |
-| **Notifications** (Bakery's last 4 s) | bakery-new-order, bakery-locked-user |
-| **Links and tabs**: CRM's drawer `RouterLink`s, Bakery's menu `Tabs` | any scenario whose agent navigates by clicking instead of by URL |
-| **A field without a label**, named by its prefix icon or placeholder | bakery-new-order, bakery-edit-items |
-| Login: the CRM's `vaadin-login-form` shows already (`LoginForm "Log in"` with its two fields); Bakery's `vaadin-login-overlay` — check | all |
+## What the competitors stumble on
 
-What the competitors stumble on, from a first look in the browser (2026-11-18):
+From a first look in the browser (2026-11-18):
 
 - Playwright MCP's `browser_fill_form` fails on a Vaadin ComboBox ("Element is not a `<select>`
   element"); typing into it and pressing Enter works. Its `browser_click` on a CSS target needs

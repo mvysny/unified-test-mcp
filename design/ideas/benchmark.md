@@ -37,8 +37,9 @@ critique.
 - **Timing.** Today's tools (click, set_value, the get_ tools, navigate, snapshot) can't do most
   scenarios. There's no Grid, and the snapshot walks light DOM only, so it sees nothing inside
   Bakery's Lit templates. Write the scenarios now, run the two competitors now for baselines and
-  transcripts; every scenario we can't do yet is what the prototype implements next. The draft and
-  the table of what each scenario needs: `benchmark/scenarios.md`, beside this file.
+  transcripts; every scenario we can't do yet is what the prototype implements next, listed in
+  `benchmark-gaps.md`. The scenarios' draft and the first round's findings:
+  `benchmark/scenarios.md`, beside this file.
 
 ## Scenarios
 
