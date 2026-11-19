@@ -48,7 +48,7 @@ public class ViewsTest {
     public void surveyViewsOpen() {
         for (Class<? extends Component> view : List.of(GridView.class, UnloadedRowsView.class, VirtualListView.class,
                 NotificationView.class, NavigationView.class, DisclosureView.class, MenusView.class,
-                UploadView.class, MessagesView.class, LoginView.class, DisplayView.class)) {
+                UploadView.class, MessagesView.class, LoginView.class, DisplayView.class, TemplateView.class)) {
             UI.getCurrent().navigate(view);
             _assertOne(view);
         }

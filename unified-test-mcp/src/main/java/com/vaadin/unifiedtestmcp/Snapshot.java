@@ -30,7 +30,15 @@ import java.util.Map;
  * The quoted name is what {@link ComponentTypes} says names that type: a Button's text, a field's label. A component
  * with none has no quoted name, so an icon-only Button reads as one; its bracket shows its {@code aria-label=}, else
  * its {@code placeholder=}, for the agent to tell it by. A layout without an id, and plain HTML
- * with neither an id nor text of its own, stand aside: their children take their place. A component the user can't
+ * with neither an id nor text of its own, stand aside: their children take their place. Any other custom element shows
+ * as its tag, what it renders in its shadow root under it, a LitTemplate's components:
+ *
+ * <pre>
+ * - &lt;search-bar&gt; [ref=4, id=search]
+ *   - TextField [ref=5, placeholder="Search", value=""] actions: set_value
+ * </pre>
+ *
+ * A component the user can't
  * see, by {@link #isVisible}, isn't shown: one the app hid, a closed dialog's, Details' or menu's content, a closed
  * drawer's, a collapsed SideNavItem's items. What's inside it shows only if the user sees that, as a Dialog footer's
  * buttons. Nor is the out-of-sight region where Vaadin announces to a screen reader what a component did.
@@ -107,8 +115,9 @@ import java.util.Map;
  * the view (D_get_rows_scrolls).
  *
  * <h2>Implementation detail</h2>
- * One script, one round-trip: it waits for the page's animations to end and its grids to load, walks the light DOM
- * from {@code <body>}, or from the modal on top, stamps each component it shows with
+ * One script, one round-trip: it waits for the page's animations to end and its grids to load, walks the flat tree
+ * from {@code <body>}, or from the modal on top, the app's shadow roots in their hosts' places, never a Vaadin
+ * component's (D_app_shadow_roots), stamps each component it shows with
  * {@link Refs#ATTRIBUTE} (keeping a stamp already there, so a component keeps its ref), and returns the tree. The
  * Unified API can't list a page's components (R_unified_no_enumeration), hence the escape hatch. A Grid's rows come
  * from its shadow DOM, its {@code <tr>}s, each cell's content the light-DOM element its {@code <slot>} shows
@@ -174,6 +183,19 @@ final class Snapshot {
                   && (a.transitionProperty === undefined || ['visibility', 'display'].includes(a.transitionProperty));
               for (let waited = 0; roots.some(root => root.getAnimations().some(showsOrHides)) && waited < 1000;
                   waited += 10) await tick(10);
+              // the app's own shadow roots, as a template's: not a Vaadin component's, which is its own, as the
+              // Unified API's lookups leave it out (D_app_shadow_roots)
+              const appShadow = e => e.shadowRoot && !/^(vaadin-|copilot-)/.test(e.localName) ? e.shadowRoot : null;
+              // every element of the page, the app's shadow roots' too, each shadow root's right after its host
+              const appElements = (root = document) => Array.from(root.querySelectorAll('*'))
+                  .flatMap(e => appShadow(e) ? [e, ...appElements(appShadow(e))] : [e]);
+              // what shows in an element's place, the flat tree: an app's shadow root's children rather than its
+              // own; a <slot>'s, what is slotted into it, else its fallback
+              const flatChildNodes = e => e.localName === 'slot' && e.assignedNodes().length > 0 ? e.assignedNodes()
+                  : Array.from((appShadow(e) ?? e).childNodes);
+              const flatChildren = e => flatChildNodes(e).filter(n => n.nodeType === Node.ELEMENT_NODE);
+              // an element at the top of a shadow root is in its host
+              const parentTagOf = e => (e.parentElement ?? e.getRootNode().host)?.localName ?? 'body';
               // a grid fetching rows shows them empty; the wait TestBench's GridElement does (R_testbench_grid_element)
               const loading = g => g._dataProviderController?.isLoading() || g.$connector?.hasRootRequestQueue?.()
                   || !!g.$?.items?.querySelector(':scope > tr[loading]:not([hidden])');
@@ -183,7 +205,17 @@ final class Snapshot {
                 for (let waited = 0; loading(g) && waited < 5000; waited += 10) await tick(10);
                 await frame();
               };
-              for (const g of document.querySelectorAll('vaadin-grid')) await settle(g);
+              for (const g of appElements().filter(e => e.localName === 'vaadin-grid')) await settle(g);
+              // counted once the grids have settled, their cells holding components too; as the Unified API finds an
+              // id, in the app's shadow roots too
+              let idCounts = null;
+              const idUnique = id => {
+                if (idCounts === null) {
+                  idCounts = new Map();
+                  for (const e of appElements()) if (e.id) idCounts.set(e.id, (idCounts.get(e.id) ?? 0) + 1);
+                }
+                return idCounts.get(id) === 1;
+              };
               const isVisible = %s;
               const INLINE = new Set(inline);
               const stamps = rowsWanted == null;
@@ -275,7 +307,7 @@ final class Snapshot {
                   if (last?.text !== undefined) last.text += ' ' + t; else parts.push({ text: t });
                 };
                 const walk = (n, elementsOnly) => {
-                  for (const c of n.childNodes) {
+                  for (const c of flatChildNodes(n)) {
                     if (c.nodeType === Node.TEXT_NODE) {
                       if (!elementsOnly) text(c.textContent);
                       continue;
@@ -334,7 +366,7 @@ final class Snapshot {
                 const custom = tag.includes('-');
                 const text = ownText(e);
                 const children = () => short || FIELDS.has(tag) || tag === 'vaadin-grid' ? []
-                    : tag === 'vaadin-app-layout' ? regions(e) : Array.from(e.children).flatMap(c => visit(c, tag));
+                    : tag === 'vaadin-app-layout' ? regions(e) : flatChildren(e).flatMap(c => visit(c, tag));
                 // Flow's bootstrap wraps every view in <div id="outlet"><flow-container-root-…>: not the app's
                 const bootstrap = tag.startsWith('flow-container-') || (tag === 'div' && e.id === 'outlet');
                 // one the user can't see stands aside: what's inside may be seen, as a display: contents footer's
@@ -351,7 +383,7 @@ final class Snapshot {
                 const grid = tag === 'vaadin-grid';
                 return [{
                   tag, ref: ref === null ? null : Number(ref), text: str(text),
-                  id: str(e.id), idUnique: !!e.id && document.querySelectorAll('#' + CSS.escape(e.id)).length === 1,
+                  id: str(e.id), idUnique: !!e.id && idUnique(e.id),
                   testId: str(e.getAttribute('data-testid')),
                   label: custom ? str(e.label) : null,
                   title: tag in titleSlots || LOGINS.has(tag) ? titleOf(e) : null,
@@ -408,14 +440,14 @@ final class Snapshot {
               }
               if (root) {
                 // visited before next is read: the visit advances it
-                const nodes = visit(root, root.parentElement?.localName ?? 'body');
+                const nodes = visit(root, parentTagOf(root));
                 return { next, nodes };
               }
               // a modal opened over another is after it in the DOM: Flow appends it to the body, or puts it inside
               // the modal that opened it
-              const modals = Array.from(document.querySelectorAll('[aria-modal=true]'))
-                  .filter(e => e.opened !== false && !e.hidden).reverse();
-              const nodes = modals.length > 0 ? visit(modals[0], modals[0].parentElement.localName)
+              const modals = appElements().filter(e => e.matches('[aria-modal=true]') && e.opened !== false && !e.hidden)
+                  .reverse();
+              const nodes = modals.length > 0 ? visit(modals[0], parentTagOf(modals[0]))
                   : Array.from(document.body.children).flatMap(c => visit(c, 'body'));
               return { url: location.href, title: document.title, next, nodes,
                   modals: modals.map(e => ({ tag: e.localName, title: titleOf(e) })) };

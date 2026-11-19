@@ -58,8 +58,15 @@ a claim came from, so the prose doesn't repeat it.
   page instead, so a FormLayout item's label matches too. **[src]**
 - Dramafinder's Button query has `withId`: `page.find(UnifiedButton.class).withId("clicker")`
   finds `<vaadin-button id="clicker">`. **[verified 2026-11-16, Dramafinder 2.0.2]**
-- Both paths drop matches inside the shadow DOM of a `vaadin-*` or `copilot-*` host — the dev
-  tools' own components (`BrowserQueries.APP_CONTENT`). **[src]**
+- Both paths search the light DOM only: Dramafinder 2.2's queries are `css:light=` unless
+  `includingShadowDom()` follows `find`, and the Unified API never calls it. No lookup finds a
+  component in a template's shadow root, though `BrowserQueries.APP_CONTENT`'s comment means one
+  to. **[src; verified 2026-11-19, 0.1.0-alpha3: a ref inside one is "gone from the page"]**
+- `0.1.0-alpha3-shadow`, a local build of the clone's branch `shadow-dom-queries-alpha3`, adds
+  `includingShadowDom()` to both paths, and drops every match inside the shadow root of a
+  `vaadin-*` or `copilot-*` host through `APP_CONTENT` on both: an id, an attribute, a type is
+  found in an app's template as in the light DOM.
+  **[verified 2026-11-19, 0.1.0-alpha3-shadow]**
 - `UnifiedElement.findChildren` / `findDescendants(tag)` walk light DOM only; in a browser that
   includes the light DOM web components add themselves, such as a text field's `input` and
   `label`. **[docs]**
@@ -503,6 +510,44 @@ None of these carries `hidden`.
 - The Unified API's Auto-Wait waits for it after each of its own actions: `AdapterSession.settle()`,
   on Playwright while the flag is set (at most 2 s), then until Vaadin is idle. A click through
   the escape hatch gets no such wait. **[src, unified-testing-tool 0.1.0-alpha3]**
+
+## R_flow_shadow_root — Flow: a shadow root attached from Java
+
+- `Element.attachShadow()` gives the element an open shadow root in the browser; elements
+  appended to the `ShadowRoot` are its children there, and Flow components among them keep their
+  listeners: a Button's click, a TextField's value change reach the server.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- A `<slot>` appended to it shows the host's light-DOM children, by their `slot` attribute.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- A modal Dialog in it opens with `aria-modal="true"`, its content its light-DOM children, and
+  its buttons' listeners run under its modality; `document.querySelectorAll('[aria-modal=true]')`
+  doesn't find it. **[verified 2026-11-19, Vaadin 25.3.5]**
+- Vaadin adds `<style>` elements to a shadow root that holds its components.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- It needs no frontend build; a `LitTemplate`'s `@JsModule` does, the dev bundle rebuilt with npm
+  for a module it lacks. **[docs]**
+
+## R_bakery_template_dom — Vaadin's Bakery: its LitTemplates in the browser
+
+- `<storefront-view>` has no light-DOM children; its shadow root holds `<search-bar id=search>`,
+  `<vaadin-grid id=grid>` and `<vaadin-dialog id=dialog aria-modal=true>`.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- `<search-bar>`'s shadow root: a TextField with the placeholder "Search", a "Show past orders"
+  Checkbox twice (one hidden by CSS per viewport width), "Clear search" (hidden until a search),
+  and the action button, "New order", "New user" or "New product".
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- The dialog's light-DOM child is `<order-editor>` or `<order-details>`, added by Flow, each a
+  template with its fields in its shadow root. The editor's items are a Flow `Div` in its
+  `#itemsContainer`, an `<order-item-editor>` per item, each with `#products`, `#amount`,
+  `#comment` and `#delete` in a shadow root of its own: the same ids, repeated.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- `<buttons-bar>` slots the footer's buttons, Flow's light-DOM children of it, through
+  `<slot name=left|info|right>`. **[verified 2026-11-19, Vaadin 25.3.5]**
+- A grid cell's `<order-card>` holds all its text in its shadow root, the cell's `textContent`
+  empty; its status is `<order-status-badge>`, another template.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
+- The Crud views' editor is a `<vaadin-crud-dialog>` in `<vaadin-crud>`'s shadow root.
+  **[verified 2026-11-19, Vaadin 25.3.5]**
 
 ## R_playwright_mcp_refs — the Playwright MCP's element refs
 

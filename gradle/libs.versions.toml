@@ -6,7 +6,9 @@ vaadin = "25.3.5"
 tinymcpserver = "com.github.mvysny.tinymcpserver:mcp-server:1.0"
 # TinyMCPServer and Playwright bring it in too; get_value needs its own instance, without HTML escaping
 gson = "com.google.code.gson:gson:2.15.0"
-unified-test-playwright = "org.vaadin.addons:unified-test-playwright:0.1.0-alpha3"
+# 0.1.0-alpha3 with its queries entering an app's shadow roots, from ~/.m2 (R_unified_no_enumeration): built from
+# unified-testing-tool/'s branch shadow-dom-queries-alpha3, `mvn install -DskipTests -pl unified-test-playwright -am`
+unified-test-playwright = "org.vaadin.addons:unified-test-playwright:0.1.0-alpha3-shadow"
 vaadin-core = { module = "com.vaadin:vaadin-core", version.ref = "vaadin" }
 vaadin-dev = { module = "com.vaadin:vaadin-dev", version.ref = "vaadin" }
 vaadin-boot = "com.github.mvysny.vaadin-boot:vaadin-boot:13.7"

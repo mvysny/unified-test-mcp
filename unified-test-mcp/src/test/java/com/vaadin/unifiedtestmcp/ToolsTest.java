@@ -945,6 +945,89 @@ public class ToolsTest {
                 """), all);
     }
 
+    @Test
+    public void snapshotShowsWhatATemplateRendersInItsShadowRoot() throws IOException {
+        String page = snapshotOf("template");
+        assertEquals("""
+                URL: APP/template
+                - <order-view> [ref=N]
+                  - H2 "Orders" [ref=N]
+                  - <search-bar> [ref=N, id=search]
+                    - TextField [ref=N, placeholder="Search", value=""] actions: set_value
+                    - Button "New order" [ref=N] actions: click
+                  - Grid [ref=N, id=grid, rows=3, selection=single]
+                    Header: | Order |
+                    - row 0: Grace Hopper Pending 2 × Strawberry Bun
+                    - row 1: Alan Turing Ready 1 × Vanilla Cracker
+                    - row 2: Ada Lovelace Delivered 1 × Blueberry Cheesecake
+                  - Span "No order saved" [ref=N, id=status]
+                """, masked(page), "a template in a template, a card's text in its shadow root, a slot's content");
+        assertEquals("""
+                - <search-bar> [ref=N, id=search]
+                  - TextField [ref=N, placeholder="Search", value=""] actions: set_value
+                  - Button "New order" [ref=N] actions: click
+                """, masked(call(client, "snapshot", ref(ref(page, "<search-bar>")))));
+    }
+
+    @Test
+    public void setValueInATemplateReachesTheApp() throws IOException {
+        String searched = call(client, "set_value",
+                Map.of("ref", ref(snapshotOf("template"), "placeholder=\"Search\""), "value", "ada"));
+        assertTrue(masked(searched).contains("""
+                  - Grid [ref=N, id=grid, rows=1, selection=single]
+                    Header: | Order |
+                    - row 0: Ada Lovelace Delivered 1 × Blueberry Cheesecake
+                """), searched);
+    }
+
+    @Test
+    public void snapshotShowsAModalInAShadowRootAlone() throws IOException {
+        String page = snapshotOf("template");
+        String dialog = call(client, "click", ref(ref(page, "Button \"New order\"")));
+        assertEquals("""
+                Clicked ref=N
+
+                URL: APP/template
+                Modal: Dialog "New order" over the page; only the dialog on top is shown: nothing under it takes \
+                input
+                - Dialog "New order" [ref=N]
+                  - <order-editor> [ref=N]
+                    - TextField "Customer" [ref=N, id=customer, value=""] actions: set_value
+                    - Div [ref=N, id=items]
+                      - <order-item-editor> [ref=N]
+                        - ComboBox [ref=N, id=products, placeholder="Product", value=null] actions: set_value
+                        - IntegerField [ref=N, id=amount, value="1"] actions: set_value
+                      - <order-item-editor> [ref=N]
+                        - ComboBox [ref=N, id=products, placeholder="Product", value=null] actions: set_value
+                        - IntegerField [ref=N, id=amount, value="1"] actions: set_value
+                    - <buttons-bar> [ref=N]
+                      - Button "Cancel" [ref=N] actions: click
+                      - Button "Save" [ref=N] actions: click
+                """, masked(dialog), "the buttons in the bar's slots");
+        int search = ref(page, "placeholder=\"Search\"");
+        assertTrue(error(client, "set_value", Map.of("ref", search, "value", "ada"))
+                .startsWith("ref " + search + " isn't in the latest snapshot, of " + appUrl + "/template, which shows"
+                        + " only the modal Dialog \"New order\";"));
+    }
+
+    @Test
+    public void refsInTemplatesFindTheirComponents() throws IOException {
+        String dialog = call(client, "click", ref(ref(snapshotOf("template"), "Button \"New order\"")));
+        call(client, "set_value", Map.of("ref", ref(dialog, "TextField \"Customer\""), "value", "Linus Torvalds"));
+        List<Integer> products = refs(dialog, "id=products");
+        List<Integer> amounts = refs(dialog, "id=amount");
+        call(client, "set_value", Map.of("ref", products.get(0), "value", "Strawberry Bun"));
+        call(client, "set_value", Map.of("ref", products.get(1), "value", "Vanilla Cracker"));
+        assertEquals("\"Vanilla Cracker\"", call(client, "get_value", ref(products.get(1))),
+                "the second of two components with one id");
+        call(client, "set_value", Map.of("ref", amounts.get(1), "value", 3));
+        String saved = call(client, "click", ref(ref(dialog, "Button \"Save\"")));
+        assertTrue(saved.contains("\n    - row 3: Linus Torvalds New 1 × Strawberry Bun, 3 × "), saved);
+        assertEquals("Saved order for Linus Torvalds: 1 × Strawberry Bun, 3 × Vanilla Cracker",
+                call(client, "get_text", ref(ref(saved, "id=status"))),
+                "the page's one id=status, though each card's shadow root has one too");
+    }
+
     private static TinyMCPClient connect() throws IOException {
         TinyMCPClient connected = new TinyMCPClient(URI.create(server.getUrl()));
         connected.initialize();
@@ -1007,6 +1090,15 @@ public class ToolsTest {
         Matcher m = Pattern.compile("ref=(\\d+)").matcher(lines.get(0));
         assertTrue(m.find(), lines.get(0));
         return Integer.parseInt(m.group(1));
+    }
+
+    /** The refs on the snapshot lines containing {@code part}, top to bottom. */
+    private static List<Integer> refs(String snapshot, String part) {
+        return snapshot.lines().filter(l -> l.contains(part)).map(l -> {
+            Matcher m = Pattern.compile("ref=(\\d+)").matcher(l);
+            assertTrue(m.find(), l);
+            return Integer.parseInt(m.group(1));
+        }).toList();
     }
 
     /** Refs as {@code ref=N}, their numbers depending on what ran before; test-app's URL as {@code APP}. */

@@ -161,7 +161,8 @@ no snapshot yet, a ref not in the latest snapshot (listing those that are), a co
 
 The Unified API can't list what's on a page: every lookup starts from a component type
 (`R_unified_no_enumeration`). So the snapshot is one script, run through the escape hatch: it
-walks the light DOM from `<body>`, stamps, and reads each component's tag, id, own text, label,
+walks from `<body>`, the light DOM and the app's shadow roots (`D_app_shadow_roots`), stamps, and
+reads each component's tag, id, own text, label,
 `aria-label`, placeholder, value and states, in one browser round-trip. The actions still go
 through the Unified API, for its waiting and its component semantics. Why not ask the Unified API
 for `all()` of every wrapper type: a flat list with no nesting, nothing for a component without
@@ -212,7 +213,33 @@ has the page under it.
 a dialog to `<body>`, or inside the modal that opened it (`R_vaadin_dialog_dom`), so a later one
 is on top. Why `aria-modal` rather than a list of tags: Dialog and ConfirmDialog both set it, and
 so does any web component that tells a screen reader it is modal. One closed but still in the DOM
-is told by its `opened`.
+is told by its `opened`. One in a template's shadow root counts too, a shadow root's elements
+coming right after its host (`D_app_shadow_roots`).
+
+## D_app_shadow_roots — Why does the snapshot walk into every shadow root but a Vaadin component's, rather than only an app template's, or none?
+
+A LitTemplate's `@Id` components live in its shadow root, its light DOM empty: walking the light
+DOM, Bakery's storefront showed as `<storefront-view>` with nothing under it, and six of its
+seven benchmark scenarios couldn't be done (`R_bakery_template_dom`). So where an element has an
+open shadow root and isn't a `vaadin-*` or `copilot-*` one, the snapshot walks the flat tree: the
+shadow root's children in the host's place, a `<slot>` standing for what is slotted into it, its
+fallback content when nothing is. A grid cell's text is read the same way, an order card's being
+all in its shadow root. A Vaadin component's shadow root is its own implementation, a Grid's
+table, a LoginForm's heading, and stays unwalked: its light DOM is the app's. The host shows as its
+tag, its insides under it: `- <search-bar> [ref=4, id=search]`.
+
+Why every such root rather than an app template's only: nothing in the browser tells them apart.
+Vaadin's components, an app's templates and many add-ons are all Lit elements, and a
+`LitTemplate` is one only on the server. So an add-on's insides show too; revisit when one shows
+up as noise. Why not a list of known add-ons to skip: none exists, and an add-on's insides shown
+cost lines, where a template's missing costs a page the agent can't use.
+
+Whatever else looks across the page looks across the same roots: a modal there is found
+(`D_modal_shows_alone`), a grid there waited for, and an id is unique only if no other element in
+them has it. That last is how the Unified API finds by id, through the same roots
+(`R_unified_no_enumeration`): an id unique in the light DOM but repeated inside a template, as
+`id=status` in every order card, would otherwise name several components, and `Refs` would wait
+for one and time out.
 
 **Why not keep the page's lines and mark them blocked**: every tool would then need its own
 is-this-blocked check — swing-mcp rejected that too. The stamps stay on the page's elements, so
@@ -316,8 +343,8 @@ component this is.
 ## D_login_from_i18n — Why does the snapshot read a LoginForm's heading and error from its `i18n`, rather than the text its shadow DOM shows?
 
 A LoginForm renders both in its shadow DOM, and nothing in its light DOM changes when its error
-shows (`R_vaadin_login_dom`); the snapshot walks the light DOM only
-(`D_snapshot_from_javascript`). What the shadow DOM renders is the component's `i18n`, which
+shows (`R_vaadin_login_dom`); the snapshot never walks a Vaadin component's shadow DOM
+(`D_app_shadow_roots`). What the shadow DOM renders is the component's `i18n`, which
 Flow sends whole, so the script reads that, as it reads a field's `errorMessage` property rather
 than its rendered message: `LoginForm "Log in"`, and once the app's `setError(true)` lands,
 `error "Incorrect username or password: Check that you have entered…"`. A LoginOverlay's error

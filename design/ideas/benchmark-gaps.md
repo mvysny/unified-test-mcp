@@ -18,65 +18,32 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 | crm-count | passes, 210 turns, $1.23 ($0.06) | cost: rows beyond the rendered ones (§2); the snapshot lagging the filter (§3) |
 | crm-delete-closed | passes, 130 turns, $1.06 ($0.22) | the same |
 | bakery-locked-user | passes in the scripted walk: Edit, Role, Save, the persistent notification in Save's answer | — |
-| bakery-price-cap | blocked | "New product" is inside `<search-bar>`'s shadow root (§1) |
-| bakery-new-user | blocked | "New user", the same |
-| bakery-new-order | blocked | "New order" the same; the order editor inside `<storefront-view>`'s (§1) |
-| bakery-edit-items | blocked | the order cards, the editor and its item editors are Lit templates (§1) |
-| bakery-reschedule | blocked | the same; then the comment's Send button, in a field's suffix (§4) |
-| bakery-today-count | blocked | the order cards (§1); then a Delivered badge shows only an icon (§4) |
+| bakery-price-cap | untried since §1 | the Crud editor shows inline, no `Modal:` line (§1) |
+| bakery-new-user | untried since §1 | the same |
+| bakery-new-order | untried since §1 | — |
+| bakery-edit-items | untried since §1 | — |
+| bakery-reschedule | blocked | the comment's Send button, in a field's suffix (§4) |
+| bakery-today-count | untried since §1 | a Delivered badge shows only an icon (§4) |
 
 Ours: the probe, one run each, of a work-in-progress tree (its `NOTES.md`). In brackets: Playwright
 MCP's median, the cheaper competitor in every CRM scenario.
 
-## 1. Lit templates — blocks six of Bakery's seven
+## 1. Lit templates — walked on test-app, untried on Bakery
 
-What the walk saw: the storefront is `- <storefront-view> [ref=14]` with nothing under it; the Crud
-views show `- <search-bar> [ref=18]`, neither its search field nor its "New user" / "New product"
-button. `Snapshot` walks `e.children`, the light DOM, and a `LitTemplate`'s `@Id` components are in
-its shadow root.
+Built: the snapshot walks the app's shadow roots (`D_app_shadow_roots`), test-app's `template`
+view its test; the Unified API's lookups reach into them only in the local `-shadow` build
+(`R_unified_no_enumeration`). Bakery's DOM: `R_bakery_template_dom`. Left:
 
-Bakery's DOM (Vaadin 25.3.5):
-
-- `<storefront-view>` has no light-DOM children; its shadow root holds `<search-bar id=search>`,
-  `<vaadin-grid id=grid>` and `<vaadin-dialog id=dialog aria-modal=true>`.
-- `<search-bar>`'s shadow root: a TextField with the placeholder "Search", a "Show past orders"
-  Checkbox (twice, one hidden by CSS per viewport width), "Clear search" (hidden until a search),
-  and the action button: "New order", "New user", "New product".
-- The dialog's light-DOM child is `<order-editor>` or `<order-details>`, added by Flow; each a
-  template with its fields in its shadow root. The editor's item list is a Flow `Div` in its
-  `#itemsContainer`, an `<order-item-editor>` per item, each with `#products`, `#amount`,
-  `#comment` and `#delete` in a shadow root of its own: the same ids, repeated.
-- `<buttons-bar>` slots the footer's buttons, Flow's light-DOM children of it, through
-  `<slot name=left|info|right>`.
-- A grid cell's `<order-card>` holds all its text in its shadow root: the cell's `textContent` is
-  empty. Inside, the status is `<order-status-badge>`, another template.
-
-What it takes:
-
-- **Walk the flat tree** of a custom element that isn't `vaadin-*` and has a shadow root: the
-  shadow root's children in its place, a `<slot>` standing for the elements assigned to it, its
-  fallback content when none. A `vaadin-*` component stays walked by its light DOM: its shadow root
-  is the component's own.
-- **A modal in a shadow root**: `document.querySelectorAll('[aria-modal=true]')` misses the
-  storefront's dialog, and the Crud editor's `<vaadin-crud-dialog>` in `<vaadin-crud>`'s shadow
-  root. Seen today: the open Crud editor shows inline at the end of the page, no `Modal:` line, the
-  grid under it listed as if it took clicks.
-- **`idUnique` across shadow roots**: it counts with `document.querySelectorAll`, which sees into
-  no shadow root, while the Unified API's `withId` (Playwright's CSS) pierces them. An id unique in
-  the light DOM but repeated inside a template resolves to two elements.
-- **Refs inside shadow roots**: `Refs.locate` finds `[data-mcp-ref=N]` through Dramafinder's CSS,
-  which pierces open shadow roots, so `click` and `set_value` should reach them: to be proved by a
-  test.
-- **A test-app view built as a `LitTemplate`**: `@Id` fields, a slot Flow fills, a template in a
-  template, a Dialog inside, a Grid column whose LitRenderer's element has a shadow root. The
-  tools' tests run on test-app, never on Bakery.
-- Unlabelled fields need nothing more: the bracket already shows `id=dueTime,
-  icon="vaadin:clock"`, `id=products`, `placeholder="Details"`; the template's `@Id`s name them.
-
-Decided: walk every non-`vaadin-*` custom element's shadow root, an add-on's too. A third-party
-add-on's shadow DOM is its implementation, as a Vaadin component's is, but nothing in the browser
-tells it from an app template: being a Lit element doesn't, since Vaadin's components and many
-add-ons are Lit elements too. Revisit when an add-on's insides show up as noise.
+- **Upstream**: an issue and a PR to parttio/unified-testing-tool, the clone's
+  `shadow-dom-queries-alpha3` ported to `main` with a test of its own; until a release has it,
+  the build needs the `-shadow` in `~/.m2`.
+- **Lit's own rendering**: test-app's templates are shadow roots attached from Java
+  (`R_flow_shadow_root`); Lit's comment markers and its render after the element upgrades are
+  untried. Bakery's first round tries them.
+- **The Crud editor** shows inline at the end of the page, no `Modal:` line, the grid under it
+  listed as if it took clicks: its `<vaadin-crud-dialog>` is in `<vaadin-crud>`'s shadow root, a
+  Vaadin component's, which no walk enters. Crud is commercial; price-cap and new-user may pass
+  regardless, as locked-user does.
 
 ## 2. Grid — the CRM's cost, and the storefront's cards
 
@@ -92,9 +59,6 @@ Playwright MCP's was 29k, though ours took fewer turns. Built since, untried on 
 - **A row clicked by its number**, `click(ref, row)`: the CRM opens a contact's form so.
 - **Refs in cells move with the recycled cells**, accepted (`D_grid_as_rows`): crm-delete-closed
   deletes rows one after another, each action answering with the snapshot of the rows now.
-
-Still to do: **a row's text from the flat tree** (§1): an order card's text is in its shadow
-root, which `textContent` doesn't reach.
 
 The storefront has 158 orders, 23 cards rendered: bakery-today-count's "Today" group sits on top,
 and bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered
@@ -148,11 +112,11 @@ debounce? Or flush it: does a blur send a LAZY field's value at once? The naviga
   created" lasts 4 s; `notification.md`'s `Q_vanished` matters if an agent ever looks late.
 
 Crud is commercial, out of scope while the project is a prototype: the three Crud scenarios need
-only what's generic, §1's search bar and modal in a shadow root, and §2's rows.
+only what's generic, §1's search bar and §2's rows.
 
 ## Order
 
-1. §1 with its test-app view: unblocks price-cap and new-user, and opens the storefront.
+1. §1's upstream PR.
 2. §3: drops the extra calls from every scenario, the storefront's search included.
 3. §2: the CRM's cost, crm-count and crm-delete-closed; the storefront's cards as rows.
 4. §4's suffix components (reschedule) and lone icons (today-count), then the rest of §4.
