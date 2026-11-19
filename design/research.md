@@ -60,8 +60,10 @@ a claim came from, so the prose doesn't repeat it.
   finds `<vaadin-button id="clicker">`. **[verified 2026-11-16, Dramafinder 2.0.2]**
 - Both paths search the light DOM only: Dramafinder 2.2's queries are `css:light=` unless
   `includingShadowDom()` follows `find`, and the Unified API never calls it. No lookup finds a
-  component in a template's shadow root, though `BrowserQueries.APP_CONTENT`'s comment means one
-  to. **[src; verified 2026-11-19, 0.1.0-alpha3: a ref inside one is "gone from the page"]**
+  component in a template's shadow root, on any Testing Tool, as its spec says since its #251;
+  `BrowserQueries.APP_CONTENT`'s comment is older. Asked about in
+  parttio/unified-testing-tool#347.
+  **[src; verified 2026-11-19, 0.1.0-alpha3: a ref inside one is "gone from the page"]**
 - `0.1.0-alpha3-shadow`, a local build of the clone's branch `shadow-dom-queries-alpha3`, adds
   `includingShadowDom()` to both paths, and drops every match inside the shadow root of a
   `vaadin-*` or `copilot-*` host through `APP_CONTENT` on both: an id, an attribute, a type is

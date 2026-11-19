@@ -34,9 +34,10 @@ Built: the snapshot walks the app's shadow roots (`D_app_shadow_roots`), test-ap
 view its test; the Unified API's lookups reach into them only in the local `-shadow` build
 (`R_unified_no_enumeration`). Bakery's DOM: `R_bakery_template_dom`. Left:
 
-- **Upstream**: an issue and a PR to parttio/unified-testing-tool, the clone's
-  `shadow-dom-queries-alpha3` ported to `main` with a test of its own; until a release has it,
-  the build needs the `-shadow` in `~/.m2`.
+- **Upstream**: parttio/unified-testing-tool#347 asks whether an app template's shadow root may be
+  searched on every Testing Tool, the spec saying not since their #251; once they answer, a PR
+  from the clone's `shadow-dom-queries-alpha3`, ported to `main`. Until a release has it, the
+  build needs the `-shadow` in `~/.m2`.
 - **Lit's own rendering**: test-app's templates are shadow roots attached from Java
   (`R_flow_shadow_root`); Lit's comment markers and its render after the element upgrades are
   untried. Bakery's first round tries them.
