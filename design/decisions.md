@@ -473,9 +473,9 @@ column, a filter row too; a row of column groups, a cell spanning columns, doesn
 row is a row of column groups in the browser, the captions' included, so a group row is told by a
 cell's `colspan`, `R_vaadin_grid_dom`); the footer shows its first row. No row numbers on them:
 no tool takes one. ↑ or ↓ marks a sorted column, with its order when several are, as the sorter
-shows it, `| Name ↑2 | Age ↓1 |`: the order the rows are in. Not `⇅` on a sortable column: the
-snapshot offers nothing a tool can't do, and no tool sorts yet. Every column, however long the
-row (swing-mcp stops at 10): a long line costs no more than its cells.
+shows it, `| Name ↑2 | Age ↓1 |`: the order the rows are in; `⇅` a column that sorts, which the
+`sort` tool sorts by its caption. Every column, however long the row (swing-mcp stops at 10): a
+long line costs no more than its cells.
 
 **No count of the selected rows.** The browser has only those among the rows it has loaded, a
 single-select grid's too: a selected row drops out of `selectedItems` once the grid scrolls far

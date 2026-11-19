@@ -26,7 +26,9 @@ which of the table's columns can I sort by?
 - Row 150's Edit: `get_rows`' rows carry no refs. Does it take the Edit button's ref from the
   snapshot that follows them, where row 150 is in view, or try a ref it never saw, or click the
   row?
-- Bob Novak: does it find `click` with `row`, or try to click a cell's text, or `set_value`?
+- Bob Novak: does it find `click` with `row`, or try to click a cell's text, or `set_value`? The
+  first review's agent first scrolled back with `get_rows(0, 1)`, though `click` with `row`
+  scrolls to the row itself.
 - `Turku \| 30s`: does it read the `\|` as an escaped `|`?
-- Sorting: the snapshot marks only a sorted column. Does it reach for `snapshot(ref)`, whose full
-  view names the sorters, or say it can't tell, or click a header it guesses?
+- Sorting: `⇅` marks the columns that sort. The first review's agent, before `⇅`, found them by
+  `snapshot(ref)` "on a hunch". Does it answer from the header line now?

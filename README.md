@@ -26,6 +26,8 @@ A prototype with these tools:
   click. `click(ref, row)` clicks a Grid's row, by its number from the snapshot.
 - `get_rows(ref, offset, length)` — a Grid's rows beyond the 10 the snapshot shows, scrolling the
   grid as a user would; returns them, then the snapshot.
+- `sort(ref, column, direction)` — sorts a Grid by a column, by clicks on its header. Returns the
+  snapshot.
 - `get_text(ref)` — a Button's or a Span's text.
 - `get_value(ref)` — a field's value as JSON, uncut; a ComboBox's item by the label the user
   sees; whether a Checkbox is ticked.

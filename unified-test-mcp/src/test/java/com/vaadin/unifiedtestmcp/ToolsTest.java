@@ -782,7 +782,7 @@ public class ToolsTest {
     private static final String GRID = """
             URL: APP/grid
             - Grid [ref=N, rows=200, selection=single]
-              Header: | Name | Age | City | Tags | Actions |
+              Header: | Name ⇅ | Age ⇅ | City | Tags | Actions |
               Header: | TextField [ref=N, placeholder="Filter", value=""] | | | | |
               - row 0: Alice Novak | 20 | Turku | Turku \\| 20s | Button "Edit" [ref=N]
               - row 1: Bob Novak | 27 | Brno | Brno \\| 20s | Button "Edit" [ref=N]
@@ -792,7 +792,7 @@ public class ToolsTest {
               - rows 5–199 not shown: get_rows ref=N
               Footer: | 200 people | | | | |
             - Grid [ref=N, rows=2, selection=multi]
-              Header: | Checkbox [ref=N, id=selectAllCheckbox] | Department | People |
+              Header: | Checkbox [ref=N, id=selectAllCheckbox] | Department ⇅ | People |
               - row 0: Checkbox [ref=N] | Engineering | 12
               - row 1: Checkbox [ref=N] | Sales | 4
             - Span "Nothing selected" [ref=N]
@@ -820,14 +820,15 @@ public class ToolsTest {
         int people = ref(snapshotOf("grid"), "rows=200");
         String rows = call(client, "get_rows", Map.of("ref", people, "offset", 150, "length", 3));
         assertTrue(masked(rows).startsWith("""
-                Rows 150–152 of 200 in ref=N, the grid now scrolled to row 150:
+                Rows 150–152 of 200 in ref=N. The grid now shows row 150; the snapshot below has the refs of the rows\
+                 in view:
                 - row 150: Alice Popescu | 35 | Turku | Turku \\| 30s | Button "Edit"
                 - row 151: Bob Popescu | 42 | Brno | Brno \\| 40s | Button "Edit"
                 - row 152: Carol Popescu | 49 | Oslo | Oslo \\| 40s | Button "Edit"
 
                 URL: APP/grid
                 - Grid [ref=N, rows=200, selection=single]
-                  Header: | Name | Age | City | Tags | Actions |
+                  Header: | Name ⇅ | Age ⇅ | City | Tags | Actions |
                   Header: | TextField [ref=N, placeholder="Filter", value=""] | | | | |
                   - row 150: Alice Popescu | 35 | Turku | Turku \\| 30s | Button "Edit" [ref=N]
                 """), rows);
@@ -849,8 +850,9 @@ public class ToolsTest {
         assertTrue(rows.get(100).startsWith("- row 100: Alice Meyer | "), rows.get(100));
         assertTrue(rows.get(199).startsWith("- row 199: Judy Ortiz | "), rows.get(199));
         String tail = call(client, "get_rows", Map.of("ref", people, "offset", 195, "length", 50));
-        assertTrue(tail.startsWith("Rows 195–199 of 200 in ref=" + people + ", the grid now scrolled to row 195:\n"),
-                tail);
+        assertTrue(tail.startsWith("Rows 195–199 of 200 in ref=" + people + ". The grid now shows row 195;"), tail);
+        String one = call(client, "get_rows", Map.of("ref", people, "offset", 150, "length", 1));
+        assertTrue(one.startsWith("Row 150 of 200 in ref=" + people + ". The grid now shows row 150;"), one);
     }
 
     @Test
@@ -875,7 +877,7 @@ public class ToolsTest {
         String full = call(client, "snapshot", Map.of("ref", people));
         assertEquals("""
                 - Grid [ref=N, rows=200, selection=single]
-                  Header: | GridSorter "Name" [ref=N] | GridSorter "Age" [ref=N] | City | Tags | Actions |
+                  Header: | GridSorter "Name" [ref=N] ⇅ | GridSorter "Age" [ref=N] ⇅ | City | Tags | Actions |
                   Header: | TextField [ref=N, placeholder="Filter", value=""] | | | | |
                   - row 0: Alice Novak | 20 | Turku | Span "Turku \\| 20s" [ref=N] | Button "Edit" [ref=N]
                   - row 1: Bob Novak | 27 | Brno | Span "Brno \\| 20s" [ref=N] | Button "Edit" [ref=N]
@@ -892,23 +894,34 @@ public class ToolsTest {
     }
 
     @Test
-    public void headerMarksTheSortedColumnsInTheirOrder() throws IOException {
+    public void sortSortsAndTheHeaderMarksTheSortedColumnsInTheirOrder() throws IOException {
         int people = ref(snapshotOf("grid"), "rows=200");
-        String byName = call(client, "click", ref(sorter(people, "Name")));
-        assertTrue(byName.contains("\n  Header: | Name ↑ | Age | City | Tags | Actions |\n"), byName);
+        String byName = call(client, "sort", Map.of("ref", people, "column", "Name", "direction", "ascending"));
+        assertTrue(byName.startsWith("Sorted ref=" + people + " by Name, ascending\n\n"), byName);
+        assertTrue(byName.contains("\n  Header: | Name ↑ | Age ⇅ | City | Tags | Actions |\n"), byName);
         assertTrue(byName.contains("\n  - row 0: Alice Berg | "), byName);
-        String byAge = call(client, "click", ref(sorter(people, "Age")));
-        assertTrue(byAge.contains("\n  Header: | Name ↑2 | Age ↑1 | City | Tags | Actions |\n"), byAge);
-        String descending = call(client, "click", ref(sorter(people, "Age")));
-        assertTrue(descending.contains("\n  Header: | Name ↑2 | Age ↓1 | City | Tags | Actions |\n"), descending);
+        String byAge = call(client, "sort", Map.of("ref", people, "column", "Age", "direction", "descending"));
+        assertTrue(byAge.contains("\n  Header: | Name ↑2 | Age ↓1 | City | Tags | Actions |\n"),
+                "two clicks on Age, and a column sorted anew comes first: " + byAge);
+        assertTrue(byAge.contains("\n  - row 0: Carol Berg | 64 |"), byAge);
+        String again = call(client, "sort", Map.of("ref", people, "column", "Age", "direction", "descending"));
+        assertTrue(again.contains("\n  Header: | Name ↑2 | Age ↓1 | City | Tags | Actions |\n"),
+                "already so, no click: " + again);
+        String unsorted = call(client, "sort", Map.of("ref", people, "column", "Age", "direction", "none"));
+        assertTrue(unsorted.startsWith("Stopped sorting ref=" + people + " by Age\n\n"), unsorted);
+        assertTrue(unsorted.contains("\n  Header: | Name ↑ | Age ⇅ | City | Tags | Actions |\n"), unsorted);
     }
 
-    /** The ref of a Grid's sorter, which only its full view shows, its header line holding every sorter. */
-    private static int sorter(int grid, String caption) throws IOException {
-        String full = call(client, "snapshot", Map.of("ref", grid));
-        Matcher m = Pattern.compile("GridSorter \"" + caption + "\" \\[ref=(\\d+)").matcher(full);
-        assertTrue(m.find(), full);
-        return Integer.parseInt(m.group(1));
+    @Test
+    public void sortRefusesAColumnThatDoesntSort() throws IOException {
+        String page = snapshotOf("grid");
+        int people = ref(page, "rows=200");
+        assertEquals("ref " + people + " has no column \"City\" that sorts. Those that do: Name, Age; the snapshot"
+                + " marks them ⇅, ↑ or ↓.", error(client, "sort", Map.of("ref", people, "column", "City",
+                "direction", "ascending")));
+        int status = ref(page, "Span \"Nothing selected\"");
+        assertEquals("ref " + status + " is a Span, not a Grid: sort sorts a Grid's rows by one of its columns.",
+                error(client, "sort", Map.of("ref", status, "column", "Name", "direction", "ascending")));
     }
 
     @Test

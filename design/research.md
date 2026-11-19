@@ -340,6 +340,15 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   on a tree toggle expands the row, its children's cells added after its own. Each reaches the
   server's listeners. **[verified 2026-11-18, Vaadin 25.3.5]**
 
+## R_unified_grid_headers — the Unified API's Grid columns under a header group row
+
+- On test-app's people grid, a header group row over Name and Age above the captions, every
+  `UnifiedGrid.column(caption).sort(…)` fails with "No header cell found at column index 4",
+  for a caption the grid has and for one it hasn't: its header lookup reads the first header row,
+  here the group row, whose cells span columns and number fewer than the columns
+  (`R_vaadin_grid_dom`). **[verified 2026-11-19, unified-test-playwright 0.1.0-alpha2, Vaadin
+  25.3.5]**
+
 ## R_testbench_grid_element — how TestBench's GridElement reaches rows, the ones out of view too
 
 TestBench's `GridElement`, `com.vaadin:vaadin-grid-testbench`, ships in flow-components under the

@@ -1,10 +1,11 @@
 # Grid and TreeGrid: v2
 
-v1 is built: a row a line in the snapshot, `get_rows`, `click(ref, row)` and `snapshot(ref)`'s
-full view (`D_grid_as_rows`, `D_get_rows_scrolls`, `D_component_views`). It covers what the
-benchmark's scenarios do with a grid: read rows, click a row, click a row's button, count. What
-follows waits for a scenario or a real app that needs it: no benchmark scenario sorts, selects
-more than a click does, expands a tree, opens details or edits in a grid.
+v1 is built: a row a line in the snapshot, `get_rows`, `click(ref, row)`, `sort` and
+`snapshot(ref)`'s full view (`D_grid_as_rows`, `D_get_rows_scrolls`, `D_component_views`). It
+covers what the benchmark's scenarios do with a grid: read rows, click a row, click a row's
+button, count; and sorting, which a blind review asked for. What follows waits for a scenario or
+a real app that needs it: no benchmark scenario selects more than a click does, expands a tree,
+opens details or edits in a grid.
 
 ## Tools
 
@@ -13,18 +14,17 @@ Each takes the grid's ref and a row by its number from 0, scrolling the grid to 
 
 | Tool | | swing-mcp's |
 |---|---|---|
-| `sort(ref, column, direction)` | ascending, descending or none; a column by its caption | — |
 | `set_selection(ref, rows)` | exactly these rows selected, `[]` clears, `all=true` the header's checkbox | `set_selection`, `clear_selection`, `select_all` |
 | `get_value` on a Grid | its selected rows: Flow's Grid selection is its `HasValue` | `get_selection` |
 | `toggle_expand(ref, row)` | a TreeGrid row | `toggle_expand` |
 | `click(ref, row, double)` | a double click, for an app opening a row's editor or page so | — |
 
-The Unified API has most: a row's `select()`, `deselect()`, `doubleClick()`, `toggleDetails()`; a
-column's `sort(direction)`; the grid's `selectAll()`.
+The Unified API has most: a row's `select()`, `deselect()`, `doubleClick()`, `toggleDetails()`;
+the grid's `selectAll()`. Its column lookup fails under a header group row
+(`R_unified_grid_headers`): a fix upstream before these lean on it.
 
 ## The snapshot
 
-- **`⇅` on a sortable column**, with `sort`.
 - **The selection column as no column**, `selected` standing for its checkbox, with
   `set_selection`; the bracket then says what its header checkbox says: `none selected`, `some
   selected`, `all selected`. A lazy multi-select grid has no header checkbox by default (Flow's
@@ -54,9 +54,6 @@ storefront's grid sits in `<storefront-view>`'s shadow root.
 For v2: an empty grid; details opening by a tool; a TreeGrid's depth to show.
 
 ## Open questions
-
-`Q_column_name`: `sort` names a column by its caption. A column without one, two with the same?
-The 0-based column index then, as the Unified API's `column(index)`?
 
 `Q_get_value_shape`: `get_value` on a Grid answers its selected rows as row lines, `row 0: Frank
 Rossi | 20 | Lyon`; past how many is it cut, with the count? swing-mcp's `get_selection` stops at

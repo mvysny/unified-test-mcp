@@ -36,6 +36,10 @@ import com.vaadin.testing.unified.component.UnifiedGrid;
  *
  * The Unified API's {@code row(150).click()}: it scrolls the row into view and clicks a spot of it free of
  * components, so it selects the row, or opens what the app opens on a click, and no button in it is hit.
+ *
+ * <p>Why not {@code click(ref, row, target: "Edit")}, a button in a row by its caption, as a blind review asked: every
+ * component in a row in view has a ref of its own, and a second way of naming one would undo D_refs_not_ids. A row
+ * out of view costs one {@code get_rows} first, whose snapshot has the refs of the rows it scrolled to.
  */
 final class ClickTool implements ToolFunction {
     static final ToolDescriptor DESCRIPTOR = new ToolDescriptor("click",

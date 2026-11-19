@@ -13,7 +13,7 @@ import com.vaadin.testing.unified.component.UnifiedGrid;
  * the snapshot writes them; then the snapshot, the grid scrolled to {@code offset}.
  *
  * <pre>
- * get_rows(ref: 1, offset: 150, length: 2)   → Rows 150–151 of 200 in ref=1, the grid now scrolled to row 150:
+ * get_rows(ref: 1, offset: 150, length: 2)   → Rows 150–151 of 200 in ref=1. The grid now shows row 150; the …:
  *                                              - row 150: Alice Lund | 34 | Turku | Button "Edit"
  *                                              - row 151: Bob Lund | 41 | Brno | Button "Edit"
  *
@@ -57,9 +57,9 @@ final class GetRowsTool implements ToolFunction {
             Grids.checkRow(ref, offset, size);
             String rows = Snapshot.rows(page, refs, grid.element(), offset, length);
             int last = Math.min(offset + length, size) - 1;
-            return "Rows " + (offset == last ? String.valueOf(offset) : offset + "–" + last) + " of " + size
-                    + " in ref=" + ref + ", the grid now scrolled to row " + offset + ":\n" + rows + "\n"
-                    + Snapshot.take(page, refs);
+            return (offset == last ? "Row " + offset : "Rows " + offset + "–" + last) + " of " + size + " in ref="
+                    + ref + ". The grid now shows row " + offset + "; the snapshot below has the refs of the rows in"
+                    + " view:\n" + rows + "\n" + Snapshot.take(page, refs);
         }));
     }
 }

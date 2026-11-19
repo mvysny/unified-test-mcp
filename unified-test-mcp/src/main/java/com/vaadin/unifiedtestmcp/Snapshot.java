@@ -306,7 +306,7 @@ final class Snapshot {
                   const cells = tds.map(td => {
                     const content = contentOf(td);
                     const sorter = content?.querySelector('vaadin-grid-sorter');
-                    return { parts: partsOf(content), sorted: sorter?.direction ?? null,
+                    return { parts: partsOf(content), sortable: !!sorter, sorted: sorter?.direction ?? null,
                       order: str(sorter?.shadowRoot?.querySelector('[part="order"]')?.textContent) };
                   });
                   return cells.some(c => c.parts.length > 0) ? cells : null;
@@ -677,14 +677,18 @@ final class Snapshot {
         }
     }
 
-    /** {@code | Name ↑2 | Age | |}: a header or footer row, a sorted column with its arrow and its order. */
+    /**
+     * {@code | Name ↑2 | Age ⇅ | |}: a header or footer row, a sorted column with its arrow and its order, one that
+     * sorts with {@code ⇅}.
+     */
     private static String headerLine(List<?> cells, Map<Integer, Refs.Target> targets, boolean full) {
         StringBuilder line = new StringBuilder("|");
         for (Object o : cells) {
             Map<?, ?> cell = (Map<?, ?>) o;
             String sorted = (String) cell.get("sorted");
-            String arrow = sorted == null ? "" : (sorted.equals("asc") ? " ↑" : " ↓")
-                    + (cell.get("order") == null ? "" : cell.get("order"));
+            String arrow = sorted != null ? (sorted.equals("asc") ? " ↑" : " ↓")
+                    + (cell.get("order") == null ? "" : cell.get("order"))
+                    : Boolean.TRUE.equals(cell.get("sortable")) ? " ⇅" : "";
             String text = (cell((List<?>) cell.get("parts"), targets, full) + arrow).strip();
             line.append(text.isEmpty() ? " |" : " " + text + " |");
         }
