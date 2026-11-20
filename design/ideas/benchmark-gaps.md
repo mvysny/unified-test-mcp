@@ -23,7 +23,7 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 | bakery-new-user | untried since §1 | the same |
 | bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (`D_set_value_reads_back`) |
 | bakery-edit-items | untried since §1 | its picks and deletes re-create the item editors, as new-order's |
-| bakery-reschedule | blocked | the comment's Send button, in a field's suffix (§3); a card's row takes no `click(ref, row)` (§1) |
+| bakery-reschedule | blocked | a card's row takes no `click(ref, row)` (§1); the Send button shows since `D_field_affixes` |
 | bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | a Delivered badge shows only an icon (§3) |
 
 Ours: the probe, one run each, of a work-in-progress tree whose grid showed a line per cell (its
@@ -64,23 +64,11 @@ and the customer on a group's first row. `snapshot(ref)` cuts nothing but gives 
 
 ## 3. Smaller, each found walking Bakery
 
-- **A field's own prefix and suffix components** — blocks bakery-reschedule. The order details'
-  comment field holds its Send button in its `suffix` slot, and `FIELDS` show none of their
-  children. Enter in the field sends too (`_onCommentKeydown`), but `set_value` presses no Enter.
-  Show the components the app put in a field's `prefix` and `suffix` slots (an icon there already
-  shows as `icon=`)?
 - **A state shown only by an icon** — bakery-today-count when its status is Delivered:
   `<order-status-badge status="delivered">` hides its text and shows `vaadin:check`, and the
   snapshot skips every `vaadin-icon`. The scenario picks any (location, status) group of today's
   orders. `Q_lone_icon`: a `vaadin-icon` with no text beside it as a line of its own,
   `Icon "vaadin:check"`?
-- **A LoginOverlay's description is wrong**: the snapshot shows `description="Application
-  description"`, the web component's default property; the user sees `i18n.header.description`,
-  Bakery's demo credentials. Read it from the `i18n` first, as `D_login_from_i18n` does a
-  LoginForm's heading.
-- **A FormItem's label**: the order details label their values with `<label slot="label">` in a
-  `<vaadin-form-item>` ("Customer", "Phone number", "Due", "History"), which the snapshot drops as
-  a component's own part: `H3 "Grace Hopper"` shows without "Customer".
 - **Links and tabs**: Bakery's menu shows as `Tab [value="Storefront"]` with `Anchor "Storefront"`
   inside it, the CRM's drawer as `Anchor "List"`: no `href`, no `actions: click`, no `selected` on
   the current tab. An agent clicks the Anchor anyway, or guesses `/users`; `path=` as on a
@@ -96,6 +84,6 @@ ours, so by the code it isn't one a user acts on and shows as its text, none
 
 1. §1: the row click (#298), the upstream PR.
 2. §2: the storefront's cards cut at 50 characters.
-3. §3's suffix components (reschedule) and lone icons (today-count), then the rest of §3.
+3. §3's lone icons (today-count), then the rest of §3.
 
 Then a CRM round on a committed tree, and Bakery's first.

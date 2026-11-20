@@ -38,6 +38,15 @@ import java.util.Map;
  *   - TextField [ref=5, placeholder="Search", value=""] actions: set_value
  * </pre>
  *
+ * A FormItem shows, named by its label, what it labels under it (D_form_item_label); a field, of what the app put in
+ * its prefix and suffix, the components a user acts on (D_field_affixes):
+ *
+ * <pre>
+ * - FormItem "Comment" [ref=7]
+ *   - TextField [ref=8, placeholder="Add comment", value=""] actions: set_value
+ *     - Button "Send" [ref=9] actions: click
+ * </pre>
+ *
  * A component the user can't
  * see, by {@link #isVisible}, isn't shown: one the app hid, a closed dialog's, Details' or menu's content, a closed
  * drawer's, a collapsed SideNavItem's items. What's inside it shows only if the user sees that, as a Dialog footer's
@@ -230,13 +239,18 @@ final class Snapshot {
               const itemLabel = (e, i) => typeof i === 'string' ? i : String(i[e.itemLabelPath || 'label'] ?? '');
               const textOf = e => (e?.textContent || '').trim();
               // a LoginOverlay has aria-labelledby, no aria-label; a LoginForm's heading and a login's error are
-              // rendered in its shadow DOM from its i18n (D_login_from_i18n)
-              const titleOf = e => e.localName === 'vaadin-login-form' ? str(e.i18n?.form?.title)
+              // rendered in its shadow DOM from its i18n (D_login_from_i18n): the app's, which may set a part only,
+              // merged over the component's defaults (R_vaadin_login_dom)
+              const i18nOf = e => e.__effectiveI18n ?? e.i18n;
+              const titleOf = e => e.localName === 'vaadin-login-form' ? str(i18nOf(e)?.form?.title)
                   : str(e.getAttribute('aria-label'))
                     ?? (e.localName in titleSlots
                         ? str(textOf(e.querySelector(`:scope > [slot="${titleSlots[e.localName]}"]`))) : null);
-              const loginError = e => str([e.i18n?.errorMessage?.title, e.i18n?.errorMessage?.message]
+              const loginError = e => str([i18nOf(e)?.errorMessage?.title, i18nOf(e)?.errorMessage?.message]
                   .filter(str).join(': '));
+              // as the overlay renders it: its i18n's header over its own property
+              const loginDescription = e => i18nOf(e)?.header?.description != null
+                  ? str(i18nOf(e).header.description) : str(e.description);
               const iconOf = e => {
                 const icon = e.querySelector(':scope > vaadin-icon[slot=prefix]')
                     ?? (e.localName === 'vaadin-button' ? e.querySelector(':scope > vaadin-icon:not([slot])') : null);
@@ -326,6 +340,13 @@ final class Snapshot {
                 if (content) walk(content, false);
                 return parts;
               };
+              // what the app put in a field's prefix and suffix: the components a user acts on, a Send button
+              // (D_field_affixes)
+              const affixes = field => Array.from(field.children)
+                  .filter(c => ['prefix', 'suffix'].includes(c.getAttribute('slot')))
+                  .flatMap(c => actedOnIn(c, field.localName));
+              const actedOnIn = (e, parentTag) => INLINE.has(e.localName) ? visit(e, parentTag)
+                  : e.hidden || SKIPPED.has(e.localName) ? [] : flatChildren(e).flatMap(c => actedOnIn(c, e.localName));
               const rowOf = tr => ({ index: tr.index, selected: tr.hasAttribute('selected'),
                   cells: cellsOf(tr).map(td => partsOf(contentOf(td))) });
               const gridOf = g => {
@@ -365,12 +386,16 @@ final class Snapshot {
                 if (tag in titleSlots && !e.opened) return [];
                 const custom = tag.includes('-');
                 const text = ownText(e);
-                const children = () => short || FIELDS.has(tag) || tag === 'vaadin-grid' ? []
+                const children = () => short || tag === 'vaadin-grid' ? [] : FIELDS.has(tag) ? affixes(e)
                     : tag === 'vaadin-app-layout' ? regions(e) : flatChildren(e).flatMap(c => visit(c, tag));
+                // a FormItem's is the text in its label slot (D_form_item_label)
+                const label = tag === 'vaadin-form-item' ? str(textOf(e.querySelector(':scope > [slot=label]')))
+                    : custom ? str(e.label) : null;
                 // Flow's bootstrap wraps every view in <div id="outlet"><flow-container-root-…>: not the app's
                 const bootstrap = tag.startsWith('flow-container-') || (tag === 'div' && e.id === 'outlet');
                 // one the user can't see stands aside: what's inside may be seen, as a display: contents footer's
-                const shown = !bootstrap && (custom ? !(LAYOUTS.has(tag) && !e.id) : !!(e.id || text)) && isVisible(e);
+                const shown = !bootstrap && (custom ? !(LAYOUTS.has(tag) && !e.id && !label) : !!(e.id || text))
+                    && isVisible(e);
                 if (!shown) return children();
                 let ref = null;
                 if (stamps) {
@@ -385,9 +410,9 @@ final class Snapshot {
                   tag, ref: ref === null ? null : Number(ref), text: str(text),
                   id: str(e.id), idUnique: !!e.id && idUnique(e.id),
                   testId: str(e.getAttribute('data-testid')),
-                  label: custom ? str(e.label) : null,
+                  label,
                   title: tag in titleSlots || LOGINS.has(tag) ? titleOf(e) : null,
-                  description: tag === 'vaadin-login-overlay' ? str(e.description) : null,
+                  description: tag === 'vaadin-login-overlay' ? loginDescription(e) : null,
                   ariaLabel: str(e.getAttribute('aria-label')),
                   placeholder: custom ? str(e.placeholder) : null,
                   icon: custom ? iconOf(e) : null,

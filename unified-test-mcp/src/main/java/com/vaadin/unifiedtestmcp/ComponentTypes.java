@@ -129,7 +129,7 @@ final class ComponentTypes {
             Map.entry("a", html("Anchor")),
             Map.entry("label", html("NativeLabel")));
 
-    /** Layouts: without an id, their children take their place in the snapshot. */
+    /** Layouts: without an id, or a FormItem's label, their children take their place in the snapshot. */
     static final Set<String> LAYOUTS = Set.of("vaadin-vertical-layout", "vaadin-horizontal-layout",
             "vaadin-form-layout", "vaadin-form-item", "vaadin-form-row", "vaadin-scroller");
 
@@ -154,8 +154,9 @@ final class ComponentTypes {
     private static final Type MULTI_SELECT_LIST_BOX = labelled("MultiSelectListBox", Holds.SELECTED_ITEMS);
 
     /**
-     * Fields: nothing inside one is the app's, so a snapshot shows none of it — a ComboBox's scroller, a
-     * RadioButtonGroup's buttons, a Select's list. Not a CustomField: the fields inside it are the app's.
+     * Fields: nothing inside one is the app's but its prefix and suffix, so a snapshot shows only the components a
+     * user acts on there (D_field_affixes) — not a ComboBox's scroller, a RadioButtonGroup's buttons, a Select's list.
+     * Not a CustomField: the fields inside it are the app's.
      */
     static final Set<String> FIELDS = TYPES.entrySet().stream()
             .filter(e -> e.getValue().holds() != Holds.TEXT && e.getValue().holds() != Holds.PARTS)

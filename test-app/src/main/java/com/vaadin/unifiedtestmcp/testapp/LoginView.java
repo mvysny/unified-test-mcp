@@ -4,6 +4,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginForm;
+import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
@@ -14,7 +15,7 @@ import com.vaadin.flow.router.Route;
  *
  * <pre>
  * Log in: Username [    ] Password [    ] [Log in] [Forgot password]
- * [Sign in]   opens the LoginOverlay "Mail"
+ * [Sign in]   opens the LoginOverlay "Mail", its description from its i18n, as Bakery's
  * [Log out]   loads the page anew, as an app's logout does: Signed out again
  * Status: Signed out
  * </pre>
@@ -30,7 +31,11 @@ public class LoginView extends VerticalLayout {
 
         LoginOverlay overlay = new LoginOverlay();
         overlay.setTitle("Mail");
-        overlay.setDescription("Your mail, anywhere");
+        overlay.setDescription("Not shown: the i18n's header wins");
+        LoginI18n i18n = new LoginI18n();
+        i18n.setHeader(new LoginI18n.Header());
+        i18n.getHeader().setDescription("Your mail, anywhere");
+        overlay.setI18n(i18n);
         overlay.addLoginListener(e -> {
             if (logIn(overlay, e)) {
                 overlay.setOpened(false);

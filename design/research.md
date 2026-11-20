@@ -458,8 +458,14 @@ None of these carries `hidden`.
   `<vaadin-password-field id="vaadinLoginPassword">` in its light DOM, beside an
   `<input id="csrf" type="hidden">`, whose `checkVisibility()` is false.
   **[verified 2026-11-18, Vaadin 25.3.5]**
-- Flow sends the form its whole `i18n`, there before any error. After the app's `setError(true)`,
-  the form's `error` property is true and its message is rendered in the shadow DOM of a
+- Flow sends a login `LoginI18n.createDefault()`, whole, until the app calls `setI18n`; the
+  component's `i18n` property returns what was set. What it renders from is its private
+  `__effectiveI18n`: its defaults with the app's merged over them. Vaadin 25.3 deprecates
+  `createDefault()` for a `new LoginI18n()` holding only what the app changes; then `i18n` has no
+  `errorMessage`, and the error rendered is the defaults'. **[src @vaadin/login and
+  vaadin-login-flow 25.3.5; verified 2026-11-20, Vaadin 25.3.5]**
+- After the app's `setError(true)`, the form's `error` property is true and its message is
+  rendered in the shadow DOM of a
   `<vaadin-login-form-wrapper>`, itself in the form's shadow root: `i18n.errorMessage.title` in a
   `<strong part="error-message-title">`, `i18n.errorMessage.message` below it. Nothing in the
   light DOM changes. **[verified 2026-11-18, Vaadin 25.3.5]**
@@ -470,6 +476,19 @@ None of these carries `hidden`.
   title, its id generated, `title-vaadin-login-overlay-34`. Its `setTitle` and `setDescription` are
   its `title` and `description` properties; the description is rendered in its shadow DOM only,
   `part="description"`. **[verified 2026-11-18, Vaadin 25.3.5]**
+- The overlay renders its effective i18n's `header.title` and `header.description` when not null,
+  else its `title` and `description` properties, by default "App name" and "Application
+  description" (`LoginOverlayMixin.willUpdate`). **[src @vaadin/login 25.3.5; verified 2026-11-20,
+  Vaadin 25.3.5]**
+
+## R_vaadin_form_item_dom — a Vaadin FormItem in the browser
+
+- Flow's `addFormItem(component, "Customer")` makes a `<vaadin-form-item>` holding the component
+  and a `<label slot="label">`, a `NativeLabel`. **[src vaadin-form-layout-flow 25.3.5; verified
+  2026-11-20, Vaadin 25.3.5]**
+- The item links its first label to its first field: the label's id, generated if it has none,
+  in the `aria-labelledby` of the field's ARIA target. A click on the label focuses the field.
+  **[src @vaadin/form-layout 25.3.5, `vaadin-form-item-mixin.js`]**
 
 ## R_vaadin_app_layout_dom — a Vaadin AppLayout in the browser
 
@@ -592,6 +611,9 @@ None of these carries `hidden`.
   **[verified 2026-11-19, Vaadin 25.3.5]**
 - `<buttons-bar>` slots the footer's buttons, Flow's light-DOM children of it, through
   `<slot name=left|info|right>`. **[verified 2026-11-19, Vaadin 25.3.5]**
+- `<order-details>` labels its values with FormItems, `<label slot="label">Customer</label>` beside
+  an `<h3>`; its comment's `<vaadin-text-field id=commentField>` holds a `<div slot="suffix">`
+  with the `<vaadin-button id=sendComment>` "Send" in it. **[src, `order-details.js`]**
 - A grid cell's `<order-card>` holds all its text in its shadow root, the cell's `textContent`
   empty; its status is `<order-status-badge>`, another template.
   **[verified 2026-11-19, Vaadin 25.3.5]**

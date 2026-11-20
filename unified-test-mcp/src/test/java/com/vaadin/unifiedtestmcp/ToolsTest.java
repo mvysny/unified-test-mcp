@@ -84,10 +84,23 @@ public class ToolsTest {
                 - Button [ref=N, id=close, aria-label="Close", icon="vaadin:close", tooltip="Close without saving"] \
                 actions: click
                 - Button "Delete" [ref=N, disabled] actions: click
+                - FormItem "Customer" [ref=N]
+                  - Span "Grace Hopper" [ref=N]
+                - FormItem "Comment" [ref=N]
+                  - TextField [ref=N, placeholder="Add comment", value=""] actions: set_value
+                    - Button "Send" [ref=N] actions: click
                 - Span "Not saved" [ref=N]
                 """, masked(navigate(client, "form")));
         assertEquals(masked(call(client, "snapshot", Map.of())), masked(navigate(client, "form")).substring(
                 "Navigated to APP/form\n\n".length()));
+    }
+
+    @Test
+    public void clickReachesAButtonInAFieldsSuffix() throws IOException {
+        String form = navigate(client, "form");
+        call(client, "set_value", Map.of("ref", ref(form, "placeholder=\"Add comment\""), "value", "Ring twice"));
+        String sent = call(client, "click", ref(ref(form, "Button \"Send\"")));
+        assertTrue(sent.contains("\n- Span \"Sent: Ring twice\" ["), sent);
     }
 
     @Test

@@ -374,12 +374,17 @@ component this is.
 
 A LoginForm renders both in its shadow DOM, and nothing in its light DOM changes when its error
 shows (`R_vaadin_login_dom`); the snapshot never walks a Vaadin component's shadow DOM
-(`D_app_shadow_roots`). What the shadow DOM renders is the component's `i18n`, which
-Flow sends whole, so the script reads that, as it reads a field's `errorMessage` property rather
-than its rendered message: `LoginForm "Log in"`, and once the app's `setError(true)` lands,
-`error "Incorrect username or password: Check that you have entered…"`. A LoginOverlay's error
-the same. Why not the shadow DOM: its parts are the web component's internals, free to move
-between versions, and the property holds the same text.
+(`D_app_shadow_roots`). What the shadow DOM renders is the component's `i18n`, the app's merged
+over the component's defaults (`R_vaadin_login_dom`), so the script reads that, as it reads a
+field's `errorMessage` property rather than its rendered message: `LoginForm "Log in"`, and once
+the app's `setError(true)` lands, `error "Incorrect username or password: Check that you have
+entered…"`. A LoginOverlay's error the same. Why not the shadow DOM: its parts are the web
+component's internals, free to move between versions, and the property holds the same text.
+
+**Why the merge, the private `__effectiveI18n`, rather than the public `i18n`**: that holds what
+the app set, and since Vaadin 25.3 deprecated `LoginI18n.createDefault()` an app sets only what it
+changes, a header say: the error showed without its message. Why not merge with the defaults here:
+they are the component's, and a copy would drift from them.
 
 **Why `error "…"`, shaped as a field's `invalid "…"`**: one notation for "this shows an error,
 saying so", the state in Flow's word (`setError`), then its message. Why not `error="…"`, a key
@@ -392,9 +397,50 @@ substance there, "Account locked for 15 minutes"; it costs tokens only while the
 (`R_vaadin_login_dom`), so a dialog's name is its `aria-label`, else the text of its title
 element; the snapshot leaves that element out, as a Dialog's, so the text moves into the name
 rather than showing twice. **Its description shows as `description="Your mail, anywhere"`**,
-Flow's word, uncut as a name is. Why not `helper=`: that is the text below a field, and its `…`
-points at `get_helper`, which refuses anything but a field (`D_hints_as_keys`). Why show it at
-all: it is text the user sees, and an agent that can't find it may report it missing.
+Flow's word, uncut as a name is, and read as the overlay renders it: its i18n's
+`header.description` over its `description` property. Bakery sets only the former, its demo
+credentials, and the property keeps its default, "Application description". Why not `helper=`:
+that is the text below a field, and its `…` points at `get_helper`, which refuses anything but a
+field (`D_hints_as_keys`). Why show it at all: it is text the user sees, and an agent that can't
+find it may report it missing.
+
+## D_field_affixes — Why does a field show the components a user acts on in its prefix and suffix, and nothing else of what's inside it?
+
+```
+- TextField [ref=8, placeholder="Add comment", value=""] actions: set_value
+  - Button "Send" [ref=9] actions: click
+```
+
+A field's light DOM is mostly its own, its input, its label, a ComboBox's scroller, so the
+snapshot shows none of it (`ComponentTypes.FIELDS`). Its `prefix` and `suffix` slots are the
+app's: Bakery's order details hold the comment's Send button in the field's suffix
+(`R_bakery_template_dom`), and an agent that can't see it can't send. So under the field's line
+show the components a user acts on there (`ComponentTypes.ACTED_ON`), found through any wrapper
+the app put round them, Bakery's `<div slot="suffix">`. Why not all of it: the rest is
+decoration, a search icon, already `icon=` in front of the name (`R_vaadin_icons`), a "Note:"
+Span, a unit; a line each would cost every answer for nothing an agent acts on. A unit the user
+reads off the field, `kg`, is lost, accepted: no scenario needs one. Why under the field, not
+beside it: it is the field's, on the screen as in Flow's `setSuffixComponent`.
+
+## D_form_item_label — Why does a FormItem show as a line named by its label, what it labels under it, rather than stand aside as a layout, or lend its label to the field inside?
+
+```
+- FormItem "Customer" [ref=7]
+  - H3 "Grace Hopper" [ref=8]
+```
+
+A FormItem labels what it holds by a `<label slot="label">` (`R_vaadin_form_item_dom`). Standing
+aside as the layouts do, it lost the label with the component's own parts: Bakery's order details
+showed `H3 "Grace Hopper"`, nothing saying it is the customer. So a FormItem with a label shows,
+as Flow's class named by it, and what it holds under it, however much: a heading, a FormLayout of
+a date and a time, a table of products, nothing at all, as Bakery's "Products" above the editor's
+items. One without a label shows only with an id, as a layout does.
+
+Why not lend the label to the field inside, `TextField "Phone"` on one line, as the browser names
+it by `aria-labelledby`: a FormItem may hold text, several components or none, and one shape for
+all is one rule to learn. It costs a line per field in a form of FormItems; none of the
+benchmark's holds a field. Revisit if such a form reads as noise. Why not a `label=` key on what's
+inside: on which, of several?
 
 ## D_set_value_reads_back — Why does `set_value` read the field back and answer with a note, rather than trust its action or fail when the field didn't take the value?
 
