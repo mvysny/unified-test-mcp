@@ -994,6 +994,13 @@ public class ToolsTest {
     }
 
     @Test
+    public void clickSelectsARowATemplateCovers() throws IOException {
+        int grid = ref(snapshotOf("template"), "Grid");
+        String clicked = call(client, "click", Map.of("ref", grid, "row", 1));
+        assertTrue(masked(clicked).contains("\n    - row 1 [selected]: Alan Turing Ready 1 × Vanilla Cracker\n"), clicked);
+    }
+
+    @Test
     public void setValueInATemplateReachesTheApp() throws IOException {
         String searched = call(client, "set_value",
                 Map.of("ref", ref(snapshotOf("template"), "placeholder=\"Search\""), "value", "ada"));

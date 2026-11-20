@@ -23,7 +23,7 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 | bakery-new-user | untried since §1 | the same |
 | bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (`D_set_value_reads_back`) |
 | bakery-edit-items | untried since §1 | its picks and deletes re-create the item editors, as new-order's |
-| bakery-reschedule | blocked | a card's row takes no `click(ref, row)` (§1); the Send button shows since `D_field_affixes` |
+| bakery-reschedule | untried since its blockers' fixes | — (`R_dramafinder_row_click`, `D_field_affixes`) |
 | bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | a Delivered badge shows only an icon (§3) |
 
 Ours: the probe, one run each, of a work-in-progress tree whose grid showed a line per cell (its
@@ -37,14 +37,9 @@ Unified API's lookups reach into them only in the local `-shadow` build
 
 - **Upstream**: parttio/unified-testing-tool#347 asks whether an app template's shadow root may be
   searched on every Testing Tool, the spec saying not since their #251; once they answer, a PR
-  from the clone's `shadow-dom-queries-alpha3`, ported to `main`. Until a release has it, the
-  build needs the `-shadow` in `~/.m2`.
-- **A row of a template takes no `click(ref, row)`** — blocks bakery-reschedule: "Cannot click
-  row 0: the row has no data cell with a spot free of interactive content". Dramafinder's
-  `freePoint` (`GridElement`, 2.2.0) counts every custom element on the hit's path as
-  interactive, and `<order-card>` fills the cell. A click on the card's own ref, from
-  `snapshot(ref)`, opens the order. parttio/dramafinder#298: look inside an app's custom element,
-  its shadow root's `elementFromPoint`, and test what that hits.
+  from the clone's `shadow-dom-queries-alpha3`, ported to `main`. Dramafinder's row click: a PR
+  for parttio/dramafinder#298 from `dramafinder/`'s `row-click-app-elements`, its fix commit
+  alone. Until releases have them, the build needs both `-shadow`s in `~/.m2`.
 - **The Crud editor** shows inline at the end of the page, no `Modal:` line, the grid under it
   listed as if it took clicks: its `<vaadin-crud-dialog>` is in `<vaadin-crud>`'s shadow root, a
   Vaadin component's, which no walk enters. Crud is commercial; price-cap and new-user may pass
@@ -82,7 +77,7 @@ ours, so by the code it isn't one a user acts on and shows as its text, none
 
 ## Order
 
-1. §1: the row click (#298), the upstream PR.
+1. §1: the upstream PRs, the Unified API's and Dramafinder's.
 2. §2: the storefront's cards cut at 50 characters.
 3. §3's lone icons (today-count), then the rest of §3.
 

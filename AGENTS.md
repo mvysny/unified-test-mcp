@@ -40,7 +40,7 @@ Every fact lives in exactly one of these; the others link to it.
 ## Module map
 
 - The MCP protocol and its transports are [TinyMCPServer](https://github.com/mvysny/tinymcpserver), a separate product this depends on as `com.github.mvysny.tinymcpserver:mcp-server`.
-- The Vaadin component knowledge is the [Unified API](https://github.com/parttio/unified-testing-tool), depended on as `org.vaadin.addons:unified-test-playwright`. `unified-testing-tool/` is a gitignored clone of its repository, there to read its source; a change to it goes upstream as a PR. Until one releases, the build takes `0.1.0-alpha3-shadow` from `~/.m2`, built from the clone's branch `shadow-dom-queries-alpha3` (`gradle/libs.versions.toml`, `R_unified_no_enumeration`).
+- The Vaadin component knowledge is the [Unified API](https://github.com/parttio/unified-testing-tool), depended on as `org.vaadin.addons:unified-test-playwright`. `unified-testing-tool/` is a gitignored clone of its repository, there to read its source; a change to it goes upstream as a PR. Until one releases, the build takes `0.1.0-alpha3-shadow` from `~/.m2`, built from the clone's branch `shadow-dom-queries-alpha3` (`gradle/libs.versions.toml`, `R_unified_no_enumeration`). Dramafinder, its Playwright layer, likewise: `dramafinder/`, the build taking `2.2.0-shadow` from its branch `row-click-app-elements` (`R_dramafinder_row_click`).
 - `unified-test-mcp` — the MCP server itself: `main()`, the tools, and opening a Unified API page outside JUnit.
 - `test-app` — a Vaadin Boot app the tools are tried and tested against.
 
@@ -59,7 +59,7 @@ Every fact lives in exactly one of these; the others link to it.
 
 ## Commands
 
-- `./gradlew` — clean, build, all tests (the default tasks); needs a JDK 21 or newer, and the Unified API's local build in `~/.m2`.
+- `./gradlew` — clean, build, all tests (the default tasks); needs a JDK 21 or newer, and the local builds of the Unified API and Dramafinder in `~/.m2`.
 - `./gradlew :unified-test-mcp:test --tests "com.vaadin.unifiedtestmcp.ToolsTest"` — one class; append `.methodName` for one method. The first run downloads Chromium's headless shell into `~/.cache/ms-playwright` (`D_browser_install`).
 - `./gradlew :test-app:run` — the test app in dev mode on http://localhost:8080.
 - `./gradlew :unified-test-mcp:shadowJar` — the server's jar, `unified-test-mcp/build/libs/unified-test-mcp-<version>.jar`; `java -jar` it to speak MCP on stdio.

@@ -35,7 +35,8 @@ import com.vaadin.testing.unified.component.UnifiedGrid;
  * </pre>
  *
  * The Unified API's {@code row(150).click()}: it scrolls the row into view and clicks a spot of it free of
- * components, so it selects the row, or opens what the app opens on a click, and no button in it is hit.
+ * components, so it selects the row, or opens what the app opens on a click, and no button in it is hit; a template's
+ * card filling the cell is none, judged by what it holds (R_dramafinder_row_click).
  *
  * <p>Why not {@code click(ref, row, target: "Edit")}, a button in a row by its caption, as a blind review asked: every
  * component in a row in view has a ref of its own, and a second way of naming one would undo D_refs_not_ids. A row

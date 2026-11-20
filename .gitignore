@@ -1,5 +1,7 @@
 # reference clone of https://github.com/parttio/unified-testing-tool, read for its source
 /unified-testing-tool/
+# clone of https://github.com/parttio/dramafinder, its local build's branch (gradle/libs.versions.toml)
+/dramafinder/
 
 # build output
 build/

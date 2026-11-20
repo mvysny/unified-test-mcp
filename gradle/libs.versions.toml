@@ -9,6 +9,9 @@ gson = "com.google.code.gson:gson:2.15.0"
 # 0.1.0-alpha3 with its queries entering an app's shadow roots, from ~/.m2 (R_unified_no_enumeration): built from
 # unified-testing-tool/'s branch shadow-dom-queries-alpha3, `mvn install -DskipTests -pl unified-test-playwright -am`
 unified-test-playwright = "org.vaadin.addons:unified-test-playwright:0.1.0-alpha3-shadow"
+# the Unified API's 2.2.0 with its row click looking inside an app's element, from ~/.m2 (R_dramafinder_row_click): built
+# from dramafinder/'s branch row-click-app-elements, `mvn install -DskipTests`; strictly, as 2.2.0 sorts after it
+dramafinder = { module = "org.vaadin.addons:dramafinder", version = { strictly = "2.2.0-shadow" } }
 vaadin-core = { module = "com.vaadin:vaadin-core", version.ref = "vaadin" }
 vaadin-dev = { module = "com.vaadin:vaadin-dev", version.ref = "vaadin" }
 vaadin-boot = "com.github.mvysny.vaadin-boot:vaadin-boot:13.7"

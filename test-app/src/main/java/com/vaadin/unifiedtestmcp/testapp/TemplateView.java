@@ -34,7 +34,8 @@ import java.util.stream.Collectors;
  *   Orders                          an H2
  *   &lt;search-bar id=search&gt;          a template in the template
  *     [Search]  [New order]         filters the orders by customer as typing pauses, as Bakery's; opens the dialog
- *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status in a span with id=status
+ *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status in a span with id=status;
+ *                                   a card covers its cell, padding included, as Bakery's
  *   Dialog "New order"              its content an &lt;order-editor&gt;:
  *     Customer [    ]
  *     &lt;order-item-editor&gt; …        [Product ▾] [1]: the ids products and amount in each; an empty one
@@ -93,7 +94,7 @@ public class TemplateView extends Component {
         }
     }
 
-    /** An order's customer, status and items, all in its shadow root. */
+    /** An order's customer, status and items, all in its shadow root; covering its cell, padding included. */
     @Tag("order-card")
     static class OrderCard extends Component {
         OrderCard(Order order) {
@@ -101,6 +102,7 @@ public class TemplateView extends Component {
             status.setId("status");
             getElement().attachShadow().appendChild(new Span(order.customer()).getElement(), status.getElement(),
                     new Span(items(order)).getElement());
+            getElement().getStyle().set("display", "block").set("margin", "-50px").set("padding", "50px");
         }
 
         /** {@code 2 × Strawberry Bun, 1 × Vanilla Cracker}. */

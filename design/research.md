@@ -378,6 +378,27 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   upstream `main` still does, on Dramafinder 2.2.0. Filed as parttio/unified-testing-tool#338.
   **[src, unified-testing-tool `0d35489`]**
 
+## R_dramafinder_row_click — Dramafinder: where a row click lands, and a template's grid
+
+- The Unified API's `row(i).click()` is Dramafinder's `RowElement.click()`; `select()` and
+  `doubleClick()` pick their spot alike. Each clicks a data cell's content at its first free point:
+  the middle of its left padding, its top-left corner, then its centre, free if the hit has
+  nothing on its way up to the cell content matching `a[href], button, input, select, textarea,
+  label, [tabindex], [contenteditable]`, nor any custom element, which "may be interactive inside
+  its shadow root". No data cell with one: `IllegalStateException`, "Cannot click row 0: the row
+  has no data cell with a spot free of interactive content, padding included".
+  **[src, Dramafinder 2.2.0 `GridElement`]**
+- A grid in a template's shadow root fails on every row: the hit is `document.elementFromPoint`'s,
+  the template's host, which no cell contains. A cell an app's element covers, padding included,
+  fails too: Bakery's storefront, its grid in `<storefront-view>`'s shadow root, its cells all
+  `<order-card>`; test-app's `template` view likewise. A click on the card itself selects the row,
+  and Bakery opens the order. **[verified 2026-11-19 on Bakery, 2026-11-20 on test-app]**
+- `2.2.0-shadow`, a local build of the clone's branch `row-click-app-elements`, hit-tests from the
+  cell's own root, and follows a hit on an app's element with an open shadow root, one not
+  `vaadin-*`, into it by the shadow root's `elementFromPoint`, nested ones too, testing what it
+  lands on instead; a Vaadin component stays as before. Asked for in parttio/dramafinder#298.
+  **[verified 2026-11-20, 2.2.0-shadow: Dramafinder's grid and TreeGrid ITs, test-app]**
+
 ## R_testbench_grid_element — how TestBench's GridElement reaches rows, the ones out of view too
 
 TestBench's `GridElement`, `com.vaadin:vaadin-grid-testbench`, ships in flow-components under the

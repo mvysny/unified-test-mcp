@@ -8,9 +8,9 @@ allprojects {
     version = "1.0-SNAPSHOT"
 
     repositories {
-        // the Unified API built locally, gradle/libs.versions.toml; nothing else from ~/.m2
+        // the Unified API and Dramafinder built locally, gradle/libs.versions.toml; nothing else from ~/.m2
         mavenLocal {
-            content { includeVersionByRegex("org\\.vaadin\\.addons", "unified-test-.*", ".*-shadow") }
+            content { includeVersionByRegex("org\\.vaadin\\.addons", "unified-test-.*|dramafinder", ".*-shadow") }
         }
         mavenCentral()
     }

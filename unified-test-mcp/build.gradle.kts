@@ -10,6 +10,8 @@ dependencies {
         // there for an app under test running in the same JVM; ours runs elsewhere
         exclude(group = "com.vaadin", module = "vaadin-dev")
     }
+    // the Unified API's own, at the local build with the row click's fix
+    implementation(libs.dramafinder)
     // the Unified API declares it `provided`; it needs the component classes (Button.class), runs none of them
     implementation(libs.vaadin.core)
 
