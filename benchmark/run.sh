@@ -59,6 +59,8 @@ if stale "${app_jar:-/nonexistent}" "$app/src/main" "$app/pom.xml"; then
   log "building $(basename "$app")"
   (cd "$app" && "${build[@]}") >"$out/build.log" 2>&1 || fail "build failed: $out/build.log"
   app_jar=$(ls "$app"/target/*.jar | grep -v '\.original$' | head -1)
+  # a reproducible build dates its jar 1980, older than any source: stale on every run otherwise
+  touch "$app_jar"
 fi
 server_jar=
 if [ "$arm" = unified-test-mcp ]; then
