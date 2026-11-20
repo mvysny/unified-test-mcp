@@ -101,6 +101,11 @@ a claim came from, so the prose doesn't repeat it.
 - Filters query attributes, not JavaScript properties: `withAttribute(name, value)`, `withId`,
   `withTestId`, `withClassName`. A value set only as a JS property on an element can't be found
   without the escape hatch. **[src]**
+- `selectItem` reads the pick back through the same wrapper, `SelectionSupport.select` asking
+  `access.selectedItems()`: a field the app replaced as it took the pick, Bakery's order item
+  editors, matches the lookup no more, and Playwright waits its timeout, 10 s, though the pick went
+  through. Filed as parttio/unified-testing-tool#377.
+  **[src; verified 2026-11-19, 0.1.0-alpha3-shadow on Bakery]**
 
 ## R_unified_playwright_packaging — unified-test-playwright as a dependency
 

@@ -423,8 +423,10 @@ every field in one notation, and the tool that writes them mirrors it, as `get_v
 A field the app hides or replaces as it takes the value has nothing to read back: the note says
 "it isn't shown now", and the snapshot shows what took its place. Bakery re-creates its order's
 item editors on each product pick. The Unified API checks a pick on the element it picked in, so
-Playwright waits 10 s for one that is gone and fails, though the pick went through: a failed write
-whose ref is gone after it answers the same way, not as an error the agent would retry.
+Playwright waits 10 s for one that is gone and fails, though the pick went through
+(`R_unified_lazy_elements`): a failed write whose ref is gone after it answers the same way, not as
+an error the agent would retry. The 10 s stay, a pick's cost in wall time, until
+parttio/unified-testing-tool#377 drops the check on a field the lookup no longer finds.
 
 ## D_values_as_shown — Why does a DatePicker's value read and take `"31.1.2000"`, the text the user sees, rather than ISO `"2000-01-31"`?
 

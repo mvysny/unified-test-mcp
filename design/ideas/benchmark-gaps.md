@@ -13,29 +13,27 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 
 | Scenario | Today | What stands in the way |
 |---|---|---|
-| crm-add-contact | passes, $0.24 (Playwright MCP $0.14) | cost: the grid's cells in every answer (§2) |
+| crm-add-contact | passes, $0.24 (Playwright MCP $0.14) | unmeasured since a row a line (`D_grid_as_rows`) |
 | crm-invalid-email | passes, $0.19 ($0.12) | the same |
 | crm-move-contact | passes, $0.16 ($0.12) | the same |
-| crm-count | passes, 210 turns, $1.23 ($0.06) | cost: rows beyond the rendered ones (§2) |
+| crm-count | passes, 210 turns, $1.23 ($0.06) | unmeasured since `get_rows` (`D_get_rows_scrolls`) |
 | crm-delete-closed | passes, 130 turns, $1.06 ($0.22) | the same |
 | bakery-locked-user | passes in the scripted walk: Edit, Role, Save, the persistent notification in Save's answer | — |
 | bakery-price-cap | untried since §1 | the Crud editor shows inline, no `Modal:` line (§1) |
 | bakery-new-user | untried since §1 | the same |
-| bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (§1) |
-| bakery-edit-items | untried since §1 | its picks and deletes re-create the item editors, as new-order's (§1) |
+| bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (`D_set_value_reads_back`) |
+| bakery-edit-items | untried since §1 | its picks and deletes re-create the item editors, as new-order's |
 | bakery-reschedule | blocked | the comment's Send button, in a field's suffix (§3); a card's row takes no `click(ref, row)` (§1) |
 | bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | a Delivered badge shows only an icon (§3) |
 
-Ours: the probe, one run each, of a work-in-progress tree (its `NOTES.md`). In brackets: Playwright
-MCP's median, the cheaper competitor in every CRM scenario.
+Ours: the probe, one run each, of a work-in-progress tree whose grid showed a line per cell (its
+`NOTES.md`). In brackets: Playwright MCP's median, the cheaper competitor in every CRM scenario.
 
 ## 1. Lit templates — walked on Bakery
 
-Built: the snapshot walks the app's shadow roots (`D_app_shadow_roots`), test-app's `template`
-view its test; the Unified API's lookups reach into them only in the local `-shadow` build
-(`R_unified_no_enumeration`). Bakery's DOM: `R_bakery_template_dom`. On Bakery, Lit's own
-rendering shows whole: the search bar, the order editor and details, `<buttons-bar>`'s slotted
-buttons, each `<order-item-editor>`'s repeated ids with refs of their own. Left:
+The snapshot walks the app's shadow roots (`D_app_shadow_roots`, `R_bakery_template_dom`); the
+Unified API's lookups reach into them only in the local `-shadow` build
+(`R_unified_no_enumeration`). Left:
 
 - **Upstream**: parttio/unified-testing-tool#347 asks whether an app template's shadow root may be
   searched on every Testing Tool, the spec saying not since their #251; once they answer, a PR
@@ -47,29 +45,15 @@ buttons, each `<order-item-editor>`'s repeated ids with refs of their own. Left:
   interactive, and `<order-card>` fills the cell. A click on the card's own ref, from
   `snapshot(ref)`, opens the order. parttio/dramafinder#298: look inside an app's custom element,
   its shadow root's `elementFromPoint`, and test what that hits.
-- **A field the app replaces while it takes the value** waits 10 s: `set_value` answers "it isn't
-  shown now" (`D_set_value_reads_back`), but first the Unified API checks the pick on the old
-  element (`SelectionSupport.select`, `access.selectedItems()`), and Playwright waits its timeout
-  for it. parttio/unified-testing-tool#377: no check on a field the lookup no longer finds.
 - **The Crud editor** shows inline at the end of the page, no `Modal:` line, the grid under it
   listed as if it took clicks: its `<vaadin-crud-dialog>` is in `<vaadin-crud>`'s shadow root, a
   Vaadin component's, which no walk enters. Crud is commercial; price-cap and new-user may pass
   regardless, as locked-user does.
 
-## 2. Grid — the CRM's cost, and the storefront's cards
+## 2. Grid — the storefront's cards
 
-Of the 195 lines in the probe's CRM snapshot, 180 were `GridCellContent`, and every action answers
-with the snapshot (`D_action_returns_snapshot`): a 51k-token context on crm-add-contact where
-Playwright MCP's was 29k, though ours took fewer turns. Built since, untried on the benchmark yet:
-
-- **A row a line**, at most 10 in view (`D_grid_as_rows`): the context, in all five CRM scenarios.
-- **Rows beyond the rendered ones**, `get_rows` (`D_get_rows_scrolls`): crm-count and
-  crm-delete-closed read all 200 contacts, of which the CRM's grid renders ~36–38. The probe's
-  agent filtered by each last name in turn instead.
-- **A component in a row stays a ref**: the Crud's `CrudEdit [aria-label="Edit"]` in every row.
-- **A row clicked by its number**, `click(ref, row)`: the CRM opens a contact's form so.
-- **Refs in cells move with the recycled cells**, accepted (`D_grid_as_rows`): crm-delete-closed
-  deletes rows one after another, each action answering with the snapshot of the rows now.
+The CRM's cost, the grid's cells in every answer and the rows beyond the rendered ones, is built
+(`D_grid_as_rows`, `D_get_rows_scrolls`); the next CRM round measures it.
 
 The storefront has 158 orders, 23 cards rendered: bakery-today-count's "Today" group sits on top,
 and bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered
@@ -102,16 +86,16 @@ and the customer on a group's first row. `snapshot(ref)` cuts nothing but gives 
   the current tab. An agent clicks the Anchor anyway, or guesses `/users`; `path=` as on a
   SideNavItem (`D_nav_item_states`) and the cleanups in `disclosure.md` and
   `snapshot-cross-cutting.md` would make it sure. Not a blocker.
-- **Notifications** work: the locked user's persistent one shows in Save's answer. "Order was
-  created" lasts 4 s; `notification.md`'s `Q_vanished` matters if an agent ever looks late.
 
 Crud is commercial, out of scope while the project is a prototype: the three Crud scenarios need
-only what's generic, §1's search bar and §2's rows.
+only what's generic, §1's search bar and §2's rows. A row's `<vaadin-crud-edit>` has no type of
+ours, so by the code it isn't one a user acts on and shows as its text, none
+(`D_component_views`); `snapshot(ref)` gives it a ref. Unchecked on Bakery since the rows.
 
 ## Order
 
-1. §1: the row click (#298), the upstream PR, the replaced field's 10 s (#377).
-2. §2: the CRM's cost, crm-count and crm-delete-closed; the storefront's cards as rows.
+1. §1: the row click (#298), the upstream PR.
+2. §2: the storefront's cards cut at 50 characters.
 3. §3's suffix components (reschedule) and lone icons (today-count), then the rest of §3.
 
 Then a CRM round on a committed tree, and Bakery's first.

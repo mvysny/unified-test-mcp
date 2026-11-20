@@ -40,7 +40,8 @@ has `getText()` and `isOpen()`.
 
 `Q_vanished`: a slow agent calls `snapshot` after "Saved" closed and never learns it was shown.
 Remember the notifications opened since the last answer, as `console-errors.md` counts errors since
-the last snapshot: `Notifications: "Saved" (closed)`. One mechanism for both?
+the last snapshot: `Notifications: "Saved" (closed)`. One mechanism for both? Bakery's "Order was
+created" lasts 4 s, its locked user's persistent one stays, and both show in the answer to Save.
 
 `Q_where`: at the end of the snapshot where the DOM puts them, or at the top, after the header,
 since they're news?

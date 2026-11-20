@@ -43,12 +43,6 @@ the grid's `selectAll()`. Its column lookup fails under a header group row
   the end (`R_vaadin_grid_dom`); v1 reads up to the `size` it starts with.
 - **Grid's Editor**. Grid Pro's editing only after graduation.
 
-## Depends on
-
-`benchmark-gaps.md` §1, the flat tree: a cell whose renderer's element keeps its text in a shadow
-root, Bakery's order cards, previews as nothing until the snapshot reads the flat tree; and the
-storefront's grid sits in `<storefront-view>`'s shadow root.
-
 ## test-app
 
 For v2: an empty grid; details opening by a tool; a TreeGrid's depth to show.
