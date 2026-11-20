@@ -996,11 +996,12 @@ public class ToolsTest {
     }
 
     @Test
-    public void clickSelectsARowATemplateCovers() throws IOException {
+    public void clickOnARowReachesATemplatesCard() throws IOException {
         int grid = ref(snapshotOf("template"), "Grid");
         String clicked = call(client, "click", Map.of("ref", grid, "row", 1));
         assertTrue(masked(clicked).contains("\n    - row 1 [selected]: Alan Turing Ready 1 × Vanilla Cracker, 3 ×"),
                 clicked);
+        assertTrue(clicked.contains("\n  - Span \"Opened order for Alan Turing\" ["), "the card's centre: " + clicked);
     }
 
     @Test

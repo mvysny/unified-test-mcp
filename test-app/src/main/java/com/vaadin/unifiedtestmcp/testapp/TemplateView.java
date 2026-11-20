@@ -16,7 +16,6 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.dom.Element;
-import com.vaadin.flow.dom.ShadowRoot;
 import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,8 +38,9 @@ import java.util.stream.Collectors;
  *     [Search]  [New order]         filters the orders by customer as typing pauses, as Bakery's; opens the dialog
  *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status an &lt;order-status-badge
  *                                   id=status&gt;, Delivered a check icon alone; a heading on the first card, a
- *                                   long run of items on the second; a card covers its cell, padding included,
- *                                   where Bakery's leaves the padding free
+ *                                   long run of items on the second; a click on a card, not on its cell's
+ *                                   padding, sets the status to Opened order for &lt;customer&gt;, as Bakery's
+ *                                   opens its order
  *   Dialog "New order"              its content an &lt;order-editor&gt;:
  *     Customer [    ]
  *     &lt;order-item-editor&gt; …        [Product ▾] [1]: the ids products and amount in each; an empty one
@@ -70,7 +70,8 @@ public class TemplateView extends Component {
 
         Grid<Order> grid = new Grid<>();
         grid.setId("grid");
-        grid.addComponentColumn(OrderCard::new).setHeader("Order");
+        grid.addComponentColumn(order -> new OrderCard(order,
+                opened -> status.setText("Opened order for " + opened.customer()))).setHeader("Order");
         GridListDataView<Order> orders = grid.setItems(new ArrayList<>(List.of(
                 new Order("Grace Hopper", "Pending", List.of(new Item("Strawberry Bun", 2)),
                         "This week: Fri, Nov 20 – Sun, Nov 22"),
@@ -107,19 +108,20 @@ public class TemplateView extends Component {
     }
 
     /**
-     * An order's heading if any, customer, status and items, all in its shadow root; covering its cell, padding
-     * included.
+     * An order's heading if any, customer, status and items, all in its shadow root, in a div that opens the order on
+     * a click, as Bakery's card: the grid's own row click does nothing there.
      */
     @Tag("order-card")
     static class OrderCard extends Component {
-        OrderCard(Order order) {
-            ShadowRoot shadow = getElement().attachShadow();
+        OrderCard(Order order, Consumer<Order> onOpen) {
+            Div wrapper = new Div();
             if (order.heading() != null) {
-                shadow.appendChild(new Span(order.heading()).getElement());
+                wrapper.add(new Span(order.heading()));
             }
-            shadow.appendChild(new Span(order.customer()).getElement(), new StatusBadge(order.status()).getElement(),
-                    new Span(items(order)).getElement());
-            getElement().getStyle().set("display", "block").set("margin", "-50px").set("padding", "50px");
+            wrapper.add(new Span(order.customer()), new StatusBadge(order.status()), new Span(items(order)));
+            wrapper.addClickListener(e -> onOpen.accept(order));
+            getElement().attachShadow().appendChild(wrapper.getElement());
+            getElement().getStyle().set("display", "block");
         }
 
         /** {@code 2 × Strawberry Bun, 1 × Vanilla Cracker}. */

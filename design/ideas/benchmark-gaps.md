@@ -23,7 +23,7 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 | bakery-new-user | passes in the walk: the password rule in `set_value`'s answer | the same |
 | bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (`D_set_value_reads_back`) |
 | bakery-edit-items | passes in the walk: a delete, two amounts, review, place | — |
-| bakery-reschedule | passes in the walk: search, the card, Edit order, the date, place, the comment's Send | cost: `click(ref, row)` opens no order (§2); the card's ref from `snapshot(ref)` does |
+| bakery-reschedule | passes in the walk: search, the card, Edit order, the date, place, the comment's Send | — `click(ref, row)` opens the order since `R_dramafinder_row_click`'s centre first |
 | bakery-today-count | passes in the walks: seed 1 Bakery, Ready, 3; seed 3 Store, Ready, 2, off `get_rows` | — seeds 1–3 all ask Ready; Delivered's check shows (`D_lone_icon`) |
 
 Ours: the probe, one run each, of a work-in-progress tree whose grid showed a line per cell (its
@@ -53,12 +53,6 @@ orders, 23 cards rendered: bakery-today-count's "Today" group sits on top, and
 bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered ones
 on seed 1.
 
-- **A row click opens no order on the storefront**: it lands on the cell's free padding, and
-  Bakery opens an order only from a click on the card (`R_dramafinder_row_click`). An agent then
-  needs `snapshot(ref)`, the card's ref among ~13 a row, and a click on it. `Q_row_click_centre`:
-  Dramafinder's `click()` and `doubleClick()` trying the centre first when it's free, as a user
-  clicks, `select()` keeping the padding so a selection triggers nothing in the cell?
-
 ## 3. Smaller, each found walking Bakery
 
 - **Links and tabs**: Bakery's menu shows as `Tab [value="Storefront"]` with `Anchor "Storefront"`
@@ -74,6 +68,5 @@ ours, so by the code it isn't one a user acts on and shows as its text, none
 
 ## Order
 
-1. `Q_row_click_centre`, or not, before Bakery's first round.
-2. A CRM round on a committed tree, and Bakery's first.
-3. §1: the Unified API's upstream PR; Dramafinder's #311 merged and released. §3's links and tabs.
+1. A CRM round on a committed tree, and Bakery's first.
+2. §1: the Unified API's upstream PR; Dramafinder's #311 merged and released. §3's links and tabs.

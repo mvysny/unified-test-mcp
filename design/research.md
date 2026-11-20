@@ -393,16 +393,18 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   `<storefront-view>`'s shadow root. A cell an app's element covers, padding included, fails too,
   as test-app's `template` view's cards do. **[verified 2026-11-19 on Bakery, 2026-11-20 on
   test-app]**
-- Bakery's `<order-card>` leaves its cell content's padding free, `4px 16px`. So the fixed row
-  click lands there, on the cell content: the grid gets a click on the row, and Bakery, selection
-  mode NONE, listening only on the card's `.wrapper` (parttio/dramafinder#298), opens nothing. A click on the card
-  itself, its centre, opens the order. **[verified 2026-11-20 on Bakery]**
-- `2.2.0-shadow`, a local build of the clone's branch `row-click-app-elements`, hit-tests from the
-  cell's own root, and follows a hit on an app's element with an open shadow root, one not
+- Bakery's `<order-card>` leaves its cell content's padding free, `4px 16px`, and Bakery,
+  selection mode NONE, opens an order only on a click on the card's `.wrapper`
+  (parttio/dramafinder#298). A click on the padding, the grid's row click, opens nothing; one on
+  the card's centre opens the order. **[verified 2026-11-20 on Bakery]**
+- `2.2.0-shadow`, a local build of the clone's branch `row-click-app-elements`: it hit-tests from
+  the cell's own root; it follows a hit on an app's element with an open shadow root, one not
   `vaadin-*`, into it by the shadow root's `elementFromPoint`, nested ones too, testing what it
-  lands on instead; a Vaadin component stays as before. Asked for in parttio/dramafinder#298,
-  proposed upstream as parttio/dramafinder#311.
-  **[verified 2026-11-20, 2.2.0-shadow: Dramafinder's grid and TreeGrid ITs, test-app]**
+  lands on instead, a Vaadin component staying as before; and it tries the cell's centre first,
+  as a user clicks, then the spots nearest it, out to the padding and the edges. Asked for in
+  parttio/dramafinder#298, proposed upstream as parttio/dramafinder#311.
+  **[verified 2026-11-20, 2.2.0-shadow: Dramafinder's grid and TreeGrid ITs, test-app; on Bakery a
+  row click opens the order]**
 
 ## R_testbench_grid_element — how TestBench's GridElement reaches rows, the ones out of view too
 
