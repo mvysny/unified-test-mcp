@@ -1,0 +1,1349 @@
+CALL  navigate {"url":"http://localhost:41581"}
+OK    Navigated to http://localhost:41581
+      
+      URL: http://localhost:41581/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  set_value {"ref":5,"value":"user"}
+CALL  set_value {"ref":6,"value":"password"}
+OK    Set ref=5 to "user"
+      
+      URL: http://localhost:41581/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+OK    Set ref=6 to "password"
+      
+      URL: http://localhost:41581/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="password", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  click {"ref":7}
+OK    Clicked ref=7
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Mabel | Romoli | mabel.romoli@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 1: Harvey | Jacobs | harvey.jacobs@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 2: Jordan | Miles | jordan.miles@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 3: Theodore | Gray | theodore.gray@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 4: Harvey | Rodriquez | harvey.rodriquez@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 5: Ida | Bennett | ida.bennett@autozone.example | Not contacted | AutoZone, Inc.
+            - row 6: Jean | Stokes | jean.stokes@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 7: Louisa | Castillo | louisa.castillo@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 8: Marie | Jacobs | marie.jacobs@avaya.example | Customer | Avaya Inc.
+            - row 9: Oscar | Lindqvist | oscar.lindqvist@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - rows 10–199 not shown: get_rows ref=17
+      
+CALL  get_rows {"ref":17,"offset":10,"length":190}
+OK    Rows 10–199 of 200 in ref=17. The grid now shows row 10; the snapshot below has the refs of the rows in view:
+      - row 10: Garrett | Miccinesi | garrett.miccinesi@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 11: Mildred | Romoli | mildred.romoli@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 12: Garrett | Lindqvist | garrett.lindqvist@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 13: Mildred | Lindqvist | mildred.lindqvist@avaya.example | Closed (lost) | Avaya Inc.
+      - row 14: Alejandro | Gray | alejandro.gray@avaya.example | Not contacted | Avaya Inc.
+      - row 15: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 16: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+      - row 17: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 18: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+      - row 19: Nellie | Jacobs | nellie.jacobs@avaya.example | Closed (lost) | Avaya Inc.
+      - row 20: Nellie | Rhodes | nellie.rhodes@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 21: Jordan | Jacobs | jordan.jacobs@autozone.example | Not contacted | AutoZone, Inc.
+      - row 22: Louisa | Fujita | louisa.fujita@avaya.example | Imported lead | Avaya Inc.
+      - row 23: Mabel | Brennan | mabel.brennan@avaya.example | Customer | Avaya Inc.
+      - row 24: Walter | Mercer | walter.mercer@avaya.example | Customer | Avaya Inc.
+      - row 25: Jack | Lindqvist | jack.lindqvist@avaya.example | Imported lead | Avaya Inc.
+      - row 26: Marguerite | Bennett | marguerite.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 27: Jean | Lane | jean.lane@linens.example | Contacted | Linens 'n Things Inc.
+      - row 28: Lettie | Stokes | lettie.stokes@avaya.example | Customer | Avaya Inc.
+      - row 29: Eugenia | Fujita | eugenia.fujita@linens.example | Contacted | Linens 'n Things Inc.
+      - row 30: Barbara | Goodman | barbara.goodman@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 31: Nellie | Novak | nellie.novak@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 32: Rose | Lindqvist | rose.lindqvist@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 33: Marie | Goodman | marie.goodman@linens.example | Customer | Linens 'n Things Inc.
+      - row 34: Garrett | Mercer | garrett.mercer@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 35: Walter | Castillo | walter.castillo@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 36: Alejandro | Novak | alejandro.novak@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 37: Jack | Leach | jack.leach@avaya.example | Not contacted | Avaya Inc.
+      - row 38: Barry | Jacobs | barry.jacobs@linens.example | Customer | Linens 'n Things Inc.
+      - row 39: Lettie | Miles | lettie.miles@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 40: Jordan | Fujita | jordan.fujita@autozone.example | Imported lead | AutoZone, Inc.
+      - row 41: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 42: Cora | Matthieu | cora.matthieu@avaya.example | Closed (lost) | Avaya Inc.
+      - row 43: Jack | Novak | jack.novak@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 44: Hattie | Rodriquez | hattie.rodriquez@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 45: Louisa | Mercer | louisa.mercer@avaya.example | Contacted | Avaya Inc.
+      - row 46: Mabel | Mercer | mabel.mercer@autozone.example | Contacted | AutoZone, Inc.
+      - row 47: Eugenia | Brennan | eugenia.brennan@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 48: Ida | Miccinesi | ida.miccinesi@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 49: Marguerite | Castillo | marguerite.castillo@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 50: Jean | Rhodes | jean.rhodes@avaya.example | Customer | Avaya Inc.
+      - row 51: Marguerite | Miccinesi | marguerite.miccinesi@avaya.example | Closed (lost) | Avaya Inc.
+      - row 52: Theodore | Lane | theodore.lane@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 53: Hattie | Brennan | hattie.brennan@avaya.example | Closed (lost) | Avaya Inc.
+      - row 54: Jordan | Mercer | jordan.mercer@autozone.example | Imported lead | AutoZone, Inc.
+      - row 55: Lettie | Ishii | lettie.ishii@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 56: Jean | Selvi | jean.selvi@autozone.example | Contacted | AutoZone, Inc.
+      - row 57: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+      - row 58: Theodore | Fujita | theodore.fujita@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 59: Oscar | Jacobs | oscar.jacobs@avaya.example | Contacted | Avaya Inc.
+      - row 60: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+      - row 61: Mabel | Gray | mabel.gray@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 62: Jean | Gray | jean.gray@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 63: Barbara | Mercer | barbara.mercer@avaya.example | Not contacted | Avaya Inc.
+      - row 64: Eula | Parkes | eula.parkes@autozone.example | Not contacted | AutoZone, Inc.
+      - row 65: Theodore | Mercer | theodore.mercer@autozone.example | Imported lead | AutoZone, Inc.
+      - row 66: Jack | Matthieu | jack.matthieu@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 67: Mabel | Tesi | mabel.tesi@avaya.example | Customer | Avaya Inc.
+      - row 68: Jordan | Brennan | jordan.brennan@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 69: Oscar | Tesi | oscar.tesi@autozone.example | Imported lead | AutoZone, Inc.
+      - row 70: Barry | Tesi | barry.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 71: Lettie | Goodman | lettie.goodman@linens.example | Contacted | Linens 'n Things Inc.
+      - row 72: Harvey | Bennett | harvey.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 73: Jordan | Rhodes | jordan.rhodes@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 74: Jack | Stokes | jack.stokes@avaya.example | Closed (lost) | Avaya Inc.
+      - row 75: Marguerite | Brennan | marguerite.brennan@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 76: Cora | Halvorsen | cora.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+      - row 77: Hattie | Rhodes | hattie.rhodes@avaya.example | Customer | Avaya Inc.
+      - row 78: Eugenia | Leach | eugenia.leach@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 79: Oscar | Brennan | oscar.brennan@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 80: Hattie | Matthieu | hattie.matthieu@avaya.example | Closed (lost) | Avaya Inc.
+      - row 81: Garrett | Novak | garrett.novak@autozone.example | Imported lead | AutoZone, Inc.
+      - row 82: Barbara | Rodriquez | barbara.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+      - row 83: Cora | Goodman | cora.goodman@autozone.example | Customer | AutoZone, Inc.
+      - row 84: Alejandro | Fujita | alejandro.fujita@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 85: Oscar | Castillo | oscar.castillo@autozone.example | Contacted | AutoZone, Inc.
+      - row 86: Lettie | Novak | lettie.novak@avaya.example | Imported lead | Avaya Inc.
+      - row 87: Hattie | Jacobs | hattie.jacobs@linens.example | Customer | Linens 'n Things Inc.
+      - row 88: Louisa | Miles | louisa.miles@linens.example | Customer | Linens 'n Things Inc.
+      - row 89: Harvey | Lindqvist | harvey.lindqvist@avaya.example | Not contacted | Avaya Inc.
+      - row 90: Eula | Lindqvist | eula.lindqvist@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 91: Jack | Miccinesi | jack.miccinesi@avaya.example | Contacted | Avaya Inc.
+      - row 92: Walter | Okafor | walter.okafor@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 93: Ida | Fujita | ida.fujita@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 94: Ida | Leach | ida.leach@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 95: Theodore | Jacobs | theodore.jacobs@autozone.example | Customer | AutoZone, Inc.
+      - row 96: Harvey | Lane | harvey.lane@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 97: Nellie | Okafor | nellie.okafor@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 98: Barbara | Halvorsen | barbara.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 99: Jordan | Bennett | jordan.bennett@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 100: Cora | Rodriquez | cora.rodriquez@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 101: Rose | Matthieu | rose.matthieu@autozone.example | Customer | AutoZone, Inc.
+      - row 102: Marie | Stokes | marie.stokes@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 103: Jack | Halvorsen | jack.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 104: Alejandro | Mercer | alejandro.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 105: Alejandro | Brennan | alejandro.brennan@autozone.example | Customer | AutoZone, Inc.
+      - row 106: Jack | Selvi | jack.selvi@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 107: Hattie | Miccinesi | hattie.miccinesi@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 108: Eula | Miccinesi | eula.miccinesi@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 109: Louisa | Novak | louisa.novak@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 110: Theodore | Miccinesi | theodore.miccinesi@avaya.example | Not contacted | Avaya Inc.
+      - row 111: Gene | Miccinesi | gene.miccinesi@avaya.example | Not contacted | Avaya Inc.
+      - row 112: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+      - row 113: Marguerite | Stokes | marguerite.stokes@autozone.example | Customer | AutoZone, Inc.
+      - row 114: Hattie | Lindqvist | hattie.lindqvist@autozone.example | Imported lead | AutoZone, Inc.
+      - row 115: Harvey | Novak | harvey.novak@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 116: Jordan | Leach | jordan.leach@autozone.example | Not contacted | AutoZone, Inc.
+      - row 117: Marie | Novak | marie.novak@avaya.example | Not contacted | Avaya Inc.
+      - row 118: Ida | Matthieu | ida.matthieu@autozone.example | Contacted | AutoZone, Inc.
+      - row 119: Jordan | Castillo | jordan.castillo@avaya.example | Contacted | Avaya Inc.
+      - row 120: Garrett | Miles | garrett.miles@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 121: Gene | Stokes | gene.stokes@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 122: Cora | Lindqvist | cora.lindqvist@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 123: Gene | Halvorsen | gene.halvorsen@linens.example | Contacted | Linens 'n Things Inc.
+      - row 124: Louisa | Brennan | louisa.brennan@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 125: Barry | Okafor | barry.okafor@avaya.example | Imported lead | Avaya Inc.
+      - row 126: Barbara | Ishii | barbara.ishii@avaya.example | Closed (lost) | Avaya Inc.
+      - row 127: Rose | Castillo | rose.castillo@avaya.example | Not contacted | Avaya Inc.
+      - row 128: Cora | Gray | cora.gray@avaya.example | Contacted | Avaya Inc.
+      - row 129: Nellie | Fujita | nellie.fujita@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 130: Theodore | Rhodes | theodore.rhodes@autozone.example | Not contacted | AutoZone, Inc.
+      - row 131: Oscar | Mercer | oscar.mercer@avaya.example | Not contacted | Avaya Inc.
+      - row 132: Rose | Bennett | rose.bennett@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 133: Marguerite | Jacobs | marguerite.jacobs@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 134: Alejandro | Tesi | alejandro.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 135: Cora | Okafor | cora.okafor@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 136: Hattie | Ishii | hattie.ishii@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 137: Garrett | Tesi | garrett.tesi@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 138: Cora | Rhodes | cora.rhodes@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 139: Eugenia | Okafor | eugenia.okafor@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 140: Mildred | Brennan | mildred.brennan@linens.example | Customer | Linens 'n Things Inc.
+      - row 141: Nellie | Stokes | nellie.stokes@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 142: Garrett | Bennett | garrett.bennett@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 143: Theodore | Brennan | theodore.brennan@avaya.example | Imported lead | Avaya Inc.
+      - row 144: Walter | Miccinesi | walter.miccinesi@avaya.example | Not contacted | Avaya Inc.
+      - row 145: Harvey | Romoli | harvey.romoli@avaya.example | Contacted | Avaya Inc.
+      - row 146: Gene | Novak | gene.novak@avaya.example | Imported lead | Avaya Inc.
+      - row 147: Harvey | Okafor | harvey.okafor@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 148: Gene | Leach | gene.leach@linens.example | Customer | Linens 'n Things Inc.
+      - row 149: Ida | Goodman | ida.goodman@avaya.example | Contacted | Avaya Inc.
+      - row 150: Oscar | Leach | oscar.leach@autozone.example | Not contacted | AutoZone, Inc.
+      - row 151: Marie | Gray | marie.gray@avaya.example | Not contacted | Avaya Inc.
+      - row 152: Alejandro | Romoli | alejandro.romoli@autozone.example | Customer | AutoZone, Inc.
+      - row 153: Louisa | Tesi | louisa.tesi@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 154: Hattie | Romoli | hattie.romoli@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 155: Gene | Fujita | gene.fujita@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 156: Gene | Matthieu | gene.matthieu@linens.example | Contacted | Linens 'n Things Inc.
+      - row 157: Louisa | Rhodes | louisa.rhodes@avaya.example | Not contacted | Avaya Inc.
+      - row 158: Eula | Ishii | eula.ishii@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 159: Marie | Castillo | marie.castillo@avaya.example | Contacted | Avaya Inc.
+      - row 160: Walter | Lane | walter.lane@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 161: Cora | Miccinesi | cora.miccinesi@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 162: Barry | Parkes | barry.parkes@avaya.example | Contacted | Avaya Inc.
+      - row 163: Oscar | Romoli | oscar.romoli@linens.example | Contacted | Linens 'n Things Inc.
+      - row 164: Hattie | Parkes | hattie.parkes@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 165: Oscar | Matthieu | oscar.matthieu@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 166: Cora | Romoli | cora.romoli@avaya.example | Closed (lost) | Avaya Inc.
+      - row 167: Theodore | Tesi | theodore.tesi@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 168: Harvey | Leach | harvey.leach@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 169: Mildred | Jacobs | mildred.jacobs@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 170: Lettie | Brennan | lettie.brennan@avaya.example | Closed (lost) | Avaya Inc.
+      - row 171: Marie | Miles | marie.miles@avaya.example | Customer | Avaya Inc.
+      - row 172: Barry | Miccinesi | barry.miccinesi@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 173: Eugenia | Parkes | eugenia.parkes@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 174: Eula | Jacobs | eula.jacobs@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 175: Marie | Matthieu | marie.matthieu@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 176: Barbara | Leach | barbara.leach@autozone.example | Contacted | AutoZone, Inc.
+      - row 177: Alejandro | Rhodes | alejandro.rhodes@autozone.example | Customer | AutoZone, Inc.
+      - row 178: Jack | Bennett | jack.bennett@autozone.example | Contacted | AutoZone, Inc.
+      - row 179: Oscar | Parkes | oscar.parkes@avaya.example | Imported lead | Avaya Inc.
+      - row 180: Mildred | Castillo | mildred.castillo@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 181: Marie | Miccinesi | marie.miccinesi@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 182: Marguerite | Leach | marguerite.leach@autozone.example | Imported lead | AutoZone, Inc.
+      - row 183: Garrett | Gray | garrett.gray@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 184: Jack | Castillo | jack.castillo@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 185: Ida | Mercer | ida.mercer@linens.example | Customer | Linens 'n Things Inc.
+      - row 186: Louisa | Leach | louisa.leach@autozone.example | Contacted | AutoZone, Inc.
+      - row 187: Marguerite | Rodriquez | marguerite.rodriquez@avaya.example | Contacted | Avaya Inc.
+      - row 188: Lettie | Matthieu | lettie.matthieu@autozone.example | Contacted | AutoZone, Inc.
+      - row 189: Eula | Brennan | eula.brennan@autozone.example | Not contacted | AutoZone, Inc.
+      - row 190: Marie | Selvi | marie.selvi@avaya.example | Imported lead | Avaya Inc.
+      - row 191: Theodore | Rodriquez | theodore.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+      - row 192: Barbara | Miles | barbara.miles@linens.example | Contacted | Linens 'n Things Inc.
+      - row 193: Louisa | Gray | louisa.gray@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 194: Walter | Fujita | walter.fujita@autozone.example | Imported lead | AutoZone, Inc.
+      - row 195: Ida | Castillo | ida.castillo@avaya.example | Closed (lost) | Avaya Inc.
+      - row 196: Walter | Bennett | walter.bennett@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 197: Louisa | Lindqvist | louisa.lindqvist@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 198: Hattie | Bennett | hattie.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 199: Cora | Castillo | cora.castillo@avaya.example | Customer | Avaya Inc.
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 10: Garrett | Miccinesi | garrett.miccinesi@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 11: Mildred | Romoli | mildred.romoli@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 12: Garrett | Lindqvist | garrett.lindqvist@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 13: Mildred | Lindqvist | mildred.lindqvist@avaya.example | Closed (lost) | Avaya Inc.
+            - row 14: Alejandro | Gray | alejandro.gray@avaya.example | Not contacted | Avaya Inc.
+            - row 15: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 16: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+            - row 17: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 18: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+            - row 19: Nellie | Jacobs | nellie.jacobs@avaya.example | Closed (lost) | Avaya Inc.
+            - rows 0–9, 20–199 not shown: get_rows ref=17
+      
+CALL  click {"ref":17,"row":13}
+OK    Clicked row 13 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 10: Garrett | Miccinesi | garrett.miccinesi@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 11: Mildred | Romoli | mildred.romoli@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 12: Garrett | Lindqvist | garrett.lindqvist@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 13 [selected]: Mildred | Lindqvist | mildred.lindqvist@avaya.example | Closed (lost) | Avaya Inc.
+            - row 14: Alejandro | Gray | alejandro.gray@avaya.example | Not contacted | Avaya Inc.
+            - row 15: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 16: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+            - row 17: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 18: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+            - row 19: Nellie | Jacobs | nellie.jacobs@avaya.example | Closed (lost) | Avaya Inc.
+            - rows 0–9, 20–199 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Mildred", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Lindqvist", required] actions: set_value
+          - EmailField "Email" [ref=20, value="mildred.lindqvist@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  click {"ref":24}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=199, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 10: Garrett | Miccinesi | garrett.miccinesi@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 11: Mildred | Romoli | mildred.romoli@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 12: Garrett | Lindqvist | garrett.lindqvist@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 13: Alejandro | Gray | alejandro.gray@avaya.example | Not contacted | Avaya Inc.
+            - row 14: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 15: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+            - row 16: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 17: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+            - row 18: Nellie | Jacobs | nellie.jacobs@avaya.example | Closed (lost) | Avaya Inc.
+            - row 19: Nellie | Rhodes | nellie.rhodes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - rows 0–9, 20–198 not shown: get_rows ref=17
+      
+CALL  click {"ref":17,"row":195}
+OK    Clicked row 195 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=199, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 181: Marguerite | Leach | marguerite.leach@autozone.example | Imported lead | AutoZone, Inc.
+            - row 182: Garrett | Gray | garrett.gray@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 183: Jack | Castillo | jack.castillo@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 184: Ida | Mercer | ida.mercer@linens.example | Customer | Linens 'n Things Inc.
+            - row 185: Louisa | Leach | louisa.leach@autozone.example | Contacted | AutoZone, Inc.
+            - row 186: Marguerite | Rodriquez | marguerite.rodriquez@avaya.example | Contacted | Avaya Inc.
+            - row 187: Lettie | Matthieu | lettie.matthieu@autozone.example | Contacted | AutoZone, Inc.
+            - row 188: Eula | Brennan | eula.brennan@autozone.example | Not contacted | AutoZone, Inc.
+            - row 189: Marie | Selvi | marie.selvi@avaya.example | Imported lead | Avaya Inc.
+            - row 190: Theodore | Rodriquez | theodore.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - rows 0–180, 191–198 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Walter", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Bennett", required] actions: set_value
+          - EmailField "Email" [ref=20, value="walter.bennett@linens.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Linens 'n Things Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Imported lead", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  click {"ref":25}
+OK    Clicked ref=25
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=199, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 181: Marguerite | Leach | marguerite.leach@autozone.example | Imported lead | AutoZone, Inc.
+            - row 182: Garrett | Gray | garrett.gray@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 183: Jack | Castillo | jack.castillo@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 184: Ida | Mercer | ida.mercer@linens.example | Customer | Linens 'n Things Inc.
+            - row 185: Louisa | Leach | louisa.leach@autozone.example | Contacted | AutoZone, Inc.
+            - row 186: Marguerite | Rodriquez | marguerite.rodriquez@avaya.example | Contacted | Avaya Inc.
+            - row 187: Lettie | Matthieu | lettie.matthieu@autozone.example | Contacted | AutoZone, Inc.
+            - row 188: Eula | Brennan | eula.brennan@autozone.example | Not contacted | AutoZone, Inc.
+            - row 189: Marie | Selvi | marie.selvi@avaya.example | Imported lead | Avaya Inc.
+            - row 190: Theodore | Rodriquez | theodore.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - rows 0–180, 191–198 not shown: get_rows ref=17
+      
+CALL  click {"ref":17,"row":194}
+OK    Clicked row 194 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=199, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 181: Marguerite | Leach | marguerite.leach@autozone.example | Imported lead | AutoZone, Inc.
+            - row 182: Garrett | Gray | garrett.gray@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 183: Jack | Castillo | jack.castillo@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 184: Ida | Mercer | ida.mercer@linens.example | Customer | Linens 'n Things Inc.
+            - row 185: Louisa | Leach | louisa.leach@autozone.example | Contacted | AutoZone, Inc.
+            - row 186: Marguerite | Rodriquez | marguerite.rodriquez@avaya.example | Contacted | Avaya Inc.
+            - row 187: Lettie | Matthieu | lettie.matthieu@autozone.example | Contacted | AutoZone, Inc.
+            - row 188: Eula | Brennan | eula.brennan@autozone.example | Not contacted | AutoZone, Inc.
+            - row 189: Marie | Selvi | marie.selvi@avaya.example | Imported lead | Avaya Inc.
+            - row 190: Theodore | Rodriquez | theodore.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - rows 0–180, 191–198 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Ida", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Castillo", required] actions: set_value
+          - EmailField "Email" [ref=20, value="ida.castillo@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":169}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=198, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 180: Marie | Miccinesi | marie.miccinesi@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 181: Marguerite | Leach | marguerite.leach@autozone.example | Imported lead | AutoZone, Inc.
+            - row 182: Garrett | Gray | garrett.gray@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 183: Jack | Castillo | jack.castillo@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 184: Ida | Mercer | ida.mercer@linens.example | Customer | Linens 'n Things Inc.
+            - row 185: Louisa | Leach | louisa.leach@autozone.example | Contacted | AutoZone, Inc.
+            - row 186: Marguerite | Rodriquez | marguerite.rodriquez@avaya.example | Contacted | Avaya Inc.
+            - row 187: Lettie | Matthieu | lettie.matthieu@autozone.example | Contacted | AutoZone, Inc.
+            - row 188: Eula | Brennan | eula.brennan@autozone.example | Not contacted | AutoZone, Inc.
+            - row 189: Marie | Selvi | marie.selvi@avaya.example | Imported lead | Avaya Inc.
+            - rows 0–179, 190–197 not shown: get_rows ref=17
+      
+OK    Clicked row 169 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=198, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 161: Barry | Parkes | barry.parkes@avaya.example | Contacted | Avaya Inc.
+            - row 162: Oscar | Romoli | oscar.romoli@linens.example | Contacted | Linens 'n Things Inc.
+            - row 163: Hattie | Parkes | hattie.parkes@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 164: Oscar | Matthieu | oscar.matthieu@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 165: Cora | Romoli | cora.romoli@avaya.example | Closed (lost) | Avaya Inc.
+            - row 166: Theodore | Tesi | theodore.tesi@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 167: Harvey | Leach | harvey.leach@laboratory.example | Customer | Laboratory Corporation of America Holdings
+            - row 168: Mildred | Jacobs | mildred.jacobs@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 169 [selected]: Lettie | Brennan | lettie.brennan@avaya.example | Closed (lost) | Avaya Inc.
+            - row 170: Marie | Miles | marie.miles@avaya.example | Customer | Avaya Inc.
+            - rows 0–160, 171–197 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Lettie", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Brennan", required] actions: set_value
+          - EmailField "Email" [ref=20, value="lettie.brennan@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Progress update: 2 of 13 deleted so far (Mildred Lindqvist, Ida Castillo); continuing.
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":165}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=197, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 161: Barry | Parkes | barry.parkes@avaya.example | Contacted | Avaya Inc.
+            - row 162: Oscar | Romoli | oscar.romoli@linens.example | Contacted | Linens 'n Things Inc.
+            - row 163: Hattie | Parkes | hattie.parkes@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 164: Oscar | Matthieu | oscar.matthieu@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 165: Cora | Romoli | cora.romoli@avaya.example | Closed (lost) | Avaya Inc.
+            - row 166: Theodore | Tesi | theodore.tesi@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 167: Harvey | Leach | harvey.leach@laboratory.example | Customer | Laboratory Corporation of America Holdings
+            - row 168: Mildred | Jacobs | mildred.jacobs@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 169: Marie | Miles | marie.miles@avaya.example | Customer | Avaya Inc.
+            - row 170: Barry | Miccinesi | barry.miccinesi@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - rows 0–160, 171–196 not shown: get_rows ref=17
+      
+OK    Clicked row 165 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=197, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 161: Barry | Parkes | barry.parkes@avaya.example | Contacted | Avaya Inc.
+            - row 162: Oscar | Romoli | oscar.romoli@linens.example | Contacted | Linens 'n Things Inc.
+            - row 163: Hattie | Parkes | hattie.parkes@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 164: Oscar | Matthieu | oscar.matthieu@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 165 [selected]: Cora | Romoli | cora.romoli@avaya.example | Closed (lost) | Avaya Inc.
+            - row 166: Theodore | Tesi | theodore.tesi@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 167: Harvey | Leach | harvey.leach@laboratory.example | Customer | Laboratory Corporation of America Holdings
+            - row 168: Mildred | Jacobs | mildred.jacobs@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 169: Marie | Miles | marie.miles@avaya.example | Customer | Avaya Inc.
+            - row 170: Barry | Miccinesi | barry.miccinesi@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - rows 0–160, 171–196 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Cora", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Romoli", required] actions: set_value
+          - EmailField "Email" [ref=20, value="cora.romoli@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Barbara Ishii (125).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":125}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=196, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 161: Barry | Parkes | barry.parkes@avaya.example | Contacted | Avaya Inc.
+            - row 162: Oscar | Romoli | oscar.romoli@linens.example | Contacted | Linens 'n Things Inc.
+            - row 163: Hattie | Parkes | hattie.parkes@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 164: Oscar | Matthieu | oscar.matthieu@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 165: Theodore | Tesi | theodore.tesi@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 166: Harvey | Leach | harvey.leach@laboratory.example | Customer | Laboratory Corporation of America Holdings
+            - row 167: Mildred | Jacobs | mildred.jacobs@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 168: Marie | Miles | marie.miles@avaya.example | Customer | Avaya Inc.
+            - row 169: Barry | Miccinesi | barry.miccinesi@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 170: Eugenia | Parkes | eugenia.parkes@phillips.example | Customer | Phillips Van Heusen Corp.
+            - rows 0–160, 171–195 not shown: get_rows ref=17
+      
+OK    Clicked row 125 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=196, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 125 [selected]: Barbara | Ishii | barbara.ishii@avaya.example | Closed (lost) | Avaya Inc.
+            - row 126: Rose | Castillo | rose.castillo@avaya.example | Not contacted | Avaya Inc.
+            - row 127: Cora | Gray | cora.gray@avaya.example | Contacted | Avaya Inc.
+            - row 128: Nellie | Fujita | nellie.fujita@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 129: Theodore | Rhodes | theodore.rhodes@autozone.example | Not contacted | AutoZone, Inc.
+            - row 130: Oscar | Mercer | oscar.mercer@avaya.example | Not contacted | Avaya Inc.
+            - row 131: Rose | Bennett | rose.bennett@phillips.example | Customer | Phillips Van Heusen Corp.
+            - row 132: Marguerite | Jacobs | marguerite.jacobs@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 133: Alejandro | Tesi | alejandro.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 134: Cora | Okafor | cora.okafor@linens.example | Imported lead | Linens 'n Things Inc.
+            - rows 0–124, 135–195 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Barbara", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Ishii", required] actions: set_value
+          - EmailField "Email" [ref=20, value="barbara.ishii@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Mildred Halvorsen (111).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":111}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=195, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 125: Rose | Castillo | rose.castillo@avaya.example | Not contacted | Avaya Inc.
+            - row 126: Cora | Gray | cora.gray@avaya.example | Contacted | Avaya Inc.
+            - row 127: Nellie | Fujita | nellie.fujita@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 128: Theodore | Rhodes | theodore.rhodes@autozone.example | Not contacted | AutoZone, Inc.
+            - row 129: Oscar | Mercer | oscar.mercer@avaya.example | Not contacted | Avaya Inc.
+            - row 130: Rose | Bennett | rose.bennett@phillips.example | Customer | Phillips Van Heusen Corp.
+            - row 131: Marguerite | Jacobs | marguerite.jacobs@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 132: Alejandro | Tesi | alejandro.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 133: Cora | Okafor | cora.okafor@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 134: Hattie | Ishii | hattie.ishii@linens.example | Imported lead | Linens 'n Things Inc.
+            - rows 0–124, 135–194 not shown: get_rows ref=17
+      
+OK    Clicked row 111 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=195, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 111 [selected]: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 112: Marguerite | Stokes | marguerite.stokes@autozone.example | Customer | AutoZone, Inc.
+            - row 113: Hattie | Lindqvist | hattie.lindqvist@autozone.example | Imported lead | AutoZone, Inc.
+            - row 114: Harvey | Novak | harvey.novak@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 115: Jordan | Leach | jordan.leach@autozone.example | Not contacted | AutoZone, Inc.
+            - row 116: Marie | Novak | marie.novak@avaya.example | Not contacted | Avaya Inc.
+            - row 117: Ida | Matthieu | ida.matthieu@autozone.example | Contacted | AutoZone, Inc.
+            - row 118: Jordan | Castillo | jordan.castillo@avaya.example | Contacted | Avaya Inc.
+            - row 119: Garrett | Miles | garrett.miles@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 120: Gene | Stokes | gene.stokes@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - rows 0–110, 121–194 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Mildred", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Halvorsen", required] actions: set_value
+          - EmailField "Email" [ref=20, value="mildred.halvorsen@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Hattie Matthieu (79).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":79}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=194, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 111: Marguerite | Stokes | marguerite.stokes@autozone.example | Customer | AutoZone, Inc.
+            - row 112: Hattie | Lindqvist | hattie.lindqvist@autozone.example | Imported lead | AutoZone, Inc.
+            - row 113: Harvey | Novak | harvey.novak@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 114: Jordan | Leach | jordan.leach@autozone.example | Not contacted | AutoZone, Inc.
+            - row 115: Marie | Novak | marie.novak@avaya.example | Not contacted | Avaya Inc.
+            - row 116: Ida | Matthieu | ida.matthieu@autozone.example | Contacted | AutoZone, Inc.
+            - row 117: Jordan | Castillo | jordan.castillo@avaya.example | Contacted | Avaya Inc.
+            - row 118: Garrett | Miles | garrett.miles@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 119: Gene | Stokes | gene.stokes@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 120: Cora | Lindqvist | cora.lindqvist@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - rows 0–110, 121–193 not shown: get_rows ref=17
+      
+OK    Clicked row 79 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=194, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 79 [selected]: Hattie | Matthieu | hattie.matthieu@avaya.example | Closed (lost) | Avaya Inc.
+            - row 80: Garrett | Novak | garrett.novak@autozone.example | Imported lead | AutoZone, Inc.
+            - row 81: Barbara | Rodriquez | barbara.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 82: Cora | Goodman | cora.goodman@autozone.example | Customer | AutoZone, Inc.
+            - row 83: Alejandro | Fujita | alejandro.fujita@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 84: Oscar | Castillo | oscar.castillo@autozone.example | Contacted | AutoZone, Inc.
+            - row 85: Lettie | Novak | lettie.novak@avaya.example | Imported lead | Avaya Inc.
+            - row 86: Hattie | Jacobs | hattie.jacobs@linens.example | Customer | Linens 'n Things Inc.
+            - row 87: Louisa | Miles | louisa.miles@linens.example | Customer | Linens 'n Things Inc.
+            - row 88: Harvey | Lindqvist | harvey.lindqvist@avaya.example | Not contacted | Avaya Inc.
+            - rows 0–78, 89–193 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Hattie", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Matthieu", required] actions: set_value
+          - EmailField "Email" [ref=20, value="hattie.matthieu@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Cora Halvorsen (75).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":75}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=193, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 79: Garrett | Novak | garrett.novak@autozone.example | Imported lead | AutoZone, Inc.
+            - row 80: Barbara | Rodriquez | barbara.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 81: Cora | Goodman | cora.goodman@autozone.example | Customer | AutoZone, Inc.
+            - row 82: Alejandro | Fujita | alejandro.fujita@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 83: Oscar | Castillo | oscar.castillo@autozone.example | Contacted | AutoZone, Inc.
+            - row 84: Lettie | Novak | lettie.novak@avaya.example | Imported lead | Avaya Inc.
+            - row 85: Hattie | Jacobs | hattie.jacobs@linens.example | Customer | Linens 'n Things Inc.
+            - row 86: Louisa | Miles | louisa.miles@linens.example | Customer | Linens 'n Things Inc.
+            - row 87: Harvey | Lindqvist | harvey.lindqvist@avaya.example | Not contacted | Avaya Inc.
+            - row 88: Eula | Lindqvist | eula.lindqvist@linens.example | Imported lead | Linens 'n Things Inc.
+            - rows 0–78, 89–192 not shown: get_rows ref=17
+      
+OK    Clicked row 75 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=193, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 67: Jordan | Brennan | jordan.brennan@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 68: Oscar | Tesi | oscar.tesi@autozone.example | Imported lead | AutoZone, Inc.
+            - row 69: Barry | Tesi | barry.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 70: Lettie | Goodman | lettie.goodman@linens.example | Contacted | Linens 'n Things Inc.
+            - row 71: Harvey | Bennett | harvey.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 72: Jordan | Rhodes | jordan.rhodes@phillips.example | Customer | Phillips Van Heusen Corp.
+            - row 73: Jack | Stokes | jack.stokes@avaya.example | Closed (lost) | Avaya Inc.
+            - row 74: Marguerite | Brennan | marguerite.brennan@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 75 [selected]: Cora | Halvorsen | cora.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 76: Hattie | Rhodes | hattie.rhodes@avaya.example | Customer | Avaya Inc.
+            - rows 0–66, 77–192 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Cora", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Halvorsen", required] actions: set_value
+          - EmailField "Email" [ref=20, value="cora.halvorsen@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Jack Stokes (73).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":73}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=192, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 67: Jordan | Brennan | jordan.brennan@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 68: Oscar | Tesi | oscar.tesi@autozone.example | Imported lead | AutoZone, Inc.
+            - row 69: Barry | Tesi | barry.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 70: Lettie | Goodman | lettie.goodman@linens.example | Contacted | Linens 'n Things Inc.
+            - row 71: Harvey | Bennett | harvey.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 72: Jordan | Rhodes | jordan.rhodes@phillips.example | Customer | Phillips Van Heusen Corp.
+            - row 73: Jack | Stokes | jack.stokes@avaya.example | Closed (lost) | Avaya Inc.
+            - row 74: Marguerite | Brennan | marguerite.brennan@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 75: Hattie | Rhodes | hattie.rhodes@avaya.example | Customer | Avaya Inc.
+            - row 76: Eugenia | Leach | eugenia.leach@phillips.example | Customer | Phillips Van Heusen Corp.
+            - rows 0–66, 77–191 not shown: get_rows ref=17
+      
+OK    Clicked row 73 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=192, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 67: Jordan | Brennan | jordan.brennan@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 68: Oscar | Tesi | oscar.tesi@autozone.example | Imported lead | AutoZone, Inc.
+            - row 69: Barry | Tesi | barry.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 70: Lettie | Goodman | lettie.goodman@linens.example | Contacted | Linens 'n Things Inc.
+            - row 71: Harvey | Bennett | harvey.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 72: Jordan | Rhodes | jordan.rhodes@phillips.example | Customer | Phillips Van Heusen Corp.
+            - row 73 [selected]: Jack | Stokes | jack.stokes@avaya.example | Closed (lost) | Avaya Inc.
+            - row 74: Marguerite | Brennan | marguerite.brennan@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 75: Hattie | Rhodes | hattie.rhodes@avaya.example | Customer | Avaya Inc.
+            - row 76: Eugenia | Leach | eugenia.leach@phillips.example | Customer | Phillips Van Heusen Corp.
+            - rows 0–66, 77–191 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Jack", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Stokes", required] actions: set_value
+          - EmailField "Email" [ref=20, value="jack.stokes@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Hattie Brennan (52).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":52}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=191, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 67: Jordan | Brennan | jordan.brennan@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 68: Oscar | Tesi | oscar.tesi@autozone.example | Imported lead | AutoZone, Inc.
+            - row 69: Barry | Tesi | barry.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 70: Lettie | Goodman | lettie.goodman@linens.example | Contacted | Linens 'n Things Inc.
+            - row 71: Harvey | Bennett | harvey.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 72: Jordan | Rhodes | jordan.rhodes@phillips.example | Customer | Phillips Van Heusen Corp.
+            - row 73: Marguerite | Brennan | marguerite.brennan@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 74: Hattie | Rhodes | hattie.rhodes@avaya.example | Customer | Avaya Inc.
+            - row 75: Eugenia | Leach | eugenia.leach@phillips.example | Customer | Phillips Van Heusen Corp.
+            - row 76: Oscar | Brennan | oscar.brennan@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - rows 0–66, 77–190 not shown: get_rows ref=17
+      
+OK    Clicked row 52 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=191, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 52 [selected]: Hattie | Brennan | hattie.brennan@avaya.example | Closed (lost) | Avaya Inc.
+            - row 53: Jordan | Mercer | jordan.mercer@autozone.example | Imported lead | AutoZone, Inc.
+            - row 54: Lettie | Ishii | lettie.ishii@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 55: Jean | Selvi | jean.selvi@autozone.example | Contacted | AutoZone, Inc.
+            - row 56: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+            - row 57: Theodore | Fujita | theodore.fujita@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 58: Oscar | Jacobs | oscar.jacobs@avaya.example | Contacted | Avaya Inc.
+            - row 59: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+            - row 60: Mabel | Gray | mabel.gray@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 61: Jean | Gray | jean.gray@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - rows 0–51, 62–190 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Hattie", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Brennan", required] actions: set_value
+          - EmailField "Email" [ref=20, value="hattie.brennan@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Marguerite Miccinesi (50).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":50}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=190, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 52: Jordan | Mercer | jordan.mercer@autozone.example | Imported lead | AutoZone, Inc.
+            - row 53: Lettie | Ishii | lettie.ishii@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 54: Jean | Selvi | jean.selvi@autozone.example | Contacted | AutoZone, Inc.
+            - row 55: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+            - row 56: Theodore | Fujita | theodore.fujita@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 57: Oscar | Jacobs | oscar.jacobs@avaya.example | Contacted | Avaya Inc.
+            - row 58: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+            - row 59: Mabel | Gray | mabel.gray@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 60: Jean | Gray | jean.gray@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 61: Barbara | Mercer | barbara.mercer@avaya.example | Not contacted | Avaya Inc.
+            - rows 0–51, 62–189 not shown: get_rows ref=17
+      
+OK    Clicked row 50 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=190, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 42: Jack | Novak | jack.novak@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 43: Hattie | Rodriquez | hattie.rodriquez@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 44: Louisa | Mercer | louisa.mercer@avaya.example | Contacted | Avaya Inc.
+            - row 45: Mabel | Mercer | mabel.mercer@autozone.example | Contacted | AutoZone, Inc.
+            - row 46: Eugenia | Brennan | eugenia.brennan@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 47: Ida | Miccinesi | ida.miccinesi@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 48: Marguerite | Castillo | marguerite.castillo@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 49: Jean | Rhodes | jean.rhodes@avaya.example | Customer | Avaya Inc.
+            - row 50 [selected]: Marguerite | Miccinesi | marguerite.miccinesi@avaya.example | Closed (lost) | Avaya Inc.
+            - row 51: Theodore | Lane | theodore.lane@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - rows 0–41, 52–189 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Marguerite", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Miccinesi", required] actions: set_value
+          - EmailField "Email" [ref=20, value="marguerite.miccinesi@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Next: Cora Matthieu (41).
+CALL  click {"ref":24}
+CALL  click {"ref":17,"row":41}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=189, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 42: Jack | Novak | jack.novak@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 43: Hattie | Rodriquez | hattie.rodriquez@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 44: Louisa | Mercer | louisa.mercer@avaya.example | Contacted | Avaya Inc.
+            - row 45: Mabel | Mercer | mabel.mercer@autozone.example | Contacted | AutoZone, Inc.
+            - row 46: Eugenia | Brennan | eugenia.brennan@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 47: Ida | Miccinesi | ida.miccinesi@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 48: Marguerite | Castillo | marguerite.castillo@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 49: Jean | Rhodes | jean.rhodes@avaya.example | Customer | Avaya Inc.
+            - row 50: Theodore | Lane | theodore.lane@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 51: Jordan | Mercer | jordan.mercer@autozone.example | Imported lead | AutoZone, Inc.
+            - rows 0–41, 52–188 not shown: get_rows ref=17
+      
+ERROR Cannot click row 41: the row has no data cell with a spot free of interactive content, padding included
+CALL  get_rows {"ref":17,"offset":36,"length":6}
+OK    Rows 36–41 of 189 in ref=17. The grid now shows row 36; the snapshot below has the refs of the rows in view:
+      - row 36: Jack | Leach | jack.leach@avaya.example | Not contacted | Avaya Inc.
+      - row 37: Barry | Jacobs | barry.jacobs@linens.example | Customer | Linens 'n Things Inc.
+      - row 38: Lettie | Miles | lettie.miles@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 39: Jordan | Fujita | jordan.fujita@autozone.example | Imported lead | AutoZone, Inc.
+      - row 40: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 41: Cora | Matthieu | cora.matthieu@avaya.example | Closed (lost) | Avaya Inc.
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=189, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 36: Jack | Leach | jack.leach@avaya.example | Not contacted | Avaya Inc.
+            - row 37: Barry | Jacobs | barry.jacobs@linens.example | Customer | Linens 'n Things Inc.
+            - row 38: Lettie | Miles | lettie.miles@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 39: Jordan | Fujita | jordan.fujita@autozone.example | Imported lead | AutoZone, Inc.
+            - row 40: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 41: Cora | Matthieu | cora.matthieu@avaya.example | Closed (lost) | Avaya Inc.
+            - row 42: Jack | Novak | jack.novak@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 43: Hattie | Rodriquez | hattie.rodriquez@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 44: Louisa | Mercer | louisa.mercer@avaya.example | Contacted | Avaya Inc.
+            - row 45: Mabel | Mercer | mabel.mercer@autozone.example | Contacted | AutoZone, Inc.
+            - rows 0–35, 46–188 not shown: get_rows ref=17
+      
+CALL  click {"ref":17,"row":41}
+OK    Clicked row 41 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=189, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 36: Jack | Leach | jack.leach@avaya.example | Not contacted | Avaya Inc.
+            - row 37: Barry | Jacobs | barry.jacobs@linens.example | Customer | Linens 'n Things Inc.
+            - row 38: Lettie | Miles | lettie.miles@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 39: Jordan | Fujita | jordan.fujita@autozone.example | Imported lead | AutoZone, Inc.
+            - row 40: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 41 [selected]: Cora | Matthieu | cora.matthieu@avaya.example | Closed (lost) | Avaya Inc.
+            - row 42: Jack | Novak | jack.novak@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 43: Hattie | Rodriquez | hattie.rodriquez@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 44: Louisa | Mercer | louisa.mercer@avaya.example | Contacted | Avaya Inc.
+            - row 45: Mabel | Mercer | mabel.mercer@autozone.example | Contacted | AutoZone, Inc.
+            - rows 0–35, 46–188 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Cora", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Matthieu", required] actions: set_value
+          - EmailField "Email" [ref=20, value="cora.matthieu@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  Last: Nellie Jacobs (18).
+CALL  click {"ref":24}
+CALL  get_rows {"ref":17,"offset":14,"length":6}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=188, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 36: Jack | Leach | jack.leach@avaya.example | Not contacted | Avaya Inc.
+            - row 37: Barry | Jacobs | barry.jacobs@linens.example | Customer | Linens 'n Things Inc.
+            - row 38: Lettie | Miles | lettie.miles@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 39: Jordan | Fujita | jordan.fujita@autozone.example | Imported lead | AutoZone, Inc.
+            - row 40: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 41: Jack | Novak | jack.novak@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 42: Hattie | Rodriquez | hattie.rodriquez@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 43: Louisa | Mercer | louisa.mercer@avaya.example | Contacted | Avaya Inc.
+            - row 44: Mabel | Mercer | mabel.mercer@autozone.example | Contacted | AutoZone, Inc.
+            - row 45: Eugenia | Brennan | eugenia.brennan@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - rows 0–35, 46–187 not shown: get_rows ref=17
+      
+OK    Rows 14–19 of 188 in ref=17. The grid now shows row 14; the snapshot below has the refs of the rows in view:
+      - row 14: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 15: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+      - row 16: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 17: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+      - row 18: Nellie | Jacobs | nellie.jacobs@avaya.example | Closed (lost) | Avaya Inc.
+      - row 19: Nellie | Rhodes | nellie.rhodes@linens.example | Closed (lost) | Linens 'n Things Inc.
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=188, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 14: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 15: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+            - row 16: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 17: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+            - row 18: Nellie | Jacobs | nellie.jacobs@avaya.example | Closed (lost) | Avaya Inc.
+            - row 19: Nellie | Rhodes | nellie.rhodes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 20: Jordan | Jacobs | jordan.jacobs@autozone.example | Not contacted | AutoZone, Inc.
+            - row 21: Louisa | Fujita | louisa.fujita@avaya.example | Imported lead | Avaya Inc.
+            - row 22: Mabel | Brennan | mabel.brennan@avaya.example | Customer | Avaya Inc.
+            - row 23: Walter | Mercer | walter.mercer@avaya.example | Customer | Avaya Inc.
+            - rows 0–13, 24–187 not shown: get_rows ref=17
+      
+CALL  click {"ref":17,"row":18}
+OK    Clicked row 18 of ref=17
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=188, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 14: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 15: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+            - row 16: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 17: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+            - row 18 [selected]: Nellie | Jacobs | nellie.jacobs@avaya.example | Closed (lost) | Avaya Inc.
+            - row 19: Nellie | Rhodes | nellie.rhodes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 20: Jordan | Jacobs | jordan.jacobs@autozone.example | Not contacted | AutoZone, Inc.
+            - row 21: Louisa | Fujita | louisa.fujita@avaya.example | Imported lead | Avaya Inc.
+            - row 22: Mabel | Brennan | mabel.brennan@avaya.example | Customer | Avaya Inc.
+            - row 23: Walter | Mercer | walter.mercer@avaya.example | Customer | Avaya Inc.
+            - rows 0–13, 24–187 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Nellie", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Jacobs", required] actions: set_value
+          - EmailField "Email" [ref=20, value="nellie.jacobs@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  click {"ref":24}
+OK    Clicked ref=24
+      
+      URL: http://localhost:41581/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=187, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 14: Jordan | Novak | jordan.novak@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 15: Harvey | Matthieu | harvey.matthieu@autozone.example | Imported lead | AutoZone, Inc.
+            - row 16: Barry | Stokes | barry.stokes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 17: Rose | Parkes | rose.parkes@avaya.example | Customer | Avaya Inc.
+            - row 18: Nellie | Rhodes | nellie.rhodes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 19: Jordan | Jacobs | jordan.jacobs@autozone.example | Not contacted | AutoZone, Inc.
+            - row 20: Louisa | Fujita | louisa.fujita@avaya.example | Imported lead | Avaya Inc.
+            - row 21: Mabel | Brennan | mabel.brennan@avaya.example | Customer | Avaya Inc.
+            - row 22: Walter | Mercer | walter.mercer@avaya.example | Customer | Avaya Inc.
+            - row 23: Jack | Lindqvist | jack.lindqvist@avaya.example | Imported lead | Avaya Inc.
+            - rows 0–13, 24–186 not shown: get_rows ref=17
+      
+SAYS  I deleted 13 contacts: every Avaya Inc. contact whose status was Closed (lost). The grid went from 200 rows to 187, which matches.
+      
+      The 13 were:
+      - Mildred Lindqvist
+      - Nellie Jacobs
+      - Cora Matthieu
+      - Marguerite Miccinesi
+      - Hattie Brennan
+      - Jack Stokes
+      - Cora Halvorsen
+      - Hattie Matthieu
+      - Mildred Halvorsen
+      - Barbara Ishii
+      - Cora Romoli
+      - Lettie Brennan
+      - Ida Castillo
+      
+      Before each deletion I checked the edit form to confirm the contact was an Avaya Inc. contact with Closed (lost) status. I did not delete anyone else. After the first deletion the grid's row numbers shifted, and I opened Walter Bennett by mistake. I cancelled that form without deleting.
+      
+      I didn't re-scan the whole list afterwards. I only checked that the row count dropped by 13.
+END   turns=37 duration=71s cost=$0.2911777 is_error=false

@@ -1,0 +1,276 @@
+CALL  navigate {"url":"http://localhost:57949"}
+OK    Navigated to http://localhost:57949
+      
+      URL: http://localhost:57949/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  set_value {"ref":5,"value":"user"}
+CALL  set_value {"ref":6,"value":"password"}
+CALL  click {"ref":7}
+OK    Set ref=5 to "user"
+      
+      URL: http://localhost:57949/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+OK    Set ref=6 to "password"
+      
+      URL: http://localhost:57949/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="password", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+OK    Clicked ref=7
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+      
+SAYS  Find Rose Parkes first.
+CALL  set_value {"ref":15,"value":"Parkes"}
+OK    Set ref=15 to "Parkes"
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Parkes"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=10, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Garrett | Parkes | garrett.parkes@avaya.example | Contacted | Avaya Inc.
+            - row 1: Barbara | Parkes | barbara.parkes@autozone.example | Contacted | AutoZone, Inc.
+            - row 2: Lettie | Parkes | lettie.parkes@autozone.example | Customer | AutoZone, Inc.
+            - row 3: Walter | Parkes | walter.parkes@autozone.example | Imported lead | AutoZone, Inc.
+            - row 4: Ida | Parkes | ida.parkes@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 5: Theodore | Parkes | theodore.parkes@autozone.example | Imported lead | AutoZone, Inc.
+            - row 6: Harvey | Parkes | harvey.parkes@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 7: Gene | Parkes | gene.parkes@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 8: Rose | Parkes | rose.parkes@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 9: Mildred | Parkes | mildred.parkes@linens.example | Imported lead | Linens 'n Things Inc.
+      
+SAYS  Rose Parkes: Laboratory Corporation of America Holdings. Now Louisa Mercer.
+CALL  set_value {"ref":15,"value":"Louisa Mercer"}
+OK    Set ref=15 to "Louisa Mercer"
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Louisa Mercer"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=0, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+      
+SAYS  Filter may only match single fields; try "Mercer".
+CALL  set_value {"ref":15,"value":"Mercer"}
+OK    Set ref=15 to "Mercer"
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Mercer"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=6, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 1: Louisa | Mercer | louisa.mercer@linens.example | Contacted | Linens 'n Things Inc.
+            - row 2: Nellie | Mercer | nellie.mercer@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 3: Marguerite | Mercer | marguerite.mercer@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 4: Oscar | Mercer | oscar.mercer@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 5: Walter | Mercer | walter.mercer@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      
+CALL  click {"ref":17,"row":1}
+OK    Clicked row 1 of ref=17
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Mercer"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=6, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 1 [selected]: Louisa | Mercer | louisa.mercer@linens.example | Contacted | Linens 'n Things Inc.
+            - row 2: Nellie | Mercer | nellie.mercer@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 3: Marguerite | Mercer | marguerite.mercer@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 4: Oscar | Mercer | oscar.mercer@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 5: Walter | Mercer | walter.mercer@phillips.example | Imported lead | Phillips Van Heusen Corp.
+          - TextField "First name" [ref=18, value="Louisa", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Mercer", required] actions: set_value
+          - EmailField "Email" [ref=20, value="louisa.mercer@linens.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Linens 'n Things Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Contacted", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  set_value {"ref":21,"value":"Laboratory Corporation of America Holdings"}
+CALL  set_value {"ref":22,"value":"Customer"}
+OK    Set ref=21 to "Laboratory Corporation of America Holdings"
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Mercer"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=6, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 1 [selected]: Louisa | Mercer | louisa.mercer@linens.example | Contacted | Linens 'n Things Inc.
+            - row 2: Nellie | Mercer | nellie.mercer@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 3: Marguerite | Mercer | marguerite.mercer@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 4: Oscar | Mercer | oscar.mercer@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 5: Walter | Mercer | walter.mercer@phillips.example | Imported lead | Phillips Van Heusen Corp.
+          - TextField "First name" [ref=18, value="Louisa", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Mercer", required] actions: set_value
+          - EmailField "Email" [ref=20, value="louisa.mercer@linens.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Laboratory Corporation of America Holdings", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Contacted", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+OK    Set ref=22 to "Customer"
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Mercer"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=6, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 1 [selected]: Louisa | Mercer | louisa.mercer@linens.example | Contacted | Linens 'n Things Inc.
+            - row 2: Nellie | Mercer | nellie.mercer@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 3: Marguerite | Mercer | marguerite.mercer@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 4: Oscar | Mercer | oscar.mercer@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 5: Walter | Mercer | walter.mercer@phillips.example | Imported lead | Phillips Van Heusen Corp.
+          - TextField "First name" [ref=18, value="Louisa", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Mercer", required] actions: set_value
+          - EmailField "Email" [ref=20, value="louisa.mercer@linens.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Laboratory Corporation of America Holdings", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Customer", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  click {"ref":23}
+OK    Clicked ref=23
+      
+      URL: http://localhost:57949/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Mercer"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=6, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 1: Louisa | Mercer | louisa.mercer@linens.example | Customer | Laboratory Corporation of America Holdings
+            - row 2: Nellie | Mercer | nellie.mercer@linens.example | Not contacted | Linens 'n Things Inc.
+            - row 3: Marguerite | Mercer | marguerite.mercer@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 4: Oscar | Mercer | oscar.mercer@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 5: Walter | Mercer | walter.mercer@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      
+SAYS  I updated Louisa Mercer's record and saved it. Her company is now Laboratory Corporation of America Holdings, the company Rose Parkes works for. Her status changed from Contacted to Customer.
+      
+      I left her email as louisa.mercer@linens.example, since you didn't ask me to change it. It still uses the old Linens domain, so you may want to update it.
+END   turns=12 duration=162s cost=$0.0538082 is_error=false

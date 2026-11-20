@@ -1,0 +1,206 @@
+[benchmark] crm-add-contact / playwright / seed 1: starting flow-crm-tutorial on 37059
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, AutoZone, Inc., Contacted  (23 turns, 43s, $0.17778679999999997)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.playwright.s1.1
+[benchmark] crm-add-contact / chrome-devtools / seed 1: starting flow-crm-tutorial on 40183
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, AutoZone, Inc., Contacted  (24 turns, 35s, $0.2414182)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.chrome-devtools.s1.1
+[benchmark] crm-add-contact / playwright / seed 2: starting flow-crm-tutorial on 46735
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Avaya Inc., Contacted  (21 turns, 132s, $0.12770109999999998)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.playwright.s2.1
+[benchmark] crm-add-contact / chrome-devtools / seed 2: starting flow-crm-tutorial on 36787
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Avaya Inc., Contacted  (19 turns, 35s, $0.18982200000000002)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-add-contact / unified-test-mcp / seed 2: starting flow-crm-tutorial on 43763
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Avaya Inc., Contacted  (13 turns, 33s, $0.0643401)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.unified-test-mcp.s2.1
+[benchmark] crm-add-contact / chrome-devtools / seed 3: starting flow-crm-tutorial on 52729
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Linens 'n Things Inc., Contacted  (31 turns, 200s, $0.2546486)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-add-contact / unified-test-mcp / seed 3: starting flow-crm-tutorial on 41359
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Linens 'n Things Inc., Contacted  (12 turns, 21s, $0.0596167)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.unified-test-mcp.s3.1
+[benchmark] crm-add-contact / playwright / seed 3: starting flow-crm-tutorial on 43219
+[benchmark] the agent is at it
+[benchmark] passed: as expected: a new contact Ada Lovelace, ada@analytical.example, Linens 'n Things Inc., Contacted  (23 turns, 130s, $0.10602130000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-add-contact.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-invalid-email / unified-test-mcp / seed 1: starting flow-crm-tutorial on 44969
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (13 turns, 24s, $0.0641196)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.unified-test-mcp.s1.1
+[benchmark] crm-invalid-email / playwright / seed 1: starting flow-crm-tutorial on 36603
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (22 turns, 131s, $0.0916822)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.playwright.s1.1
+[benchmark] crm-invalid-email / chrome-devtools / seed 1: starting flow-crm-tutorial on 54207
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (21 turns, 34s, $0.1431453)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.chrome-devtools.s1.1
+[benchmark] crm-invalid-email / playwright / seed 2: starting flow-crm-tutorial on 45071
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (18 turns, 50s, $0.08928499999999999)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.playwright.s2.1
+[benchmark] crm-invalid-email / chrome-devtools / seed 2: starting flow-crm-tutorial on 47239
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (18 turns, 91s, $0.11725310000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-invalid-email / unified-test-mcp / seed 2: starting flow-crm-tutorial on 42595
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (13 turns, 20s, $0.063087)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.unified-test-mcp.s2.1
+[benchmark] crm-invalid-email / chrome-devtools / seed 3: starting flow-crm-tutorial on 37217
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (31 turns, 54s, $0.1987825)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-invalid-email / unified-test-mcp / seed 3: starting flow-crm-tutorial on 38725
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (13 turns, 116s, $0.087623)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.unified-test-mcp.s3.1
+[benchmark] crm-invalid-email / playwright / seed 3: starting flow-crm-tutorial on 35377
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer names the Email field, nothing saved  (20 turns, 44s, $0.09888020000000002)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-invalid-email.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-move-contact / unified-test-mcp / seed 1: starting flow-crm-tutorial on 57949
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Louisa Mercer at Laboratory Corporation of America Holdings (Rose Parkes's company), status Customer  (12 turns, 186s, $0.0538082)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.unified-test-mcp.s1.1
+[benchmark] crm-move-contact / playwright / seed 1: starting flow-crm-tutorial on 46529
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Louisa Mercer at Laboratory Corporation of America Holdings (Rose Parkes's company), status Customer  (26 turns, 40s, $0.1190672)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.playwright.s1.1
+[benchmark] crm-move-contact / chrome-devtools / seed 1: starting flow-crm-tutorial on 43855
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Louisa Mercer at Laboratory Corporation of America Holdings (Rose Parkes's company), status Customer  (21 turns, 50s, $0.16665449999999998)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.chrome-devtools.s1.1
+[benchmark] crm-move-contact / playwright / seed 2: starting flow-crm-tutorial on 46371
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Rose Miles at Linens 'n Things Inc. (Nellie Miccinesi's company), status Customer  (18 turns, 41s, $0.09574510000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.playwright.s2.1
+[benchmark] crm-move-contact / chrome-devtools / seed 2: starting flow-crm-tutorial on 45569
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Rose Miles at Linens 'n Things Inc. (Nellie Miccinesi's company), status Customer  (16 turns, 27s, $0.1511297)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-move-contact / unified-test-mcp / seed 2: starting flow-crm-tutorial on 58105
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Rose Miles at Linens 'n Things Inc. (Nellie Miccinesi's company), status Customer  (12 turns, 34s, $0.05671050000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.unified-test-mcp.s2.1
+[benchmark] crm-move-contact / chrome-devtools / seed 3: starting flow-crm-tutorial on 38781
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Mildred Halvorsen at Phillips Van Heusen Corp. (Louisa Castillo's company), status Customer  (19 turns, 90s, $0.12434870000000002)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-move-contact / unified-test-mcp / seed 3: starting flow-crm-tutorial on 55759
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Mildred Halvorsen at Phillips Van Heusen Corp. (Louisa Castillo's company), status Customer  (11 turns, 26s, $0.0545243)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.unified-test-mcp.s3.1
+[benchmark] crm-move-contact / playwright / seed 3: starting flow-crm-tutorial on 54169
+[benchmark] the agent is at it
+[benchmark] passed: as expected: Mildred Halvorsen at Phillips Van Heusen Corp. (Louisa Castillo's company), status Customer  (17 turns, 45s, $0.0969766)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-move-contact.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-count / unified-test-mcp / seed 1: starting flow-crm-tutorial on 55697
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 7  (6 turns, 13s, $0.0593332)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.unified-test-mcp.s1.1
+[benchmark] crm-count / playwright / seed 1: starting flow-crm-tutorial on 59625
+[benchmark] the agent is at it
+[benchmark] failed: answered 4, not 7  (16 turns, 147s, $0.1218007)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.playwright.s1.1
+[benchmark] crm-count / chrome-devtools / seed 1: starting flow-crm-tutorial on 58631
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 7  (20 turns, 114s, $0.1411236)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.chrome-devtools.s1.1
+[benchmark] crm-count / playwright / seed 2: starting flow-crm-tutorial on 41889
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 11  (14 turns, 194s, $0.08524330000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.playwright.s2.1
+[benchmark] crm-count / chrome-devtools / seed 2: starting flow-crm-tutorial on 59815
+[benchmark] the agent is at it
+[benchmark] failed: answered 2, not 11  (11 turns, 41s, $0.0756727)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-count / unified-test-mcp / seed 2: starting flow-crm-tutorial on 50223
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 11  (6 turns, 15s, $0.06209870000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.unified-test-mcp.s2.1
+[benchmark] crm-count / chrome-devtools / seed 3: starting flow-crm-tutorial on 60683
+[benchmark] the agent is at it
+[benchmark] failed: answered 0, not 4  (16 turns, 34s, $0.1280593)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-count / unified-test-mcp / seed 3: starting flow-crm-tutorial on 39593
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 4  (6 turns, 15s, $0.0622848)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.unified-test-mcp.s3.1
+[benchmark] crm-count / playwright / seed 3: starting flow-crm-tutorial on 58953
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 4  (10 turns, 91s, $0.0526943)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-count.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-delete-closed / unified-test-mcp / seed 1: starting flow-crm-tutorial on 43443
+[benchmark] the agent is at it
+[benchmark] passed: as expected: 6 contacts at Laboratory Corporation of America Holdings deleted, the answer 6  (24 turns, 54s, $0.1767372)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.unified-test-mcp.s1.1
+[benchmark] crm-delete-closed / playwright / seed 1: starting flow-crm-tutorial on 39447
+[benchmark] the agent is at it
+[benchmark] passed: as expected: 6 contacts at Laboratory Corporation of America Holdings deleted, the answer 6  (17 turns, 83s, $0.11808800000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.playwright.s1.1
+[benchmark] crm-delete-closed / chrome-devtools / seed 1: starting flow-crm-tutorial on 34165
+[benchmark] the agent is at it
+[benchmark] passed: as expected: 6 contacts at Laboratory Corporation of America Holdings deleted, the answer 6  (24 turns, 124s, $0.2556297)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.chrome-devtools.s1.1
+[benchmark] crm-delete-closed / playwright / seed 2: starting flow-crm-tutorial on 57751
+[benchmark] the agent is at it
+[benchmark] failed: still there: Barbara|Lane|barbara.lane@linens.example|Linens 'n Things Inc.|Closed (lost); still there: Walter|Brennan|walter.brennan@linens.example|Linens 'n Things Inc.|Closed (lost); still there: Hattie|Miccinesi|hattie.miccinesi@linens.example|Linens 'n Things Inc.|Closed (lost); still there: Eula|Novak|eula.novak@linens.example|Linens 'n Things Inc.|Closed (lost); answered 3, not 7  (16 turns, 50s, $0.0830477)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.playwright.s2.1
+[benchmark] crm-delete-closed / chrome-devtools / seed 2: starting flow-crm-tutorial on 39727
+[benchmark] the agent is at it
+[benchmark] failed: still there: Barbara|Lane|barbara.lane@linens.example|Linens 'n Things Inc.|Closed (lost); still there: Eugenia|Lane|eugenia.lane@linens.example|Linens 'n Things Inc.|Closed (lost); still there: Walter|Brennan|walter.brennan@linens.example|Linens 'n Things Inc.|Closed (lost); still there: Hattie|Miccinesi|hattie.miccinesi@linens.example|Linens 'n Things Inc.|Closed (lost); still there: Eula|Novak|eula.novak@linens.example|Linens 'n Things Inc.|Closed (lost); answered 2, not 7  (35 turns, 81s, $0.2913189000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-delete-closed / unified-test-mcp / seed 2: starting flow-crm-tutorial on 59933
+[benchmark] the agent is at it
+[benchmark] passed: as expected: 7 contacts at Linens 'n Things Inc. deleted, the answer 7  (38 turns, 106s, $0.2819744999999999)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.unified-test-mcp.s2.1
+[benchmark] crm-delete-closed / chrome-devtools / seed 3: starting flow-crm-tutorial on 51999
+[benchmark] the agent is at it
+[benchmark] passed: as expected: 13 contacts at Avaya Inc. deleted, the answer 13  (39 turns, 217s, $0.35536299999999993)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] crm-delete-closed / unified-test-mcp / seed 3: starting flow-crm-tutorial on 41581
+[benchmark] the agent is at it
+[benchmark] passed: as expected: 13 contacts at Avaya Inc. deleted, the answer 13  (37 turns, 96s, $0.2911777)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.unified-test-mcp.s3.1
+[benchmark] crm-delete-closed / playwright / seed 3: starting flow-crm-tutorial on 52863
+[benchmark] the agent is at it
+[benchmark] passed: as expected: 13 contacts at Avaya Inc. deleted, the answer 13  (24 turns, 128s, $0.16576129999999994)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-crm/crm-delete-closed.playwright.s3.1
+scenario           arm               runs  passed  timeout  infra  time_s  api_s  turns  calls  errors  cost_usd  context  io%
+crm-add-contact    chrome-devtools   3     3       0        0      32.6    28.3   24     23     0       0.2414    43714    0.1
+crm-add-contact    playwright        3     3       0        0      106.1   94.3   23     22     1       0.1277    24604    0.1
+crm-add-contact    unified-test-mcp  3     3       0        0      19.9    12.7   12     11     0       0.0643    17761    0.2
+crm-count          chrome-devtools   3     1       0        0      38.3    25.4   16     15     0       0.1281    29720    0.1
+crm-count          playwright        3     2       0        0      122.9   44.9   14     13     0       0.0852    21207    0.1
+crm-count          unified-test-mcp  3     3       0        0      12.4    6.5    6      5      0       0.0621    19882    0.1
+crm-delete-closed  chrome-devtools   3     2       0        0      121.6   63.6   35     34     3       0.2913    52042    0.1
+crm-delete-closed  playwright        3     2       0        0      80.9    39.7   17     16     3       0.1181    23601    0.1
+crm-delete-closed  unified-test-mcp  3     3       0        0      71.4    55.9   37     36     1       0.282     46467    0.1
+crm-invalid-email  chrome-devtools   3     3       0        0      41.1    36.2   21     20     0       0.1431    36120    0.1
+crm-invalid-email  playwright        3     3       0        0      42.5    28.1   20     19     1       0.0917    22341    0.1
+crm-invalid-email  unified-test-mcp  3     3       0        0      22.5    15.2   13     12     0       0.0641    17838    0.2
+crm-move-contact   chrome-devtools   3     3       0        0      37      26     19     18     0       0.1511    41116    0.1
+crm-move-contact   playwright        3     3       0        0      32.8    24.4   18     17     0       0.097     24609    0.1
+crm-move-contact   unified-test-mcp  3     3       0        0      26.9    18.2   12     11     0       0.0545    15712    0.1

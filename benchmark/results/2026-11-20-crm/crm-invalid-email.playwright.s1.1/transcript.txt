@@ -1,0 +1,542 @@
+CALL  browser_navigate {"url":"http://localhost:36603"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:36603');
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/login
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-54-40-477Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:36603/login
+      - Page Title: Login | Vaadin CRM
+      ### Snapshot
+      ```yaml
+      - generic [ref=e1]:
+        - generic [ref=e4]:
+          - generic:
+            - heading "Vaadin CRM" [level=1] [ref=e5]
+            - generic [ref=e6]: "Username: user, Password: password"
+            - generic [ref=e7]: "Username: admin, Password: password"
+            - region "Log in" [ref=e9]:
+              - heading "Log in" [level=1] [ref=e10]
+              - generic [ref=e11]:
+                - generic [ref=e13]:
+                  - generic [ref=e14]:
+                    - generic: Username
+                    - generic [aria-hidden] [ref=e15]: "*"
+                  - textbox "Username" [active] [ref=e17]
+                - generic [ref=e19]:
+                  - generic [ref=e20]:
+                    - generic: Password
+                    - generic [aria-hidden] [ref=e21]: "*"
+                  - generic [ref=e22]:
+                    - textbox "Password" [ref=e23]
+                    - button "Show password" [ref=e25] [cursor=pointer]
+              - button "Log in" [ref=e26] [cursor=pointer]
+              - button "Forgot password" [ref=e28] [cursor=pointer]
+        - generic [ref=e30]: Online
+      ```
+CALL  browser_fill_form {"fields":[{"target":"e17","name":"Username","type":"textbox","value":"user"},{"target":"e23","name":"Password","type":"textbox","value":"password"}]}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Username' }).fill('user');
+      await page.getByRole('textbox', { name: 'Password' }).fill('password');
+      ```
+CALL  browser_click {"target":"e26"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Log in' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-54-44-985Z.yml)
+CALL  browser_find {"text":"Add contact"}
+OK    ### Result
+      Found 1 match for "Add contact":
+      
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e18]:
+            - generic:
+              - generic [ref=f1e19]:
+                - generic:
+                  - generic [ref=f1e21]:
+                    - text: "*"
+                    - textbox [ref=f1e23]:
+                      - /placeholder: Filter by name...
+                  - button "Add contact" [ref=f1e24] [cursor=pointer]
+              - treegrid [ref=f1e29]:
+                - rowgroup [ref=f1e30]:
+                  - row [ref=f1e31]:
+CALL  browser_click {"target":"f1e24"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Add contact' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-54-49-109Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      ```yaml
+      - generic [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e6]:
+            - generic:
+              - button "Toggle navigation panel" [expanded] [ref=f1e7] [cursor=pointer]
+              - heading "Vaadin CRM" [level=1] [ref=f1e10]
+              - button "Log out user" [ref=f1e11] [cursor=pointer]
+          - generic [ref=f1e14]:
+            - generic:
+              - link "List" [ref=f1e15] [cursor=pointer]:
+                - /url: ""
+              - link "Dashboard" [ref=f1e16] [cursor=pointer]:
+                - /url: dashboard
+          - generic [ref=f1e18]:
+            - generic:
+              - generic [ref=f1e19]:
+                - generic:
+                  - generic [ref=f1e21]:
+                    - text: "*"
+                    - textbox [ref=f1e23]:
+                      - /placeholder: Filter by name...
+                  - button "Add contact" [active] [ref=f1e24] [cursor=pointer]
+              - generic [ref=f1e26]:
+                - generic:
+                  - treegrid [ref=f1e29]:
+                    - rowgroup [ref=f1e30]:
+                      - row [ref=f1e31]:
+                        - columnheader "Sort by First Name" [ref=f1e32]:
+                          - generic "Sort by First Name" [ref=f1e34] [cursor=pointer]: First Name
+                        - columnheader "Sort by Last Name" [ref=f1e37]:
+                          - generic "Sort by Last Name" [ref=f1e39] [cursor=pointer]: Last Name
+                        - columnheader "Sort by Email" [ref=f1e42]:
+                          - generic "Sort by Email" [ref=f1e44] [cursor=pointer]: Email
+                        - columnheader "Status" [ref=f1e47]
+                        - columnheader "Company" [ref=f1e49]
+                    - rowgroup [ref=f1e51]:
+                      - row [ref=f1e52]:
+                        - gridcell "Barbara" [ref=f1e53]
+                        - gridcell "Lindqvist" [ref=f1e55]
+                        - gridcell "barbara.lindqvist@laboratory.example" [ref=f1e57]
+                        - gridcell "Closed (lost)" [ref=f1e59]
+                        - gridcell "Laboratory Corporation of America Holdings" [ref=f1e61]
+                      - row [ref=f1e63]:
+                        - gridcell "Hattie" [ref=f1e64]
+                        - gridcell "Lindqvist" [ref=f1e66]
+                        - gridcell "hattie.lindqvist@avaya.example" [ref=f1e68]
+                        - gridcell "Contacted" [ref=f1e70]
+                        - gridcell "Avaya Inc." [ref=f1e72]
+                      - row [ref=f1e74]:
+                        - gridcell "Mildred" [ref=f1e75]
+                        - gridcell "Goodman" [ref=f1e77]
+                        - gridcell "mildred.goodman@avaya.example" [ref=f1e79]
+                        - gridcell "Customer" [ref=f1e81]
+                        - gridcell "Avaya Inc." [ref=f1e83]
+                      - row [ref=f1e85]:
+                        - gridcell "Gene" [ref=f1e86]
+                        - gridcell "Mercer" [ref=f1e88]
+                        - gridcell "gene.mercer@laboratory.example" [ref=f1e90]
+                        - gridcell "Imported lead" [ref=f1e92]
+                        - gridcell "Laboratory Corporation of America Holdings" [ref=f1e94]
+                      - row [ref=f1e96]:
+                        - gridcell "Mabel" [ref=f1e97]
+                        - gridcell "Lane" [ref=f1e99]
+                        - gridcell "mabel.lane@avaya.example" [ref=f1e101]
+                        - gridcell "Imported lead" [ref=f1e103]
+                        - gridcell "Avaya Inc." [ref=f1e105]
+                      - row [ref=f1e107]:
+                        - gridcell "Mabel" [ref=f1e108]
+                        - gridcell "Fujita" [ref=f1e110]
+                        - gridcell "mabel.fujita@linens.example" [ref=f1e112]
+                        - gridcell "Customer" [ref=f1e114]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e116]
+                      - row [ref=f1e118]:
+                        - gridcell "Eugenia" [ref=f1e119]
+                        - gridcell "Rodriquez" [ref=f1e121]
+                        - gridcell "eugenia.rodriquez@linens.example" [ref=f1e123]
+                        - gridcell "Customer" [ref=f1e125]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e127]
+                      - row [ref=f1e129]:
+                        - gridcell "Rose" [ref=f1e130]
+                        - gridcell "Ishii" [ref=f1e132]
+                        - gridcell "rose.ishii@autozone.example" [ref=f1e134]
+                        - gridcell "Contacted" [ref=f1e136]
+                        - gridcell "AutoZone, Inc." [ref=f1e138]
+                      - row [ref=f1e140]:
+                        - gridcell "Walter" [ref=f1e141]
+                        - gridcell "Brennan" [ref=f1e143]
+                        - gridcell "walter.brennan@laboratory.example" [ref=f1e145]
+                        - gridcell "Closed (lost)" [ref=f1e147]
+                        - gridcell "Laboratory Corporation of America Holdings" [ref=f1e149]
+                      - row [ref=f1e151]:
+                        - gridcell "Nellie" [ref=f1e152]
+                        - gridcell "Lindqvist" [ref=f1e154]
+                        - gridcell "nellie.lindqvist@autozone.example" [ref=f1e156]
+                        - gridcell "Contacted" [ref=f1e158]
+                        - gridcell "AutoZone, Inc." [ref=f1e160]
+                      - row [ref=f1e162]:
+                        - gridcell "Walter" [ref=f1e163]
+                        - gridcell "Selvi" [ref=f1e165]
+                        - gridcell "walter.selvi@autozone.example" [ref=f1e167]
+                        - gridcell "Closed (lost)" [ref=f1e169]
+                        - gridcell "AutoZone, Inc." [ref=f1e171]
+                      - row [ref=f1e173]:
+                        - gridcell "Louisa" [ref=f1e174]
+                        - gridcell "Mercer" [ref=f1e176]
+                        - gridcell "louisa.mercer@linens.example" [ref=f1e178]
+                        - gridcell "Contacted" [ref=f1e180]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e182]
+                      - row [ref=f1e184]:
+                        - gridcell "Lettie" [ref=f1e185]
+                        - gridcell "Halvorsen" [ref=f1e187]
+                        - gridcell "lettie.halvorsen@avaya.example" [ref=f1e189]
+                        - gridcell "Imported lead" [ref=f1e191]
+                        - gridcell "Avaya Inc." [ref=f1e193]
+                      - row [ref=f1e195]:
+                        - gridcell "Hattie" [ref=f1e196]
+                        - gridcell "Novak" [ref=f1e198]
+                        - gridcell "hattie.novak@phillips.example" [ref=f1e200]
+                        - gridcell "Imported lead" [ref=f1e202]
+                        - gridcell "Phillips Van Heusen Corp." [ref=f1e204]
+                      - row [ref=f1e206]:
+                        - gridcell "Alejandro" [ref=f1e207]
+                        - gridcell "Tesi" [ref=f1e209]
+                        - gridcell "alejandro.tesi@linens.example" [ref=f1e211]
+                        - gridcell "Customer" [ref=f1e213]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e215]
+                      - row [ref=f1e217]:
+                        - gridcell "Gene" [ref=f1e218]
+                        - gridcell "Miccinesi" [ref=f1e220]
+                        - gridcell "gene.miccinesi@laboratory.example" [ref=f1e222]
+                        - gridcell "Imported lead" [ref=f1e224]
+                        - gridcell "Laboratory Corporation of America Holdings" [ref=f1e226]
+                      - row [ref=f1e228]:
+                        - gridcell "Eugenia" [ref=f1e229]
+                        - gridcell "Romoli" [ref=f1e231]
+                        - gridcell "eugenia.romoli@avaya.example" [ref=f1e233]
+                        - gridcell "Customer" [ref=f1e235]
+                        - gridcell "Avaya Inc." [ref=f1e237]
+                      - row [ref=f1e239]:
+                        - gridcell "Alejandro" [ref=f1e240]
+                        - gridcell "Fujita" [ref=f1e242]
+                        - gridcell "alejandro.fujita@autozone.example" [ref=f1e244]
+                        - gridcell "Contacted" [ref=f1e246]
+                        - gridcell "AutoZone, Inc." [ref=f1e248]
+                      - row [ref=f1e250]:
+                        - gridcell "Alejandro" [ref=f1e251]
+                        - gridcell "Rhodes" [ref=f1e253]
+                        - gridcell "alejandro.rhodes@avaya.example" [ref=f1e255]
+                        - gridcell "Not contacted" [ref=f1e257]
+                        - gridcell "Avaya Inc." [ref=f1e259]
+                      - row [ref=f1e261]:
+                        - gridcell "Barry" [ref=f1e262]
+                        - gridcell "Gray" [ref=f1e264]
+                        - gridcell "barry.gray@linens.example" [ref=f1e266]
+                        - gridcell "Closed (lost)" [ref=f1e268]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e270]
+                      - row [ref=f1e272]:
+                        - gridcell "Eugenia" [ref=f1e273]
+                        - gridcell "Novak" [ref=f1e275]
+                        - gridcell "eugenia.novak@avaya.example" [ref=f1e277]
+                        - gridcell "Customer" [ref=f1e279]
+                        - gridcell "Avaya Inc." [ref=f1e281]
+                      - row [ref=f1e283]:
+                        - gridcell "Alejandro" [ref=f1e284]
+                        - gridcell "Stokes" [ref=f1e286]
+                        - gridcell "alejandro.stokes@linens.example" [ref=f1e288]
+                        - gridcell "Contacted" [ref=f1e290]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e292]
+                      - row [ref=f1e294]:
+                        - gridcell "Cora" [ref=f1e295]
+                        - gridcell "Brennan" [ref=f1e297]
+                        - gridcell "cora.brennan@phillips.example" [ref=f1e299]
+                        - gridcell "Imported lead" [ref=f1e301]
+                        - gridcell "Phillips Van Heusen Corp." [ref=f1e303]
+                      - row [ref=f1e305]:
+                        - gridcell "Oscar" [ref=f1e306]
+                        - gridcell "Stokes" [ref=f1e308]
+                        - gridcell "oscar.stokes@phillips.example" [ref=f1e310]
+                        - gridcell "Not contacted" [ref=f1e312]
+                        - gridcell "Phillips Van Heusen Corp." [ref=f1e314]
+                      - row [ref=f1e316]:
+                        - gridcell "Nellie" [ref=f1e317]
+                        - gridcell "Mercer" [ref=f1e319]
+                        - gridcell "nellie.mercer@linens.example" [ref=f1e321]
+                        - gridcell "Not contacted" [ref=f1e323]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e325]
+                      - row [ref=f1e327]:
+                        - gridcell "Louisa" [ref=f1e328]
+                        - gridcell "Lindqvist" [ref=f1e330]
+                        - gridcell "louisa.lindqvist@laboratory.example" [ref=f1e332]
+                        - gridcell "Closed (lost)" [ref=f1e334]
+                        - gridcell "Laboratory Corporation of America Holdings" [ref=f1e336]
+                      - row [ref=f1e338]:
+                        - gridcell "Theodore" [ref=f1e339]
+                        - gridcell "Tesi" [ref=f1e341]
+                        - gridcell "theodore.tesi@autozone.example" [ref=f1e343]
+                        - gridcell "Customer" [ref=f1e345]
+                        - gridcell "AutoZone, Inc." [ref=f1e347]
+                      - row [ref=f1e349]:
+                        - gridcell "Jean" [ref=f1e350]
+                        - gridcell "Rodriquez" [ref=f1e352]
+                        - gridcell "jean.rodriquez@linens.example" [ref=f1e354]
+                        - gridcell "Contacted" [ref=f1e356]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e358]
+                      - row [ref=f1e360]:
+                        - gridcell "Jack" [ref=f1e361]
+                        - gridcell "Tesi" [ref=f1e363]
+                        - gridcell "jack.tesi@phillips.example" [ref=f1e365]
+                        - gridcell "Contacted" [ref=f1e367]
+                        - gridcell "Phillips Van Heusen Corp." [ref=f1e369]
+                      - row [ref=f1e371]:
+                        - gridcell "Ida" [ref=f1e372]
+                        - gridcell "Leach" [ref=f1e374]
+                        - gridcell "ida.leach@autozone.example" [ref=f1e376]
+                        - gridcell "Imported lead" [ref=f1e378]
+                        - gridcell "AutoZone, Inc." [ref=f1e380]
+                      - row [ref=f1e382]:
+                        - gridcell "Marguerite" [ref=f1e383]
+                        - gridcell "Ishii" [ref=f1e385]
+                        - gridcell "marguerite.ishii@linens.example" [ref=f1e387]
+                        - gridcell "Customer" [ref=f1e389]
+                        - gridcell "Linens 'n Things Inc." [ref=f1e391]
+                      - row [ref=f1e393]:
+                        - gridcell "Garrett" [ref=f1e394]
+                        - gridcell "Parkes" [ref=f1e396]
+                        - gridcell "garrett.parkes@avaya.example" [ref=f1e398]
+                        - gridcell "Contacted" [ref=f1e400]
+                        - gridcell "Avaya Inc." [ref=f1e402]
+                      - row [ref=f1e404]:
+                        - gridcell "Hattie" [ref=f1e405]
+                        - gridcell "Jacobs" [ref=f1e407]
+                        - gridcell "hattie.jacobs@avaya.example" [ref=f1e409]
+                        - gridcell "Imported lead" [ref=f1e411]
+                        - gridcell "Avaya Inc." [ref=f1e413]
+                      - row [ref=f1e415]:
+                        - gridcell "Garrett" [ref=f1e416]
+                        - gridcell "Bennett" [ref=f1e418]
+                        - gridcell "garrett.bennett@autozone.example" [ref=f1e420]
+                        - gridcell "Imported lead" [ref=f1e422]
+                        - gridcell "AutoZone, Inc." [ref=f1e424]
+                      - row [ref=f1e426]:
+                        - gridcell "Barry" [ref=f1e427]
+                        - gridcell "Okafor" [ref=f1e429]
+                        - gridcell "barry.okafor@autozone.example" [ref=f1e431]
+                        - gridcell "Closed (lost)" [ref=f1e433]
+                        - gridcell "AutoZone, Inc." [ref=f1e435]
+                    - rowgroup
+                  - generic [ref=f1e439]:
+                    - generic:
+                      - generic [ref=f1e441]:
+                        - generic [ref=f1e442]:
+                          - generic: First name
+                          - generic [aria-hidden] [ref=f1e443]: "*"
+                        - textbox "First name" [ref=f1e445]
+                      - generic [ref=f1e447]:
+                        - generic [ref=f1e448]:
+                          - generic: Last name
+                          - generic [aria-hidden] [ref=f1e449]: "*"
+                        - textbox "Last name" [ref=f1e451]
+                      - generic [ref=f1e453]:
+                        - generic [ref=f1e454]:
+                          - generic: Email
+                          - generic [aria-hidden] [ref=f1e455]: "*"
+                        - textbox "Email" [ref=f1e457]
+                      - generic [ref=f1e459]:
+                        - generic [ref=f1e460]:
+                          - generic: Company
+                          - generic [aria-hidden] [ref=f1e461]: "*"
+                        - generic [ref=f1e462]:
+                          - combobox "Company" [ref=f1e463]
+                          - generic [aria-hidden] [ref=f1e464] [cursor=pointer]
+                      - generic [ref=f1e466]:
+                        - generic [ref=f1e467]:
+                          - generic: Status
+                          - generic [aria-hidden] [ref=f1e468]: "*"
+                        - generic [ref=f1e469]:
+                          - combobox "Status" [ref=f1e470]
+                          - generic [aria-hidden] [ref=f1e471] [cursor=pointer]
+                      - generic [ref=f1e472]:
+                        - generic:
+                          - button "Save" [disabled]
+                          - button "Delete" [ref=f1e473] [cursor=pointer]
+                          - button "Cancel" [ref=f1e475] [cursor=pointer]
+        - generic [ref=f1e437]: Online
+      ```
+CALL  browser_type {"target":"f1e445","text":"Jane"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'First name' }).fill('Jane');
+      ```
+CALL  browser_type {"target":"f1e451","text":"Doe"}
+CALL  browser_type {"target":"f1e457","text":"jane.doe@"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Last name' }).fill('Doe');
+      ```
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Email' }).fill('jane.doe@');
+      ```
+CALL  browser_click {"target":"f1e463"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Company' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-54-54-157Z.yml)
+CALL  browser_type {"target":"f1e463","text":"Avaya"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Company' }).fill('Avaya');
+      ```
+CALL  browser_press_key {"key":"ArrowDown"}
+OK    ### Ran Playwright code
+      ```js
+      // Press ArrowDown
+      await page.keyboard.press('ArrowDown');
+      ```
+CALL  browser_press_key {"key":"Enter"}
+OK    ### Ran Playwright code
+      ```js
+      // Press Enter
+      await page.keyboard.press('Enter');
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-54-58-772Z.yml)
+CALL  browser_click {"target":"f1e470"}
+CALL  browser_type {"target":"f1e470","text":"Imported"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Status' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-55-01-439Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Status' }).fill('Imported');
+      ```
+CALL  browser_press_key {"key":"ArrowDown"}
+OK    ### Ran Playwright code
+      ```js
+      // Press ArrowDown
+      await page.keyboard.press('ArrowDown');
+      ```
+CALL  browser_press_key {"key":"Enter"}
+OK    ### Ran Playwright code
+      ```js
+      // Press Enter
+      await page.keyboard.press('Enter');
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-55-04-197Z.yml)
+CALL  browser_evaluate {"function":"() => { const f=[...document.querySelectorAll('vaadin-text-field,vaadin-email-field,vaadin-combo-box,vaadin-select')].map(e=>({l:e.label,v:e.value,inv:e.invalid,err:e.errorMessage})); const s=[...document.querySelectorAll('vaadin-button')].map(b=>b.textContent.trim()+':'+b.disabled); return {f,s}; }"}
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      {
+        f: [
+          {
+            l: undefined,
+            v: '',
+            inv: false,
+            err: undefined
+          },
+          {
+            l: 'First name',
+            v: 'Jane',
+            inv: false,
+            err: ''
+          },
+          {
+            l: 'Last name',
+            v: 'Doe',
+            inv: false,
+            err: ''
+          },
+          {
+            l: 'Email',
+            v: 'jane.doe@',
+            inv: true,
+            err: ''
+          },
+          {
+            l: 'Company',
+            v: '2',
+            inv: false,
+            err: ''
+          },
+          {
+            l: 'Status',
+            v: '1',
+            inv: false,
+            err: ''
+          }
+        ],
+        s: [
+          'Log out user:false',
+          'Add contact:false',
+          'Save:true',
+          'Delete:false',
+          'Cancel:false'
+        ]
+      }
+      ### Ran Playwright code
+      ```js
+      await page.evaluate('() => { const f=[...document.querySelectorAll(\'vaadin-text-field,vaadin-email-field,vaadin-combo-box,vaadin-select\')].map(e=>({l:e.label,v:e.value,inv:e.invalid,err:e.errorMessage})); const s=[...document.querySelectorAll(\'vaadin-button\')].map(b=>b.textContent.trim()+\':\'+b.disabled); return {f,s}; }');
+      ```
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T06-55-07-785Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T06-55-07-785Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T06-55-07-785Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/8b724afb-f755-45a5-960e-06f778261b3b/tool-results/mcp-playwright-blob-1795157707792-mwl0wv.png]
+CALL  browser_click {"target":"f1e475"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Cancel' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:36603/?continue
+      - Page Title: Contacts | Vaadin CRM
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T06-55-10-966Z.yml)
+SAYS  The app rejected the contact because of the **Email** field. It didn't accept `jane.doe@` as a valid address.
+      
+      **How it shows this:**
+      - The Email field gets a red border and is flagged invalid.
+      - There is no error message text. The field's error message is empty, so the red outline is the only visible cue.
+      - The **Save** button is greyed out and disabled, so I couldn't submit the form.
+      
+      First name (Jane), Last name (Doe), Company (Avaya Inc.) and Status (Imported lead) were all accepted with no error.
+      
+      **Nothing was saved:** I never submitted the form, and I clicked **Cancel** to close it. I didn't change the email or work around the validation.
+END   turns=22 duration=107s cost=$0.0916822 is_error=false

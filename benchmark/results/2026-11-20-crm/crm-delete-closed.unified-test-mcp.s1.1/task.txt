@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:43443; log in as `user`, password `password`. Clean up Laboratory Corporation of America Holdings: delete every contact there whose status is Closed (lost). Leave everyone else alone. Tell me how many you deleted.

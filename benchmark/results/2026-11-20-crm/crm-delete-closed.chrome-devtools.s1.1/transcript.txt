@@ -1,0 +1,1087 @@
+CALL  new_page {"url":"http://localhost:34165"}
+OK    ## Pages
+      1: about:blank
+      2: http://localhost:34165/login [selected]
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=1_0 RootWebArea "Login | Vaadin CRM" url="http://localhost:34165/login"
+        uid=1_1 heading "Vaadin CRM" level="1"
+        uid=1_2 "Username: user, Password: password"
+        uid=1_3 "Username: admin, Password: password"
+        uid=1_4 region "Log in"
+          uid=1_5 heading "Log in" level="1"
+          uid=1_6 form
+            uid=1_7 "Username"
+            uid=1_8 textbox "Username" focusable focused required
+            uid=1_9 "Password"
+            uid=1_10 textbox "Password" required
+            uid=1_11 button "Show password"
+          uid=1_12 button "Log in"
+          uid=1_13 button "Forgot password"
+        uid=1_14 "Online"
+        uid=1_15 generic live="polite" relevant="additions text"
+      
+CALL  fill_form {"pageId":2,"elements":[{"uid":"1_8","value":"user"},{"uid":"1_10","value":"password"}]}
+CALL  click {"pageId":2,"uid":"1_12","includeSnapshot":true}
+OK    Successfully filled out the form
+OK    Successfully clicked on the element
+      Page navigated to http://localhost:34165/?continue.
+      ## Latest page snapshot
+      uid=2_0 RootWebArea url="http://localhost:34165/?continue"
+        uid=2_1 "Online"
+        uid=2_2 generic live="polite" relevant="additions text"
+      
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=2_0 RootWebArea "Contacts | Vaadin CRM" url="http://localhost:34165/?continue"
+        uid=3_0 button "Toggle navigation panel" expandable expanded
+        uid=3_1 heading "Vaadin CRM" level="1"
+        uid=3_2 button "Log out user"
+        uid=3_3 link "List" url="http://localhost:34165/"
+        uid=3_5 link "Dashboard" url="http://localhost:34165/dashboard"
+        uid=3_7 textbox
+        uid=3_8 button "Add contact"
+        uid=3_9 treegrid
+          uid=3_10 row "Sort by First Name Sort by Last Name Sort by Email Status Company"
+            uid=3_11 columnheader "Sort by First Name"
+              uid=3_12 "First Name"
+            uid=3_13 columnheader "Sort by Last Name"
+              uid=3_14 "Last Name"
+            uid=3_15 columnheader "Sort by Email"
+              uid=3_16 "Email"
+            uid=3_17 columnheader "Status"
+            uid=3_19 columnheader "Company"
+          uid=3_21 row "Barbara Lindqvist barbara.lindqvist@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=3_22 gridcell "Barbara" selectable
+            uid=3_24 gridcell "Lindqvist" selectable
+            uid=3_26 gridcell "barbara.lindqvist@laboratory.example" selectable
+            uid=3_28 gridcell "Closed (lost)" selectable
+            uid=3_30 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_32 row "Hattie Lindqvist hattie.lindqvist@avaya.example Contacted Avaya Inc." selectable
+            uid=3_33 gridcell "Hattie" selectable
+            uid=3_35 gridcell "Lindqvist" selectable
+            uid=3_37 gridcell "hattie.lindqvist@avaya.example" selectable
+            uid=3_39 gridcell "Contacted" selectable
+            uid=3_41 gridcell "Avaya Inc." selectable
+          uid=3_43 row "Mildred Goodman mildred.goodman@avaya.example Customer Avaya Inc." selectable
+            uid=3_44 gridcell "Mildred" selectable
+            uid=3_46 gridcell "Goodman" selectable
+            uid=3_48 gridcell "mildred.goodman@avaya.example" selectable
+            uid=3_50 gridcell "Customer" selectable
+            uid=3_52 gridcell "Avaya Inc." selectable
+          uid=3_54 row "Gene Mercer gene.mercer@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=3_55 gridcell "Gene" selectable
+            uid=3_57 gridcell "Mercer" selectable
+            uid=3_59 gridcell "gene.mercer@laboratory.example" selectable
+            uid=3_61 gridcell "Imported lead" selectable
+            uid=3_63 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_65 row "Mabel Lane mabel.lane@avaya.example Imported lead Avaya Inc." selectable
+            uid=3_66 gridcell "Mabel" selectable
+            uid=3_68 gridcell "Lane" selectable
+            uid=3_70 gridcell "mabel.lane@avaya.example" selectable
+            uid=3_72 gridcell "Imported lead" selectable
+            uid=3_74 gridcell "Avaya Inc." selectable
+          uid=3_76 row "Mabel Fujita mabel.fujita@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_77 gridcell "Mabel" selectable
+            uid=3_79 gridcell "Fujita" selectable
+            uid=3_81 gridcell "mabel.fujita@linens.example" selectable
+            uid=3_83 gridcell "Customer" selectable
+            uid=3_85 gridcell "Linens 'n Things Inc." selectable
+          uid=3_87 row "Eugenia Rodriquez eugenia.rodriquez@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_88 gridcell "Eugenia" selectable
+            uid=3_90 gridcell "Rodriquez" selectable
+            uid=3_92 gridcell "eugenia.rodriquez@linens.example" selectable
+            uid=3_94 gridcell "Customer" selectable
+            uid=3_96 gridcell "Linens 'n Things Inc." selectable
+          uid=3_98 row "Rose Ishii rose.ishii@autozone.example Contacted AutoZone, Inc." selectable
+            uid=3_99 gridcell "Rose" selectable
+            uid=3_101 gridcell "Ishii" selectable
+            uid=3_103 gridcell "rose.ishii@autozone.example" selectable
+            uid=3_105 gridcell "Contacted" selectable
+            uid=3_107 gridcell "AutoZone, Inc." selectable
+          uid=3_109 row "Walter Brennan walter.brennan@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=3_110 gridcell "Walter" selectable
+            uid=3_112 gridcell "Brennan" selectable
+            uid=3_114 gridcell "walter.brennan@laboratory.example" selectable
+            uid=3_116 gridcell "Closed (lost)" selectable
+            uid=3_118 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_120 row "Nellie Lindqvist nellie.lindqvist@autozone.example Contacted AutoZone, Inc." selectable
+            uid=3_121 gridcell "Nellie" selectable
+            uid=3_123 gridcell "Lindqvist" selectable
+            uid=3_125 gridcell "nellie.lindqvist@autozone.example" selectable
+            uid=3_127 gridcell "Contacted" selectable
+            uid=3_129 gridcell "AutoZone, Inc." selectable
+          uid=3_131 row "Walter Selvi walter.selvi@autozone.example Closed (lost) AutoZone, Inc." selectable
+            uid=3_132 gridcell "Walter" selectable
+            uid=3_134 gridcell "Selvi" selectable
+            uid=3_136 gridcell "walter.selvi@autozone.example" selectable
+            uid=3_138 gridcell "Closed (lost)" selectable
+            uid=3_140 gridcell "AutoZone, Inc." selectable
+          uid=3_142 row "Louisa Mercer louisa.mercer@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=3_143 gridcell "Louisa" selectable
+            uid=3_145 gridcell "Mercer" selectable
+            uid=3_147 gridcell "louisa.mercer@linens.example" selectable
+            uid=3_149 gridcell "Contacted" selectable
+            uid=3_151 gridcell "Linens 'n Things Inc." selectable
+          uid=3_153 row "Lettie Halvorsen lettie.halvorsen@avaya.example Imported lead Avaya Inc." selectable
+            uid=3_154 gridcell "Lettie" selectable
+            uid=3_156 gridcell "Halvorsen" selectable
+            uid=3_158 gridcell "lettie.halvorsen@avaya.example" selectable
+            uid=3_160 gridcell "Imported lead" selectable
+            uid=3_162 gridcell "Avaya Inc." selectable
+          uid=3_164 row "Hattie Novak hattie.novak@phillips.example Imported lead Phillips Van Heusen Corp." selectable
+            uid=3_165 gridcell "Hattie" selectable
+            uid=3_167 gridcell "Novak" selectable
+            uid=3_169 gridcell "hattie.novak@phillips.example" selectable
+            uid=3_171 gridcell "Imported lead" selectable
+            uid=3_173 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_175 row "Alejandro Tesi alejandro.tesi@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_176 gridcell "Alejandro" selectable
+            uid=3_178 gridcell "Tesi" selectable
+            uid=3_180 gridcell "alejandro.tesi@linens.example" selectable
+            uid=3_182 gridcell "Customer" selectable
+            uid=3_184 gridcell "Linens 'n Things Inc." selectable
+          uid=3_186 row "Gene Miccinesi gene.miccinesi@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=3_187 gridcell "Gene" selectable
+            uid=3_189 gridcell "Miccinesi" selectable
+            uid=3_191 gridcell "gene.miccinesi@laboratory.example" selectable
+            uid=3_193 gridcell "Imported lead" selectable
+            uid=3_195 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_197 row "Eugenia Romoli eugenia.romoli@avaya.example Customer Avaya Inc." selectable
+            uid=3_198 gridcell "Eugenia" selectable
+            uid=3_200 gridcell "Romoli" selectable
+            uid=3_202 gridcell "eugenia.romoli@avaya.example" selectable
+            uid=3_204 gridcell "Customer" selectable
+            uid=3_206 gridcell "Avaya Inc." selectable
+          uid=3_208 row "Alejandro Fujita alejandro.fujita@autozone.example Contacted AutoZone, Inc." selectable
+            uid=3_209 gridcell "Alejandro" selectable
+            uid=3_211 gridcell "Fujita" selectable
+            uid=3_213 gridcell "alejandro.fujita@autozone.example" selectable
+            uid=3_215 gridcell "Contacted" selectable
+            uid=3_217 gridcell "AutoZone, Inc." selectable
+          uid=3_219 row "Alejandro Rhodes alejandro.rhodes@avaya.example Not contacted Avaya Inc." selectable
+            uid=3_220 gridcell "Alejandro" selectable
+            uid=3_222 gridcell "Rhodes" selectable
+            uid=3_224 gridcell "alejandro.rhodes@avaya.example" selectable
+            uid=3_226 gridcell "Not contacted" selectable
+            uid=3_228 gridcell "Avaya Inc." selectable
+          uid=3_230 row "Barry Gray barry.gray@linens.example Closed (lost) Linens 'n Things Inc." selectable
+            uid=3_231 gridcell "Barry" selectable
+            uid=3_233 gridcell "Gray" selectable
+            uid=3_235 gridcell "barry.gray@linens.example" selectable
+            uid=3_237 gridcell "Closed (lost)" selectable
+            uid=3_239 gridcell "Linens 'n Things Inc." selectable
+          uid=3_241 row "Eugenia Novak eugenia.novak@avaya.example Customer Avaya Inc." selectable
+            uid=3_242 gridcell "Eugenia" selectable
+            uid=3_244 gridcell "Novak" selectable
+            uid=3_246 gridcell "eugenia.novak@avaya.example" selectable
+            uid=3_248 gridcell "Customer" selectable
+            uid=3_250 gridcell "Avaya Inc." selectable
+          uid=3_252 row "Alejandro Stokes alejandro.stokes@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=3_253 gridcell "Alejandro" selectable
+            uid=3_255 gridcell "Stokes" selectable
+            uid=3_257 gridcell "alejandro.stokes@linens.example" selectable
+            uid=3_259 gridcell "Contacted" selectable
+            uid=3_261 gridcell "Linens 'n Things Inc." selectable
+          uid=3_263 row "Cora Brennan cora.brennan@phillips.example Imported lead Phillips Van Heusen Corp." selectable
+            uid=3_264 gridcell "Cora" selectable
+            uid=3_266 gridcell "Brennan" selectable
+            uid=3_268 gridcell "cora.brennan@phillips.example" selectable
+            uid=3_270 gridcell "Imported lead" selectable
+            uid=3_272 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_274 row "Oscar Stokes oscar.stokes@phillips.example Not contacted Phillips Van Heusen Corp." selectable
+            uid=3_275 gridcell "Oscar" selectable
+            uid=3_277 gridcell "Stokes" selectable
+            uid=3_279 gridcell "oscar.stokes@phillips.example" selectable
+            uid=3_281 gridcell "Not contacted" selectable
+            uid=3_283 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_285 row "Nellie Mercer nellie.mercer@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=3_286 gridcell "Nellie" selectable
+            uid=3_288 gridcell "Mercer" selectable
+            uid=3_290 gridcell "nellie.mercer@linens.example" selectable
+            uid=3_292 gridcell "Not contacted" selectable
+            uid=3_294 gridcell "Linens 'n Things Inc." selectable
+          uid=3_296 row "Louisa Lindqvist louisa.lindqvist@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=3_297 gridcell "Louisa" selectable
+            uid=3_299 gridcell "Lindqvist" selectable
+            uid=3_301 gridcell "louisa.lindqvist@laboratory.example" selectable
+            uid=3_303 gridcell "Closed (lost)" selectable
+            uid=3_305 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_307 row "Theodore Tesi theodore.tesi@autozone.example Customer AutoZone, Inc." selectable
+            uid=3_308 gridcell "Theodore" selectable
+            uid=3_310 gridcell "Tesi" selectable
+            uid=3_312 gridcell "theodore.tesi@autozone.example" selectable
+            uid=3_314 gridcell "Customer" selectable
+            uid=3_316 gridcell "AutoZone, Inc." selectable
+          uid=3_318 row "Jean Rodriquez jean.rodriquez@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=3_319 gridcell "Jean" selectable
+            uid=3_321 gridcell "Rodriquez" selectable
+            uid=3_323 gridcell "jean.rodriquez@linens.example" selectable
+            uid=3_325 gridcell "Contacted" selectable
+            uid=3_327 gridcell "Linens 'n Things Inc." selectable
+          uid=3_329 row "Jack Tesi jack.tesi@phillips.example Contacted Phillips Van Heusen Corp." selectable
+            uid=3_330 gridcell "Jack" selectable
+            uid=3_332 gridcell "Tesi" selectable
+            uid=3_334 gridcell "jack.tesi@phillips.example" selectable
+            uid=3_336 gridcell "Contacted" selectable
+            uid=3_338 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_340 row "Ida Leach ida.leach@autozone.example Imported lead AutoZone, Inc." selectable
+            uid=3_341 gridcell "Ida" selectable
+            uid=3_343 gridcell "Leach" selectable
+            uid=3_345 gridcell "ida.leach@autozone.example" selectable
+            uid=3_347 gridcell "Imported lead" selectable
+            uid=3_349 gridcell "AutoZone, Inc." selectable
+          uid=3_351 row "Marguerite Ishii marguerite.ishii@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_352 gridcell "Marguerite" selectable
+            uid=3_354 gridcell "Ishii" selectable
+            uid=3_356 gridcell "marguerite.ishii@linens.example" selectable
+            uid=3_358 gridcell "Customer" selectable
+            uid=3_360 gridcell "Linens 'n Things Inc." selectable
+          uid=3_362 row "Garrett Parkes garrett.parkes@avaya.example Contacted Avaya Inc." selectable
+            uid=3_363 gridcell "Garrett" selectable
+            uid=3_365 gridcell "Parkes" selectable
+            uid=3_367 gridcell "garrett.parkes@avaya.example" selectable
+            uid=3_369 gridcell "Contacted" selectable
+            uid=3_371 gridcell "Avaya Inc." selectable
+          uid=3_373 row "Hattie Jacobs hattie.jacobs@avaya.example Imported lead Avaya Inc." selectable
+            uid=3_374 gridcell "Hattie" selectable
+            uid=3_376 gridcell "Jacobs" selectable
+            uid=3_378 gridcell "hattie.jacobs@avaya.example" selectable
+            uid=3_380 gridcell "Imported lead" selectable
+            uid=3_382 gridcell "Avaya Inc." selectable
+          uid=3_384 row "Garrett Bennett garrett.bennett@autozone.example Imported lead AutoZone, Inc." selectable
+            uid=3_385 gridcell "Garrett" selectable
+            uid=3_387 gridcell "Bennett" selectable
+            uid=3_389 gridcell "garrett.bennett@autozone.example" selectable
+            uid=3_391 gridcell "Imported lead" selectable
+            uid=3_393 gridcell "AutoZone, Inc." selectable
+          uid=3_395 row "Barry Okafor barry.okafor@autozone.example Closed (lost) AutoZone, Inc." selectable
+            uid=3_396 gridcell "Barry" selectable
+            uid=3_398 gridcell "Okafor" selectable
+            uid=3_400 gridcell "barry.okafor@autozone.example" selectable
+            uid=3_402 gridcell "Closed (lost)" selectable
+            uid=3_404 gridcell "AutoZone, Inc." selectable
+        uid=3_406 generic
+        uid=2_1 "Online"
+        uid=2_2 generic live="polite" relevant="additions text"
+      
+CALL  fill {"pageId":2,"uid":"3_7","value":"laboratory"}
+CALL  take_snapshot {"pageId":2}
+OK    Successfully filled out the element
+OK    ## Latest page snapshot
+      uid=2_0 RootWebArea "Contacts | Vaadin CRM" url="http://localhost:34165/?continue"
+        uid=3_0 button "Toggle navigation panel" expandable expanded
+        uid=3_1 heading "Vaadin CRM" level="1"
+        uid=3_2 button "Log out user"
+        uid=3_3 link "List" url="http://localhost:34165/"
+        uid=3_5 link "Dashboard" url="http://localhost:34165/dashboard"
+        uid=3_7 textbox focusable focused value="laboratory"
+        uid=3_8 button "Add contact"
+        uid=3_9 treegrid
+          uid=3_10 row "Sort by First Name Sort by Last Name Sort by Email Status Company"
+            uid=3_11 columnheader "Sort by First Name"
+              uid=3_12 "First Name"
+            uid=3_13 columnheader "Sort by Last Name"
+              uid=3_14 "Last Name"
+            uid=3_15 columnheader "Sort by Email"
+              uid=3_16 "Email"
+            uid=3_17 columnheader "Status"
+            uid=3_19 columnheader "Company"
+          uid=3_21 row "Barbara Lindqvist barbara.lindqvist@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=3_22 gridcell "Barbara" selectable
+            uid=3_24 gridcell "Lindqvist" selectable
+            uid=3_26 gridcell "barbara.lindqvist@laboratory.example" selectable
+            uid=3_28 gridcell "Closed (lost)" selectable
+            uid=3_30 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_32 row "Hattie Lindqvist hattie.lindqvist@avaya.example Contacted Avaya Inc." selectable
+            uid=3_33 gridcell "Hattie" selectable
+            uid=3_35 gridcell "Lindqvist" selectable
+            uid=3_37 gridcell "hattie.lindqvist@avaya.example" selectable
+            uid=3_39 gridcell "Contacted" selectable
+            uid=3_41 gridcell "Avaya Inc." selectable
+          uid=3_43 row "Mildred Goodman mildred.goodman@avaya.example Customer Avaya Inc." selectable
+            uid=3_44 gridcell "Mildred" selectable
+            uid=3_46 gridcell "Goodman" selectable
+            uid=3_48 gridcell "mildred.goodman@avaya.example" selectable
+            uid=3_50 gridcell "Customer" selectable
+            uid=3_52 gridcell "Avaya Inc." selectable
+          uid=3_54 row "Gene Mercer gene.mercer@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=3_55 gridcell "Gene" selectable
+            uid=3_57 gridcell "Mercer" selectable
+            uid=3_59 gridcell "gene.mercer@laboratory.example" selectable
+            uid=3_61 gridcell "Imported lead" selectable
+            uid=3_63 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_65 row "Mabel Lane mabel.lane@avaya.example Imported lead Avaya Inc." selectable
+            uid=3_66 gridcell "Mabel" selectable
+            uid=3_68 gridcell "Lane" selectable
+            uid=3_70 gridcell "mabel.lane@avaya.example" selectable
+            uid=3_72 gridcell "Imported lead" selectable
+            uid=3_74 gridcell "Avaya Inc." selectable
+          uid=3_76 row "Mabel Fujita mabel.fujita@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_77 gridcell "Mabel" selectable
+            uid=3_79 gridcell "Fujita" selectable
+            uid=3_81 gridcell "mabel.fujita@linens.example" selectable
+            uid=3_83 gridcell "Customer" selectable
+            uid=3_85 gridcell "Linens 'n Things Inc." selectable
+          uid=3_87 row "Eugenia Rodriquez eugenia.rodriquez@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_88 gridcell "Eugenia" selectable
+            uid=3_90 gridcell "Rodriquez" selectable
+            uid=3_92 gridcell "eugenia.rodriquez@linens.example" selectable
+            uid=3_94 gridcell "Customer" selectable
+            uid=3_96 gridcell "Linens 'n Things Inc." selectable
+          uid=3_98 row "Rose Ishii rose.ishii@autozone.example Contacted AutoZone, Inc." selectable
+            uid=3_99 gridcell "Rose" selectable
+            uid=3_101 gridcell "Ishii" selectable
+            uid=3_103 gridcell "rose.ishii@autozone.example" selectable
+            uid=3_105 gridcell "Contacted" selectable
+            uid=3_107 gridcell "AutoZone, Inc." selectable
+          uid=3_109 row "Walter Brennan walter.brennan@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=3_110 gridcell "Walter" selectable
+            uid=3_112 gridcell "Brennan" selectable
+            uid=3_114 gridcell "walter.brennan@laboratory.example" selectable
+            uid=3_116 gridcell "Closed (lost)" selectable
+            uid=3_118 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_120 row "Nellie Lindqvist nellie.lindqvist@autozone.example Contacted AutoZone, Inc." selectable
+            uid=3_121 gridcell "Nellie" selectable
+            uid=3_123 gridcell "Lindqvist" selectable
+            uid=3_125 gridcell "nellie.lindqvist@autozone.example" selectable
+            uid=3_127 gridcell "Contacted" selectable
+            uid=3_129 gridcell "AutoZone, Inc." selectable
+          uid=3_131 row "Walter Selvi walter.selvi@autozone.example Closed (lost) AutoZone, Inc." selectable
+            uid=3_132 gridcell "Walter" selectable
+            uid=3_134 gridcell "Selvi" selectable
+            uid=3_136 gridcell "walter.selvi@autozone.example" selectable
+            uid=3_138 gridcell "Closed (lost)" selectable
+            uid=3_140 gridcell "AutoZone, Inc." selectable
+          uid=3_142 row "Louisa Mercer louisa.mercer@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=3_143 gridcell "Louisa" selectable
+            uid=3_145 gridcell "Mercer" selectable
+            uid=3_147 gridcell "louisa.mercer@linens.example" selectable
+            uid=3_149 gridcell "Contacted" selectable
+            uid=3_151 gridcell "Linens 'n Things Inc." selectable
+          uid=3_153 row "Lettie Halvorsen lettie.halvorsen@avaya.example Imported lead Avaya Inc." selectable
+            uid=3_154 gridcell "Lettie" selectable
+            uid=3_156 gridcell "Halvorsen" selectable
+            uid=3_158 gridcell "lettie.halvorsen@avaya.example" selectable
+            uid=3_160 gridcell "Imported lead" selectable
+            uid=3_162 gridcell "Avaya Inc." selectable
+          uid=3_164 row "Hattie Novak hattie.novak@phillips.example Imported lead Phillips Van Heusen Corp." selectable
+            uid=3_165 gridcell "Hattie" selectable
+            uid=3_167 gridcell "Novak" selectable
+            uid=3_169 gridcell "hattie.novak@phillips.example" selectable
+            uid=3_171 gridcell "Imported lead" selectable
+            uid=3_173 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_175 row "Alejandro Tesi alejandro.tesi@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_176 gridcell "Alejandro" selectable
+            uid=3_178 gridcell "Tesi" selectable
+            uid=3_180 gridcell "alejandro.tesi@linens.example" selectable
+            uid=3_182 gridcell "Customer" selectable
+            uid=3_184 gridcell "Linens 'n Things Inc." selectable
+          uid=3_186 row "Gene Miccinesi gene.miccinesi@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=3_187 gridcell "Gene" selectable
+            uid=3_189 gridcell "Miccinesi" selectable
+            uid=3_191 gridcell "gene.miccinesi@laboratory.example" selectable
+            uid=3_193 gridcell "Imported lead" selectable
+            uid=3_195 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_197 row "Eugenia Romoli eugenia.romoli@avaya.example Customer Avaya Inc." selectable
+            uid=3_198 gridcell "Eugenia" selectable
+            uid=3_200 gridcell "Romoli" selectable
+            uid=3_202 gridcell "eugenia.romoli@avaya.example" selectable
+            uid=3_204 gridcell "Customer" selectable
+            uid=3_206 gridcell "Avaya Inc." selectable
+          uid=3_208 row "Alejandro Fujita alejandro.fujita@autozone.example Contacted AutoZone, Inc." selectable
+            uid=3_209 gridcell "Alejandro" selectable
+            uid=3_211 gridcell "Fujita" selectable
+            uid=3_213 gridcell "alejandro.fujita@autozone.example" selectable
+            uid=3_215 gridcell "Contacted" selectable
+            uid=3_217 gridcell "AutoZone, Inc." selectable
+          uid=3_219 row "Alejandro Rhodes alejandro.rhodes@avaya.example Not contacted Avaya Inc." selectable
+            uid=3_220 gridcell "Alejandro" selectable
+            uid=3_222 gridcell "Rhodes" selectable
+            uid=3_224 gridcell "alejandro.rhodes@avaya.example" selectable
+            uid=3_226 gridcell "Not contacted" selectable
+            uid=3_228 gridcell "Avaya Inc." selectable
+          uid=3_230 row "Barry Gray barry.gray@linens.example Closed (lost) Linens 'n Things Inc." selectable
+            uid=3_231 gridcell "Barry" selectable
+            uid=3_233 gridcell "Gray" selectable
+            uid=3_235 gridcell "barry.gray@linens.example" selectable
+            uid=3_237 gridcell "Closed (lost)" selectable
+            uid=3_239 gridcell "Linens 'n Things Inc." selectable
+          uid=3_241 row "Eugenia Novak eugenia.novak@avaya.example Customer Avaya Inc." selectable
+            uid=3_242 gridcell "Eugenia" selectable
+            uid=3_244 gridcell "Novak" selectable
+            uid=3_246 gridcell "eugenia.novak@avaya.example" selectable
+            uid=3_248 gridcell "Customer" selectable
+            uid=3_250 gridcell "Avaya Inc." selectable
+          uid=3_252 row "Alejandro Stokes alejandro.stokes@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=3_253 gridcell "Alejandro" selectable
+            uid=3_255 gridcell "Stokes" selectable
+            uid=3_257 gridcell "alejandro.stokes@linens.example" selectable
+            uid=3_259 gridcell "Contacted" selectable
+            uid=3_261 gridcell "Linens 'n Things Inc." selectable
+          uid=3_263 row "Cora Brennan cora.brennan@phillips.example Imported lead Phillips Van Heusen Corp." selectable
+            uid=3_264 gridcell "Cora" selectable
+            uid=3_266 gridcell "Brennan" selectable
+            uid=3_268 gridcell "cora.brennan@phillips.example" selectable
+            uid=3_270 gridcell "Imported lead" selectable
+            uid=3_272 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_274 row "Oscar Stokes oscar.stokes@phillips.example Not contacted Phillips Van Heusen Corp." selectable
+            uid=3_275 gridcell "Oscar" selectable
+            uid=3_277 gridcell "Stokes" selectable
+            uid=3_279 gridcell "oscar.stokes@phillips.example" selectable
+            uid=3_281 gridcell "Not contacted" selectable
+            uid=3_283 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_285 row "Nellie Mercer nellie.mercer@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=3_286 gridcell "Nellie" selectable
+            uid=3_288 gridcell "Mercer" selectable
+            uid=3_290 gridcell "nellie.mercer@linens.example" selectable
+            uid=3_292 gridcell "Not contacted" selectable
+            uid=3_294 gridcell "Linens 'n Things Inc." selectable
+          uid=3_296 row "Louisa Lindqvist louisa.lindqvist@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=3_297 gridcell "Louisa" selectable
+            uid=3_299 gridcell "Lindqvist" selectable
+            uid=3_301 gridcell "louisa.lindqvist@laboratory.example" selectable
+            uid=3_303 gridcell "Closed (lost)" selectable
+            uid=3_305 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=3_307 row "Theodore Tesi theodore.tesi@autozone.example Customer AutoZone, Inc." selectable
+            uid=3_308 gridcell "Theodore" selectable
+            uid=3_310 gridcell "Tesi" selectable
+            uid=3_312 gridcell "theodore.tesi@autozone.example" selectable
+            uid=3_314 gridcell "Customer" selectable
+            uid=3_316 gridcell "AutoZone, Inc." selectable
+          uid=3_318 row "Jean Rodriquez jean.rodriquez@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=3_319 gridcell "Jean" selectable
+            uid=3_321 gridcell "Rodriquez" selectable
+            uid=3_323 gridcell "jean.rodriquez@linens.example" selectable
+            uid=3_325 gridcell "Contacted" selectable
+            uid=3_327 gridcell "Linens 'n Things Inc." selectable
+          uid=3_329 row "Jack Tesi jack.tesi@phillips.example Contacted Phillips Van Heusen Corp." selectable
+            uid=3_330 gridcell "Jack" selectable
+            uid=3_332 gridcell "Tesi" selectable
+            uid=3_334 gridcell "jack.tesi@phillips.example" selectable
+            uid=3_336 gridcell "Contacted" selectable
+            uid=3_338 gridcell "Phillips Van Heusen Corp." selectable
+          uid=3_340 row "Ida Leach ida.leach@autozone.example Imported lead AutoZone, Inc." selectable
+            uid=3_341 gridcell "Ida" selectable
+            uid=3_343 gridcell "Leach" selectable
+            uid=3_345 gridcell "ida.leach@autozone.example" selectable
+            uid=3_347 gridcell "Imported lead" selectable
+            uid=3_349 gridcell "AutoZone, Inc." selectable
+          uid=3_351 row "Marguerite Ishii marguerite.ishii@linens.example Customer Linens 'n Things Inc." selectable
+            uid=3_352 gridcell "Marguerite" selectable
+            uid=3_354 gridcell "Ishii" selectable
+            uid=3_356 gridcell "marguerite.ishii@linens.example" selectable
+            uid=3_358 gridcell "Customer" selectable
+            uid=3_360 gridcell "Linens 'n Things Inc." selectable
+          uid=3_362 row "Garrett Parkes garrett.parkes@avaya.example Contacted Avaya Inc." selectable
+            uid=3_363 gridcell "Garrett" selectable
+            uid=3_365 gridcell "Parkes" selectable
+            uid=3_367 gridcell "garrett.parkes@avaya.example" selectable
+            uid=3_369 gridcell "Contacted" selectable
+            uid=3_371 gridcell "Avaya Inc." selectable
+          uid=3_373 row "Hattie Jacobs hattie.jacobs@avaya.example Imported lead Avaya Inc." selectable
+            uid=3_374 gridcell "Hattie" selectable
+            uid=3_376 gridcell "Jacobs" selectable
+            uid=3_378 gridcell "hattie.jacobs@avaya.example" selectable
+            uid=3_380 gridcell "Imported lead" selectable
+            uid=3_382 gridcell "Avaya Inc." selectable
+          uid=3_384 row "Garrett Bennett garrett.bennett@autozone.example Imported lead AutoZone, Inc." selectable
+            uid=3_385 gridcell "Garrett" selectable
+            uid=3_387 gridcell "Bennett" selectable
+            uid=3_389 gridcell "garrett.bennett@autozone.example" selectable
+            uid=3_391 gridcell "Imported lead" selectable
+            uid=3_393 gridcell "AutoZone, Inc." selectable
+          uid=3_395 row "Barry Okafor barry.okafor@autozone.example Closed (lost) AutoZone, Inc." selectable
+            uid=3_396 gridcell "Barry" selectable
+            uid=3_398 gridcell "Okafor" selectable
+            uid=3_400 gridcell "barry.okafor@autozone.example" selectable
+            uid=3_402 gridcell "Closed (lost)" selectable
+            uid=3_404 gridcell "AutoZone, Inc." selectable
+        uid=3_406 generic
+        uid=2_1 "Online"
+        uid=2_2 generic live="polite" relevant="additions text"
+      
+SAYS  I'm filtering the contact list down to the Laboratory company's contacts. The grid hasn't refreshed yet, so I'll check it again.
+CALL  evaluate_script {"pageId":2,"function":"async () => { await new Promise(r=>setTimeout(r,1500)); const rows=[...document.querySelectorAll('vaadin-grid-cell-content')].map(c=>c.innerText); return rows.length+' | '+rows.join('|'); }"}
+OK    Script ran on page and returned:
+      ```json
+      "190 | First Name|Last Name|Email|Status|Company|||||||||||Barbara|Lindqvist|barbara.lindqvist@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings|Hattie|Lindqvist|hattie.lindqvist@avaya.example|Contacted|Avaya Inc.|Mildred|Goodman|mildred.goodman@avaya.example|Customer|Avaya Inc.|Gene|Mercer|gene.mercer@laboratory.example|Imported lead|Laboratory Corporation of America Holdings|Mabel|Lane|mabel.lane@avaya.example|Imported lead|Avaya Inc.|Mabel|Fujita|mabel.fujita@linens.example|Customer|Linens 'n Things Inc.|Eugenia|Rodriquez|eugenia.rodriquez@linens.example|Customer|Linens 'n Things Inc.|Rose|Ishii|rose.ishii@autozone.example|Contacted|AutoZone, Inc.|Walter|Brennan|walter.brennan@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings|Nellie|Lindqvist|nellie.lindqvist@autozone.example|Contacted|AutoZone, Inc.|Walter|Selvi|walter.selvi@autozone.example|Closed (lost)|AutoZone, Inc.|Louisa|Mercer|louisa.mercer@linens.example|Contacted|Linens 'n Things Inc.|Lettie|Halvorsen|lettie.halvorsen@avaya.example|Imported lead|Avaya Inc.|Hattie|Novak|hattie.novak@phillips.example|Imported lead|Phillips Van Heusen Corp.|Alejandro|Tesi|alejandro.tesi@linens.example|Customer|Linens 'n Things Inc.|Gene|Miccinesi|gene.miccinesi@laboratory.example|Imported lead|Laboratory Corporation of America Holdings|Eugenia|Romoli|eugenia.romoli@avaya.example|Customer|Avaya Inc.|Alejandro|Fujita|alejandro.fujita@autozone.example|Contacted|AutoZone, Inc.|Alejandro|Rhodes|alejandro.rhodes@avaya.example|Not contacted|Avaya Inc.|Barry|Gray|barry.gray@linens.example|Closed (lost)|Linens 'n Things Inc.|Eugenia|Novak|eugenia.novak@avaya.example|Customer|Avaya Inc.|Alejandro|Stokes|alejandro.stokes@linens.example|Contacted|Linens 'n Things Inc.|Cora|Brennan|cora.brennan@phillips.example|Imported lead|Phillips Van Heusen Corp.|Oscar|Stokes|oscar.stokes@phillips.example|Not contacted|Phillips Van Heusen Corp.|Nellie|Mercer|nellie.mercer@linens.example|Not contacted|Linens 'n Things Inc.|Louisa|Lindqvist|louisa.lindqvist@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings|Theodore|Tesi|theodore.tesi@autozone.example|Customer|AutoZone, Inc.|Jean|Rodriquez|jean.rodriquez@linens.example|Contacted|Linens 'n Things Inc.|Jack|Tesi|jack.tesi@phillips.example|Contacted|Phillips Van Heusen Corp.|Ida|Leach|ida.leach@autozone.example|Imported lead|AutoZone, Inc.|Marguerite|Ishii|marguerite.ishii@linens.example|Customer|Linens 'n Things Inc.|Garrett|Parkes|garrett.parkes@avaya.example|Contacted|Avaya Inc.|Hattie|Jacobs|hattie.jacobs@avaya.example|Imported lead|Avaya Inc.|Garrett|Bennett|garrett.bennett@autozone.example|Imported lead|AutoZone, Inc.|Barry|Okafor|barry.okafor@autozone.example|Closed (lost)|AutoZone, Inc."
+      ```
+SAYS  The filter only matches names, so I'll clear it. Then I'll scroll the grid to load every row.
+CALL  fill {"pageId":2,"uid":"3_7","value":""}
+OK    Successfully filled out the element
+CALL  evaluate_script {"pageId":2,"function":"async () => { const g=document.querySelector('vaadin-grid'); for(let i=0;i<15;i++){g.scrollToIndex(100000); await new Promise(r=>setTimeout(r,600));} const n=g._effectiveSize??g.size; const out=[]; g._getRenderedRows().forEach(r=>{const t=r.innerText.replace(/\\s+/g,' ');if(t.includes('Laboratory'))out.push(t)}); return {n, out}; }"}
+OK    Script ran on page and returned:
+      ```json
+      {"n":0,"out":[]}
+      ```
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=2_0 RootWebArea "Contacts | Vaadin CRM" url="http://localhost:34165/?continue"
+        uid=3_0 button "Toggle navigation panel" expandable expanded
+        uid=3_1 heading "Vaadin CRM" level="1"
+        uid=3_2 button "Log out user"
+        uid=3_3 link "List" url="http://localhost:34165/"
+        uid=3_5 link "Dashboard" url="http://localhost:34165/dashboard"
+        uid=3_7 textbox focusable focused
+        uid=3_8 button "Add contact"
+        uid=3_9 treegrid
+          uid=3_10 row "Sort by First Name Sort by Last Name Sort by Email Status Company"
+            uid=3_11 columnheader "Sort by First Name"
+              uid=3_12 "First Name"
+            uid=3_13 columnheader "Sort by Last Name"
+              uid=3_14 "Last Name"
+            uid=3_15 columnheader "Sort by Email"
+              uid=3_16 "Email"
+            uid=3_17 columnheader "Status"
+            uid=3_19 columnheader "Company"
+        uid=3_406 generic
+        uid=2_1 "Online"
+        uid=2_2 generic live="polite" relevant="additions text"
+      
+CALL  evaluate_script {"pageId":2,"function":"async () => { const g=document.querySelector('vaadin-grid'); g.scrollToIndex(0); await new Promise(r=>setTimeout(r,1000)); return {size:g.size, eff:g._effectiveSize, rows:g._getRenderedRows().length}; }"}
+OK    Script ran on page and returned:
+      ```json
+      {"size":0,"rows":0}
+      ```
+CALL  navigate_page {"pageId":2,"type":"reload"}
+CALL  evaluate_script {"pageId":2,"function":"async () => { await new Promise(r=>setTimeout(r,1500)); const g=document.querySelector('vaadin-grid'); return {size:g.size, rows:g._getRenderedRows().length}; }"}
+OK    Successfully reloaded the page.
+      ## Pages
+      1: about:blank
+      2: Contacts | Vaadin CRM (http://localhost:34165/?continue) [selected]
+OK    Script ran on page and returned:
+      ```json
+      {"size":200,"rows":35}
+      ```
+SAYS  Size is 200. I'll sort by company-agnostic scan: scroll through and collect the Laboratory rows.
+CALL  evaluate_script {"pageId":2,"function":"async () => { const g=document.querySelector('vaadin-grid'); const seen={}; for(let i=0;i<200;i+=15){g.scrollToIndex(i); await new Promise(r=>setTimeout(r,400)); g._getRenderedRows().forEach(r=>{const t=r.innerText.replace(/\\s+/g,' ');seen[r.index]=t});} return Object.entries(seen).filter(([k,v])=>v.includes('Laboratory')).map(([k,v])=>k+': '+v).concat(['total seen '+Object.keys(seen).length]); }"}
+OK    Script ran on page and returned:
+      ```json
+      ["total seen 200"]
+      ```
+CALL  evaluate_script {"pageId":2,"function":"async () => { const g=document.querySelector('vaadin-grid'); const seen={}; for(let i=0;i<200;i+=15){g.scrollToIndex(i); await new Promise(r=>setTimeout(r,500)); g._getRenderedRows().forEach(r=>{seen[r.index]=[...r.querySelectorAll('vaadin-grid-cell-content, td')].map(c=>c.innerText).join('|') || [...r.children].map(c=>c._content?.innerText).join('|')});} return Object.entries(seen).filter(([k,v])=>v.includes('Laboratory')).map(([k,v])=>k+': '+v); }"}
+OK    Script ran on page and returned:
+      ```json
+      []
+      ```
+CALL  evaluate_script {"pageId":2,"function":"async () => { const g=document.querySelector('vaadin-grid'); const seen={}; for(let i=0;i<200;i+=15){g.scrollToIndex(i); await new Promise(r=>setTimeout(r,500)); g._getRenderedRows().forEach(r=>{seen[r.index]=[...r.children].map(c=>c._content?c._content.textContent:'').join('|')});} const e=Object.entries(seen); return {n:e.length, lab:e.filter(([k,v])=>v.includes('Laboratory')).map(([k,v])=>k+': '+v)}; }"}
+OK    Script ran on page and returned:
+      ```json
+      {"n":200,"lab":["0: Barbara|Lindqvist|barbara.lindqvist@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings","3: Gene|Mercer|gene.mercer@laboratory.example|Imported lead|Laboratory Corporation of America Holdings","8: Walter|Brennan|walter.brennan@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings","15: Gene|Miccinesi|gene.miccinesi@laboratory.example|Imported lead|Laboratory Corporation of America Holdings","25: Louisa|Lindqvist|louisa.lindqvist@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings","44: Jean|Okafor|jean.okafor@laboratory.example|Customer|Laboratory Corporation of America Holdings","59: Barbara|Gray|barbara.gray@laboratory.example|Imported lead|Laboratory Corporation of America Holdings","65: Hattie|Romoli|hattie.romoli@laboratory.example|Contacted|Laboratory Corporation of America Holdings","88: Louisa|Gray|louisa.gray@laboratory.example|Contacted|Laboratory Corporation of America Holdings","97: Oscar|Halvorsen|oscar.halvorsen@laboratory.example|Customer|Laboratory Corporation of America Holdings","103: Gene|Novak|gene.novak@laboratory.example|Customer|Laboratory Corporation of America Holdings","111: Marguerite|Bennett|marguerite.bennett@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings","116: Rose|Miccinesi|rose.miccinesi@laboratory.example|Contacted|Laboratory Corporation of America Holdings","117: Ida|Tesi|ida.tesi@laboratory.example|Imported lead|Laboratory Corporation of America Holdings","125: Marie|Matthieu|marie.matthieu@laboratory.example|Not contacted|Laboratory Corporation of America Holdings","127: Jack|Brennan|jack.brennan@laboratory.example|Contacted|Laboratory Corporation of America Holdings","133: Ida|Parkes|ida.parkes@laboratory.example|Contacted|Laboratory Corporation of America Holdings","139: Theodore|Ishii|theodore.ishii@laboratory.example|Customer|Laboratory Corporation of America Holdings","140: Barbara|Rodriquez|barbara.rodriquez@laboratory.example|Contacted|Laboratory Corporation of America Holdings","145: Mabel|Ishii|mabel.ishii@laboratory.example|Not contacted|Laboratory Corporation of America Holdings","147: Barry|Miccinesi|barry.miccinesi@laboratory.example|Customer|Laboratory Corporation of America Holdings","148: Louisa|Jacobs|louisa.jacobs@laboratory.example|Customer|Laboratory Corporation of America Holdings","156: Marguerite|Lane|marguerite.lane@laboratory.example|Customer|Laboratory Corporation of America Holdings","161: Eula|Selvi|eula.selvi@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings","163: Louisa|Novak|louisa.novak@laboratory.example|Imported lead|Laboratory Corporation of America Holdings","170: Mabel|Goodman|mabel.goodman@laboratory.example|Contacted|Laboratory Corporation of America Holdings","172: Eugenia|Jacobs|eugenia.jacobs@laboratory.example|Contacted|Laboratory Corporation of America Holdings","175: Jordan|Novak|jordan.novak@laboratory.example|Closed (lost)|Laboratory Corporation of America Holdings","187: Cora|Miles|cora.miles@laboratory.example|Not contacted|Laboratory Corporation of America Holdings","188: Jean|Miccinesi|jean.miccinesi@laboratory.example|Imported lead|Laboratory Corporation of America Holdings","191: Hattie|Gray|hattie.gray@laboratory.example|Imported lead|Laboratory Corporation of America Holdings","193: Marguerite|Romoli|marguerite.romoli@laboratory.example|Not contacted|Laboratory Corporation of America Holdings","194: Rose|Parkes|rose.parkes@laboratory.example|Not contacted|Laboratory Corporation of America Holdings","198: Harvey|Gray|harvey.gray@laboratory.example|Imported lead|Laboratory Corporation of America Holdings"]}
+      ```
+SAYS  I found 6 Closed (lost) contacts at Laboratory Corporation of America Holdings. I'll delete them through the UI, starting with the first.
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=6_0 RootWebArea "Contacts | Vaadin CRM" url="http://localhost:34165/?continue"
+        uid=6_1 button "Toggle navigation panel" expandable expanded
+        uid=6_2 heading "Vaadin CRM" level="1"
+        uid=6_3 button "Log out user"
+        uid=6_4 link "List" url="http://localhost:34165/"
+        uid=6_6 link "Dashboard" url="http://localhost:34165/dashboard"
+        uid=6_8 textbox
+        uid=6_9 button "Add contact"
+        uid=6_10 treegrid
+          uid=6_11 row "Sort by First Name Sort by Last Name Sort by Email Status Company"
+            uid=6_12 columnheader "Sort by First Name"
+              uid=6_13 "First Name"
+            uid=6_14 columnheader "Sort by Last Name"
+              uid=6_15 "Last Name"
+            uid=6_16 columnheader "Sort by Email"
+              uid=6_17 "Email"
+            uid=6_18 columnheader "Status"
+            uid=6_20 columnheader "Company"
+          uid=6_22 row "Jean Castillo jean.castillo@autozone.example Not contacted AutoZone, Inc." selectable
+            uid=6_23 gridcell "Jean" selectable
+            uid=6_25 gridcell "Castillo" selectable
+            uid=6_27 gridcell "jean.castillo@autozone.example" selectable
+            uid=6_29 gridcell "Not contacted" selectable
+            uid=6_31 gridcell "AutoZone, Inc." selectable
+          uid=6_33 row "Theodore Parkes theodore.parkes@autozone.example Imported lead AutoZone, Inc." selectable
+            uid=6_34 gridcell "Theodore" selectable
+            uid=6_36 gridcell "Parkes" selectable
+            uid=6_38 gridcell "theodore.parkes@autozone.example" selectable
+            uid=6_40 gridcell "Imported lead" selectable
+            uid=6_42 gridcell "AutoZone, Inc." selectable
+          uid=6_44 row "Rose Leach rose.leach@linens.example Customer Linens 'n Things Inc." selectable
+            uid=6_45 gridcell "Rose" selectable
+            uid=6_47 gridcell "Leach" selectable
+            uid=6_49 gridcell "rose.leach@linens.example" selectable
+            uid=6_51 gridcell "Customer" selectable
+            uid=6_53 gridcell "Linens 'n Things Inc." selectable
+          uid=6_55 row "Oscar Miccinesi oscar.miccinesi@autozone.example Customer AutoZone, Inc." selectable
+            uid=6_56 gridcell "Oscar" selectable
+            uid=6_58 gridcell "Miccinesi" selectable
+            uid=6_60 gridcell "oscar.miccinesi@autozone.example" selectable
+            uid=6_62 gridcell "Customer" selectable
+            uid=6_64 gridcell "AutoZone, Inc." selectable
+          uid=6_66 row "Marie Romoli marie.romoli@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=6_67 gridcell "Marie" selectable
+            uid=6_69 gridcell "Romoli" selectable
+            uid=6_71 gridcell "marie.romoli@linens.example" selectable
+            uid=6_73 gridcell "Contacted" selectable
+            uid=6_75 gridcell "Linens 'n Things Inc." selectable
+          uid=6_77 row "Mabel Goodman mabel.goodman@laboratory.example Contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_78 gridcell "Mabel" selectable
+            uid=6_80 gridcell "Goodman" selectable
+            uid=6_82 gridcell "mabel.goodman@laboratory.example" selectable
+            uid=6_84 gridcell "Contacted" selectable
+            uid=6_86 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_88 row "Mildred Leach mildred.leach@phillips.example Customer Phillips Van Heusen Corp." selectable
+            uid=6_89 gridcell "Mildred" selectable
+            uid=6_91 gridcell "Leach" selectable
+            uid=6_93 gridcell "mildred.leach@phillips.example" selectable
+            uid=6_95 gridcell "Customer" selectable
+            uid=6_97 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_99 row "Eugenia Jacobs eugenia.jacobs@laboratory.example Contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_100 gridcell "Eugenia" selectable
+            uid=6_102 gridcell "Jacobs" selectable
+            uid=6_104 gridcell "eugenia.jacobs@laboratory.example" selectable
+            uid=6_106 gridcell "Contacted" selectable
+            uid=6_108 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_110 row "Marguerite Brennan marguerite.brennan@phillips.example Closed (lost) Phillips Van Heusen Corp." selectable
+            uid=6_111 gridcell "Marguerite" selectable
+            uid=6_113 gridcell "Brennan" selectable
+            uid=6_115 gridcell "marguerite.brennan@phillips.example" selectable
+            uid=6_117 gridcell "Closed (lost)" selectable
+            uid=6_119 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_121 row "Garrett Stokes garrett.stokes@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=6_122 gridcell "Garrett" selectable
+            uid=6_124 gridcell "Stokes" selectable
+            uid=6_126 gridcell "garrett.stokes@linens.example" selectable
+            uid=6_128 gridcell "Not contacted" selectable
+            uid=6_130 gridcell "Linens 'n Things Inc." selectable
+          uid=6_132 row "Jordan Novak jordan.novak@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=6_133 gridcell "Jordan" selectable
+            uid=6_135 gridcell "Novak" selectable
+            uid=6_137 gridcell "jordan.novak@laboratory.example" selectable
+            uid=6_139 gridcell "Closed (lost)" selectable
+            uid=6_141 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_143 row "Gene Leach gene.leach@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=6_144 gridcell "Gene" selectable
+            uid=6_146 gridcell "Leach" selectable
+            uid=6_148 gridcell "gene.leach@linens.example" selectable
+            uid=6_150 gridcell "Not contacted" selectable
+            uid=6_152 gridcell "Linens 'n Things Inc." selectable
+          uid=6_154 row "Harvey Parkes harvey.parkes@linens.example Imported lead Linens 'n Things Inc." selectable
+            uid=6_155 gridcell "Harvey" selectable
+            uid=6_157 gridcell "Parkes" selectable
+            uid=6_159 gridcell "harvey.parkes@linens.example" selectable
+            uid=6_161 gridcell "Imported lead" selectable
+            uid=6_163 gridcell "Linens 'n Things Inc." selectable
+          uid=6_165 row "Nellie Halvorsen nellie.halvorsen@phillips.example Closed (lost) Phillips Van Heusen Corp." selectable
+            uid=6_166 gridcell "Nellie" selectable
+            uid=6_168 gridcell "Halvorsen" selectable
+            uid=6_170 gridcell "nellie.halvorsen@phillips.example" selectable
+            uid=6_172 gridcell "Closed (lost)" selectable
+            uid=6_174 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_176 row "Ida Romoli ida.romoli@phillips.example Imported lead Phillips Van Heusen Corp." selectable
+            uid=6_177 gridcell "Ida" selectable
+            uid=6_179 gridcell "Romoli" selectable
+            uid=6_181 gridcell "ida.romoli@phillips.example" selectable
+            uid=6_183 gridcell "Imported lead" selectable
+            uid=6_185 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_187 row "Rose Goodman rose.goodman@avaya.example Customer Avaya Inc." selectable
+            uid=6_188 gridcell "Rose" selectable
+            uid=6_190 gridcell "Goodman" selectable
+            uid=6_192 gridcell "rose.goodman@avaya.example" selectable
+            uid=6_194 gridcell "Customer" selectable
+            uid=6_196 gridcell "Avaya Inc." selectable
+          uid=6_198 row "Alejandro Lindqvist alejandro.lindqvist@autozone.example Customer AutoZone, Inc." selectable
+            uid=6_199 gridcell "Alejandro" selectable
+            uid=6_201 gridcell "Lindqvist" selectable
+            uid=6_203 gridcell "alejandro.lindqvist@autozone.example" selectable
+            uid=6_205 gridcell "Customer" selectable
+            uid=6_207 gridcell "AutoZone, Inc." selectable
+          uid=6_209 row "Louisa Miles louisa.miles@avaya.example Not contacted Avaya Inc." selectable
+            uid=6_210 gridcell "Louisa" selectable
+            uid=6_212 gridcell "Miles" selectable
+            uid=6_214 gridcell "louisa.miles@avaya.example" selectable
+            uid=6_216 gridcell "Not contacted" selectable
+            uid=6_218 gridcell "Avaya Inc." selectable
+          uid=6_220 row "Louisa Brennan louisa.brennan@avaya.example Closed (lost) Avaya Inc." selectable
+            uid=6_221 gridcell "Louisa" selectable
+            uid=6_223 gridcell "Brennan" selectable
+            uid=6_225 gridcell "louisa.brennan@avaya.example" selectable
+            uid=6_227 gridcell "Closed (lost)" selectable
+            uid=6_229 gridcell "Avaya Inc." selectable
+          uid=6_231 row "Jack Bennett jack.bennett@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=6_232 gridcell "Jack" selectable
+            uid=6_234 gridcell "Bennett" selectable
+            uid=6_236 gridcell "jack.bennett@linens.example" selectable
+            uid=6_238 gridcell "Contacted" selectable
+            uid=6_240 gridcell "Linens 'n Things Inc." selectable
+          uid=6_242 row "Alejandro Halvorsen alejandro.halvorsen@linens.example Imported lead Linens 'n Things Inc." selectable
+            uid=6_243 gridcell "Alejandro" selectable
+            uid=6_245 gridcell "Halvorsen" selectable
+            uid=6_247 gridcell "alejandro.halvorsen@linens.example" selectable
+            uid=6_249 gridcell "Imported lead" selectable
+            uid=6_251 gridcell "Linens 'n Things Inc." selectable
+          uid=6_253 row "Harvey Matthieu harvey.matthieu@phillips.example Customer Phillips Van Heusen Corp." selectable
+            uid=6_254 gridcell "Harvey" selectable
+            uid=6_256 gridcell "Matthieu" selectable
+            uid=6_258 gridcell "harvey.matthieu@phillips.example" selectable
+            uid=6_260 gridcell "Customer" selectable
+            uid=6_262 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_264 row "Cora Miles cora.miles@laboratory.example Not contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_265 gridcell "Cora" selectable
+            uid=6_267 gridcell "Miles" selectable
+            uid=6_269 gridcell "cora.miles@laboratory.example" selectable
+            uid=6_271 gridcell "Not contacted" selectable
+            uid=6_273 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_275 row "Jean Miccinesi jean.miccinesi@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=6_276 gridcell "Jean" selectable
+            uid=6_278 gridcell "Miccinesi" selectable
+            uid=6_280 gridcell "jean.miccinesi@laboratory.example" selectable
+            uid=6_282 gridcell "Imported lead" selectable
+            uid=6_284 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_286 row "Nellie Rodriquez nellie.rodriquez@phillips.example Closed (lost) Phillips Van Heusen Corp." selectable
+            uid=6_287 gridcell "Nellie" selectable
+            uid=6_289 gridcell "Rodriquez" selectable
+            uid=6_291 gridcell "nellie.rodriquez@phillips.example" selectable
+            uid=6_293 gridcell "Closed (lost)" selectable
+            uid=6_295 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_297 row "Gene Parkes gene.parkes@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=6_298 gridcell "Gene" selectable
+            uid=6_300 gridcell "Parkes" selectable
+            uid=6_302 gridcell "gene.parkes@linens.example" selectable
+            uid=6_304 gridcell "Not contacted" selectable
+            uid=6_306 gridcell "Linens 'n Things Inc." selectable
+          uid=6_308 row "Hattie Gray hattie.gray@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=6_309 gridcell "Hattie" selectable
+            uid=6_311 gridcell "Gray" selectable
+            uid=6_313 gridcell "hattie.gray@laboratory.example" selectable
+            uid=6_315 gridcell "Imported lead" selectable
+            uid=6_317 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_319 row "Harvey Novak harvey.novak@linens.example Imported lead Linens 'n Things Inc." selectable
+            uid=6_320 gridcell "Harvey" selectable
+            uid=6_322 gridcell "Novak" selectable
+            uid=6_324 gridcell "harvey.novak@linens.example" selectable
+            uid=6_326 gridcell "Imported lead" selectable
+            uid=6_328 gridcell "Linens 'n Things Inc." selectable
+          uid=6_330 row "Marguerite Romoli marguerite.romoli@laboratory.example Not contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_331 gridcell "Marguerite" selectable
+            uid=6_333 gridcell "Romoli" selectable
+            uid=6_335 gridcell "marguerite.romoli@laboratory.example" selectable
+            uid=6_337 gridcell "Not contacted" selectable
+            uid=6_339 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_341 row "Rose Parkes rose.parkes@laboratory.example Not contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_342 gridcell "Rose" selectable
+            uid=6_344 gridcell "Parkes" selectable
+            uid=6_346 gridcell "rose.parkes@laboratory.example" selectable
+            uid=6_348 gridcell "Not contacted" selectable
+            uid=6_350 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_352 row "Harvey Leach harvey.leach@linens.example Closed (lost) Linens 'n Things Inc." selectable
+            uid=6_353 gridcell "Harvey" selectable
+            uid=6_355 gridcell "Leach" selectable
+            uid=6_357 gridcell "harvey.leach@linens.example" selectable
+            uid=6_359 gridcell "Closed (lost)" selectable
+            uid=6_361 gridcell "Linens 'n Things Inc." selectable
+          uid=6_363 row "Jean Romoli jean.romoli@autozone.example Customer AutoZone, Inc." selectable
+            uid=6_364 gridcell "Jean" selectable
+            uid=6_366 gridcell "Romoli" selectable
+            uid=6_368 gridcell "jean.romoli@autozone.example" selectable
+            uid=6_370 gridcell "Customer" selectable
+            uid=6_372 gridcell "AutoZone, Inc." selectable
+          uid=6_374 row "Gene Miles gene.miles@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=6_375 gridcell "Gene" selectable
+            uid=6_377 gridcell "Miles" selectable
+            uid=6_379 gridcell "gene.miles@linens.example" selectable
+            uid=6_381 gridcell "Contacted" selectable
+            uid=6_383 gridcell "Linens 'n Things Inc." selectable
+          uid=6_385 row "Harvey Gray harvey.gray@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=6_386 gridcell "Harvey" selectable
+            uid=6_388 gridcell "Gray" selectable
+            uid=6_390 gridcell "harvey.gray@laboratory.example" selectable
+            uid=6_392 gridcell "Imported lead" selectable
+            uid=6_394 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_396 row "Mildred Parkes mildred.parkes@linens.example Imported lead Linens 'n Things Inc." selectable
+            uid=6_397 gridcell "Mildred" selectable
+            uid=6_399 gridcell "Parkes" selectable
+            uid=6_401 gridcell "mildred.parkes@linens.example" selectable
+            uid=6_403 gridcell "Imported lead" selectable
+            uid=6_405 gridcell "Linens 'n Things Inc." selectable
+        uid=6_407 generic
+        uid=6_408 "Online"
+        uid=6_409 generic live="polite" relevant="additions text"
+      
+CALL  click {"pageId":2,"uid":"6_132","includeSnapshot":true}
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=6_0 RootWebArea "Contacts | Vaadin CRM" url="http://localhost:34165/?continue"
+        uid=6_1 button "Toggle navigation panel" expandable expanded
+        uid=6_2 heading "Vaadin CRM" level="1"
+        uid=6_3 button "Log out user"
+        uid=6_4 link "List" url="http://localhost:34165/"
+        uid=6_6 link "Dashboard" url="http://localhost:34165/dashboard"
+        uid=6_8 textbox
+        uid=6_9 button "Add contact"
+        uid=6_10 treegrid
+          uid=6_11 row "Sort by First Name Sort by Last Name Sort by Email Status Company"
+            uid=6_12 columnheader "Sort by First Name"
+              uid=6_13 "First Name"
+            uid=6_14 columnheader "Sort by Last Name"
+              uid=6_15 "Last Name"
+            uid=6_16 columnheader "Sort by Email"
+              uid=6_17 "Email"
+            uid=6_18 columnheader "Status"
+            uid=6_20 columnheader "Company"
+          uid=6_22 row "Jean Castillo jean.castillo@autozone.example Not contacted AutoZone, Inc." selectable
+            uid=6_23 gridcell "Jean" selectable
+            uid=6_25 gridcell "Castillo" selectable
+            uid=6_27 gridcell "jean.castillo@autozone.example" selectable
+            uid=6_29 gridcell "Not contacted" selectable
+            uid=6_31 gridcell "AutoZone, Inc." selectable
+          uid=6_33 row "Theodore Parkes theodore.parkes@autozone.example Imported lead AutoZone, Inc." selectable
+            uid=6_34 gridcell "Theodore" selectable
+            uid=6_36 gridcell "Parkes" selectable
+            uid=6_38 gridcell "theodore.parkes@autozone.example" selectable
+            uid=6_40 gridcell "Imported lead" selectable
+            uid=6_42 gridcell "AutoZone, Inc." selectable
+          uid=6_44 row "Rose Leach rose.leach@linens.example Customer Linens 'n Things Inc." selectable
+            uid=6_45 gridcell "Rose" selectable
+            uid=6_47 gridcell "Leach" selectable
+            uid=6_49 gridcell "rose.leach@linens.example" selectable
+            uid=6_51 gridcell "Customer" selectable
+            uid=6_53 gridcell "Linens 'n Things Inc." selectable
+          uid=6_55 row "Oscar Miccinesi oscar.miccinesi@autozone.example Customer AutoZone, Inc." selectable
+            uid=6_56 gridcell "Oscar" selectable
+            uid=6_58 gridcell "Miccinesi" selectable
+            uid=6_60 gridcell "oscar.miccinesi@autozone.example" selectable
+            uid=6_62 gridcell "Customer" selectable
+            uid=6_64 gridcell "AutoZone, Inc." selectable
+          uid=6_66 row "Marie Romoli marie.romoli@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=6_67 gridcell "Marie" selectable
+            uid=6_69 gridcell "Romoli" selectable
+            uid=6_71 gridcell "marie.romoli@linens.example" selectable
+            uid=6_73 gridcell "Contacted" selectable
+            uid=6_75 gridcell "Linens 'n Things Inc." selectable
+          uid=6_77 row "Mabel Goodman mabel.goodman@laboratory.example Contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_78 gridcell "Mabel" selectable
+            uid=6_80 gridcell "Goodman" selectable
+            uid=6_82 gridcell "mabel.goodman@laboratory.example" selectable
+            uid=6_84 gridcell "Contacted" selectable
+            uid=6_86 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_88 row "Mildred Leach mildred.leach@phillips.example Customer Phillips Van Heusen Corp." selectable
+            uid=6_89 gridcell "Mildred" selectable
+            uid=6_91 gridcell "Leach" selectable
+            uid=6_93 gridcell "mildred.leach@phillips.example" selectable
+            uid=6_95 gridcell "Customer" selectable
+            uid=6_97 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_99 row "Eugenia Jacobs eugenia.jacobs@laboratory.example Contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_100 gridcell "Eugenia" selectable
+            uid=6_102 gridcell "Jacobs" selectable
+            uid=6_104 gridcell "eugenia.jacobs@laboratory.example" selectable
+            uid=6_106 gridcell "Contacted" selectable
+            uid=6_108 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_110 row "Marguerite Brennan marguerite.brennan@phillips.example Closed (lost) Phillips Van Heusen Corp." selectable
+            uid=6_111 gridcell "Marguerite" selectable
+            uid=6_113 gridcell "Brennan" selectable
+            uid=6_115 gridcell "marguerite.brennan@phillips.example" selectable
+            uid=6_117 gridcell "Closed (lost)" selectable
+            uid=6_119 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_121 row "Garrett Stokes garrett.stokes@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=6_122 gridcell "Garrett" selectable
+            uid=6_124 gridcell "Stokes" selectable
+            uid=6_126 gridcell "garrett.stokes@linens.example" selectable
+            uid=6_128 gridcell "Not contacted" selectable
+            uid=6_130 gridcell "Linens 'n Things Inc." selectable
+          uid=6_132 row "Jordan Novak jordan.novak@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable selected
+            uid=6_133 gridcell "Jordan" selectable selected
+            uid=6_135 gridcell "Novak" selectable selected
+            uid=6_137 gridcell "jordan.novak@laboratory.example" focusable focused selectable selected
+            uid=6_139 gridcell "Closed (lost)" selectable selected
+            uid=6_141 gridcell "Laboratory Corporation of America Holdings" selectable selected
+          uid=6_143 row "Gene Leach gene.leach@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=6_144 gridcell "Gene" selectable
+            uid=6_146 gridcell "Leach" selectable
+            uid=6_148 gridcell "gene.leach@linens.example" selectable
+            uid=6_150 gridcell "Not contacted" selectable
+            uid=6_152 gridcell "Linens 'n Things Inc." selectable
+          uid=6_154 row "Harvey Parkes harvey.parkes@linens.example Imported lead Linens 'n Things Inc." selectable
+            uid=6_155 gridcell "Harvey" selectable
+            uid=6_157 gridcell "Parkes" selectable
+            uid=6_159 gridcell "harvey.parkes@linens.example" selectable
+            uid=6_161 gridcell "Imported lead" selectable
+            uid=6_163 gridcell "Linens 'n Things Inc." selectable
+          uid=6_165 row "Nellie Halvorsen nellie.halvorsen@phillips.example Closed (lost) Phillips Van Heusen Corp." selectable
+            uid=6_166 gridcell "Nellie" selectable
+            uid=6_168 gridcell "Halvorsen" selectable
+            uid=6_170 gridcell "nellie.halvorsen@phillips.example" selectable
+            uid=6_172 gridcell "Closed (lost)" selectable
+            uid=6_174 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_176 row "Ida Romoli ida.romoli@phillips.example Imported lead Phillips Van Heusen Corp." selectable
+            uid=6_177 gridcell "Ida" selectable
+            uid=6_179 gridcell "Romoli" selectable
+            uid=6_181 gridcell "ida.romoli@phillips.example" selectable
+            uid=6_183 gridcell "Imported lead" selectable
+            uid=6_185 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_187 row "Rose Goodman rose.goodman@avaya.example Customer Avaya Inc." selectable
+            uid=6_188 gridcell "Rose" selectable
+            uid=6_190 gridcell "Goodman" selectable
+            uid=6_192 gridcell "rose.goodman@avaya.example" selectable
+            uid=6_194 gridcell "Customer" selectable
+            uid=6_196 gridcell "Avaya Inc." selectable
+          uid=6_198 row "Alejandro Lindqvist alejandro.lindqvist@autozone.example Customer AutoZone, Inc." selectable
+            uid=6_199 gridcell "Alejandro" selectable
+            uid=6_201 gridcell "Lindqvist" selectable
+            uid=6_203 gridcell "alejandro.lindqvist@autozone.example" selectable
+            uid=6_205 gridcell "Customer" selectable
+            uid=6_207 gridcell "AutoZone, Inc." selectable
+          uid=6_209 row "Louisa Miles louisa.miles@avaya.example Not contacted Avaya Inc." selectable
+            uid=6_210 gridcell "Louisa" selectable
+            uid=6_212 gridcell "Miles" selectable
+            uid=6_214 gridcell "louisa.miles@avaya.example" selectable
+            uid=6_216 gridcell "Not contacted" selectable
+            uid=6_218 gridcell "Avaya Inc." selectable
+          uid=6_220 row "Louisa Brennan louisa.brennan@avaya.example Closed (lost) Avaya Inc." selectable
+            uid=6_221 gridcell "Louisa" selectable
+            uid=6_223 gridcell "Brennan" selectable
+            uid=6_225 gridcell "louisa.brennan@avaya.example" selectable
+            uid=6_227 gridcell "Closed (lost)" selectable
+            uid=6_229 gridcell "Avaya Inc." selectable
+          uid=6_231 row "Jack Bennett jack.bennett@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=6_232 gridcell "Jack" selectable
+            uid=6_234 gridcell "Bennett" selectable
+            uid=6_236 gridcell "jack.bennett@linens.example" selectable
+            uid=6_238 gridcell "Contacted" selectable
+            uid=6_240 gridcell "Linens 'n Things Inc." selectable
+          uid=6_242 row "Alejandro Halvorsen alejandro.halvorsen@linens.example Imported lead Linens 'n Things Inc." selectable
+            uid=6_243 gridcell "Alejandro" selectable
+            uid=6_245 gridcell "Halvorsen" selectable
+            uid=6_247 gridcell "alejandro.halvorsen@linens.example" selectable
+            uid=6_249 gridcell "Imported lead" selectable
+            uid=6_251 gridcell "Linens 'n Things Inc." selectable
+          uid=6_253 row "Harvey Matthieu harvey.matthieu@phillips.example Customer Phillips Van Heusen Corp." selectable
+            uid=6_254 gridcell "Harvey" selectable
+            uid=6_256 gridcell "Matthieu" selectable
+            uid=6_258 gridcell "harvey.matthieu@phillips.example" selectable
+            uid=6_260 gridcell "Customer" selectable
+            uid=6_262 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_264 row "Cora Miles cora.miles@laboratory.example Not contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_265 gridcell "Cora" selectable
+            uid=6_267 gridcell "Miles" selectable
+            uid=6_269 gridcell "cora.miles@laboratory.example" selectable
+            uid=6_271 gridcell "Not contacted" selectable
+            uid=6_273 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_275 row "Jean Miccinesi jean.miccinesi@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=6_276 gridcell "Jean" selectable
+            uid=6_278 gridcell "Miccinesi" selectable
+            uid=6_280 gridcell "jean.miccinesi@laboratory.example" selectable
+            uid=6_282 gridcell "Imported lead" selectable
+            uid=6_284 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_286 row "Nellie Rodriquez nellie.rodriquez@phillips.example Closed (lost) Phillips Van Heusen Corp." selectable
+            uid=6_287 gridcell "Nellie" selectable
+            uid=6_289 gridcell "Rodriquez" selectable
+            uid=6_291 gridcell "nellie.rodriquez@phillips.example" selectable
+            uid=6_293 gridcell "Closed (lost)" selectable
+            uid=6_295 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_297 row "Gene Parkes gene.parkes@linens.example Not contacted Linens 'n Things Inc." selectable
+            uid=6_298 gridcell "Gene" selectable
+            uid=6_300 gridcell "Parkes" selectable
+            uid=6_302 gridcell "gene.parkes@linens.example" selectable
+            uid=6_304 gridcell "Not contacted" selectable
+            uid=6_306 gridcell "Linens 'n Things Inc." selectable
+          uid=6_308 row "Hattie Gray hattie.gray@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=6_309 gridcell "Hattie" selectable
+            uid=6_311 gridcell "Gray" selectable
+            uid=6_313 gridcell "hattie.gray@laboratory.example" selectable
+            uid=6_315 gridcell "Imported lead" selectable
+            uid=6_317 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_319 row "Harvey Novak harvey.novak@linens.example Imported lead Linens 'n Things Inc." selectable
+            uid=6_320 gridcell "Harvey" selectable
+            uid=6_322 gridcell "Novak" selectable
+            uid=6_324 gridcell "harvey.novak@linens.example" selectable
+            uid=6_326 gridcell "Imported lead" selectable
+            uid=6_328 gridcell "Linens 'n Things Inc." selectable
+          uid=6_330 row "Marguerite Romoli marguerite.romoli@laboratory.example Not contacted Laboratory Corporation of America Holdings" selectable
+            uid=6_331 gridcell "Marguerite" selectable
+            uid=6_333 gridcell "Romoli" selectable
+            uid=6_335 gridcell "marguerite.romoli@laboratory.example" selectable
+            uid=6_337 gridcell "Not contacted" selectable
+            uid=6_339 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_341 row "Walter Ishii walter.ishii@linens.example Contacted Linens 'n Things Inc." selectable
+            uid=6_342 gridcell "Walter" selectable
+            uid=6_344 gridcell "Ishii" selectable
+            uid=6_346 gridcell "walter.ishii@linens.example" selectable
+            uid=6_348 gridcell "Contacted" selectable
+            uid=6_350 gridcell "Linens 'n Things Inc." selectable
+          uid=6_352 row "Jack Jacobs jack.jacobs@autozone.example Closed (lost) AutoZone, Inc." selectable
+            uid=6_353 gridcell "Jack" selectable
+            uid=6_355 gridcell "Jacobs" selectable
+            uid=6_357 gridcell "jack.jacobs@autozone.example" selectable
+            uid=6_359 gridcell "Closed (lost)" selectable
+            uid=6_361 gridcell "AutoZone, Inc." selectable
+          uid=6_363 row "Eula Selvi eula.selvi@laboratory.example Closed (lost) Laboratory Corporation of America Holdings" selectable
+            uid=6_364 gridcell "Eula" selectable
+            uid=6_366 gridcell "Selvi" selectable
+            uid=6_368 gridcell "eula.selvi@laboratory.example" selectable
+            uid=6_370 gridcell "Closed (lost)" selectable
+            uid=6_372 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_374 row "Walter Fujita walter.fujita@phillips.example Closed (lost) Phillips Van Heusen Corp." selectable
+            uid=6_375 gridcell "Walter" selectable
+            uid=6_377 gridcell "Fujita" selectable
+            uid=6_379 gridcell "walter.fujita@phillips.example" selectable
+            uid=6_381 gridcell "Closed (lost)" selectable
+            uid=6_383 gridcell "Phillips Van Heusen Corp." selectable
+          uid=6_385 row "Louisa Novak louisa.novak@laboratory.example Imported lead Laboratory Corporation of America Holdings" selectable
+            uid=6_386 gridcell "Louisa" selectable
+            uid=6_388 gridcell "Novak" selectable
+            uid=6_390 gridcell "louisa.novak@laboratory.example" selectable
+            uid=6_392 gridcell "Imported lead" selectable
+            uid=6_394 gridcell "Laboratory Corporation of America Holdings" selectable
+          uid=6_396 row "Jordan Rhodes jordan.rhodes@autozone.example Not contacted AutoZone, Inc." selectable
+            uid=6_397 gridcell "Jordan" selectable
+            uid=6_399 gridcell "Rhodes" selectable
+            uid=6_401 gridcell "jordan.rhodes@autozone.example" selectable
+            uid=6_403 gridcell "Not contacted" selectable
+            uid=6_405 gridcell "AutoZone, Inc." selectable
+        uid=6_407 generic
+        uid=7_27 "First name"
+        uid=7_28 textbox "First name" required value="Jordan"
+        uid=7_29 "Last name"
+        uid=7_30 textbox "Last name" required value="Novak"
+        uid=7_31 "Email"
+        uid=7_32 textbox "Email" required value="jordan.novak@laboratory.example"
+        uid=7_33 "Company"
+        uid=7_34 combobox "Company" autocomplete="list" expandable haspopup="listbox" required value="Laboratory Corporation of America Holdings"
+        uid=7_35 "Status"
+        uid=7_36 combobox "Status" autocomplete="list" expandable haspopup="listbox" required value="Closed (lost)"
+        uid=7_37 button "Save"
+        uid=7_38 button "Delete"
+        uid=7_39 button "Cancel"
+        uid=6_408 "Online"
+        uid=6_409 generic live="polite" relevant="additions text"
+      
+CALL  click {"pageId":2,"uid":"7_38"}
+CALL  evaluate_script {"pageId":2,"function":"async () => { await new Promise(r=>setTimeout(r,1000)); const g=document.querySelector('vaadin-grid'); return {size:g.size, form:!!document.querySelector('vaadin-form-layout')}; }"}
+OK    Successfully clicked on the element
+OK    Script ran on page and returned:
+      ```json
+      {"size":199,"form":true}
+      ```
+SAYS  That one is deleted and the size dropped to 199. I'll script the other five. Each run checks the email in the form before it clicks Delete.
+CALL  evaluate_script {"pageId":2,"function":"async () => {\nconst sleep=ms=>new Promise(r=>setTimeout(r,ms));\nconst targets=['barbara.lindqvist@laboratory.example','walter.brennan@laboratory.example','louisa.lindqvist@laboratory.example','marguerite.bennett@laboratory.example','eula.selvi@laboratory.example'];\nconst g=document.querySelector('vaadin-grid'); const log=[];\nfor(const email of targets){\n  let found=null;\n  for(let i=0;i<g.size && !found;i+=10){ g.scrollToIndex(i); await sleep(350);\n    for(const r of g._getRenderedRows()){ const cells=[...r.children].map(c=>c._content?c._content.textContent:''); if(cells[2]===email && cells[3]==='Closed (lost)' && cells[4].startsWith('Laboratory')){found=r;break;} } }\n  if(!found){log.push('notfound '+email);continue;}\n  found.children[2]._content.click(); await sleep(800);\n  const em=[...document.querySelectorAll('vaadin-email-field, vaadin-text-field')].find(f=>f.value===email);\n  const del=[...document.querySelectorAll('vaadin-button')].find(b=>b.textContent.trim()==='Delete');\n  if(!em||!del){log.push('noform '+email);continue;}\n  del.click(); await sleep(900); log.push('deleted '+email+' size '+g.size);\n}\nreturn log; }"}
+OK    Script ran on page and returned:
+      ```json
+      ["deleted barbara.lindqvist@laboratory.example size 198","deleted walter.brennan@laboratory.example size 197","deleted louisa.lindqvist@laboratory.example size 196","deleted marguerite.bennett@laboratory.example size 195","deleted eula.selvi@laboratory.example size 194"]
+      ```
+SAYS  Final check:
+CALL  evaluate_script {"pageId":2,"function":"async () => { const g=document.querySelector('vaadin-grid'); const sleep=ms=>new Promise(r=>setTimeout(r,ms)); let n=0,c=0; for(let i=0;i<g.size;i+=10){g.scrollToIndex(i);await sleep(350);} const seen={}; for(let i=0;i<g.size;i+=10){g.scrollToIndex(i);await sleep(350); g._getRenderedRows().forEach(r=>{seen[r.index]=[...r.children].map(c=>c._content?c._content.textContent:'')});} const v=Object.values(seen); return {size:g.size, seen:v.length, lostLab:v.filter(x=>x[3]==='Closed (lost)'&&x[4].startsWith('Laboratory')).length, lab:v.filter(x=>x[4].startsWith('Laboratory')).length}; }"}
+OK    Script ran on page and returned:
+      ```json
+      {"size":194,"seen":194,"lostLab":0,"lab":28}
+      ```
+SAYS  I deleted 6 contacts, the ones at Laboratory Corporation of America Holdings with status Closed (lost):
+      
+      - Jordan Novak
+      - Barbara Lindqvist
+      - Walter Brennan
+      - Louisa Lindqvist
+      - Marguerite Bennett
+      - Eula Selvi
+      
+      The contact list went from 200 to 194 rows. A final scan found no Closed (lost) contacts left at that company. The other 28 contacts there, and everyone at other companies, are untouched, including Closed (lost) contacts at other companies.
+      
+      I deleted the first contact by hand and the other five with a script that checked each one's email before deleting.
+END   turns=24 duration=121s cost=$0.2556297 is_error=false

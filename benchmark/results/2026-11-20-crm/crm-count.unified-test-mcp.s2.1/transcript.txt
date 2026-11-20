@@ -1,0 +1,295 @@
+CALL  navigate {"url":"http://localhost:50223"}
+OK    Navigated to http://localhost:50223
+      
+      URL: http://localhost:50223/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  set_value {"ref":5,"value":"user"}
+CALL  set_value {"ref":6,"value":"password"}
+OK    Set ref=5 to "user"
+      
+      URL: http://localhost:50223/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+OK    Set ref=6 to "password"
+      
+      URL: http://localhost:50223/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="password", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  click {"ref":7}
+OK    Clicked ref=7
+      
+      URL: http://localhost:50223/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 1: Gene | Tesi | gene.tesi@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 2: Jean | Fujita | jean.fujita@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 3: Hattie | Lindqvist | hattie.lindqvist@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Theodore | Parkes | theodore.parkes@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 5: Harvey | Stokes | harvey.stokes@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 6: Marguerite | Novak | marguerite.novak@autozone.example | Imported lead | AutoZone, Inc.
+            - row 7: Lettie | Romoli | lettie.romoli@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 8: Lettie | Gray | lettie.gray@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Marie | Goodman | marie.goodman@avaya.example | Contacted | Avaya Inc.
+            - rows 10–199 not shown: get_rows ref=17
+      
+SAYS  Need all 200 rows.
+CALL  get_rows {"ref":17,"offset":10,"length":190}
+OK    Rows 10–199 of 200 in ref=17. The grid now shows row 10; the snapshot below has the refs of the rows in view:
+      - row 10: Barbara | Mercer | barbara.mercer@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 11: Walter | Lane | walter.lane@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 12: Walter | Tesi | walter.tesi@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 13: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+      - row 14: Walter | Parkes | walter.parkes@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 15: Mabel | Rhodes | mabel.rhodes@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 16: Theodore | Castillo | theodore.castillo@linens.example | Contacted | Linens 'n Things Inc.
+      - row 17: Mabel | Leach | mabel.leach@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 18: Nellie | Gray | nellie.gray@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 19: Oscar | Miccinesi | oscar.miccinesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 20: Gene | Ishii | gene.ishii@autozone.example | Contacted | AutoZone, Inc.
+      - row 21: Jordan | Matthieu | jordan.matthieu@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 22: Jack | Selvi | jack.selvi@avaya.example | Not contacted | Avaya Inc.
+      - row 23: Nellie | Miccinesi | nellie.miccinesi@linens.example | Contacted | Linens 'n Things Inc.
+      - row 24: Cora | Novak | cora.novak@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 25: Marie | Mercer | marie.mercer@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 26: Gene | Fujita | gene.fujita@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 27: Marie | Tesi | marie.tesi@autozone.example | Contacted | AutoZone, Inc.
+      - row 28: Cora | Romoli | cora.romoli@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 29: Eugenia | Stokes | eugenia.stokes@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 30: Ida | Miccinesi | ida.miccinesi@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 31: Oscar | Leach | oscar.leach@linens.example | Customer | Linens 'n Things Inc.
+      - row 32: Jordan | Novak | jordan.novak@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 33: Mabel | Parkes | mabel.parkes@linens.example | Contacted | Linens 'n Things Inc.
+      - row 34: Rose | Jacobs | rose.jacobs@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 35: Mildred | Fujita | mildred.fujita@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 36: Garrett | Rhodes | garrett.rhodes@avaya.example | Customer | Avaya Inc.
+      - row 37: Louisa | Tesi | louisa.tesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 38: Marguerite | Brennan | marguerite.brennan@avaya.example | Imported lead | Avaya Inc.
+      - row 39: Barry | Okafor | barry.okafor@avaya.example | Not contacted | Avaya Inc.
+      - row 40: Eugenia | Lane | eugenia.lane@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 41: Louisa | Mercer | louisa.mercer@autozone.example | Imported lead | AutoZone, Inc.
+      - row 42: Ida | Halvorsen | ida.halvorsen@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 43: Walter | Lindqvist | walter.lindqvist@autozone.example | Customer | AutoZone, Inc.
+      - row 44: Ida | Bennett | ida.bennett@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 45: Eula | Bennett | eula.bennett@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 46: Barbara | Rhodes | barbara.rhodes@autozone.example | Not contacted | AutoZone, Inc.
+      - row 47: Marie | Stokes | marie.stokes@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 48: Harvey | Gray | harvey.gray@linens.example | Contacted | Linens 'n Things Inc.
+      - row 49: Nellie | Rhodes | nellie.rhodes@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 50: Walter | Ishii | walter.ishii@avaya.example | Closed (lost) | Avaya Inc.
+      - row 51: Garrett | Gray | garrett.gray@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 52: Ida | Jacobs | ida.jacobs@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 53: Alejandro | Goodman | alejandro.goodman@linens.example | Contacted | Linens 'n Things Inc.
+      - row 54: Nellie | Fujita | nellie.fujita@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 55: Mabel | Lane | mabel.lane@autozone.example | Contacted | AutoZone, Inc.
+      - row 56: Jack | Goodman | jack.goodman@autozone.example | Not contacted | AutoZone, Inc.
+      - row 57: Harvey | Jacobs | harvey.jacobs@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 58: Alejandro | Stokes | alejandro.stokes@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 59: Mabel | Castillo | mabel.castillo@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 60: Walter | Brennan | walter.brennan@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 61: Hattie | Castillo | hattie.castillo@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 62: Marie | Halvorsen | marie.halvorsen@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 63: Oscar | Gray | oscar.gray@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 64: Marguerite | Jacobs | marguerite.jacobs@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 65: Oscar | Goodman | oscar.goodman@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 66: Barry | Rhodes | barry.rhodes@avaya.example | Closed (lost) | Avaya Inc.
+      - row 67: Alejandro | Halvorsen | alejandro.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 68: Garrett | Goodman | garrett.goodman@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 69: Theodore | Gray | theodore.gray@avaya.example | Contacted | Avaya Inc.
+      - row 70: Jean | Ishii | jean.ishii@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 71: Gene | Bennett | gene.bennett@autozone.example | Imported lead | AutoZone, Inc.
+      - row 72: Rose | Rodriquez | rose.rodriquez@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 73: Mabel | Ishii | mabel.ishii@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 74: Mildred | Ishii | mildred.ishii@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 75: Jack | Okafor | jack.okafor@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 76: Marguerite | Goodman | marguerite.goodman@autozone.example | Imported lead | AutoZone, Inc.
+      - row 77: Rose | Matthieu | rose.matthieu@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 78: Alejandro | Gray | alejandro.gray@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 79: Rose | Novak | rose.novak@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 80: Mabel | Miles | mabel.miles@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 81: Alejandro | Okafor | alejandro.okafor@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 82: Jean | Rodriquez | jean.rodriquez@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 83: Eugenia | Mercer | eugenia.mercer@avaya.example | Customer | Avaya Inc.
+      - row 84: Rose | Selvi | rose.selvi@avaya.example | Closed (lost) | Avaya Inc.
+      - row 85: Barbara | Lane | barbara.lane@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 86: Lettie | Rhodes | lettie.rhodes@avaya.example | Customer | Avaya Inc.
+      - row 87: Harvey | Parkes | harvey.parkes@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 88: Marguerite | Rhodes | marguerite.rhodes@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 89: Hattie | Lane | hattie.lane@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 90: Harvey | Leach | harvey.leach@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 91: Lettie | Lane | lettie.lane@avaya.example | Imported lead | Avaya Inc.
+      - row 92: Jack | Miccinesi | jack.miccinesi@autozone.example | Contacted | AutoZone, Inc.
+      - row 93: Eula | Novak | eula.novak@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 94: Eula | Rhodes | eula.rhodes@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 95: Jordan | Ishii | jordan.ishii@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 96: Barbara | Romoli | barbara.romoli@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 97: Marie | Brennan | marie.brennan@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 98: Jordan | Tesi | jordan.tesi@avaya.example | Not contacted | Avaya Inc.
+      - row 99: Lettie | Selvi | lettie.selvi@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 100: Cora | Leach | cora.leach@linens.example | Customer | Linens 'n Things Inc.
+      - row 101: Mabel | Fujita | mabel.fujita@avaya.example | Not contacted | Avaya Inc.
+      - row 102: Jean | Bennett | jean.bennett@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 103: Mabel | Okafor | mabel.okafor@avaya.example | Closed (lost) | Avaya Inc.
+      - row 104: Garrett | Matthieu | garrett.matthieu@autozone.example | Not contacted | AutoZone, Inc.
+      - row 105: Walter | Mercer | walter.mercer@autozone.example | Customer | AutoZone, Inc.
+      - row 106: Garrett | Okafor | garrett.okafor@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 107: Gene | Lindqvist | gene.lindqvist@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 108: Hattie | Miccinesi | hattie.miccinesi@linens.example | Closed (lost) | Linens 'n Things Inc.
+      - row 109: Theodore | Matthieu | theodore.matthieu@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 110: Mildred | Stokes | mildred.stokes@autozone.example | Contacted | AutoZone, Inc.
+      - row 111: Jean | Selvi | jean.selvi@avaya.example | Imported lead | Avaya Inc.
+      - row 112: Nellie | Halvorsen | nellie.halvorsen@autozone.example | Customer | AutoZone, Inc.
+      - row 113: Theodore | Ishii | theodore.ishii@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 114: Nellie | Romoli | nellie.romoli@linens.example | Customer | Linens 'n Things Inc.
+      - row 115: Gene | Selvi | gene.selvi@autozone.example | Contacted | AutoZone, Inc.
+      - row 116: Garrett | Selvi | garrett.selvi@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 117: Barbara | Matthieu | barbara.matthieu@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 118: Marguerite | Matthieu | marguerite.matthieu@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 119: Cora | Ishii | cora.ishii@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 120: Garrett | Ishii | garrett.ishii@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 121: Gene | Miles | gene.miles@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 122: Alejandro | Romoli | alejandro.romoli@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 123: Oscar | Rhodes | oscar.rhodes@autozone.example | Contacted | AutoZone, Inc.
+      - row 124: Garrett | Novak | garrett.novak@linens.example | Contacted | Linens 'n Things Inc.
+      - row 125: Oscar | Novak | oscar.novak@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 126: Barry | Ishii | barry.ishii@avaya.example | Not contacted | Avaya Inc.
+      - row 127: Walter | Okafor | walter.okafor@linens.example | Contacted | Linens 'n Things Inc.
+      - row 128: Barbara | Brennan | barbara.brennan@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 129: Rose | Rhodes | rose.rhodes@autozone.example | Contacted | AutoZone, Inc.
+      - row 130: Oscar | Ishii | oscar.ishii@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 131: Eugenia | Selvi | eugenia.selvi@avaya.example | Not contacted | Avaya Inc.
+      - row 132: Jordan | Fujita | jordan.fujita@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 133: Nellie | Miles | nellie.miles@linens.example | Contacted | Linens 'n Things Inc.
+      - row 134: Jack | Fujita | jack.fujita@avaya.example | Contacted | Avaya Inc.
+      - row 135: Jack | Gray | jack.gray@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 136: Walter | Rodriquez | walter.rodriquez@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 137: Cora | Lindqvist | cora.lindqvist@avaya.example | Imported lead | Avaya Inc.
+      - row 138: Jack | Miles | jack.miles@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 139: Lettie | Jacobs | lettie.jacobs@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 140: Jordan | Miles | jordan.miles@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 141: Gene | Lane | gene.lane@autozone.example | Customer | AutoZone, Inc.
+      - row 142: Rose | Miles | rose.miles@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 143: Barry | Leach | barry.leach@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 144: Cora | Matthieu | cora.matthieu@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 145: Cora | Parkes | cora.parkes@avaya.example | Not contacted | Avaya Inc.
+      - row 146: Lettie | Ishii | lettie.ishii@linens.example | Contacted | Linens 'n Things Inc.
+      - row 147: Louisa | Castillo | louisa.castillo@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      - row 148: Mabel | Novak | mabel.novak@laboratory.example | Customer | Laboratory Corporation of America Holdings
+      - row 149: Jordan | Gray | jordan.gray@autozone.example | Customer | AutoZone, Inc.
+      - row 150: Barry | Miles | barry.miles@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 151: Walter | Halvorsen | walter.halvorsen@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 152: Nellie | Lane | nellie.lane@autozone.example | Not contacted | AutoZone, Inc.
+      - row 153: Gene | Romoli | gene.romoli@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 154: Walter | Novak | walter.novak@autozone.example | Customer | AutoZone, Inc.
+      - row 155: Eula | Brennan | eula.brennan@autozone.example | Imported lead | AutoZone, Inc.
+      - row 156: Nellie | Tesi | nellie.tesi@autozone.example | Contacted | AutoZone, Inc.
+      - row 157: Marie | Miccinesi | marie.miccinesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 158: Theodore | Romoli | theodore.romoli@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+      - row 159: Harvey | Romoli | harvey.romoli@linens.example | Contacted | Linens 'n Things Inc.
+      - row 160: Mabel | Goodman | mabel.goodman@avaya.example | Customer | Avaya Inc.
+      - row 161: Jordan | Miccinesi | jordan.miccinesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+      - row 162: Ida | Stokes | ida.stokes@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 163: Rose | Tesi | rose.tesi@linens.example | Contacted | Linens 'n Things Inc.
+      - row 164: Rose | Fujita | rose.fujita@linens.example | Contacted | Linens 'n Things Inc.
+      - row 165: Eula | Okafor | eula.okafor@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 166: Theodore | Rodriquez | theodore.rodriquez@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+      - row 167: Harvey | Mercer | harvey.mercer@linens.example | Customer | Linens 'n Things Inc.
+      - row 168: Eugenia | Goodman | eugenia.goodman@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 169: Marguerite | Miles | marguerite.miles@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 170: Nellie | Matthieu | nellie.matthieu@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 171: Mabel | Romoli | mabel.romoli@autozone.example | Closed (lost) | AutoZone, Inc.
+      - row 172: Cora | Miccinesi | cora.miccinesi@autozone.example | Not contacted | AutoZone, Inc.
+      - row 173: Mabel | Stokes | mabel.stokes@avaya.example | Not contacted | Avaya Inc.
+      - row 174: Oscar | Tesi | oscar.tesi@avaya.example | Closed (lost) | Avaya Inc.
+      - row 175: Barry | Parkes | barry.parkes@autozone.example | Not contacted | AutoZone, Inc.
+      - row 176: Jordan | Brennan | jordan.brennan@avaya.example | Imported lead | Avaya Inc.
+      - row 177: Eugenia | Romoli | eugenia.romoli@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 178: Louisa | Ishii | louisa.ishii@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 179: Oscar | Mercer | oscar.mercer@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+      - row 180: Rose | Romoli | rose.romoli@linens.example | Not contacted | Linens 'n Things Inc.
+      - row 181: Jean | Jacobs | jean.jacobs@phillips.example | Imported lead | Phillips Van Heusen Corp.
+      - row 182: Mildred | Jacobs | mildred.jacobs@avaya.example | Customer | Avaya Inc.
+      - row 183: Theodore | Halvorsen | theodore.halvorsen@autozone.example | Contacted | AutoZone, Inc.
+      - row 184: Lettie | Brennan | lettie.brennan@avaya.example | Contacted | Avaya Inc.
+      - row 185: Jordan | Mercer | jordan.mercer@avaya.example | Customer | Avaya Inc.
+      - row 186: Jean | Stokes | jean.stokes@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 187: Eula | Miccinesi | eula.miccinesi@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 188: Jack | Parkes | jack.parkes@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 189: Marguerite | Romoli | marguerite.romoli@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 190: Cora | Rodriquez | cora.rodriquez@autozone.example | Imported lead | AutoZone, Inc.
+      - row 191: Gene | Parkes | gene.parkes@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 192: Cora | Halvorsen | cora.halvorsen@linens.example | Imported lead | Linens 'n Things Inc.
+      - row 193: Rose | Miccinesi | rose.miccinesi@phillips.example | Customer | Phillips Van Heusen Corp.
+      - row 194: Lettie | Miccinesi | lettie.miccinesi@avaya.example | Closed (lost) | Avaya Inc.
+      - row 195: Marie | Jacobs | marie.jacobs@avaya.example | Not contacted | Avaya Inc.
+      - row 196: Eugenia | Gray | eugenia.gray@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 197: Jack | Romoli | jack.romoli@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+      - row 198: Hattie | Selvi | hattie.selvi@phillips.example | Contacted | Phillips Van Heusen Corp.
+      - row 199: Jordan | Rodriquez | jordan.rodriquez@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+      
+      URL: http://localhost:50223/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 10: Barbara | Mercer | barbara.mercer@laboratory.example | Customer | Laboratory Corporation of America Holdings
+            - row 11: Walter | Lane | walter.lane@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 12: Walter | Tesi | walter.tesi@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 13: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 14: Walter | Parkes | walter.parkes@linens.example | Closed (lost) | Linens 'n Things Inc.
+            - row 15: Mabel | Rhodes | mabel.rhodes@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 16: Theodore | Castillo | theodore.castillo@linens.example | Contacted | Linens 'n Things Inc.
+            - row 17: Mabel | Leach | mabel.leach@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 18: Nellie | Gray | nellie.gray@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 19: Oscar | Miccinesi | oscar.miccinesi@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - rows 0–9, 20–199 not shown: get_rows ref=17
+      
+SAYS  11
+END   turns=6 duration=12s cost=$0.06209870000000001 is_error=false

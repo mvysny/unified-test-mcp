@@ -1,0 +1,341 @@
+CALL  navigate {"url":"http://localhost:44969"}
+OK    Navigated to http://localhost:44969
+      
+      URL: http://localhost:44969/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  set_value {"ref":5,"value":"user"}
+CALL  set_value {"ref":6,"value":"password"}
+OK    Set ref=5 to "user"
+      
+      URL: http://localhost:44969/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+OK    Set ref=6 to "password"
+      
+      URL: http://localhost:44969/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="password", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  click {"ref":7}
+OK    Clicked ref=7
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+      
+CALL  click {"ref":16}
+OK    Clicked ref=16
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="", required] actions: set_value
+          - TextField "Last name" [ref=19, value="", required] actions: set_value
+          - EmailField "Email" [ref=20, value="", required] actions: set_value
+          - ComboBox "Company" [ref=21, value=null, required] actions: set_value
+          - ComboBox "Status" [ref=22, value=null, required] actions: set_value
+          - Button "Save" [ref=23, disabled] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  set_value {"ref":18,"value":"Jane"}
+CALL  set_value {"ref":19,"value":"Doe"}
+CALL  set_value {"ref":20,"value":"jane.doe@"}
+OK    Set ref=18 to "Jane"
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Jane", required] actions: set_value
+          - TextField "Last name" [ref=19, value="", required] actions: set_value
+          - EmailField "Email" [ref=20, value="", required] actions: set_value
+          - ComboBox "Company" [ref=21, value=null, required] actions: set_value
+          - ComboBox "Status" [ref=22, value=null, required] actions: set_value
+          - Button "Save" [ref=23, disabled] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  set_value {"ref":21,"value":"Avaya Inc."}
+CALL  set_value {"ref":22,"value":"Imported lead"}
+OK    Set ref=19 to "Doe"
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Jane", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Doe", required] actions: set_value
+          - EmailField "Email" [ref=20, value="", required] actions: set_value
+          - ComboBox "Company" [ref=21, value=null, required] actions: set_value
+          - ComboBox "Status" [ref=22, value=null, required] actions: set_value
+          - Button "Save" [ref=23, disabled] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+OK    Set ref=20 to "jane.doe@"; it holds it but shows invalid
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Jane", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Doe", required] actions: set_value
+          - EmailField "Email" [ref=20, value="jane.doe@", required, invalid] actions: set_value
+          - ComboBox "Company" [ref=21, value=null, required] actions: set_value
+          - ComboBox "Status" [ref=22, value=null, required] actions: set_value
+          - Button "Save" [ref=23, disabled] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+OK    Set ref=21 to "Avaya Inc."
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Jane", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Doe", required] actions: set_value
+          - EmailField "Email" [ref=20, value="jane.doe@", required, invalid] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value=null, required] actions: set_value
+          - Button "Save" [ref=23, disabled] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+OK    Set ref=22 to "Imported lead"
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+          - TextField "First name" [ref=18, value="Jane", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Doe", required] actions: set_value
+          - EmailField "Email" [ref=20, value="jane.doe@", required, invalid] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Imported lead", required] actions: set_value
+          - Button "Save" [ref=23, disabled] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+SAYS  I've filled in the form and Save is disabled. Next I'll read the email field's error text, then cancel so nothing is saved.
+CALL  get_helper {"ref":20}
+OK    (no helper text)
+CALL  click {"ref":25}
+OK    Clicked ref=25
+      
+      URL: http://localhost:44969/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Barbara | Lindqvist | barbara.lindqvist@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 1: Hattie | Lindqvist | hattie.lindqvist@avaya.example | Contacted | Avaya Inc.
+            - row 2: Mildred | Goodman | mildred.goodman@avaya.example | Customer | Avaya Inc.
+            - row 3: Gene | Mercer | gene.mercer@laboratory.example | Imported lead | Laboratory Corporation of America Holdings
+            - row 4: Mabel | Lane | mabel.lane@avaya.example | Imported lead | Avaya Inc.
+            - row 5: Mabel | Fujita | mabel.fujita@linens.example | Customer | Linens 'n Things Inc.
+            - row 6: Eugenia | Rodriquez | eugenia.rodriquez@linens.example | Customer | Linens 'n Things Inc.
+            - row 7: Rose | Ishii | rose.ishii@autozone.example | Contacted | AutoZone, Inc.
+            - row 8: Walter | Brennan | walter.brennan@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 9: Nellie | Lindqvist | nellie.lindqvist@autozone.example | Contacted | AutoZone, Inc.
+            - rows 10–199 not shown: get_rows ref=17
+      
+SAYS  The app wouldn't accept the contact, and nothing was saved.
+      
+      - **Field it objects to:** Email. `jane.doe@` is incomplete, with nothing after the `@`.
+      - **How it shows that:** The Email field is marked invalid, and the Save button stays disabled, so the form can't be submitted. The field showed no helper text, and I didn't read any error message. The invalid flag in the page snapshot was the only sign.
+      - **Other fields:** First name (Jane), Last name (Doe), Company (Avaya Inc.) and Status (Imported lead) were all accepted without being flagged.
+      
+      I then clicked Cancel, which closed the form. The grid still shows 200 rows, the same as before, and I didn't scroll through it to check for a Jane Doe.
+END   turns=13 duration=22s cost=$0.0641196 is_error=false

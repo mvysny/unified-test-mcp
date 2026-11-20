@@ -1,0 +1,266 @@
+CALL  navigate {"url":"http://localhost:55759"}
+OK    Navigated to http://localhost:55759
+      
+      URL: http://localhost:55759/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  set_value {"ref":5,"value":"user"}
+CALL  set_value {"ref":6,"value":"password"}
+OK    Set ref=5 to "user"
+      
+      URL: http://localhost:55759/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+OK    Set ref=6 to "password"
+      
+      URL: http://localhost:55759/login
+      Title: Login | Vaadin CRM
+      - H1 "Vaadin CRM" [ref=1]
+      - Span "Username: user, Password: password" [ref=2]
+      - Span "Username: admin, Password: password" [ref=3]
+      - LoginForm "Log in" [ref=4]
+        - TextField "Username" [ref=5, id=vaadinLoginUsername, value="user", required] actions: set_value
+        - PasswordField "Password" [ref=6, id=vaadinLoginPassword, value="password", required] actions: set_value
+        - Button "Log in" [ref=7] actions: click
+        - Button "Forgot password" [ref=8] actions: click
+      
+CALL  click {"ref":7}
+OK    Clicked ref=7
+      
+      URL: http://localhost:55759/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value=""] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=200, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Mabel | Romoli | mabel.romoli@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 1: Harvey | Jacobs | harvey.jacobs@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 2: Jordan | Miles | jordan.miles@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - row 3: Theodore | Gray | theodore.gray@autozone.example | Closed (lost) | AutoZone, Inc.
+            - row 4: Harvey | Rodriquez | harvey.rodriquez@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 5: Ida | Bennett | ida.bennett@autozone.example | Not contacted | AutoZone, Inc.
+            - row 6: Jean | Stokes | jean.stokes@laboratory.example | Closed (lost) | Laboratory Corporation of America Holdings
+            - row 7: Louisa | Castillo | louisa.castillo@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 8: Marie | Jacobs | marie.jacobs@avaya.example | Customer | Avaya Inc.
+            - row 9: Oscar | Lindqvist | oscar.lindqvist@phillips.example | Not contacted | Phillips Van Heusen Corp.
+            - rows 10–199 not shown: get_rows ref=17
+      
+CALL  set_value {"ref":15,"value":"Castillo"}
+OK    Set ref=15 to "Castillo"
+      
+      URL: http://localhost:55759/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Castillo"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=11, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Louisa | Castillo | louisa.castillo@phillips.example | Contacted | Phillips Van Heusen Corp.
+            - row 1: Walter | Castillo | walter.castillo@laboratory.example | Contacted | Laboratory Corporation of America Holdings
+            - row 2: Marguerite | Castillo | marguerite.castillo@laboratory.example | Not contacted | Laboratory Corporation of America Holdings
+            - row 3: Oscar | Castillo | oscar.castillo@autozone.example | Contacted | AutoZone, Inc.
+            - row 4: Jordan | Castillo | jordan.castillo@avaya.example | Contacted | Avaya Inc.
+            - row 5: Rose | Castillo | rose.castillo@avaya.example | Not contacted | Avaya Inc.
+            - row 6: Marie | Castillo | marie.castillo@avaya.example | Contacted | Avaya Inc.
+            - row 7: Mildred | Castillo | mildred.castillo@phillips.example | Closed (lost) | Phillips Van Heusen Corp.
+            - row 8: Jack | Castillo | jack.castillo@linens.example | Imported lead | Linens 'n Things Inc.
+            - row 9: Ida | Castillo | ida.castillo@avaya.example | Closed (lost) | Avaya Inc.
+            - row 10 not shown: get_rows ref=17
+      
+SAYS  Only one Louisa Castillo (Phillips Van Heusen Corp.). Now Mildred Halvorsen.
+CALL  set_value {"ref":15,"value":"Halvorsen"}
+OK    Set ref=15 to "Halvorsen"
+      
+      URL: http://localhost:55759/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Halvorsen"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=8, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 1: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+            - row 2: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+            - row 3: Cora | Halvorsen | cora.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 4: Barbara | Halvorsen | barbara.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 5: Jack | Halvorsen | jack.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 6: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 7: Gene | Halvorsen | gene.halvorsen@linens.example | Contacted | Linens 'n Things Inc.
+      
+CALL  click {"ref":17,"row":6}
+OK    Clicked row 6 of ref=17
+      
+      URL: http://localhost:55759/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Halvorsen"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=8, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 1: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+            - row 2: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+            - row 3: Cora | Halvorsen | cora.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 4: Barbara | Halvorsen | barbara.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 5: Jack | Halvorsen | jack.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 6 [selected]: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 7: Gene | Halvorsen | gene.halvorsen@linens.example | Contacted | Linens 'n Things Inc.
+          - TextField "First name" [ref=18, value="Mildred", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Halvorsen", required] actions: set_value
+          - EmailField "Email" [ref=20, value="mildred.halvorsen@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Avaya Inc.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  set_value {"ref":21,"value":"Phillips Van Heusen Corp."}
+CALL  set_value {"ref":22,"value":"Customer"}
+OK    Set ref=21 to "Phillips Van Heusen Corp."
+      
+      URL: http://localhost:55759/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Halvorsen"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=8, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 1: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+            - row 2: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+            - row 3: Cora | Halvorsen | cora.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 4: Barbara | Halvorsen | barbara.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 5: Jack | Halvorsen | jack.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 6 [selected]: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 7: Gene | Halvorsen | gene.halvorsen@linens.example | Contacted | Linens 'n Things Inc.
+          - TextField "First name" [ref=18, value="Mildred", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Halvorsen", required] actions: set_value
+          - EmailField "Email" [ref=20, value="mildred.halvorsen@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Phillips Van Heusen Corp.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Closed (lost)", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+OK    Set ref=22 to "Customer"
+      
+      URL: http://localhost:55759/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Halvorsen"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=8, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 1: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+            - row 2: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+            - row 3: Cora | Halvorsen | cora.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 4: Barbara | Halvorsen | barbara.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 5: Jack | Halvorsen | jack.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 6 [selected]: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 7: Gene | Halvorsen | gene.halvorsen@linens.example | Contacted | Linens 'n Things Inc.
+          - TextField "First name" [ref=18, value="Mildred", required] actions: set_value
+          - TextField "Last name" [ref=19, value="Halvorsen", required] actions: set_value
+          - EmailField "Email" [ref=20, value="mildred.halvorsen@avaya.example", required] actions: set_value
+          - ComboBox "Company" [ref=21, value="Phillips Van Heusen Corp.", required] actions: set_value
+          - ComboBox "Status" [ref=22, value="Customer", required] actions: set_value
+          - Button "Save" [ref=23] actions: click
+          - Button "Delete" [ref=24] actions: click
+          - Button "Cancel" [ref=25] actions: click
+      
+CALL  click {"ref":23}
+OK    Clicked ref=23
+      
+      URL: http://localhost:55759/?continue
+      Title: Contacts | Vaadin CRM
+      - AppLayout [ref=9]
+        - Navbar:
+          - DrawerToggle [ref=10, aria-label="Toggle navigation panel"] actions: click
+          - H1 "Vaadin CRM" [ref=11]
+          - Button "Log out user" [ref=12] actions: click
+        - Drawer:
+          - Anchor "List" [ref=13]
+          - Anchor "Dashboard" [ref=14]
+        - Content:
+          - TextField [ref=15, placeholder="Filter by name...", value="Halvorsen"] actions: set_value
+          - Button "Add contact" [ref=16] actions: click
+          - Grid [ref=17, rows=8, selection=single]
+            Header: | First Name ⇅ | Last Name ⇅ | Email ⇅ | Status | Company |
+            - row 0: Lettie | Halvorsen | lettie.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 1: Eula | Halvorsen | eula.halvorsen@avaya.example | Contacted | Avaya Inc.
+            - row 2: Barry | Halvorsen | barry.halvorsen@autozone.example | Customer | AutoZone, Inc.
+            - row 3: Cora | Halvorsen | cora.halvorsen@avaya.example | Closed (lost) | Avaya Inc.
+            - row 4: Barbara | Halvorsen | barbara.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 5: Jack | Halvorsen | jack.halvorsen@phillips.example | Imported lead | Phillips Van Heusen Corp.
+            - row 6: Mildred | Halvorsen | mildred.halvorsen@avaya.example | Customer | Phillips Van Heusen Corp.
+            - row 7: Gene | Halvorsen | gene.halvorsen@linens.example | Contacted | Linens 'n Things Inc.
+      
+SAYS  Mildred Halvorsen's record is updated and saved. Her company is now Phillips Van Heusen Corp., the company Louisa Castillo works for. Her status is now Customer. It was Avaya Inc. and Closed (lost) before.
+      
+      I left her email as `mildred.halvorsen@avaya.example`, since you didn't ask me to change it. It still has the old Avaya domain, so tell me if you want it updated.
+END   turns=11 duration=23s cost=$0.0545243 is_error=false

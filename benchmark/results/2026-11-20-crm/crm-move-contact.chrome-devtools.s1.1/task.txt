@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:43855; log in as `user`, password `password`. Louisa Mercer has moved to the company Rose Parkes works for, and has become a customer. Update Louisa Mercer's record.

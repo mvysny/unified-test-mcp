@@ -1,0 +1,1 @@
+The CRM app runs at http://localhost:55697; log in as `user`, password `password`. How many contacts at Phillips Van Heusen Corp. have the status Closed (lost)? Answer with the number only.
