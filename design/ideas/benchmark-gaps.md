@@ -37,9 +37,9 @@ Unified API's lookups reach into them only in the local `-shadow` build
 
 - **Upstream**: parttio/unified-testing-tool#347 asks whether an app template's shadow root may be
   searched on every Testing Tool, the spec saying not since their #251; once they answer, a PR
-  from the clone's `shadow-dom-queries-alpha3`, ported to `main`. Dramafinder's row click: a PR
-  for parttio/dramafinder#298 from `dramafinder/`'s `row-click-app-elements`, its fix commit
-  alone. Until releases have them, the build needs both `-shadow`s in `~/.m2`.
+  from the clone's `shadow-dom-queries-alpha3`, ported to `main`. Dramafinder's row click is
+  parttio/dramafinder#311, open. Until releases have them, the build needs both `-shadow`s in
+  `~/.m2`.
 - **The Crud editor** shows inline at the end of the page, no `Modal:` line, the grid under it
   listed as if it took clicks: its `<vaadin-crud-dialog>` is in `<vaadin-crud>`'s shadow root, a
   Vaadin component's, which no walk enters. Crud is commercial; price-cap and new-user may pass
@@ -77,7 +77,7 @@ ours, so by the code it isn't one a user acts on and shows as its text, none
 
 ## Order
 
-1. §1: the upstream PRs, the Unified API's and Dramafinder's.
+1. §1: the Unified API's upstream PR; Dramafinder's #311 merged and released.
 2. §2: the storefront's cards cut at 50 characters.
 3. §3's lone icons (today-count), then the rest of §3.
 

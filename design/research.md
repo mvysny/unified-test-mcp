@@ -396,7 +396,8 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
 - `2.2.0-shadow`, a local build of the clone's branch `row-click-app-elements`, hit-tests from the
   cell's own root, and follows a hit on an app's element with an open shadow root, one not
   `vaadin-*`, into it by the shadow root's `elementFromPoint`, nested ones too, testing what it
-  lands on instead; a Vaadin component stays as before. Asked for in parttio/dramafinder#298.
+  lands on instead; a Vaadin component stays as before. Asked for in parttio/dramafinder#298,
+  proposed upstream as parttio/dramafinder#311.
   **[verified 2026-11-20, 2.2.0-shadow: Dramafinder's grid and TreeGrid ITs, test-app]**
 
 ## R_testbench_grid_element — how TestBench's GridElement reaches rows, the ones out of view too
