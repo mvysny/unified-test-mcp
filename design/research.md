@@ -389,10 +389,14 @@ Observed on test-app's `fields` view, every field of `vaadin-core`.
   has no data cell with a spot free of interactive content, padding included".
   **[src, Dramafinder 2.2.0 `GridElement`]**
 - A grid in a template's shadow root fails on every row: the hit is `document.elementFromPoint`'s,
-  the template's host, which no cell contains. A cell an app's element covers, padding included,
-  fails too: Bakery's storefront, its grid in `<storefront-view>`'s shadow root, its cells all
-  `<order-card>`; test-app's `template` view likewise. A click on the card itself selects the row,
-  and Bakery opens the order. **[verified 2026-11-19 on Bakery, 2026-11-20 on test-app]**
+  the template's host, which no cell contains. Bakery's storefront fails so, its grid in
+  `<storefront-view>`'s shadow root. A cell an app's element covers, padding included, fails too,
+  as test-app's `template` view's cards do. **[verified 2026-11-19 on Bakery, 2026-11-20 on
+  test-app]**
+- Bakery's `<order-card>` leaves its cell content's padding free, `4px 16px`. So the fixed row
+  click lands there, on the cell content: the grid gets a click on the row, and Bakery, selection
+  mode NONE, listening only on the card's `.wrapper` (parttio/dramafinder#298), opens nothing. A click on the card
+  itself, its centre, opens the order. **[verified 2026-11-20 on Bakery]**
 - `2.2.0-shadow`, a local build of the clone's branch `row-click-app-elements`, hit-tests from the
   cell's own root, and follows a hit on an app's element with an open shadow root, one not
   `vaadin-*`, into it by the shadow root's `elementFromPoint`, nested ones too, testing what it

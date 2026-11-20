@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status an &lt;order-status-badge
  *                                   id=status&gt;, Delivered a check icon alone; a heading on the first card, a
  *                                   long run of items on the second; a card covers its cell, padding included,
- *                                   as Bakery's
+ *                                   where Bakery's leaves the padding free
  *   Dialog "New order"              its content an &lt;order-editor&gt;:
  *     Customer [    ]
  *     &lt;order-item-editor&gt; …        [Product ▾] [1]: the ids products and amount in each; an empty one
