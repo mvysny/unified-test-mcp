@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:49083; log in as barista@vaadin.com, password barista. Customer Jason Rowland called: their next order should be ready one day later, same time. Make the change, and leave a comment on the order: "moved by phone".

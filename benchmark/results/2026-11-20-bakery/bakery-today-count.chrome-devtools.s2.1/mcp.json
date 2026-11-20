@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "chrome-devtools-mcp",
+      "args": [
+        "--headless",
+        "--isolated",
+        "--executablePath",
+        "/usr/bin/chromium",
+        "--viewport",
+        "1280x720",
+        "--chromeArg=--no-sandbox",
+        "--no-usage-statistics",
+        "--no-performance-crux"
+      ]
+    }
+  }
+}

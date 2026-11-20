@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:38591; log in as barista@vaadin.com, password barista. In Kerry Wilkinson's next order, drop the Blueberry Tart, and add one more of each remaining product.

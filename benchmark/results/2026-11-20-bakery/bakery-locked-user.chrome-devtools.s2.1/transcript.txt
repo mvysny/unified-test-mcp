@@ -1,0 +1,349 @@
+CALL  new_page {"url":"http://localhost:41415"}
+OK    ## Pages
+      1: about:blank
+      2: http://localhost:41415/login [selected]
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=1_0 RootWebArea "###Bakery###" url="http://localhost:41415/login"
+        uid=1_1 dialog "###Bakery###" modal
+          uid=1_2 heading "###Bakery###" level="1"
+          uid=1_3 "admin@vaadin.com + admin barista@vaadin.com + barista"
+          uid=1_4 region "Sign in"
+            uid=1_5 heading "Sign in" level="2"
+            uid=1_6 form
+              "  "
+              uid=1_7 "Email"
+              uid=1_8 textbox "Email" focusable focused required
+              "  "
+              uid=1_9 "Password"
+              uid=1_10 textbox "Password" required
+              ""
+              uid=1_11 button "Show password"
+            uid=1_12 button " Sign in"
+        uid=1_13 "Online"
+        uid=1_14 generic live="polite" relevant="additions text"
+      
+CALL  fill_form {"pageId":2,"elements":[{"uid":"1_8","value":"admin@vaadin.com"},{"uid":"1_10","value":"admin"}]}
+CALL  click {"pageId":2,"uid":"1_12"}
+OK    Successfully filled out the form
+OK    Successfully clicked on the element
+      Page navigated to http://localhost:41415/?continue.
+CALL  navigate_page {"pageId":2,"url":"http://localhost:41415/users"}
+OK    Successfully navigated to http://localhost:41415/users.
+      ## Pages
+      1: about:blank
+      2: http://localhost:41415/users [selected]
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=2_0 RootWebArea "Users" url="http://localhost:41415/users"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:41415/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:41415/dashboard"
+          uid=2_7 tab "Users" selectable selected
+            uid=2_8 link "Users" url="http://localhost:41415/users"
+          uid=2_9 tab "Products" selectable
+            uid=2_10 link "Products" url="http://localhost:41415/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New User"
+        uid=2_14 treegrid
+          uid=2_15 row "Email Name Role"
+            uid=2_16 columnheader "Email"
+            uid=2_18 columnheader "Name"
+            uid=2_20 columnheader "Role"
+            uid=2_22 columnheader
+          uid=2_23 row "baker@vaadin.com Heidi Carter baker Edit"
+            uid=2_24 gridcell "baker@vaadin.com"
+            uid=2_26 gridcell "Heidi Carter"
+            uid=2_28 gridcell "baker"
+            uid=2_30 gridcell "Edit"
+              uid=2_31 button "Edit"
+          uid=2_32 row "barista@vaadin.com Malin Castro barista Edit"
+            uid=2_33 gridcell "barista@vaadin.com"
+            uid=2_35 gridcell "Malin Castro"
+            uid=2_37 gridcell "barista"
+            uid=2_39 gridcell "Edit"
+              uid=2_40 button "Edit"
+          uid=2_41 row "admin@vaadin.com Göran Rich admin Edit"
+            uid=2_42 gridcell "admin@vaadin.com"
+            uid=2_44 gridcell "Göran Rich"
+            uid=2_46 gridcell "admin"
+            uid=2_48 gridcell "Edit"
+              uid=2_49 button "Edit"
+          uid=2_50 row "peter@vaadin.com Peter Bush barista Edit"
+            uid=2_51 gridcell "peter@vaadin.com"
+            uid=2_53 gridcell "Peter Bush"
+            uid=2_55 gridcell "barista"
+            uid=2_57 gridcell "Edit"
+              uid=2_58 button "Edit"
+          uid=2_59 row "mary@vaadin.com Mary Ocon baker Edit"
+            uid=2_60 gridcell "mary@vaadin.com"
+            uid=2_62 gridcell "Mary Ocon"
+            uid=2_64 gridcell "baker"
+            uid=2_66 gridcell "Edit"
+              uid=2_67 button "Edit"
+        uid=2_68 generic
+        uid=2_69 "Online"
+        uid=2_70 generic live="polite" relevant="additions text"
+      
+SAYS  Logged in; opening Mary Ocon's edit form now.
+CALL  click {"pageId":2,"uid":"2_67","includeSnapshot":true}
+OK    Successfully clicked on the element
+      Page navigated to http://localhost:41415/users/5.
+      ## Latest page snapshot
+      uid=2_0 RootWebArea "Users" url="http://localhost:41415/users/5"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:41415/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:41415/dashboard"
+          uid=2_7 tab "Users" selectable selected
+            uid=2_8 link "Users" url="http://localhost:41415/users"
+          uid=2_9 tab "Products" selectable
+            uid=2_10 link "Products" url="http://localhost:41415/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New User"
+        uid=2_14 treegrid
+          uid=2_15 row "Email Name Role"
+            uid=2_16 columnheader "Email"
+            uid=2_18 columnheader "Name"
+            uid=2_20 columnheader "Role"
+            uid=2_22 columnheader
+          uid=2_23 row "baker@vaadin.com Heidi Carter baker Edit"
+            uid=2_24 gridcell "baker@vaadin.com"
+            uid=2_26 gridcell "Heidi Carter"
+            uid=2_28 gridcell "baker"
+            uid=2_30 gridcell "Edit"
+              uid=2_31 button "Edit"
+          uid=2_32 row "barista@vaadin.com Malin Castro barista Edit"
+            uid=2_33 gridcell "barista@vaadin.com"
+            uid=2_35 gridcell "Malin Castro"
+            uid=2_37 gridcell "barista"
+            uid=2_39 gridcell "Edit"
+              uid=2_40 button "Edit"
+          uid=2_41 row "admin@vaadin.com Göran Rich admin Edit"
+            uid=2_42 gridcell "admin@vaadin.com"
+            uid=2_44 gridcell "Göran Rich"
+            uid=2_46 gridcell "admin"
+            uid=2_48 gridcell "Edit"
+              uid=2_49 button "Edit"
+          uid=2_50 row "peter@vaadin.com Peter Bush barista Edit"
+            uid=2_51 gridcell "peter@vaadin.com"
+            uid=2_53 gridcell "Peter Bush"
+            uid=2_55 gridcell "barista"
+            uid=2_57 gridcell "Edit"
+              uid=2_58 button "Edit"
+          uid=2_59 row "mary@vaadin.com Mary Ocon baker Edit"
+            uid=2_60 gridcell "mary@vaadin.com"
+            uid=2_62 gridcell "Mary Ocon"
+            uid=2_64 gridcell "baker"
+            uid=2_66 gridcell "Edit"
+              uid=2_67 button "Edit"
+        uid=2_68 generic
+        uid=3_0 dialog "Edit User" focusable focused modal
+          uid=3_1 heading "Edit User" level="3"
+          "  "
+          uid=3_2 "Email (login)"
+          uid=3_3 textbox "Email (login)" required value="mary@vaadin.com"
+          "  "
+          uid=3_4 "First name"
+          uid=3_5 textbox "First name" value="Mary"
+          "  "
+          uid=3_6 "Last name"
+          uid=3_7 textbox "Last name" value="Ocon"
+          "  "
+          uid=3_8 "Password"
+          uid=3_9 textbox "Password"
+          ""
+          uid=3_10 button "Show password"
+          "  "
+          uid=3_11 "Role"
+          uid=3_12 combobox "Role" autocomplete="list" expandable haspopup="listbox" value="baker"
+          uid=3_13 button " Save" disableable disabled
+          uid=3_14 button " Cancel"
+          uid=3_15 button " Delete"
+        uid=2_69 "Online"
+        uid=2_70 generic live="polite" relevant="additions text"
+      
+CALL  click {"pageId":2,"uid":"3_12","includeSnapshot":true}
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=2_0 RootWebArea "Users" url="http://localhost:41415/users/5"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:41415/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:41415/dashboard"
+          uid=2_7 tab "Users" selectable selected
+            uid=2_8 link "Users" url="http://localhost:41415/users"
+          uid=2_9 tab "Products" selectable
+            uid=2_10 link "Products" url="http://localhost:41415/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New User"
+        uid=2_14 treegrid
+          uid=2_15 row "Email Name Role"
+            uid=2_16 columnheader "Email"
+            uid=2_18 columnheader "Name"
+            uid=2_20 columnheader "Role"
+            uid=2_22 columnheader
+          uid=2_23 row "baker@vaadin.com Heidi Carter baker Edit"
+            uid=2_24 gridcell "baker@vaadin.com"
+            uid=2_26 gridcell "Heidi Carter"
+            uid=2_28 gridcell "baker"
+            uid=2_30 gridcell "Edit"
+              uid=2_31 button "Edit"
+          uid=2_32 row "barista@vaadin.com Malin Castro barista Edit"
+            uid=2_33 gridcell "barista@vaadin.com"
+            uid=2_35 gridcell "Malin Castro"
+            uid=2_37 gridcell "barista"
+            uid=2_39 gridcell "Edit"
+              uid=2_40 button "Edit"
+          uid=2_41 row "admin@vaadin.com Göran Rich admin Edit"
+            uid=2_42 gridcell "admin@vaadin.com"
+            uid=2_44 gridcell "Göran Rich"
+            uid=2_46 gridcell "admin"
+            uid=2_48 gridcell "Edit"
+              uid=2_49 button "Edit"
+          uid=2_50 row "peter@vaadin.com Peter Bush barista Edit"
+            uid=2_51 gridcell "peter@vaadin.com"
+            uid=2_53 gridcell "Peter Bush"
+            uid=2_55 gridcell "barista"
+            uid=2_57 gridcell "Edit"
+              uid=2_58 button "Edit"
+          uid=2_59 row "mary@vaadin.com Mary Ocon baker Edit"
+            uid=2_60 gridcell "mary@vaadin.com"
+            uid=2_62 gridcell "Mary Ocon"
+            uid=2_64 gridcell "baker"
+            uid=2_66 gridcell "Edit"
+              uid=2_67 button "Edit"
+        uid=2_68 generic
+        uid=3_0 dialog "Edit User" modal
+          uid=3_1 heading "Edit User" level="3"
+          "  "
+          uid=3_2 "Email (login)"
+          uid=3_3 textbox "Email (login)" required value="mary@vaadin.com"
+          "  "
+          uid=3_4 "First name"
+          uid=3_5 textbox "First name" value="Mary"
+          "  "
+          uid=3_6 "Last name"
+          uid=3_7 textbox "Last name" value="Ocon"
+          "  "
+          uid=3_8 "Password"
+          uid=3_9 textbox "Password"
+          ""
+          uid=3_10 button "Show password"
+          "  "
+          uid=3_11 "Role"
+          uid=3_12 combobox "Role" autocomplete="list" expandable expanded focusable focused haspopup="listbox" value="baker"
+          uid=4_0 listbox orientation="vertical"
+            uid=4_1 option "barista"
+            uid=4_2 option "baker" selected
+            uid=4_3 option "admin"
+          uid=3_13 button " Save" disableable disabled
+          uid=3_14 button " Cancel"
+          uid=3_15 button " Delete"
+        uid=2_69 "Online"
+        uid=2_70 generic live="polite" relevant="additions text"
+      
+CALL  click {"pageId":2,"uid":"4_1"}
+CALL  click {"pageId":2,"uid":"3_13","includeSnapshot":true}
+OK    Successfully clicked on the element
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=2_0 RootWebArea "Users" url="http://localhost:41415/users/5"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:41415/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:41415/dashboard"
+          uid=2_7 tab "Users" selectable selected
+            uid=2_8 link "Users" url="http://localhost:41415/users"
+          uid=2_9 tab "Products" selectable
+            uid=2_10 link "Products" url="http://localhost:41415/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New User"
+        uid=2_14 treegrid
+          uid=2_15 row "Email Name Role"
+            uid=2_16 columnheader "Email"
+            uid=2_18 columnheader "Name"
+            uid=2_20 columnheader "Role"
+            uid=2_22 columnheader
+          uid=2_23 row "baker@vaadin.com Heidi Carter baker Edit"
+            uid=2_24 gridcell "baker@vaadin.com"
+            uid=2_26 gridcell "Heidi Carter"
+            uid=2_28 gridcell "baker"
+            uid=2_30 gridcell "Edit"
+              uid=2_31 button "Edit"
+          uid=2_32 row "barista@vaadin.com Malin Castro barista Edit"
+            uid=2_33 gridcell "barista@vaadin.com"
+            uid=2_35 gridcell "Malin Castro"
+            uid=2_37 gridcell "barista"
+            uid=2_39 gridcell "Edit"
+              uid=2_40 button "Edit"
+          uid=2_41 row "admin@vaadin.com Göran Rich admin Edit"
+            uid=2_42 gridcell "admin@vaadin.com"
+            uid=2_44 gridcell "Göran Rich"
+            uid=2_46 gridcell "admin"
+            uid=2_48 gridcell "Edit"
+              uid=2_49 button "Edit"
+          uid=2_50 row "peter@vaadin.com Peter Bush barista Edit"
+            uid=2_51 gridcell "peter@vaadin.com"
+            uid=2_53 gridcell "Peter Bush"
+            uid=2_55 gridcell "barista"
+            uid=2_57 gridcell "Edit"
+              uid=2_58 button "Edit"
+          uid=2_59 row "mary@vaadin.com Mary Ocon baker Edit"
+            uid=2_60 gridcell "mary@vaadin.com"
+            uid=2_62 gridcell "Mary Ocon"
+            uid=2_64 gridcell "baker"
+            uid=2_66 gridcell "Edit"
+              uid=2_67 button "Edit"
+        uid=2_68 generic
+        uid=3_0 dialog "Edit User" modal
+          uid=3_1 heading "Edit User" level="3"
+          "  "
+          uid=3_2 "Email (login)"
+          uid=3_3 textbox "Email (login)" required
+          "  "
+          uid=3_4 "First name"
+          uid=3_5 textbox "First name"
+          "  "
+          uid=3_6 "Last name"
+          uid=3_7 textbox "Last name"
+          "  "
+          uid=3_8 "Password"
+          uid=3_9 textbox "Password"
+          ""
+          uid=3_10 button "Show password"
+          "  "
+          uid=3_11 "Role"
+          uid=3_12 combobox "Role" autocomplete="list" expandable haspopup="listbox"
+          uid=3_13 button " Save" disableable disabled focusable focused
+          uid=3_14 button " Cancel"
+          uid=3_15 button " Delete"
+        uid=2_69 "Online"
+        uid=2_70 generic live="assertive" relevant="additions text"
+        uid=5_0 alert atomic live="polite" relevant="additions text"
+          uid=5_1 "User has been locked and cannot be modified or deleted"
+          uid=5_2 button " Close"
+      
+SAYS  The app wouldn't let me change Mary Ocon's role. I logged in as admin, opened her record (mary@vaadin.com, currently baker), set the role to barista and clicked Save. The app then showed this alert:
+      
+      **"User has been locked and cannot be modified or deleted"**
+      
+      The grid still lists her as baker, so nothing changed. The edit form went blank after the alert and the Save button was disabled.
+END   turns=11 duration=20s cost=$0.05604110000000001 is_error=false

@@ -1,0 +1,1 @@
+{"expected":"one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Raspberry Pastry and 1 × Blueberry Cheese Cake 'no sugar'; nothing else changed","params":{"product_a":"Strawberry Raspberry Pastry","product_b":"Blueberry Cheese Cake","tomorrow":"Saturday, November 21"}}

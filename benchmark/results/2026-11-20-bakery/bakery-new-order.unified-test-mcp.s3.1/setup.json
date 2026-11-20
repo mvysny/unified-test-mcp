@@ -1,0 +1,1 @@
+{"params":{"tomorrow":"Saturday, November 21","product_b":"Vanilla Muffin","product_a":"Vanilla Brownie"},"expected":"one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Vanilla Brownie and 1 × Vanilla Muffin 'no sugar'; nothing else changed"}

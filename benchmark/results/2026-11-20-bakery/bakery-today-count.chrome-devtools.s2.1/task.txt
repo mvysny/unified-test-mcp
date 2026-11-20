@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:33905; log in as barista@vaadin.com, password barista. How many orders due today, to be picked up at the Bakery, have the status Ready? Answer with the number only.

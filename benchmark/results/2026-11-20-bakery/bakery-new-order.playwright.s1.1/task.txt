@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:33009; log in as barista@vaadin.com, password barista. Place a new order for Grace Hopper, phone +1 555 0100: pickup at the Bakery, Saturday, November 21 at 11 AM; 2 × Strawberry Raspberry Pastry and 1 × Blueberry Cheese Cake, the latter with the note "no sugar".

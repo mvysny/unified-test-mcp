@@ -1,0 +1,784 @@
+CALL  browser_navigate {"url":"http://localhost:49083"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:49083');
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/login
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-21-37-371Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:49083/login
+      - Page Title: ###Bakery###
+      ### Snapshot
+      ```yaml
+      - generic [ref=e1]:
+        - generic [ref=e2]:
+          - generic:
+            - dialog "###Bakery###":
+              - generic [ref=e6]:
+                - generic [ref=e7]:
+                  - heading "###Bakery###" [level=1] [ref=e8]
+                  - generic [ref=e9]: admin@vaadin.com + admin barista@vaadin.com + barista
+                - region "Sign in" [ref=e11]:
+                  - heading "Sign in" [level=2] [ref=e12]
+                  - text: 
+                  - generic [ref=e13]:
+                    - generic [ref=e15]:
+                      - generic [ref=e16]:
+                        - generic: Email
+                        - text: •
+                      - generic [ref=e17]:
+                        - textbox "Email" [active] [ref=e18]
+                        - generic: 
+                    - generic [ref=e20]:
+                      - generic [ref=e21]:
+                        - generic: Password
+                        - text: •
+                      - generic [ref=e22]:
+                        - textbox "Password" [ref=e23]
+                        - generic:
+                          - text: 
+                          - generic [ref=e24]:
+                            - text: 
+                            - button "Show password" [ref=e25]
+                  - button "Sign in" [ref=e26]
+        - generic [ref=e28]: Online
+      ```
+CALL  browser_fill_form {"fields":[{"target":"e18","name":"Email","type":"textbox","value":"barista@vaadin.com"},{"target":"e23","name":"Password","type":"textbox","value":"barista"}]}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Email' }).fill('barista@vaadin.com');
+      await page.getByRole('textbox', { name: 'Password' }).fill('barista');
+      ```
+CALL  browser_click {"target":"e26"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Sign in' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/?continue
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-21-41-143Z.yml)
+CALL  browser_find {"text":"Rowland"}
+OK    ### Result
+      Found 4 matches for "Rowland":
+      
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e32]:
+            - treegrid [ref=f1e59]:
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e61]:
+                  - gridcell "Today Fri, Nov 20 ready 8:00 AM Store Lionel Huber 2 Vanilla Cracker" [ref=f1e62]:
+                    - generic [ref=f1e65]:
+                      ...
+                      - generic [ref=f1e69] [cursor=pointer]:
+                        ...
+                        - generic [ref=f1e77]:
+                          ...
+                          - generic [ref=f1e80]:
+                            - generic [ref=f1e81]: "2"
+                            - generic [ref=f1e82]: Vanilla Cracker
+                - row [ref=f1e83]:
+                  - gridcell "8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake" [ref=f1e84]:
+                    - generic [ref=f1e88] [cursor=pointer]:
+                      - generic [ref=f1e97]:
+                        - heading "8:00 AM" [level=3] [ref=f1e98]
+      
+      ----
+      
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e32]:
+            - treegrid [ref=f1e59]:
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e83]:
+                  - gridcell "8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake" [ref=f1e84]:
+                    - generic [ref=f1e88] [cursor=pointer]:
+                      - generic [ref=f1e97]:
+                        ...
+                        - heading [level=3]
+                        - generic [ref=f1e99]: Store
+                      - generic [ref=f1e100]:
+                        - heading "Dominique Rowland" [level=3] [ref=f1e101]
+                        - generic [ref=f1e102]:
+                          - generic [ref=f1e103]:
+                            - generic [ref=f1e104]: "5"
+      
+      ----
+      
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e32]:
+            - treegrid [ref=f1e59]:
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e109]:
+                  - gridcell "8:00 AM Store Jason Macias 7 Vanilla Blueberry Cake 9 Vanilla Pastry" [ref=f1e110]:
+                    - generic [ref=f1e114] [cursor=pointer]:
+                      ...
+                      - generic [ref=f1e126]:
+                        ...
+                        - generic [ref=f1e128]:
+                          ...
+                          - generic [ref=f1e132]:
+                            - generic [ref=f1e133]: "9"
+                            - generic [ref=f1e134]: Vanilla Pastry
+                - row [ref=f1e135]:
+                  - gridcell "ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker" [ref=f1e136]:
+                    - generic [ref=f1e140] [cursor=pointer]:
+                      - generic [ref=f1e141]:
+                        - generic [ref=f1e142]: ready
+      
+      ----
+      
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e32]:
+            - treegrid [ref=f1e59]:
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e135]:
+                  - gridcell "ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker" [ref=f1e136]:
+                    - generic [ref=f1e140] [cursor=pointer]:
+                      - generic [ref=f1e141]:
+                        ...
+                        - generic [ref=f1e145]:
+                          ...
+                          - heading [level=3]
+                          - generic [ref=f1e147]: Bakery
+                      - generic [ref=f1e148]:
+                        - heading "Haley Rowland" [level=3] [ref=f1e149]
+                        - generic [ref=f1e150]:
+                          - generic [ref=f1e151]:
+                            - generic [ref=f1e152]: "8"
+      ### Page
+      - Page URL: http://localhost:49083/?continue
+      - Page Title: Storefront
+CALL  browser_snapshot {"depth":4}
+OK    ### Page
+      - Page URL: http://localhost:49083/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e5]:
+            - generic:
+              - generic [ref=f1e6]: "###Bakery###"
+              - tablist [ref=f1e7]
+          - generic [ref=f1e32]:
+            - generic [ref=f1e33]:
+              - generic [ref=f1e34]
+              - generic [ref=f1e52]
+            - treegrid [ref=f1e59]:
+              - rowgroup
+              - rowgroup [ref=f1e60]
+              - rowgroup
+        - generic [ref=f1e571]: Online
+      ```
+SAYS  Searching the storefront for Jason Rowland's orders.
+CALL  browser_find {"text":"search"}
+OK    ### Result
+      Found 1 match for "search":
+      
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e32]:
+            - generic [ref=f1e33]:
+              - generic [ref=f1e34]:
+                - generic [ref=f1e37]:
+                  - textbox [ref=f1e43]:
+                    - /placeholder: Search
+                  - generic: 
+                - text: 
+                - button "New order" [ref=f1e44]
+CALL  browser_type {"target":"f1e43","text":"Jason Rowland","submit":true}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByLabel('', { exact: true }).fill('Jason Rowland');
+      await page.getByLabel('', { exact: true }).press('Enter');
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-21-48-728Z.yml)
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-21-50-518Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-21-50-518Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-21-50-518Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/1668d53c-c4e9-48d9-a6dc-d27e361c2a3b/tool-results/mcp-playwright-blob-1795162910532-arylbc.png]
+SAYS  Jason Rowland has two upcoming orders, so "next order" means the earlier one, Nov 29. I'll open it.
+CALL  browser_click {"target":"text=Nov 29"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('text=Nov 29').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/storefront/6078
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-21-53-551Z.yml)
+      ### Events
+      - New console entries: .playwright-mcp/console-2026-11-20T08-21-37-000Z.log#L1-L2
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:49083/storefront/6078
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      ```yaml
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: "###Bakery###"
+                  - tablist:
+                    - generic [aria-hidden]: 
+                    - generic:
+                      - generic:
+                        - tab "Storefront" [selected]:
+                          - generic:
+                            - link "Storefront":
+                              - /url: storefront
+                        - tab "Dashboard":
+                          - generic:
+                            - link "Dashboard":
+                              - /url: dashboard
+                        - tab "Logout"
+                    - generic [aria-hidden]: 
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - textbox:
+                                    - /placeholder: Search
+                                    - text: Jason Rowland
+                              - generic: 
+                        - generic:
+                          - generic:
+                            - generic [aria-hidden]: 
+                            - generic:
+                              - checkbox "Show past orders"
+                            - generic: Show past orders
+                        - button "Clear search"
+                      - text: 
+                    - generic:
+                      - generic:
+                        - treegrid:
+                          - rowgroup
+                          - rowgroup:
+                            - row "Upcoming After this week new Nov 29 Sunday Jason Rowland 8 Vanilla Blueberry Cake 8 Raspberry Blueberry Tart":
+                              - gridcell "Upcoming After this week new Nov 29 Sunday Jason Rowland 8 Vanilla Blueberry Cake 8 Raspberry Blueberry Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: Upcoming
+                                          - generic: After this week
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 29" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Jason Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Blueberry Cake
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Raspberry Blueberry Tart
+                            - row "new Dec 14 Monday Jason Rowland 10 Blueberry Cheese Cake 5 Strawberry Cheese Cake 9 Vanilla Cracker":
+                              - gridcell "new Dec 14 Monday Jason Rowland 10 Blueberry Cheese Cake 5 Strawberry Cheese Cake 9 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Dec 14" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Jason Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Blueberry Cheese Cake
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Cheese Cake
+                                              - generic:
+                                                - generic: "9"
+                                                - generic: Vanilla Cracker
+                          - rowgroup
+                    - dialog:
+                      - generic [ref=f1e601]:
+                        - generic [ref=f1e602]:
+                          - generic [ref=f1e603]:
+                            - generic [ref=f1e604]: new
+                            - generic [ref=f1e607]: "Order #6078"
+                          - generic [ref=f1e609]:
+                            - generic:
+                              - generic [ref=f1e610]:
+                                - generic [ref=f1e611]:
+                                  - generic: Due
+                                  - text: •
+                                - generic [ref=f1e614]:
+                                  - generic:
+                                    - generic [ref=f1e615]:
+                                      - heading "Nov 29" [level=3] [ref=f1e616]
+                                      - generic [ref=f1e617]: Sunday
+                                    - generic [ref=f1e618]:
+                                      - heading "12:00 PM" [level=3] [ref=f1e619]
+                                      - generic [ref=f1e620]: Bakery
+                              - generic [ref=f1e621]:
+                                - generic [ref=f1e622]:
+                                  - generic: Customer
+                                  - text: •
+                                - heading "Jason Rowland" [level=3] [ref=f1e624]
+                              - generic [ref=f1e625]:
+                                - generic [ref=f1e626]:
+                                  - generic: Phone number
+                                  - text: •
+                                - heading "+1-555-9693" [level=3] [ref=f1e628]
+                          - generic [ref=f1e632]:
+                            - generic:
+                              - generic [ref=f1e633]:
+                                - generic [ref=f1e634]:
+                                  - generic: Products
+                                  - text: •
+                                - generic [ref=f1e636]:
+                                  - generic [ref=f1e637]:
+                                    - generic [ref=f1e638]:
+                                      - generic [ref=f1e639]: Vanilla Blueberry Cake
+                                      - generic [ref=f1e640]: Lactose free
+                                    - generic [ref=f1e641]: "8"
+                                    - generic [ref=f1e643]: ×
+                                    - generic [ref=f1e644]: $50.70
+                                  - generic [ref=f1e645]:
+                                    - generic [ref=f1e646]: Raspberry Blueberry Tart
+                                    - generic [ref=f1e648]: "8"
+                                    - generic [ref=f1e650]: ×
+                                    - generic [ref=f1e651]: $79.05
+                              - generic [ref=f1e652]:
+                                - generic [ref=f1e653]:
+                                  - generic: History
+                                  - text: •
+                                - generic [ref=f1e654]:
+                                  - generic:
+                                    - generic [ref=f1e655]:
+                                      - generic [ref=f1e656]: Malin
+                                      - generic [ref=f1e657]: 23.11.2026 10:00 AM
+                                      - generic [ref=f1e658]: new
+                                    - generic [ref=f1e661]: Order placed
+                              - generic [ref=f1e662]:
+                                - generic [ref=f1e663]: •
+                                - generic [ref=f1e667]:
+                                  - textbox [ref=f1e668]:
+                                    - /placeholder: Add comment
+                                  - generic:
+                                    - button "Send" [ref=f1e670]
+                                    - text: 
+                        - generic [ref=f1e672]:
+                          - button "Cancel" [ref=f1e673]
+                          - generic: Total $1,038.00
+                          - button "Edit order" [ref=f1e676]
+        - generic: Online
+      ```
+SAYS  Order #6078 is due Nov 29 at 12:00 PM. I'll move it to Nov 30 and keep the time.
+CALL  browser_click {"target":"f1e676"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Edit order' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/storefront/6078/edit
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-21-58-687Z.yml)
+CALL  browser_find {"regex":"/Due|date|Nov|textbox/i"}
+OK    ### Result
+      Found 12 matches for /Due|date|Nov|textbox/i:
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - textbox:
+                                    - /placeholder: Search
+                                    - text: Jason Rowland
+                              - generic: 
+      
+      ----
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - treegrid:
+                          - rowgroup
+                          - rowgroup:
+                            - row "Upcoming After this week new Nov 29 Sunday Jason Rowland 8 Vanilla Blueberry Cake 8 Raspberry Blueberry Tart":
+                              - gridcell "Upcoming After this week new Nov 29 Sunday Jason Rowland 8 Vanilla Blueberry Cake 8 Raspberry Blueberry Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+      
+      ----
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic:
+                        - treegrid:
+                          - rowgroup:
+                            - row "Upcoming After this week new Nov 29 Sunday Jason Rowland 8 Vanilla Blueberry Cake 8 Raspberry Blueberry Tart":
+                              - gridcell "Upcoming After this week new Nov 29 Sunday Jason Rowland 8 Vanilla Blueberry Cake 8 Raspberry Blueberry Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 29" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Jason Rowland" [level=3]
+      
+      ----
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - dialog:
+                      - generic [ref=f1e600]:
+                        - generic:
+                          - generic:
+                            - generic [ref=f1e684]:
+                              - generic [ref=f1e685]:
+                                - generic [ref=f1e694]:
+                                  - generic:
+                                    - generic [ref=f1e696]:
+                                      - generic:
+                                        - generic [ref=f1e698]:
+                                          - generic [ref=f1e699]:
+                                            - generic: Due
+                                            - text: •
+                                          - generic [ref=f1e700]:
+                                            - combobox "Due" [ref=f1e701]: 11/29/2026
+                                            - generic:
+                                              - text: 
+                                              - generic [aria-hidden] [ref=f1e702]: 
+      
+      ----
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - dialog:
+                      - generic [ref=f1e600]:
+                        - generic:
+                          - generic:
+                            - generic [ref=f1e684]:
+                              - generic [ref=f1e685]:
+                                - generic [ref=f1e694]:
+                                  - generic:
+                                    - generic [ref=f1e726]:
+                                      - generic:
+                                        - generic [ref=f1e728]:
+                                          - generic [ref=f1e729]:
+                                            - generic: Customer
+                                            - text: •
+                                          - generic [ref=f1e730]:
+                                            - textbox "Customer" [ref=f1e736]: Jason Rowland
+                                            - generic: 
+                                        - generic [ref=f1e738]:
+                                          - generic [ref=f1e739]:
+                                            - generic: Phone number
+                                            - text: •
+                                          - generic [ref=f1e740]:
+                                            - textbox "Phone number" [ref=f1e746]: +1-555-9693
+                                            - generic: 
+                                        - generic [ref=f1e748]:
+                                          - generic [ref=f1e749]: Additional Details
+                                          - generic [ref=f1e750]:
+                                            - textbox "Additional Details" [ref=f1e751]
+                                            - generic: 
+                                        - generic [ref=f1e753]:
+                                          - generic: Products
+      
+      ----
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - dialog:
+                      - generic [ref=f1e600]:
+                        - generic:
+                          - generic:
+                            - generic [ref=f1e684]:
+                              - generic [ref=f1e685]:
+                                - generic [ref=f1e694]:
+                                  - generic:
+                                    - generic [ref=f1e726]:
+                                      - generic:
+                                        - generic [ref=f1e755]:
+                                          - generic [ref=f1e758]:
+                                            - generic:
+                                              - generic [ref=f1e760]:
+                                                - generic:
+                                                  - generic [ref=f1e767]:
+                                                    ...
+                                                    - generic [ref=f1e768]:
+                                                      ...
+                                                      - generic:
+                                                        ...
+                                                        - generic [aria-hidden] [ref=f1e771] [cursor=pointer]: 
+                                                  - generic [ref=f1e772]: $405.60
+                                                  - generic [ref=f1e775]:
+                                                    - textbox [ref=f1e776]:
+                                                      - /placeholder: Details
+                                                      - text: Lactose free
+                                                    - generic: 
+      
+      ----
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - dialog:
+                      - generic [ref=f1e600]:
+                        - generic:
+                          - generic:
+                            - generic [ref=f1e684]:
+                              - generic [ref=f1e685]:
+                                - generic [ref=f1e694]:
+                                  - generic:
+                                    - generic [ref=f1e726]:
+                                      - generic:
+                                        - generic [ref=f1e755]:
+                                          - generic [ref=f1e786]:
+                                            - generic:
+                                              - generic [ref=f1e788]:
+                                                - generic:
+                                                  - generic [ref=f1e795]:
+                                                    ...
+                                                    - generic [ref=f1e796]:
+                                                      ...
+                                                      - generic:
+                                                        ...
+                                                        - generic [aria-hidden] [ref=f1e799] [cursor=pointer]: 
+                                                  - generic [ref=f1e800]: $632.40
+                                                  - generic [ref=f1e803]:
+                                                    - textbox [ref=f1e804]:
+                                                      - /placeholder: Details
+                                                    - generic: 
+                                              - button [ref=f1e805]
+      
+      ----
+      
+      - generic [active]:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - dialog:
+                      - generic [ref=f1e600]:
+                        - generic:
+                          - generic:
+                            - generic [ref=f1e684]:
+                              - generic [ref=f1e685]:
+                                - generic [ref=f1e694]:
+                                  - generic:
+                                    - generic [ref=f1e726]:
+                                      - generic:
+                                        - generic [ref=f1e755]:
+                                          - generic [ref=f1e814]:
+                                            - generic:
+                                              - generic [ref=f1e816]:
+                                                - generic:
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - textbox [disabled]:
+                                                              - /placeholder: Details
+                                                        - generic: 
+                                              - button [disabled]
+CALL  browser_triple_click {}
+ERROR <tool_use_error>Error: No such tool available: mcp__playwright__browser_triple_click</tool_use_error>
+CALL  browser_type {"target":"f1e701","text":"11/30/2026","submit":true}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Due' }).fill('11/30/2026');
+      await page.getByRole('combobox', { name: 'Due' }).press('Enter');
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/storefront/6078/edit
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-22-04-636Z.yml)
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-22-06-076Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-22-06-076Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-22-06-076Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/1668d53c-c4e9-48d9-a6dc-d27e361c2a3b/tool-results/mcp-playwright-blob-1795162926082-ece0m2.png]
+SAYS  The date now reads 11/30/2026 and the time is still 12:00 PM. Next I'll review the order and save it.
+CALL  browser_click {"target":"button:has-text(\"Review order\")"}
+ERROR ### Error
+      Error: "button:has-text("Review order")" does not match any elements.
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.getByRole('button', { name: 'Review order' }).click(); await page.waitForTimeout(800); return await page.getByRole('button', { name: 'Save' }).count(); }"}
+OK    ### Result
+      0
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { await page.getByRole('button', { name: 'Review order' }).click(); await page.waitForTimeout(800); return await page.getByRole('button', { name: 'Save' }).count(); })(page);
+      ```
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-22-13-517Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-22-13-517Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-22-13-517Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/1668d53c-c4e9-48d9-a6dc-d27e361c2a3b/tool-results/mcp-playwright-blob-1795162933522-odr3s7.png]
+CALL  browser_click {"target":"Place order"}
+ERROR ### Error
+      Error: "Place order" does not match any elements.
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.getByRole('button', { name: 'Place order' }).click(); await page.waitForTimeout(1500); return page.url(); }"}
+OK    ### Result
+      "http://localhost:49083/storefront"
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { await page.getByRole('button', { name: 'Place order' }).click(); await page.waitForTimeout(1500); return page.url(); })(page);
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/storefront
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+SAYS  Saved. Next I'll open the order again to add the comment.
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.getByText('Nov 30').first().click(); await page.waitForTimeout(1000); const tb = page.getByPlaceholder('Add comment'); await tb.fill('moved by phone'); await page.getByRole('button', { name: 'Send' }).click(); await page.waitForTimeout(1000); return await page.locator('vaadin-dialog-overlay').innerText(); }"}
+ERROR ### Error
+      Error: locator.fill: Error: strict mode violation: getByPlaceholder('Add comment') resolved to 2 elements:
+          1) <vaadin-text-field maxlength="255" id="commentField" class="full-width" placeholder="Add comment">…</vaadin-text-field> aka locator('#commentField')
+          2) <input type="text" slot="input" maxlength="255" placeholder="Add comment" id="input-vaadin-text-field-16"/> aka locator('#input-vaadin-text-field-16')
+      
+      Call log:
+        - waiting for getByPlaceholder('Add comment')
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.locator('input[placeholder=\"Add comment\"]').fill('moved by phone'); await page.getByRole('button', { name: 'Send' }).click(); await page.waitForTimeout(1000); return await page.locator('vaadin-dialog-overlay').innerText(); }"}
+OK    ### Result
+      ""
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { await page.locator('input[placeholder="Add comment"]').fill('moved by phone'); await page.getByRole('button', { name: 'Send' }).click(); await page.waitForTimeout(1000); return await page.locator('vaadin-dialog-overlay').innerText(); })(page);
+      ```
+      ### Page
+      - Page URL: http://localhost:49083/storefront/6078
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-22-28-767Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-22-28-767Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-22-28-767Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/1668d53c-c4e9-48d9-a6dc-d27e361c2a3b/tool-results/mcp-playwright-blob-1795162948771-4sxpu1.png]
+SAYS  I moved Jason Rowland's next order, #6078, from Sunday Nov 29 to Monday Nov 30. The time is still 12:00 PM, and the pickup location (Bakery) and products are unchanged. I also added the comment "moved by phone", which now shows in the order's history.
+      
+      Jason has a second upcoming order, due Dec 14. I left it alone, since "next order" meant the earlier one.
+END   turns=25 duration=57s cost=$0.13772479999999998 is_error=false

@@ -1,0 +1,2168 @@
+CALL  browser_navigate {"url":"http://localhost:33009"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:33009');
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/login
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-20-854Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:33009/login
+      - Page Title: ###Bakery###
+      ### Snapshot
+      ```yaml
+      - generic [ref=e1]:
+        - generic [ref=e2]:
+          - generic:
+            - dialog "###Bakery###":
+              - generic [ref=e6]:
+                - generic [ref=e7]:
+                  - heading "###Bakery###" [level=1] [ref=e8]
+                  - generic [ref=e9]: admin@vaadin.com + admin barista@vaadin.com + barista
+                - region "Sign in" [ref=e11]:
+                  - heading "Sign in" [level=2] [ref=e12]
+                  - text: 
+                  - generic [ref=e13]:
+                    - generic [ref=e15]:
+                      - generic [ref=e16]:
+                        - generic: Email
+                        - text: •
+                      - generic [ref=e17]:
+                        - textbox "Email" [active] [ref=e18]
+                        - generic: 
+                    - generic [ref=e20]:
+                      - generic [ref=e21]:
+                        - generic: Password
+                        - text: •
+                      - generic [ref=e22]:
+                        - textbox "Password" [ref=e23]
+                        - generic:
+                          - text: 
+                          - generic [ref=e24]:
+                            - text: 
+                            - button "Show password" [ref=e25]
+                  - button "Sign in" [ref=e26]
+        - generic [ref=e28]: Online
+      ```
+CALL  browser_fill_form {"fields":[{"target":"e18","name":"Email","type":"textbox","value":"barista@vaadin.com"},{"target":"e23","name":"Password","type":"textbox","value":"barista"}]}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Email' }).fill('barista@vaadin.com');
+      await page.getByRole('textbox', { name: 'Password' }).fill('barista');
+      ```
+CALL  browser_click {"target":"e26"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Sign in' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-23-862Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e5]:
+            - generic:
+              - generic [ref=f1e6]: "###Bakery###"
+              - tablist [ref=f1e7]:
+                - generic [aria-hidden]: 
+                - generic [ref=f1e8]:
+                  - generic:
+                    - tab [selected] [ref=f1e9] [cursor=pointer]:
+                      - link "Storefront" [ref=f1e10]:
+                        - /url: storefront
+                    - tab [ref=f1e16] [cursor=pointer]:
+                      - link "Dashboard" [ref=f1e17]:
+                        - /url: dashboard
+                    - tab [ref=f1e24] [cursor=pointer]
+                - generic [aria-hidden]: 
+          - generic [ref=f1e32]:
+            - generic [ref=f1e33]:
+              - generic [ref=f1e34]:
+                - generic [ref=f1e37]:
+                  - textbox [ref=f1e43]:
+                    - /placeholder: Search
+                  - generic: 
+                - text: 
+                - button "New order" [ref=f1e44]
+              - generic [ref=f1e52]:
+                - generic [aria-hidden] [ref=f1e53]: 
+                - checkbox "Show past orders" [ref=f1e54]
+                - generic [ref=f1e55]: Show past orders
+            - treegrid [ref=f1e59]:
+              - rowgroup
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e61]:
+                  - gridcell "Today Fri, Nov 20 ready 8:00 AM Store Lionel Huber 2 Vanilla Cracker" [ref=f1e62]:
+                    - generic [ref=f1e65]:
+                      - generic [ref=f1e66]:
+                        - generic [ref=f1e67]: Today
+                        - generic [ref=f1e68]: Fri, Nov 20
+                      - generic [ref=f1e69] [cursor=pointer]:
+                        - generic [ref=f1e70]:
+                          - generic [ref=f1e71]: ready
+                          - generic [ref=f1e74]:
+                            - heading "8:00 AM" [level=3] [ref=f1e75]
+                            - heading [level=3]
+                            - heading [level=3]
+                            - generic [ref=f1e76]: Store
+                        - generic [ref=f1e77]:
+                          - heading "Lionel Huber" [level=3] [ref=f1e78]
+                          - generic [ref=f1e80]:
+                            - generic [ref=f1e81]: "2"
+                            - generic [ref=f1e82]: Vanilla Cracker
+                - row [ref=f1e83]:
+                  - gridcell "8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake" [ref=f1e84]:
+                    - generic [ref=f1e88] [cursor=pointer]:
+                      - generic [ref=f1e97]:
+                        - heading "8:00 AM" [level=3] [ref=f1e98]
+                        - heading [level=3]
+                        - heading [level=3]
+                        - generic [ref=f1e99]: Store
+                      - generic [ref=f1e100]:
+                        - heading "Dominique Rowland" [level=3] [ref=f1e101]
+                        - generic [ref=f1e102]:
+                          - generic [ref=f1e103]:
+                            - generic [ref=f1e104]: "5"
+                            - generic [ref=f1e105]: Vanilla Cracker
+                          - generic [ref=f1e106]:
+                            - generic [ref=f1e107]: "1"
+                            - generic [ref=f1e108]: Vanilla Blueberry Cake
+                - row [ref=f1e109]:
+                  - gridcell "8:00 AM Store Jason Macias 7 Vanilla Blueberry Cake 9 Vanilla Pastry" [ref=f1e110]:
+                    - generic [ref=f1e114] [cursor=pointer]:
+                      - generic [ref=f1e123]:
+                        - heading "8:00 AM" [level=3] [ref=f1e124]
+                        - heading [level=3]
+                        - heading [level=3]
+                        - generic [ref=f1e125]: Store
+                      - generic [ref=f1e126]:
+                        - heading "Jason Macias" [level=3] [ref=f1e127]
+                        - generic [ref=f1e128]:
+                          - generic [ref=f1e129]:
+                            - generic [ref=f1e130]: "7"
+                            - generic [ref=f1e131]: Vanilla Blueberry Cake
+                          - generic [ref=f1e132]:
+                            - generic [ref=f1e133]: "9"
+                            - generic [ref=f1e134]: Vanilla Pastry
+                - row [ref=f1e135]:
+                  - gridcell "ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker" [ref=f1e136]:
+                    - generic [ref=f1e140] [cursor=pointer]:
+                      - generic [ref=f1e141]:
+                        - generic [ref=f1e142]: ready
+                        - generic [ref=f1e145]:
+                          - heading "12:00 PM" [level=3] [ref=f1e146]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e147]: Bakery
+                      - generic [ref=f1e148]:
+                        - heading "Haley Rowland" [level=3] [ref=f1e149]
+                        - generic [ref=f1e150]:
+                          - generic [ref=f1e151]:
+                            - generic [ref=f1e152]: "8"
+                            - generic [ref=f1e153]: Blueberry Cheese Cake
+                          - generic [ref=f1e154]:
+                            - generic [ref=f1e155]: "8"
+                            - generic [ref=f1e156]: Vanilla Cracker
+                - row [ref=f1e157]:
+                  - gridcell "ready 12:00 PM Bakery Amanda Mejia 3 Vanilla Blueberry Cake 4 Blueberry Cheese Cake" [ref=f1e158]:
+                    - generic [ref=f1e162] [cursor=pointer]:
+                      - generic [ref=f1e163]:
+                        - generic [ref=f1e164]: ready
+                        - generic [ref=f1e167]:
+                          - heading "12:00 PM" [level=3] [ref=f1e168]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e169]: Bakery
+                      - generic [ref=f1e170]:
+                        - heading "Amanda Mejia" [level=3] [ref=f1e171]
+                        - generic [ref=f1e172]:
+                          - generic [ref=f1e173]:
+                            - generic [ref=f1e174]: "3"
+                            - generic [ref=f1e175]: Vanilla Blueberry Cake
+                          - generic [ref=f1e176]:
+                            - generic [ref=f1e177]: "4"
+                            - generic [ref=f1e178]: Blueberry Cheese Cake
+                - row [ref=f1e179]:
+                  - gridcell "ready 12:00 PM Bakery Lael Chen 7 Vanilla Blueberry Cake" [ref=f1e180]:
+                    - generic [ref=f1e184] [cursor=pointer]:
+                      - generic [ref=f1e185]:
+                        - generic [ref=f1e186]: ready
+                        - generic [ref=f1e189]:
+                          - heading "12:00 PM" [level=3] [ref=f1e190]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e191]: Bakery
+                      - generic [ref=f1e192]:
+                        - heading "Lael Chen" [level=3] [ref=f1e193]
+                        - generic [ref=f1e195]:
+                          - generic [ref=f1e196]: "7"
+                          - generic [ref=f1e197]: Vanilla Blueberry Cake
+                - row [ref=f1e198]:
+                  - gridcell "ready 12:00 PM Bakery Jessica Wilkinson 9 Vanilla Pastry" [ref=f1e199]:
+                    - generic [ref=f1e203] [cursor=pointer]:
+                      - generic [ref=f1e204]:
+                        - generic [ref=f1e205]: ready
+                        - generic [ref=f1e208]:
+                          - heading "12:00 PM" [level=3] [ref=f1e209]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e210]: Bakery
+                      - generic [ref=f1e211]:
+                        - heading "Jessica Wilkinson" [level=3] [ref=f1e212]
+                        - generic [ref=f1e214]:
+                          - generic [ref=f1e215]: "9"
+                          - generic [ref=f1e216]: Vanilla Pastry
+                - row [ref=f1e217]:
+                  - gridcell "ready 12:00 PM Bakery Arsenio Carver 8 Vanilla Blueberry Cake 2 Vanilla Cracker 2 Blueberry Cheese Cake" [ref=f1e218]:
+                    - generic [ref=f1e222] [cursor=pointer]:
+                      - generic [ref=f1e223]:
+                        - generic [ref=f1e224]: ready
+                        - generic [ref=f1e227]:
+                          - heading "12:00 PM" [level=3] [ref=f1e228]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e229]: Bakery
+                      - generic [ref=f1e230]:
+                        - heading "Arsenio Carver" [level=3] [ref=f1e231]
+                        - generic [ref=f1e232]:
+                          - generic [ref=f1e233]:
+                            - generic [ref=f1e234]: "8"
+                            - generic [ref=f1e235]: Vanilla Blueberry Cake
+                          - generic [ref=f1e236]:
+                            - generic [ref=f1e237]: "2"
+                            - generic [ref=f1e238]: Vanilla Cracker
+                          - generic [ref=f1e239]:
+                            - generic [ref=f1e240]: "2"
+                            - generic [ref=f1e241]: Blueberry Cheese Cake
+                - row [ref=f1e242]:
+                  - gridcell "problem 4:00 PM Store Sylvia Hendricks 5 Vanilla Cracker" [ref=f1e243]:
+                    - generic [ref=f1e247] [cursor=pointer]:
+                      - generic [ref=f1e248]:
+                        - generic [ref=f1e249]: problem
+                        - generic [ref=f1e252]:
+                          - heading "4:00 PM" [level=3] [ref=f1e253]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e254]: Store
+                      - generic [ref=f1e255]:
+                        - heading "Sylvia Hendricks" [level=3] [ref=f1e256]
+                        - generic [ref=f1e258]:
+                          - generic [ref=f1e259]: "5"
+                          - generic [ref=f1e260]: Vanilla Cracker
+                - row [ref=f1e261]:
+                  - gridcell "cancelled 4:00 PM Store Jason Farmer 1 Vanilla Pastry 8 Vanilla Blueberry Cake 5 Blueberry Cheese Cake" [ref=f1e262]:
+                    - generic [ref=f1e266] [cursor=pointer]:
+                      - generic [ref=f1e267]:
+                        - generic [ref=f1e268]: cancelled
+                        - generic [ref=f1e271]:
+                          - heading "4:00 PM" [level=3] [ref=f1e272]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e273]: Store
+                      - generic [ref=f1e274]:
+                        - heading "Jason Farmer" [level=3] [ref=f1e275]
+                        - generic [ref=f1e276]:
+                          - generic [ref=f1e277]:
+                            - generic [ref=f1e278]: "1"
+                            - generic [ref=f1e279]: Vanilla Pastry
+                          - generic [ref=f1e280]:
+                            - generic [ref=f1e281]: "8"
+                            - generic [ref=f1e282]: Vanilla Blueberry Cake
+                          - generic [ref=f1e283]:
+                            - generic [ref=f1e284]: "5"
+                            - generic [ref=f1e285]: Blueberry Cheese Cake
+                - row [ref=f1e286]:
+                  - gridcell "problem 4:00 PM Bakery Jessica Moore 10 Vanilla Pastry 10 Vanilla Cracker 9 Vanilla Blueberry Cake" [ref=f1e287]:
+                    - generic [ref=f1e291] [cursor=pointer]:
+                      - generic [ref=f1e292]:
+                        - generic [ref=f1e293]: problem
+                        - generic [ref=f1e296]:
+                          - heading "4:00 PM" [level=3] [ref=f1e297]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e298]: Bakery
+                      - generic [ref=f1e299]:
+                        - heading "Jessica Moore" [level=3] [ref=f1e300]
+                        - generic [ref=f1e301]:
+                          - generic [ref=f1e302]:
+                            - generic [ref=f1e303]: "10"
+                            - generic [ref=f1e304]: Vanilla Pastry
+                          - generic [ref=f1e305]:
+                            - generic [ref=f1e306]: "10"
+                            - generic [ref=f1e307]: Vanilla Cracker
+                          - generic [ref=f1e308]:
+                            - generic [ref=f1e309]: "9"
+                            - generic [ref=f1e310]: Vanilla Blueberry Cake
+                - row [ref=f1e311]:
+                  - gridcell "ready 4:00 PM Store Kerry Benton 3 Blueberry Cheese Cake 10 Vanilla Pastry 1 Vanilla Blueberry Cake" [ref=f1e312]:
+                    - generic [ref=f1e316] [cursor=pointer]:
+                      - generic [ref=f1e317]:
+                        - generic [ref=f1e318]: ready
+                        - generic [ref=f1e321]:
+                          - heading "4:00 PM" [level=3] [ref=f1e322]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e323]: Store
+                      - generic [ref=f1e324]:
+                        - heading "Kerry Benton" [level=3] [ref=f1e325]
+                        - generic [ref=f1e326]:
+                          - generic [ref=f1e327]:
+                            - generic [ref=f1e328]: "3"
+                            - generic [ref=f1e329]: Blueberry Cheese Cake
+                          - generic [ref=f1e330]:
+                            - generic [ref=f1e331]: "10"
+                            - generic [ref=f1e332]: Vanilla Pastry
+                          - generic [ref=f1e333]:
+                            - generic [ref=f1e334]: "1"
+                            - generic [ref=f1e335]: Vanilla Blueberry Cake
+                - row [ref=f1e336]:
+                  - gridcell "This week Sat, Nov 21 - Sun, Nov 22 ready Sat 21 8:00 AM Bakery Griffin Hendricks 2 Blueberry Cheese Cake" [ref=f1e337]:
+                    - generic [ref=f1e340]:
+                      - generic [ref=f1e341]:
+                        - generic [ref=f1e342]: This week
+                        - generic [ref=f1e343]: Sat, Nov 21 - Sun, Nov 22
+                      - generic [ref=f1e344] [cursor=pointer]:
+                        - generic [ref=f1e345]:
+                          - generic [ref=f1e346]: ready
+                          - generic [ref=f1e349]:
+                            - heading [level=3]
+                            - heading "Sat 21" [level=3] [ref=f1e350]
+                            - heading [level=3]
+                            - generic [ref=f1e351]: 8:00 AM
+                            - generic [ref=f1e352]: Bakery
+                        - generic [ref=f1e353]:
+                          - heading "Griffin Hendricks" [level=3] [ref=f1e354]
+                          - generic [ref=f1e356]:
+                            - generic [ref=f1e357]: "2"
+                            - generic [ref=f1e358]: Blueberry Cheese Cake
+                - row [ref=f1e359]:
+                  - gridcell "ready Sat 21 4:00 PM Bakery Ferdinand Patton 6 Vanilla Cracker" [ref=f1e360]:
+                    - generic [ref=f1e364] [cursor=pointer]:
+                      - generic [ref=f1e365]:
+                        - generic [ref=f1e366]: ready
+                        - generic [ref=f1e369]:
+                          - heading [level=3]
+                          - heading "Sat 21" [level=3] [ref=f1e370]
+                          - heading [level=3]
+                          - generic [ref=f1e371]: 4:00 PM
+                          - generic [ref=f1e372]: Bakery
+                      - generic [ref=f1e373]:
+                        - heading "Ferdinand Patton" [level=3] [ref=f1e374]
+                        - generic [ref=f1e376]:
+                          - generic [ref=f1e377]: "6"
+                          - generic [ref=f1e378]: Vanilla Cracker
+                - row [ref=f1e379]:
+                  - gridcell "problem Nov 22 Sunday Amanda Castro 2 Vanilla Blueberry Cake" [ref=f1e380]:
+                    - generic [ref=f1e384] [cursor=pointer]:
+                      - generic [ref=f1e385]:
+                        - generic [ref=f1e386]: problem
+                        - generic [ref=f1e389]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e390]
+                          - generic [ref=f1e391]: Sunday
+                      - generic [ref=f1e392]:
+                        - heading "Amanda Castro" [level=3] [ref=f1e393]
+                        - generic [ref=f1e395]:
+                          - generic [ref=f1e396]: "2"
+                          - generic [ref=f1e397]: Vanilla Blueberry Cake
+                - row [ref=f1e398]:
+                  - gridcell "new Nov 22 Sunday Lester Lyons 1 Vanilla Blueberry Cake" [ref=f1e399]:
+                    - generic [ref=f1e403] [cursor=pointer]:
+                      - generic [ref=f1e404]:
+                        - generic [ref=f1e405]: new
+                        - generic [ref=f1e408]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e409]
+                          - generic [ref=f1e410]: Sunday
+                      - generic [ref=f1e411]:
+                        - heading "Lester Lyons" [level=3] [ref=f1e412]
+                        - generic [ref=f1e414]:
+                          - generic [ref=f1e415]: "1"
+                          - generic [ref=f1e416]: Vanilla Blueberry Cake
+                - row [ref=f1e417]:
+                  - gridcell "Upcoming After this week new Nov 23 Monday Amanda Nunez 5 Strawberry Bun 3 Raspberry Blueberry Tart 2 Blueberry Cheese Cake" [ref=f1e418]:
+                    - generic [ref=f1e421]:
+                      - generic [ref=f1e422]:
+                        - generic [ref=f1e423]: Upcoming
+                        - generic [ref=f1e424]: After this week
+                      - generic [ref=f1e425] [cursor=pointer]:
+                        - generic [ref=f1e426]:
+                          - generic [ref=f1e427]: new
+                          - generic [ref=f1e430]:
+                            - heading [level=3]
+                            - heading [level=3]
+                            - heading "Nov 23" [level=3] [ref=f1e431]
+                            - generic [ref=f1e432]: Monday
+                        - generic [ref=f1e433]:
+                          - heading "Amanda Nunez" [level=3] [ref=f1e434]
+                          - generic [ref=f1e435]:
+                            - generic [ref=f1e436]:
+                              - generic [ref=f1e437]: "5"
+                              - generic [ref=f1e438]: Strawberry Bun
+                            - generic [ref=f1e439]:
+                              - generic [ref=f1e440]: "3"
+                              - generic [ref=f1e441]: Raspberry Blueberry Tart
+                            - generic [ref=f1e442]:
+                              - generic [ref=f1e443]: "2"
+                              - generic [ref=f1e444]: Blueberry Cheese Cake
+                - row [ref=f1e445]:
+                  - gridcell "new Nov 23 Monday Elaine Blevins 10 Vanilla Blueberry Cake" [ref=f1e446]:
+                    - generic [ref=f1e450] [cursor=pointer]:
+                      - generic [ref=f1e451]:
+                        - generic [ref=f1e452]: new
+                        - generic [ref=f1e455]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 23" [level=3] [ref=f1e456]
+                          - generic [ref=f1e457]: Monday
+                      - generic [ref=f1e458]:
+                        - heading "Elaine Blevins" [level=3] [ref=f1e459]
+                        - generic [ref=f1e461]:
+                          - generic [ref=f1e462]: "10"
+                          - generic [ref=f1e463]: Vanilla Blueberry Cake
+                - row [ref=f1e464]:
+                  - gridcell "new Nov 23 Monday Lionel Irwin 9 Vanilla Cracker" [ref=f1e465]:
+                    - generic [ref=f1e469] [cursor=pointer]:
+                      - generic [ref=f1e470]:
+                        - generic [ref=f1e471]: new
+                        - generic [ref=f1e474]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 23" [level=3] [ref=f1e475]
+                          - generic [ref=f1e476]: Monday
+                      - generic [ref=f1e477]:
+                        - heading "Lionel Irwin" [level=3] [ref=f1e478]
+                        - generic [ref=f1e480]:
+                          - generic [ref=f1e481]: "9"
+                          - generic [ref=f1e482]: Vanilla Cracker
+                - row [ref=f1e483]:
+                  - gridcell "new Nov 23 Monday Delilah Henry 10 Raspberry Blueberry Tart 6 Vanilla Blueberry Cake 5 Strawberry Cheese Cake" [ref=f1e484]:
+                    - generic [ref=f1e488] [cursor=pointer]:
+                      - generic [ref=f1e489]:
+                        - generic [ref=f1e490]: new
+                        - generic [ref=f1e493]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 23" [level=3] [ref=f1e494]
+                          - generic [ref=f1e495]: Monday
+                      - generic [ref=f1e496]:
+                        - heading "Delilah Henry" [level=3] [ref=f1e497]
+                        - generic [ref=f1e498]:
+                          - generic [ref=f1e499]:
+                            - generic [ref=f1e500]: "10"
+                            - generic [ref=f1e501]: Raspberry Blueberry Tart
+                          - generic [ref=f1e502]:
+                            - generic [ref=f1e503]: "6"
+                            - generic [ref=f1e504]: Vanilla Blueberry Cake
+                          - generic [ref=f1e505]:
+                            - generic [ref=f1e506]: "5"
+                            - generic [ref=f1e507]: Strawberry Cheese Cake
+                - row [ref=f1e508]:
+                  - gridcell "new Nov 23 Monday Jason Howard 3 Vanilla Blueberry Cake 10 Raspberry Blueberry Tart" [ref=f1e509]:
+                    - generic [ref=f1e513] [cursor=pointer]:
+                      - generic [ref=f1e514]:
+                        - generic [ref=f1e515]: new
+                        - generic [ref=f1e518]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 23" [level=3] [ref=f1e519]
+                          - generic [ref=f1e520]: Monday
+                      - generic [ref=f1e521]:
+                        - heading "Jason Howard" [level=3] [ref=f1e522]
+                        - generic [ref=f1e523]:
+                          - generic [ref=f1e524]:
+                            - generic [ref=f1e525]: "3"
+                            - generic [ref=f1e526]: Vanilla Blueberry Cake
+                          - generic [ref=f1e527]:
+                            - generic [ref=f1e528]: "10"
+                            - generic [ref=f1e529]: Raspberry Blueberry Tart
+                - row [ref=f1e530]:
+                  - gridcell "new Nov 24 Tuesday Arsenio Carter 9 Blueberry Cheese Cake 8 Vanilla Pastry" [ref=f1e531]:
+                    - generic [ref=f1e535] [cursor=pointer]:
+                      - generic [ref=f1e536]:
+                        - generic [ref=f1e537]: new
+                        - generic [ref=f1e540]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 24" [level=3] [ref=f1e541]
+                          - generic [ref=f1e542]: Tuesday
+                      - generic [ref=f1e543]:
+                        - heading "Arsenio Carter" [level=3] [ref=f1e544]
+                        - generic [ref=f1e545]:
+                          - generic [ref=f1e546]:
+                            - generic [ref=f1e547]: "9"
+                            - generic [ref=f1e548]: Blueberry Cheese Cake
+                          - generic [ref=f1e549]:
+                            - generic [ref=f1e550]: "8"
+                            - generic [ref=f1e551]: Vanilla Pastry
+                - row [ref=f1e552]:
+                  - gridcell "new Nov 24 Tuesday Ferdinand Benton 3 Raspberry Blueberry Tart" [ref=f1e553]:
+                    - generic [ref=f1e557] [cursor=pointer]:
+                      - generic [ref=f1e558]:
+                        - generic [ref=f1e559]: new
+                        - generic [ref=f1e562]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 24" [level=3] [ref=f1e563]
+                          - generic [ref=f1e564]: Tuesday
+                      - generic [ref=f1e565]:
+                        - heading "Ferdinand Benton" [level=3] [ref=f1e566]
+                        - generic [ref=f1e568]:
+                          - generic [ref=f1e569]: "3"
+                          - generic [ref=f1e570]: Raspberry Blueberry Tart
+              - rowgroup
+        - generic [ref=f1e571]: Online
+      ```
+CALL  browser_click {"target":"f1e44"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'New order' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-26-657Z.yml)
+SAYS  Opening the new order form now; checking its fields before filling.
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: "###Bakery###"
+                  - tablist:
+                    - generic [aria-hidden]: 
+                    - generic:
+                      - generic:
+                        - tab "Storefront" [selected]:
+                          - generic:
+                            - link "Storefront":
+                              - /url: storefront
+                        - tab "Dashboard":
+                          - generic:
+                            - link "Dashboard":
+                              - /url: dashboard
+                        - tab "Logout"
+                    - generic [aria-hidden]: 
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - textbox:
+                                    - /placeholder: Search
+                              - generic: 
+                        - text: 
+                        - button "New order"
+                      - generic:
+                        - generic:
+                          - generic [aria-hidden]: 
+                          - generic:
+                            - checkbox "Show past orders"
+                          - generic: Show past orders
+                    - generic:
+                      - generic:
+                        - treegrid:
+                          - rowgroup
+                          - rowgroup:
+                            - row "Today Fri, Nov 20 ready 8:00 AM Store Lionel Huber 2 Vanilla Cracker":
+                              - gridcell "Today Fri, Nov 20 ready 8:00 AM Store Lionel Huber 2 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: Today
+                                          - generic: Fri, Nov 20
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Lionel Huber" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Vanilla Cracker
+                            - row "8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake":
+                              - gridcell "8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Dominique Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Blueberry Cake
+                            - row "8:00 AM Store Jason Macias 7 Vanilla Blueberry Cake 9 Vanilla Pastry":
+                              - gridcell "8:00 AM Store Jason Macias 7 Vanilla Blueberry Cake 9 Vanilla Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Jason Macias" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Blueberry Cake
+                                              - generic:
+                                                - generic: "9"
+                                                - generic: Vanilla Pastry
+                            - row "ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker":
+                              - gridcell "ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Haley Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Blueberry Cheese Cake
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Cracker
+                            - row "ready 12:00 PM Bakery Amanda Mejia 3 Vanilla Blueberry Cake 4 Blueberry Cheese Cake":
+                              - gridcell "ready 12:00 PM Bakery Amanda Mejia 3 Vanilla Blueberry Cake 4 Blueberry Cheese Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Amanda Mejia" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Vanilla Blueberry Cake
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Blueberry Cheese Cake
+                            - row "ready 12:00 PM Bakery Lael Chen 7 Vanilla Blueberry Cake":
+                              - gridcell "ready 12:00 PM Bakery Lael Chen 7 Vanilla Blueberry Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Lael Chen" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Blueberry Cake
+                            - row "ready 12:00 PM Bakery Jessica Wilkinson 9 Vanilla Pastry":
+                              - gridcell "ready 12:00 PM Bakery Jessica Wilkinson 9 Vanilla Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Jessica Wilkinson" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "9"
+                                                - generic: Vanilla Pastry
+                            - row "ready 12:00 PM Bakery Arsenio Carver 8 Vanilla Blueberry Cake 2 Vanilla Cracker 2 Blueberry Cheese Cake":
+                              - gridcell "ready 12:00 PM Bakery Arsenio Carver 8 Vanilla Blueberry Cake 2 Vanilla Cracker 2 Blueberry Cheese Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Arsenio Carver" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Blueberry Cake
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Blueberry Cheese Cake
+                            - row "problem 4:00 PM Store Sylvia Hendricks 5 Vanilla Cracker":
+                              - gridcell "problem 4:00 PM Store Sylvia Hendricks 5 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: problem
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Sylvia Hendricks" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Vanilla Cracker
+                            - row "cancelled 4:00 PM Store Jason Farmer 1 Vanilla Pastry 8 Vanilla Blueberry Cake 5 Blueberry Cheese Cake":
+                              - gridcell "cancelled 4:00 PM Store Jason Farmer 1 Vanilla Pastry 8 Vanilla Blueberry Cake 5 Blueberry Cheese Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: cancelled
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Jason Farmer" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Pastry
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Blueberry Cake
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Blueberry Cheese Cake
+                            - row "problem 4:00 PM Bakery Jessica Moore 10 Vanilla Pastry 10 Vanilla Cracker 9 Vanilla Blueberry Cake":
+                              - gridcell "problem 4:00 PM Bakery Jessica Moore 10 Vanilla Pastry 10 Vanilla Cracker 9 Vanilla Blueberry Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: problem
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Jessica Moore" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Pastry
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "9"
+                                                - generic: Vanilla Blueberry Cake
+                            - row "ready 4:00 PM Store Kerry Benton 3 Blueberry Cheese Cake 10 Vanilla Pastry 1 Vanilla Blueberry Cake":
+                              - gridcell "ready 4:00 PM Store Kerry Benton 3 Blueberry Cheese Cake 10 Vanilla Pastry 1 Vanilla Blueberry Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Kerry Benton" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Blueberry Cheese Cake
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Pastry
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Blueberry Cake
+                            - row "This week Sat, Nov 21 - Sun, Nov 22 ready Sat 21 8:00 AM Bakery Griffin Hendricks 2 Blueberry Cheese Cake":
+                              - gridcell "This week Sat, Nov 21 - Sun, Nov 22 ready Sat 21 8:00 AM Bakery Griffin Hendricks 2 Blueberry Cheese Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: This week
+                                          - generic: Sat, Nov 21 - Sun, Nov 22
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 8:00 AM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Griffin Hendricks" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Blueberry Cheese Cake
+                            - row "ready Sat 21 4:00 PM Bakery Ferdinand Patton 6 Vanilla Cracker":
+                              - gridcell "ready Sat 21 4:00 PM Bakery Ferdinand Patton 6 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 4:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Ferdinand Patton" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Vanilla Cracker
+                            - row "problem Nov 22 Sunday Amanda Castro 2 Vanilla Blueberry Cake":
+                              - gridcell "problem Nov 22 Sunday Amanda Castro 2 Vanilla Blueberry Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: problem
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Amanda Castro" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Vanilla Blueberry Cake
+                            - row "new Nov 22 Sunday Lester Lyons 1 Vanilla Blueberry Cake":
+                              - gridcell "new Nov 22 Sunday Lester Lyons 1 Vanilla Blueberry Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Lester Lyons" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Blueberry Cake
+                            - row "Upcoming After this week new Nov 23 Monday Amanda Nunez 5 Strawberry Bun 3 Raspberry Blueberry Tart 2 Blueberry Cheese Cake":
+                              - gridcell "Upcoming After this week new Nov 23 Monday Amanda Nunez 5 Strawberry Bun 3 Raspberry Blueberry Tart 2 Blueberry Cheese Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: Upcoming
+                                          - generic: After this week
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 23" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Amanda Nunez" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Bun
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Raspberry Blueberry Tart
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Blueberry Cheese Cake
+                            - row "new Nov 23 Monday Elaine Blevins 10 Vanilla Blueberry Cake":
+                              - gridcell "new Nov 23 Monday Elaine Blevins 10 Vanilla Blueberry Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 23" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Elaine Blevins" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Blueberry Cake
+                            - row "new Nov 23 Monday Lionel Irwin 9 Vanilla Cracker":
+                              - gridcell "new Nov 23 Monday Lionel Irwin 9 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 23" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Lionel Irwin" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "9"
+                                                - generic: Vanilla Cracker
+                            - row "new Nov 23 Monday Delilah Henry 10 Raspberry Blueberry Tart 6 Vanilla Blueberry Cake 5 Strawberry Cheese Cake":
+                              - gridcell "new Nov 23 Monday Delilah Henry 10 Raspberry Blueberry Tart 6 Vanilla Blueberry Cake 5 Strawberry Cheese Cake":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 23" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Delilah Henry" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Raspberry Blueberry Tart
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Vanilla Blueberry Cake
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Cheese Cake
+                            - row "new Nov 23 Monday Jason Howard 3 Vanilla Blueberry Cake 10 Raspberry Blueberry Tart":
+                              - gridcell "new Nov 23 Monday Jason Howard 3 Vanilla Blueberry Cake 10 Raspberry Blueberry Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 23" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Jason Howard" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Vanilla Blueberry Cake
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Raspberry Blueberry Tart
+                            - row "new Nov 24 Tuesday Arsenio Carter 9 Blueberry Cheese Cake 8 Vanilla Pastry":
+                              - gridcell "new Nov 24 Tuesday Arsenio Carter 9 Blueberry Cheese Cake 8 Vanilla Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 24" [level=3]
+                                              - generic: Tuesday
+                                          - generic:
+                                            - heading "Arsenio Carter" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "9"
+                                                - generic: Blueberry Cheese Cake
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Pastry
+                            - row "new Nov 24 Tuesday Ferdinand Benton 3 Raspberry Blueberry Tart":
+                              - gridcell "new Nov 24 Tuesday Ferdinand Benton 3 Raspberry Blueberry Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 24" [level=3]
+                                              - generic: Tuesday
+                                          - generic:
+                                            - heading "Ferdinand Benton" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Raspberry Blueberry Tart
+                          - rowgroup
+                    - dialog:
+                      - generic [ref=f1e576]:
+                        - generic [ref=f1e577]:
+                          - heading "New order" [level=2] [ref=f1e578]
+                          - text:  
+                          - generic [ref=f1e580]:
+                            - generic:
+                              - generic [ref=f1e582]:
+                                - generic:
+                                  - generic [ref=f1e584]:
+                                    - generic [ref=f1e585]:
+                                      - generic: Due
+                                      - text: •
+                                    - generic [ref=f1e586]:
+                                      - combobox "Due" [ref=f1e587]: 11/20/2026
+                                      - generic:
+                                        - text: 
+                                        - generic [aria-hidden] [ref=f1e588]: 
+                                  - generic [ref=f1e590]:
+                                    - text: •
+                                    - generic [ref=f1e591]:
+                                      - combobox [ref=f1e598]: 4:00 PM
+                                      - generic:
+                                        - text: 
+                                        - generic [aria-hidden] [ref=f1e599]: 
+                                  - generic [ref=f1e602]:
+                                    - combobox [ref=f1e609]
+                                    - generic:
+                                      - text: 
+                                      - generic [aria-hidden] [ref=f1e610]: 
+                              - generic [ref=f1e612]:
+                                - generic:
+                                  - generic [ref=f1e614]:
+                                    - generic [ref=f1e615]:
+                                      - generic: Customer
+                                      - text: •
+                                    - generic [ref=f1e616]:
+                                      - textbox "Customer" [ref=f1e622]
+                                      - generic: 
+                                  - generic [ref=f1e624]:
+                                    - generic [ref=f1e625]:
+                                      - generic: Phone number
+                                      - text: •
+                                    - generic [ref=f1e626]:
+                                      - textbox "Phone number" [ref=f1e632]
+                                      - generic: 
+                                  - generic [ref=f1e634]:
+                                    - generic [ref=f1e635]: Additional Details
+                                    - generic [ref=f1e636]:
+                                      - textbox "Additional Details" [ref=f1e637]
+                                      - generic: 
+                                  - generic [ref=f1e639]:
+                                    - generic: Products
+                                    - text: •
+                                  - generic [ref=f1e644]:
+                                    - generic:
+                                      - generic [ref=f1e646]:
+                                        - generic:
+                                          - generic [ref=f1e648]:
+                                            - text: •
+                                            - generic [ref=f1e649]:
+                                              - combobox [ref=f1e650]
+                                              - generic:
+                                                - text: 
+                                                - generic [aria-hidden] [ref=f1e651]: 
+                                          - generic:
+                                            - generic:
+                                              - text: •
+                                              - generic:
+                                                - generic:
+                                                  - generic [aria-hidden]: 
+                                                - generic:
+                                                  - generic:
+                                                    - spinbutton [disabled]
+                                                - generic:
+                                                  - text: 
+                                                  - generic [aria-hidden]: 
+                                          - generic [ref=f1e652]: $0.00
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - textbox [disabled]:
+                                                      - /placeholder: Details
+                                                - generic: 
+                                      - button [disabled]
+                        - generic [ref=f1e653]:
+                          - button "Cancel" [ref=f1e654]
+                          - generic: Total
+                          - generic:
+                            - button "Review order" [disabled]
+        - generic: Online
+      ```
+CALL  browser_fill_form {"fields":[{"target":"f1e587","name":"Due date","type":"textbox","value":"11/21/2026"},{"target":"f1e622","name":"Customer","type":"textbox","value":"Grace Hopper"},{"target":"f1e632","name":"Phone","type":"textbox","value":"+1 555 0100"}]}
+CALL  browser_click {"target":"f1e598"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Due' }).fill('11/21/2026');
+      await page.getByLabel('Customer').fill('Grace Hopper');
+      await page.getByLabel('Phone number').fill('+1 555 0100');
+      ```
+ERROR ### Error
+      TimeoutError: browserBackend.callTool: Timeout 5000ms exceeded.
+      Call log:
+        - waiting for locator('aria-ref=f1e598')
+          - locator resolved to <input required="" slot="input" role="combobox" autocorrect="off" autocomplete="off" spellcheck="false" autocapitalize="off" aria-expanded="false" aria-autocomplete="list" id="input-vaadin-combo-box-38"/>
+        - attempting click action
+          2 × waiting for element to be visible, enabled and stable
+            - element is visible, enabled and stable
+            - scrolling into view if needed
+            - done scrolling
+            - <div slot="vaadin-infinite-scroller-item-content-60">…</div> from <div id="layout">…</div> subtree intercepts pointer events
+          - retrying click action
+          - waiting 20ms
+          2 × waiting for element to be visible, enabled and stable
+            - element is visible, enabled and stable
+            - scrolling into view if needed
+            - done scrolling
+            - <div slot="vaadin-infinite-scroller-item-content-60">…</div> from <div id="layout">…</div> subtree intercepts pointer events
+          - retrying click action
+            - waiting 100ms
+          9 × waiting for element to be visible, enabled and stable
+            - element is visible, enabled and stable
+            - scrolling into view if needed
+            - done scrolling
+            - <div slot="vaadin-infinite-scroller-item-content-60">…</div> from <div id="layout">…</div> subtree intercepts pointer events
+          - retrying click action
+            - waiting 500ms
+CALL  browser_snapshot {"target":"f1e577"}
+OK    ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic:
+        - heading [level=2] [aria-hidden]: New order
+        - text:  
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic [ref=f1e583]:
+                      - generic [ref=f1e584]:
+                        - generic [ref=f1e585]:
+                          - generic: Due
+                          - text: •
+                        - generic [ref=f1e586]:
+                          - combobox "Due" [expanded] [ref=f1e587]: 11/21/2026
+                          - generic:
+                            - text: 
+                            - generic [aria-hidden] [ref=f1e588]: 
+                      - dialog "Calendar" [ref=f1e659]:
+                        - generic [ref=f1e661]:
+                          - generic [ref=f1e662]:
+                            - generic [aria-hidden] [ref=f1e664]:
+                              - generic [aria-hidden] [ref=f1e665]: August 2026
+                              - grid [ref=f1e666]:
+                                - rowgroup [ref=f1e667]:
+                                  - row [ref=f1e668]:
+                                    - columnheader [aria-hidden] [ref=f1e669]: Sun
+                                    - columnheader [aria-hidden] [ref=f1e670]: Mon
+                                    - columnheader [aria-hidden] [ref=f1e671]: Tue
+                                    - columnheader [aria-hidden] [ref=f1e672]: Wed
+                                    - columnheader [aria-hidden] [ref=f1e673]: Thu
+                                    - columnheader [aria-hidden] [ref=f1e674]: Fri
+                                    - columnheader [aria-hidden] [ref=f1e675]: Sat
+                                - rowgroup [ref=f1e676]:
+                                  - row [ref=f1e677]:
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell [ref=f1e678]: "1"
+                                  - row [ref=f1e679]:
+                                    - gridcell [ref=f1e680]: "2"
+                                    - gridcell [ref=f1e681]: "3"
+                                    - gridcell [ref=f1e682]: "4"
+                                    - gridcell [ref=f1e683]: "5"
+                                    - gridcell [ref=f1e684]: "6"
+                                    - gridcell [ref=f1e685]: "7"
+                                    - gridcell [ref=f1e686]: "8"
+                                  - row [ref=f1e687]:
+                                    - gridcell [ref=f1e688]: "9"
+                                    - gridcell [ref=f1e689]: "10"
+                                    - gridcell [ref=f1e690]: "11"
+                                    - gridcell [ref=f1e691]: "12"
+                                    - gridcell [ref=f1e692]: "13"
+                                    - gridcell [ref=f1e693]: "14"
+                                    - gridcell [ref=f1e694]: "15"
+                                  - row [ref=f1e695]:
+                                    - gridcell [ref=f1e696]: "16"
+                                    - gridcell [ref=f1e697]: "17"
+                                    - gridcell [ref=f1e698]: "18"
+                                    - gridcell [ref=f1e699]: "19"
+                                    - gridcell [ref=f1e700]: "20"
+                                    - gridcell [ref=f1e701]: "21"
+                                    - gridcell [ref=f1e702]: "22"
+                                  - row [ref=f1e703]:
+                                    - gridcell [ref=f1e704]: "23"
+                                    - gridcell [ref=f1e705]: "24"
+                                    - gridcell [ref=f1e706]: "25"
+                                    - gridcell [ref=f1e707]: "26"
+                                    - gridcell [ref=f1e708]: "27"
+                                    - gridcell [ref=f1e709]: "28"
+                                    - gridcell [ref=f1e710]: "29"
+                                  - row [ref=f1e711]:
+                                    - gridcell [ref=f1e712]: "30"
+                                    - gridcell [ref=f1e713]: "31"
+                            - generic [aria-hidden] [ref=f1e715]:
+                              - generic [aria-hidden] [ref=f1e716]: September 2026
+                              - grid [ref=f1e717]:
+                                - rowgroup [ref=f1e718]:
+                                  - row [ref=f1e719]:
+                                    - columnheader [aria-hidden] [ref=f1e720]: Sun
+                                    - columnheader [aria-hidden] [ref=f1e721]: Mon
+                                    - columnheader [aria-hidden] [ref=f1e722]: Tue
+                                    - columnheader [aria-hidden] [ref=f1e723]: Wed
+                                    - columnheader [aria-hidden] [ref=f1e724]: Thu
+                                    - columnheader [aria-hidden] [ref=f1e725]: Fri
+                                    - columnheader [aria-hidden] [ref=f1e726]: Sat
+                                - rowgroup [ref=f1e727]:
+                                  - row [ref=f1e728]:
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell [ref=f1e729]: "1"
+                                    - gridcell [ref=f1e730]: "2"
+                                    - gridcell [ref=f1e731]: "3"
+                                    - gridcell [ref=f1e732]: "4"
+                                    - gridcell [ref=f1e733]: "5"
+                                  - row [ref=f1e734]:
+                                    - gridcell [ref=f1e735]: "6"
+                                    - gridcell [ref=f1e736]: "7"
+                                    - gridcell [ref=f1e737]: "8"
+                                    - gridcell [ref=f1e738]: "9"
+                                    - gridcell [ref=f1e739]: "10"
+                                    - gridcell [ref=f1e740]: "11"
+                                    - gridcell [ref=f1e741]: "12"
+                                  - row [ref=f1e742]:
+                                    - gridcell [ref=f1e743]: "13"
+                                    - gridcell [ref=f1e744]: "14"
+                                    - gridcell [ref=f1e745]: "15"
+                                    - gridcell [ref=f1e746]: "16"
+                                    - gridcell [ref=f1e747]: "17"
+                                    - gridcell [ref=f1e748]: "18"
+                                    - gridcell [ref=f1e749]: "19"
+                                  - row [ref=f1e750]:
+                                    - gridcell [ref=f1e751]: "20"
+                                    - gridcell [ref=f1e752]: "21"
+                                    - gridcell [ref=f1e753]: "22"
+                                    - gridcell [ref=f1e754]: "23"
+                                    - gridcell [ref=f1e755]: "24"
+                                    - gridcell [ref=f1e756]: "25"
+                                    - gridcell [ref=f1e757]: "26"
+                                  - row [ref=f1e758]:
+                                    - gridcell [ref=f1e759]: "27"
+                                    - gridcell [ref=f1e760]: "28"
+                                    - gridcell [ref=f1e761]: "29"
+                                    - gridcell [ref=f1e762]: "30"
+                            - generic [aria-hidden] [ref=f1e764]:
+                              - generic [aria-hidden] [ref=f1e765]: October 2026
+                              - grid [ref=f1e766]:
+                                - rowgroup [ref=f1e767]:
+                                  - row [ref=f1e768]:
+                                    - columnheader [aria-hidden] [ref=f1e769]: Sun
+                                    - columnheader [aria-hidden] [ref=f1e770]: Mon
+                                    - columnheader [aria-hidden] [ref=f1e771]: Tue
+                                    - columnheader [aria-hidden] [ref=f1e772]: Wed
+                                    - columnheader [aria-hidden] [ref=f1e773]: Thu
+                                    - columnheader [aria-hidden] [ref=f1e774]: Fri
+                                    - columnheader [aria-hidden] [ref=f1e775]: Sat
+                                - rowgroup [ref=f1e776]:
+                                  - row [ref=f1e777]:
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell [ref=f1e778]: "1"
+                                    - gridcell [ref=f1e779]: "2"
+                                    - gridcell [ref=f1e780]: "3"
+                                  - row [ref=f1e781]:
+                                    - gridcell [ref=f1e782]: "4"
+                                    - gridcell [ref=f1e783]: "5"
+                                    - gridcell [ref=f1e784]: "6"
+                                    - gridcell [ref=f1e785]: "7"
+                                    - gridcell [ref=f1e786]: "8"
+                                    - gridcell [ref=f1e787]: "9"
+                                    - gridcell [ref=f1e788]: "10"
+                                  - row [ref=f1e789]:
+                                    - gridcell [ref=f1e790]: "11"
+                                    - gridcell [ref=f1e791]: "12"
+                                    - gridcell [ref=f1e792]: "13"
+                                    - gridcell [ref=f1e793]: "14"
+                                    - gridcell [ref=f1e794]: "15"
+                                    - gridcell [ref=f1e795]: "16"
+                                    - gridcell [ref=f1e796]: "17"
+                                  - row [ref=f1e797]:
+                                    - gridcell [ref=f1e798]: "18"
+                                    - gridcell [ref=f1e799]: "19"
+                                    - gridcell [ref=f1e800]: "20"
+                                    - gridcell [ref=f1e801]: "21"
+                                    - gridcell [ref=f1e802]: "22"
+                                    - gridcell [ref=f1e803]: "23"
+                                    - gridcell [ref=f1e804]: "24"
+                                  - row [ref=f1e805]:
+                                    - gridcell [ref=f1e806]: "25"
+                                    - gridcell [ref=f1e807]: "26"
+                                    - gridcell [ref=f1e808]: "27"
+                                    - gridcell [ref=f1e809]: "28"
+                                    - gridcell [ref=f1e810]: "29"
+                                    - gridcell [ref=f1e811]: "30"
+                                    - gridcell [ref=f1e812]: "31"
+                          - generic [ref=f1e813]:
+                            - generic [ref=f1e815]:
+                              - generic [aria-hidden] [ref=f1e816]: November 2026
+                              - grid "November 2026" [ref=f1e817]:
+                                - rowgroup [ref=f1e818]:
+                                  - row [ref=f1e819]:
+                                    - columnheader [aria-hidden] [ref=f1e820]: Sun
+                                    - columnheader [aria-hidden] [ref=f1e821]: Mon
+                                    - columnheader [aria-hidden] [ref=f1e822]: Tue
+                                    - columnheader [aria-hidden] [ref=f1e823]: Wed
+                                    - columnheader [aria-hidden] [ref=f1e824]: Thu
+                                    - columnheader [aria-hidden] [ref=f1e825]: Fri
+                                    - columnheader [aria-hidden] [ref=f1e826]: Sat
+                                - rowgroup [ref=f1e827]:
+                                  - row [ref=f1e828]:
+                                    - gridcell "1 November 2026, Sunday" [ref=f1e829]: "1"
+                                    - gridcell "2 November 2026, Monday" [ref=f1e830]: "2"
+                                    - gridcell "3 November 2026, Tuesday" [ref=f1e831]: "3"
+                                    - gridcell "4 November 2026, Wednesday" [ref=f1e832]: "4"
+                                    - gridcell "5 November 2026, Thursday" [ref=f1e833]: "5"
+                                    - gridcell "6 November 2026, Friday" [ref=f1e834]: "6"
+                                    - gridcell "7 November 2026, Saturday" [ref=f1e835]: "7"
+                                  - row [ref=f1e836]:
+                                    - gridcell "8 November 2026, Sunday" [ref=f1e837]: "8"
+                                    - gridcell "9 November 2026, Monday" [ref=f1e838]: "9"
+                                    - gridcell "10 November 2026, Tuesday" [ref=f1e839]: "10"
+                                    - gridcell "11 November 2026, Wednesday" [ref=f1e840]: "11"
+                                    - gridcell "12 November 2026, Thursday" [ref=f1e841]: "12"
+                                    - gridcell "13 November 2026, Friday" [ref=f1e842]: "13"
+                                    - gridcell "14 November 2026, Saturday" [ref=f1e843]: "14"
+                                  - row [ref=f1e844]:
+                                    - gridcell "15 November 2026, Sunday" [ref=f1e845]: "15"
+                                    - gridcell "16 November 2026, Monday" [ref=f1e846]: "16"
+                                    - gridcell "17 November 2026, Tuesday" [ref=f1e847]: "17"
+                                    - gridcell "18 November 2026, Wednesday" [ref=f1e848]: "18"
+                                    - gridcell "19 November 2026, Thursday" [ref=f1e849]: "19"
+                                    - gridcell "20 November 2026, Friday, Today" [selected] [ref=f1e850]: "20"
+                                    - gridcell "21 November 2026, Saturday" [ref=f1e851]: "21"
+                                  - row [ref=f1e852]:
+                                    - gridcell "22 November 2026, Sunday" [ref=f1e853]: "22"
+                                    - gridcell "23 November 2026, Monday" [ref=f1e854]: "23"
+                                    - gridcell "24 November 2026, Tuesday" [ref=f1e855]: "24"
+                                    - gridcell "25 November 2026, Wednesday" [ref=f1e856]: "25"
+                                    - gridcell "26 November 2026, Thursday" [ref=f1e857]: "26"
+                                    - gridcell "27 November 2026, Friday" [ref=f1e858]: "27"
+                                    - gridcell "28 November 2026, Saturday" [ref=f1e859]: "28"
+                                  - row [ref=f1e860]:
+                                    - gridcell "29 November 2026, Sunday" [ref=f1e861]: "29"
+                                    - gridcell "30 November 2026, Monday" [ref=f1e862]: "30"
+                            - generic [aria-hidden] [ref=f1e864]:
+                              - generic [aria-hidden] [ref=f1e865]: December 2026
+                              - grid [ref=f1e866]:
+                                - rowgroup [ref=f1e867]:
+                                  - row [ref=f1e868]:
+                                    - columnheader [aria-hidden] [ref=f1e869]: Sun
+                                    - columnheader [aria-hidden] [ref=f1e870]: Mon
+                                    - columnheader [aria-hidden] [ref=f1e871]: Tue
+                                    - columnheader [aria-hidden] [ref=f1e872]: Wed
+                                    - columnheader [aria-hidden] [ref=f1e873]: Thu
+                                    - columnheader [aria-hidden] [ref=f1e874]: Fri
+                                    - columnheader [aria-hidden] [ref=f1e875]: Sat
+                                - rowgroup [ref=f1e876]:
+                                  - row [ref=f1e877]:
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell [ref=f1e878]: "1"
+                                    - gridcell [ref=f1e879]: "2"
+                                    - gridcell [ref=f1e880]: "3"
+                                    - gridcell [ref=f1e881]: "4"
+                                    - gridcell [ref=f1e882]: "5"
+                                  - row [ref=f1e883]:
+                                    - gridcell [ref=f1e884]: "6"
+                                    - gridcell [ref=f1e885]: "7"
+                                    - gridcell [ref=f1e886]: "8"
+                                    - gridcell [ref=f1e887]: "9"
+                                    - gridcell [ref=f1e888]: "10"
+                                    - gridcell [ref=f1e889]: "11"
+                                    - gridcell [ref=f1e890]: "12"
+                                  - row [ref=f1e891]:
+                                    - gridcell [ref=f1e892]: "13"
+                                    - gridcell [ref=f1e893]: "14"
+                                    - gridcell [ref=f1e894]: "15"
+                                    - gridcell [ref=f1e895]: "16"
+                                    - gridcell [ref=f1e896]: "17"
+                                    - gridcell [ref=f1e897]: "18"
+                                    - gridcell [ref=f1e898]: "19"
+                                  - row [ref=f1e899]:
+                                    - gridcell [ref=f1e900]: "20"
+                                    - gridcell [ref=f1e901]: "21"
+                                    - gridcell [ref=f1e902]: "22"
+                                    - gridcell [ref=f1e903]: "23"
+                                    - gridcell [ref=f1e904]: "24"
+                                    - gridcell [ref=f1e905]: "25"
+                                    - gridcell [ref=f1e906]: "26"
+                                  - row [ref=f1e907]:
+                                    - gridcell [ref=f1e908]: "27"
+                                    - gridcell [ref=f1e909]: "28"
+                                    - gridcell [ref=f1e910]: "29"
+                                    - gridcell [ref=f1e911]: "30"
+                                    - gridcell [ref=f1e912]: "31"
+                            - generic [aria-hidden] [ref=f1e914]:
+                              - generic [aria-hidden] [ref=f1e915]: January 2027
+                              - grid [ref=f1e916]:
+                                - rowgroup [ref=f1e917]:
+                                  - row [ref=f1e918]:
+                                    - columnheader [aria-hidden] [ref=f1e919]: Sun
+                                    - columnheader [aria-hidden] [ref=f1e920]: Mon
+                                    - columnheader [aria-hidden] [ref=f1e921]: Tue
+                                    - columnheader [aria-hidden] [ref=f1e922]: Wed
+                                    - columnheader [aria-hidden] [ref=f1e923]: Thu
+                                    - columnheader [aria-hidden] [ref=f1e924]: Fri
+                                    - columnheader [aria-hidden] [ref=f1e925]: Sat
+                                - rowgroup [ref=f1e926]:
+                                  - row [ref=f1e927]:
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell
+                                    - gridcell [ref=f1e928]: "1"
+                                    - gridcell [ref=f1e929]: "2"
+                                  - row [ref=f1e930]:
+                                    - gridcell [ref=f1e931]: "3"
+                                    - gridcell [ref=f1e932]: "4"
+                                    - gridcell [ref=f1e933]: "5"
+                                    - gridcell [ref=f1e934]: "6"
+                                    - gridcell [ref=f1e935]: "7"
+                                    - gridcell [ref=f1e936]: "8"
+                                    - gridcell [ref=f1e937]: "9"
+                                  - row [ref=f1e938]:
+                                    - gridcell [ref=f1e939]: "10"
+                                    - gridcell [ref=f1e940]: "11"
+                                    - gridcell [ref=f1e941]: "12"
+                                    - gridcell [ref=f1e942]: "13"
+                                    - gridcell [ref=f1e943]: "14"
+                                    - gridcell [ref=f1e944]: "15"
+                                    - gridcell [ref=f1e945]: "16"
+                                  - row [ref=f1e946]:
+                                    - gridcell [ref=f1e947]: "17"
+                                    - gridcell [ref=f1e948]: "18"
+                                    - gridcell [ref=f1e949]: "19"
+                                    - gridcell [ref=f1e950]: "20"
+                                    - gridcell [ref=f1e951]: "21"
+                                    - gridcell [ref=f1e952]: "22"
+                                    - gridcell [ref=f1e953]: "23"
+                                  - row [ref=f1e954]:
+                                    - gridcell [ref=f1e955]: "24"
+                                    - gridcell [ref=f1e956]: "25"
+                                    - gridcell [ref=f1e957]: "26"
+                                    - gridcell [ref=f1e958]: "27"
+                                    - gridcell [ref=f1e959]: "28"
+                                    - gridcell [ref=f1e960]: "29"
+                                    - gridcell [ref=f1e961]: "30"
+                                  - row [ref=f1e962]:
+                                    - gridcell [ref=f1e963]: "31"
+                        - generic [ref=f1e966]:
+                          - generic [ref=f1e967]:
+                            - generic [ref=f1e969]:
+                              - generic [ref=f1e970]: "2014"
+                              - generic [aria-hidden] [ref=f1e971]: •
+                            - generic [ref=f1e973]:
+                              - generic [ref=f1e974]: "2015"
+                              - generic [aria-hidden] [ref=f1e975]: •
+                            - generic [ref=f1e977]:
+                              - generic [ref=f1e978]: "2016"
+                              - generic [aria-hidden] [ref=f1e979]: •
+                            - generic [ref=f1e981]:
+                              - generic [ref=f1e982]: "2017"
+                              - generic [aria-hidden] [ref=f1e983]: •
+                            - generic [ref=f1e985]:
+                              - generic [ref=f1e986]: "2018"
+                              - generic [aria-hidden] [ref=f1e987]: •
+                            - generic [ref=f1e989]:
+                              - generic [ref=f1e990]: "2019"
+                              - generic [aria-hidden] [ref=f1e991]: •
+                            - generic [ref=f1e993]:
+                              - generic [ref=f1e994]: "2020"
+                              - generic [aria-hidden] [ref=f1e995]: •
+                            - generic [ref=f1e997]:
+                              - generic [ref=f1e998]: "2021"
+                              - generic [aria-hidden] [ref=f1e999]: •
+                            - generic [ref=f1e1001]:
+                              - generic [ref=f1e1002]: "2022"
+                              - generic [aria-hidden] [ref=f1e1003]: •
+                            - generic [ref=f1e1005]:
+                              - generic [ref=f1e1006]: "2023"
+                              - generic [aria-hidden] [ref=f1e1007]: •
+                            - generic [ref=f1e1009]:
+                              - generic [ref=f1e1010]: "2024"
+                              - generic [aria-hidden] [ref=f1e1011]: •
+                            - generic [ref=f1e1013]:
+                              - generic [ref=f1e1014]: "2025"
+                              - generic [aria-hidden] [ref=f1e1015]: •
+                          - generic [ref=f1e1016]:
+                            - generic [ref=f1e1018]:
+                              - generic [ref=f1e1019]: "2026"
+                              - generic [aria-hidden] [ref=f1e1020]: •
+                            - generic [ref=f1e1022]:
+                              - generic [ref=f1e1023]: "2027"
+                              - generic [aria-hidden] [ref=f1e1024]: •
+                            - generic [ref=f1e1026]:
+                              - generic [ref=f1e1027]: "2028"
+                              - generic [aria-hidden] [ref=f1e1028]: •
+                            - generic [ref=f1e1030]:
+                              - generic [ref=f1e1031]: "2029"
+                              - generic [aria-hidden] [ref=f1e1032]: •
+                            - generic [ref=f1e1034]:
+                              - generic [ref=f1e1035]: "2030"
+                              - generic [aria-hidden] [ref=f1e1036]: •
+                            - generic [ref=f1e1038]:
+                              - generic [ref=f1e1039]: "2031"
+                              - generic [aria-hidden] [ref=f1e1040]: •
+                            - generic [ref=f1e1042]:
+                              - generic [ref=f1e1043]: "2032"
+                              - generic [aria-hidden] [ref=f1e1044]: •
+                            - generic [ref=f1e1046]:
+                              - generic [ref=f1e1047]: "2033"
+                              - generic [aria-hidden] [ref=f1e1048]: •
+                            - generic [ref=f1e1050]:
+                              - generic [ref=f1e1051]: "2034"
+                              - generic [aria-hidden] [ref=f1e1052]: •
+                            - generic [ref=f1e1054]:
+                              - generic [ref=f1e1055]: "2035"
+                              - generic [aria-hidden] [ref=f1e1056]: •
+                            - generic [ref=f1e1058]:
+                              - generic [ref=f1e1059]: "2036"
+                              - generic [aria-hidden] [ref=f1e1060]: •
+                            - generic [ref=f1e1062]:
+                              - generic [ref=f1e1063]: "2037"
+                              - generic [aria-hidden] [ref=f1e1064]: •
+                        - toolbar [ref=f1e1066]:
+                          - button "Today" [ref=f1e1067]
+                          - button "Cancel" [ref=f1e1069]
+                    - generic [aria-hidden]:
+                      - generic:
+                        - text: •
+                        - generic:
+                          - combobox: 4:00 PM
+                          - text: 
+                          - generic [aria-hidden]: 
+                    - generic [aria-hidden]:
+                      - generic:
+                        - generic:
+                          - combobox
+                          - text: 
+                          - generic [aria-hidden]: 
+              - generic [aria-hidden]:
+                - generic:
+                  - generic:
+                    - generic:
+                      - generic: Customer •
+                      - generic:
+                        - textbox: Grace Hopper
+                        - text: 
+                  - generic:
+                    - generic:
+                      - generic: Phone number •
+                      - generic:
+                        - textbox: +1 555 0100
+                        - text: 
+                  - generic:
+                    - generic:
+                      - generic: Additional Details
+                      - generic:
+                        - textbox
+                        - text: 
+                  - generic: Products •
+                  - generic:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - text: •
+                                    - generic:
+                                      - combobox
+                                      - text: 
+                                      - generic [aria-hidden]: 
+                                - generic:
+                                  - generic:
+                                    - text: •
+                                    - generic:
+                                      - generic [aria-hidden]: 
+                                      - spinbutton [disabled]
+                                      - text: 
+                                      - generic [aria-hidden]: 
+                                - generic: $0.00
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - textbox [disabled]:
+                                        - /placeholder: Details
+                                      - text: 
+                            - button [disabled]
+      ```
+SAYS  Calendar is open; pick Nov 21.
+CALL  browser_click {"target":"f1e851"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('gridcell', { name: '21 November 2026, Saturday' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-38-185Z.yml)
+CALL  browser_click {"target":"f1e598"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-38').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-40-112Z.yml)
+CALL  browser_find {"text":"11:00 AM"}
+OK    ### Result
+      Found 1 match for "11:00 AM":
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic [ref=f1e589]:
+                                                    - listbox [ref=f1e1081]:
+                                                      - generic [ref=f1e1082]:
+                                                        - generic:
+                                                          - option "9:00 AM" [ref=f1e1086]:
+                                                            - generic [aria-hidden] [ref=f1e1087]: 
+                                                          - option "10:00 AM" [ref=f1e1089]:
+                                                            - generic [aria-hidden] [ref=f1e1090]: 
+                                                          - option "11:00 AM" [ref=f1e1092]:
+                                                            - generic [aria-hidden] [ref=f1e1093]: 
+                                                          - option "12:00 PM" [ref=f1e1095]:
+                                                            - generic [aria-hidden] [ref=f1e1096]: 
+CALL  browser_click {"target":"f1e1092"}
+CALL  browser_click {"target":"f1e609"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('option', { name: '11:00 AM' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-43-343Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-40').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-44-493Z.yml)
+CALL  browser_find {"regex":"option \"(Bakery|Store)\""}
+OK    ### Result
+      Found 2 matches for /option "(Bakery|Store)"/:
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic [ref=f1e600]:
+                                                    - listbox [ref=f1e1112]:
+                                                      - generic [ref=f1e1113]:
+                                                        - generic:
+                                                          - option "Store" [ref=f1e1114]:
+                                                            - generic [aria-hidden] [ref=f1e1115]: 
+                                                          - option "Bakery" [ref=f1e1117]:
+                                                            - generic [aria-hidden] [ref=f1e1118]: 
+                                            - generic:
+                                              - generic:
+CALL  browser_click {"target":"f1e1117"}
+CALL  browser_click {"target":"f1e650"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('option', { name: 'Bakery' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-47-616Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-55').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-03-48-776Z.yml)
+SAYS  Date, time, location, customer and phone are set. Now picking the first product.
+CALL  browser_find {"regex":"option \"Strawberry Raspberry Pastry\""}
+OK    ### Result
+      No matches found for /option "Strawberry Raspberry Pastry"/.
+CALL  browser_type {"target":"f1e650","text":"Strawberry Raspberry"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-55').fill('Strawberry Raspberry');
+      ```
+CALL  browser_find {"regex":"option \""}
+OK    ### Result
+      Found 10 matches for /option "/:
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - generic:
+                                                              - generic:
+                                                                - generic:
+                                                                  - generic:
+                                                                    - generic [ref=f1e647]:
+                                                                      - listbox [ref=f1e1122]:
+                                                                        - generic [ref=f1e1123]:
+                                                                          - generic:
+                                                                            - option "Strawberry Bun" [ref=f1e1124]:
+                                                                              - generic [aria-hidden] [ref=f1e1125]: 
+                                                                            - option "Vanilla Cracker" [ref=f1e1127]:
+                                                                              - generic [aria-hidden] [ref=f1e1128]: 
+                                                                            - option "Vanilla Pastry" [ref=f1e1130]:
+                                                                              - generic [aria-hidden] [ref=f1e1131]: 
+                                                                            - option "Vanilla Blueberry Cake" [ref=f1e1133]:
+                                                                              - generic [aria-hidden] [ref=f1e1134]: 
+                                                                            - option "Blueberry Cheese Cake" [ref=f1e1136]:
+                                                                              - generic [aria-hidden] [ref=f1e1137]: 
+                                                                            - option "Raspberry Blueberry Tart" [ref=f1e1139]:
+                                                                              - generic [aria-hidden] [ref=f1e1140]: 
+                                                                            - option "Strawberry Cheese Cake" [ref=f1e1142]:
+                                                                              - generic [aria-hidden] [ref=f1e1143]: 
+                                                                            - option "Strawberry Tart" [ref=f1e1145]:
+                                                                              - generic [aria-hidden] [ref=f1e1146]: 
+                                                                            - option "Blueberry Cookie" [ref=f1e1148]:
+                                                                              - generic [aria-hidden] [ref=f1e1149]: 
+                                                                            - option "Raspberry Blueberry Biscuit" [ref=f1e1151]:
+                                                                              - generic [aria-hidden] [ref=f1e1152]: 
+                                                                    - generic:
+                                                                      - generic:
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.waitForTimeout(800); return await page.getByRole('option').allInnerTexts(); }"}
+OK    ### Result
+      ["Strawberry Bun","Vanilla Cracker","Vanilla Pastry","Vanilla Blueberry Cake","Blueberry Cheese Cake","Raspberry Blueberry Tart","Strawberry Cheese Cake","Strawberry Tart","Blueberry Cookie","Raspberry Blueberry Biscuit"]
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { await page.waitForTimeout(800); return await page.getByRole('option').allInnerTexts(); })(page);
+      ```
+CALL  browser_run_code_unsafe {"code":"async (page) => { const lb = page.getByRole('listbox').last(); const seen = new Set(); for (let i=0;i<10;i++){ (await page.getByRole('option').allInnerTexts()).forEach(t=>seen.add(t)); await page.mouse.move(600,400); await page.mouse.wheel(0,200); await page.waitForTimeout(200);} return [...seen]; }"}
+OK    ### Result
+      ["Strawberry Bun","Vanilla Cracker","Vanilla Pastry","Vanilla Blueberry Cake","Blueberry Cheese Cake","Raspberry Blueberry Tart","Strawberry Cheese Cake","Strawberry Tart","Blueberry Cookie","Raspberry Blueberry Biscuit"]
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { const lb = page.getByRole('listbox').last(); const seen = new Set(); for (let i=0;i<10;i++){ (await page.getByRole('option').allInnerTexts()).forEach(t=>seen.add(t)); await page.mouse.move(600,400); await page.mouse.wheel(0,200); await page.waitForTimeout(200);} return [...seen]; })(page);
+      ```
+CALL  browser_evaluate {"function":"() => { const cb = document.querySelector('#input-vaadin-combo-box-55').closest('vaadin-combo-box'); return {n: cb.filteredItems?.length, items: (cb.filteredItems||cb.items||[]).map(i=>i.name)}; }"}
+ERROR ### Error
+      TypeError: Cannot read properties of null (reading 'closest')
+          at eval (eval at <anonymous> (eval at evaluate (:370:30)), <anonymous>:1:73)
+          at eval (eval at evaluate (:370:30), <anonymous>:4:50)
+          at UtilityScript.evaluate (<anonymous>:372:16)
+          at UtilityScript.<anonymous> (<anonymous>:1:44)
+SAYS  I'm checking whether "Strawberry Raspberry Pastry" exists in the product list, since the dropdown only shows 10 items and none match.
+CALL  browser_run_code_unsafe {"code":"async (page) => { const info = await page.evaluate(() => { const find=(root)=>{const out=[];const w=(n)=>{ if(n.tagName==='VAADIN-COMBO-BOX') out.push(n); (n.shadowRoot?[...n.shadowRoot.children]:[]).concat([...n.children]).forEach(w);}; w(root); return out;}; return find(document.body).map(c=>({v:c.value&&c.value.name, n:(c.filteredItems||[]).length, items:(c.filteredItems||[]).map(i=>i.name||i)})).filter(x=>x.n>0);}); return info; }"}
+OK    ### Result
+      [{"n":6,"items":[{},{},{},{},{},{}]},{"n":9,"items":[{"key":"2","label":"8:00 AM","className":""},{"key":"3","label":"9:00 AM","className":""},{"key":"4","label":"10:00 AM","className":""},{"key":"5","label":"11:00 AM","className":""},{"key":"6","label":"12:00 PM","className":""},{"key":"7","label":"1:00 PM","className":""},{"key":"8","label":"2:00 PM","className":""},{"key":"9","label":"3:00 PM","className":""},{"key":"1","label":"4:00 PM","className":""}]},{"n":2,"items":[{"key":"1","label":"Store","className":""},{"key":"2","label":"Bakery","className":""}]},{"v":"","n":12,"items":[{"key":"1","label":"Strawberry Bun","className":""},{"key":"2","label":"Vanilla Cracker","className":""},{"key":"3","label":"Vanilla Pastry","className":""},{"key":"4","label":"Vanilla Blueberry Cake","className":""},{"key":"5","label":"Blueberry Cheese Cake","className":""},{"key":"6","label":"Raspberry Blueberry Tart","className":""},{"key":"7","label":"Strawberry Cheese Cake","className":""},{"key":"8","label":"Strawberry Tart","className":""},{"key":"9","label":"Blueberry Cookie","className":""},{"key":"10","label":"Raspberry Blueberry Biscuit","className":""},{"key":"11","label":"Strawberry Raspberry Pastry","className":""},{"key":"12","label":"Strawberry Cracker","className":""}]}]
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { const info = await page.evaluate(() => { const find=(root)=>{const out=[];const w=(n)=>{ if(n.tagName==='VAADIN-COMBO-BOX') out.push(n); (n.shadowRoot?[...n.shadowRoot.children]:[]).concat([...n.children]).forEach(w);}; w(root); return out;}; return find(document.body).map(c=>({v:c.value&&c.value.name, n:(c.filteredItems||[]).length, items:(c.filteredItems||[]).map(i=>i.name||i)})).filter(x=>x.n>0);}); return info; })(page);
+      ```
+SAYS  The product exists (item 11); it's just below the visible part of the list. I'll scroll the dropdown to it.
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.getByRole('option', {name:'Raspberry Blueberry Biscuit'}).scrollIntoViewIfNeeded(); await page.waitForTimeout(300); const o = page.getByRole('option', {name:'Strawberry Raspberry Pastry'}); await o.scrollIntoViewIfNeeded(); await o.click(); return 'ok'; }"}
+OK    ### Result
+      "ok"
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { await page.getByRole('option', {name:'Raspberry Blueberry Biscuit'}).scrollIntoViewIfNeeded(); await page.waitForTimeout(300); const o = page.getByRole('option', {name:'Strawberry Raspberry Pastry'}); await o.scrollIntoViewIfNeeded(); await o.click(); return 'ok'; })(page);
+      ```
+CALL  browser_snapshot {"target":"f1e577"}
+ERROR ### Error
+      Error: Ref f1e577 not found in the current page snapshot. Try capturing new snapshot.
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-04-09-012Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-04-09-012Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-04-09-012Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/29e74b54-e8bd-4a5e-b930-7f33e4b255f9/tool-results/mcp-playwright-blob-1795161849018-y2tk1i.png]
+SAYS  Good. Set quantity to 2 and choose the second product.
+CALL  browser_click {"target":"[aria-label=\"Increase value\"] >> nth=0"}
+ERROR ### Error
+      Error: "[aria-label="Increase value"] >> nth=0" does not match any elements.
+CALL  browser_click {"target":"vaadin-combo-box >> nth=-1"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('vaadin-combo-box').last().click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-04-11-760Z.yml)
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.mouse.click(862,381); await page.waitForTimeout(300); const o = page.getByRole('option', {name:'Blueberry Cheese Cake'}); await o.first().click(); await page.waitForTimeout(500); return await page.screenshot({path:'/tmp/s.png'}).then(()=> 'done'); }"}
+ERROR ### Error
+      TimeoutError: locator.click: Timeout 30000ms exceeded.
+      Call log:
+        - waiting for getByRole('option', { name: 'Blueberry Cheese Cake' }).first()
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-04-44-992Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-04-44-992Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-04-44-992Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/29e74b54-e8bd-4a5e-b930-7f33e4b255f9/tool-results/mcp-playwright-blob-1795161884996-3d9u3q.png]
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.mouse.click(862,381); await page.waitForTimeout(500); await page.mouse.click(540,485); await page.waitForTimeout(600); return await page.getByRole('option').allInnerTexts(); }"}
+OK    ### Result
+      ["Strawberry Bun","Vanilla Cracker","Vanilla Pastry","Vanilla Blueberry Cake","Blueberry Cheese Cake","Raspberry Blueberry Tart","Strawberry Cheese Cake","Strawberry Tart"]
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { await page.mouse.click(862,381); await page.waitForTimeout(500); await page.mouse.click(540,485); await page.waitForTimeout(600); return await page.getByRole('option').allInnerTexts(); })(page);
+      ```
+CALL  browser_click {"target":"role=option[name=\"Blueberry Cheese Cake\"]"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('role=option[name="Blueberry Cheese Cake"]').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-04-51-099Z.yml)
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-04-52-056Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-04-52-056Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-04-52-056Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/29e74b54-e8bd-4a5e-b930-7f33e4b255f9/tool-results/mcp-playwright-blob-1795161892060-544dsl.png]
+SAYS  Quantities are right (2 and 1). Adding the "no sugar" note to the cheese cake, then reviewing.
+CALL  browser_click {"target":"role=textbox[name=\"Details\"] >> nth=1"}
+ERROR ### Error
+      Error: "role=textbox[name="Details"] >> nth=1" does not match any elements.
+CALL  browser_run_code_unsafe {"code":"async (page) => { await page.mouse.click(640,492); await page.keyboard.type('no sugar'); await page.waitForTimeout(300); return 'ok'; }"}
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      "ok"
+      ### Ran Playwright code
+      ```js
+      await (async (page) => { await page.mouse.click(640,492); await page.keyboard.type('no sugar'); await page.waitForTimeout(300); return 'ok'; })(page);
+      ```
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-04-55-376Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-04-55-376Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-04-55-376Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/29e74b54-e8bd-4a5e-b930-7f33e4b255f9/tool-results/mcp-playwright-blob-1795161895381-8juu8y.png]
+CALL  browser_click {"target":"role=button[name=\"Review order\"]"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('role=button[name="Review order"]').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/?continue
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-04-57-451Z.yml)
+      ### Events
+      - New console entries: .playwright-mcp/console-2026-11-20T08-03-20-502Z.log#L1-L2
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-04-58-308Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-04-58-308Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-04-58-308Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/29e74b54-e8bd-4a5e-b930-7f33e4b255f9/tool-results/mcp-playwright-blob-1795161898313-mft87n.png]
+SAYS  Summary matches the request. Placing the order.
+CALL  browser_click {"target":"role=button[name=\"Place order\"]"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('role=button[name="Place order"]').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:33009/storefront
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-05-01-134Z.yml)
+CALL  browser_find {"text":"Grace Hopper","maxResults":2}
+OK    ### Result
+      Found 2 matches for "Grace Hopper":
+      
+      - generic [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [active] [ref=f1e32]:
+            - treegrid [ref=f1e59]:
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e336]:
+                  - gridcell "This week Sat, Nov 21 - Sun, Nov 22 ready Sat 21 8:00 AM Bakery Griffin Hendricks 2 Blueberry Cheese Cake" [ref=f1e337]:
+                    - generic [ref=f1e340]:
+                      ...
+                      - generic [ref=f1e344] [cursor=pointer]:
+                        ...
+                        - generic [ref=f1e353]:
+                          ...
+                          - generic [ref=f1e356]:
+                            - generic [ref=f1e357]: "2"
+                            - generic [ref=f1e358]: Blueberry Cheese Cake
+                - row [ref=f1e1317]:
+                  - gridcell "new Sat 21 11:00 AM Bakery Grace Hopper 2 Strawberry Raspberry Pastry 1 Blueberry Cheese Cake" [ref=f1e1318]:
+                    - generic [ref=f1e364] [cursor=pointer]:
+                      - generic [ref=f1e365]:
+                        - generic [ref=f1e366]: new
+      
+      ----
+      
+      - generic [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [active] [ref=f1e32]:
+            - treegrid [ref=f1e59]:
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e1317]:
+                  - gridcell "new Sat 21 11:00 AM Bakery Grace Hopper 2 Strawberry Raspberry Pastry 1 Blueberry Cheese Cake" [ref=f1e1318]:
+                    - generic [ref=f1e364] [cursor=pointer]:
+                      - generic [ref=f1e365]:
+                        ...
+                        - generic [ref=f1e369]:
+                          ...
+                          - generic [ref=f1e371]: 11:00 AM
+                          - generic [ref=f1e372]: Bakery
+                      - generic [ref=f1e373]:
+                        - heading "Grace Hopper" [level=3] [ref=f1e1319]
+                        - generic [ref=f1e375]:
+                          - generic [ref=f1e376]:
+                            - generic [ref=f1e377]: "2"
+SAYS  The order for Grace Hopper is placed. It now shows in the storefront list as a new order for Sat, Nov 21 at 11:00 AM, pickup at the Bakery.
+      
+      - **Customer:** Grace Hopper, +1 555 0100
+      - **Items:** 2 × Strawberry Raspberry Pastry ($22.49 each) and 1 × Blueberry Cheese Cake ($31.40), with the note "no sugar" on the cheese cake
+      - **Total:** $76.38
+END   turns=43 duration=105s cost=$0.38799249999999996 is_error=false

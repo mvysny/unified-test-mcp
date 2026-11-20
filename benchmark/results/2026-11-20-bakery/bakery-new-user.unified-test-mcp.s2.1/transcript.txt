@@ -1,0 +1,416 @@
+CALL  navigate {"url":"http://localhost:52777"}
+OK    Navigated to http://localhost:52777
+      
+      URL: http://localhost:52777/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  set_value {"ref":2,"value":"admin@vaadin.com"}
+CALL  set_value {"ref":3,"value":"admin"}
+CALL  click {"ref":4}
+OK    Set ref=2 to "admin@vaadin.com"
+      
+      URL: http://localhost:52777/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="admin@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+OK    Set ref=3 to "admin"
+      
+      URL: http://localhost:52777/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="admin@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="admin", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+OK    Clicked ref=4
+      
+      URL: http://localhost:52777/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <storefront-view> [ref=18]
+            - <search-bar> [ref=19, id=search]
+              - TextField [ref=20, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+              - Button "New order" [ref=21, id=action, icon="vaadin:plus"] actions: click
+              - Checkbox "Show past orders" [ref=22] actions: set_value
+            - Grid [ref=23, id=grid, rows=184]
+              - row 0: Today Fri, Nov 20 problem 8:00 AM Bakery Delilah Nixon 2 Chocolate Bagel
+              - row 1: ready 8:00 AM Bakery Elaine Rowland 9 Raspberry Vanilla Bagel 6 Blueberry Tart 7 Blueberry Chocolate Bagel
+              - row 2: ready 12:00 PM Store Jessica Rich 5 Raspberry Brownie 3 Blueberry Chocolate Bagel
+              - row 3: Icon "vaadin:check"; 12:00 PM Bakery Lael Noble 10 Blueberry Chocolate Bagel 8 Chocolate Bagel 7 Raspberry Vanilla Bagel
+              - row 4: ready 4:00 PM Bakery Arsenio Chen 10 Blueberry Chocolate Bagel 9 Blueberry Tart 2 Raspberry Vanilla Bagel
+              - rows 5–183 not shown: get_rows ref=23
+      
+CALL  click {"ref":13}
+OK    Clicked ref=13
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+      
+CALL  click {"ref":26}
+OK    Clicked ref=26
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+            - EmailField "Email (login)" [ref=31, value="", required] actions: set_value
+            - TextField "First name" [ref=32, value=""] actions: set_value
+            - TextField "Last name" [ref=33, value=""] actions: set_value
+            - PasswordField "Password" [ref=34, value=""] actions: set_value
+            - ComboBox "Role" [ref=35, value=null] actions: set_value
+            - H3 "New item" [ref=36]
+      
+CALL  set_value {"ref":31,"value":"linus@bakery.example"}
+CALL  set_value {"ref":32,"value":"Linus"}
+OK    Set ref=31 to "linus@bakery.example"
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+            - EmailField "Email (login)" [ref=31, value="linus@bakery.example", required] actions: set_value
+            - TextField "First name" [ref=32, value=""] actions: set_value
+            - TextField "Last name" [ref=33, value=""] actions: set_value
+            - PasswordField "Password" [ref=34, value=""] actions: set_value
+            - ComboBox "Role" [ref=35, value=null] actions: set_value
+            - H3 "New item" [ref=36]
+      
+CALL  set_value {"ref":33,"value":"Torvalds"}
+CALL  set_value {"ref":34,"value":"penguin"}
+CALL  set_value {"ref":35,"value":"baker"}
+OK    Set ref=32 to "Linus"
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+            - EmailField "Email (login)" [ref=31, value="linus@bakery.example", required] actions: set_value
+            - TextField "First name" [ref=32, value="Linus"] actions: set_value
+            - TextField "Last name" [ref=33, value=""] actions: set_value
+            - PasswordField "Password" [ref=34, value=""] actions: set_value
+            - ComboBox "Role" [ref=35, value=null] actions: set_value
+            - H3 "New item" [ref=36]
+      
+OK    Set ref=33 to "Torvalds"
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+            - EmailField "Email (login)" [ref=31, value="linus@bakery.example", required] actions: set_value
+            - TextField "First name" [ref=32, value="Linus"] actions: set_value
+            - TextField "Last name" [ref=33, value="Torvalds"] actions: set_value
+            - PasswordField "Password" [ref=34, value=""] actions: set_value
+            - ComboBox "Role" [ref=35, value=null] actions: set_value
+            - H3 "New item" [ref=36]
+      
+OK    Set ref=34 to "penguin"; it holds it but shows invalid "need 6 or more chars, mixing digits, lowercase and uppercase letters"
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+            - EmailField "Email (login)" [ref=31, value="linus@bakery.example", required] actions: set_value
+            - TextField "First name" [ref=32, value="Linus"] actions: set_value
+            - TextField "Last name" [ref=33, value="Torvalds"] actions: set_value
+            - PasswordField "Password" [ref=34, value="penguin", invalid "need 6 or more chars, mixing digits, lowercase and uppercase letters"] actions: set_value
+            - ComboBox "Role" [ref=35, value=null] actions: set_value
+            - H3 "New item" [ref=36]
+      
+OK    Set ref=35 to "baker"
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+            - EmailField "Email (login)" [ref=31, value="linus@bakery.example", required] actions: set_value
+            - TextField "First name" [ref=32, value="Linus"] actions: set_value
+            - TextField "Last name" [ref=33, value="Torvalds"] actions: set_value
+            - PasswordField "Password" [ref=34, value="penguin", invalid "need 6 or more chars, mixing digits, lowercase and uppercase letters"] actions: set_value
+            - ComboBox "Role" [ref=35, value="baker"] actions: set_value
+            - H3 "New item" [ref=36]
+      
+SAYS  Password "penguin" was rejected (needs digits, lower and uppercase), so I'm switching to "Penguin1" and saving.
+CALL  set_value {"ref":34,"value":"Penguin1"}
+OK    Set ref=34 to "Penguin1"
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=5]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+            - EmailField "Email (login)" [ref=31, value="linus@bakery.example", required] actions: set_value
+            - TextField "First name" [ref=32, value="Linus"] actions: set_value
+            - TextField "Last name" [ref=33, value="Torvalds"] actions: set_value
+            - PasswordField "Password" [ref=34, value="Penguin1"] actions: set_value
+            - ComboBox "Role" [ref=35, value="baker"] actions: set_value
+            - H3 "New item" [ref=36]
+      
+CALL  click {"ref":29}
+OK    Clicked ref=29
+      
+      URL: http://localhost:52777/users
+      Title: Users
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New User" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Grid [ref=28, rows=6]
+              Header: | Email | Name | Role | |
+              - row 0: baker@vaadin.com | Heidi Carter | baker |
+              - row 1: barista@vaadin.com | Malin Castro | barista |
+              - row 2: admin@vaadin.com | Göran Rich | admin |
+              - row 3: peter@vaadin.com | Peter Bush | barista |
+              - row 4: mary@vaadin.com | Mary Ocon | baker |
+              - row 5: linus@bakery.example | Linus Torvalds | baker |
+      
+SAYS  I created the account for Linus Torvalds (linus@bakery.example) with the role baker. It now shows in the Users list.
+      
+      The app rejected `penguin`. It requires at least 6 characters with digits, lowercase and uppercase letters mixed. I used **`Penguin1`** instead.
+END   turns=14 duration=19s cost=$0.0617297 is_error=false

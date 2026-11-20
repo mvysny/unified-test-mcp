@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:38631; log in as barista@vaadin.com, password barista. In Amanda Irwin's next order, drop the Blueberry Cheese Cake, and add one more of each remaining product.

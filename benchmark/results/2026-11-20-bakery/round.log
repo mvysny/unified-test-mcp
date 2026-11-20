@@ -1,0 +1,296 @@
+[benchmark] building bakery-app-starter-flow-spring
+[benchmark] building unified-test-mcp
+[benchmark] bakery-locked-user / unified-test-mcp / seed 1: starting bakery-app-starter-flow-spring on 59415
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (11 turns, 20s, $0.044402)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.unified-test-mcp.s1.1
+[benchmark] bakery-locked-user / playwright / seed 1: starting bakery-app-starter-flow-spring on 57617
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (15 turns, 32s, $0.0565146)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.playwright.s1.1
+[benchmark] bakery-locked-user / chrome-devtools / seed 1: starting bakery-app-starter-flow-spring on 35223
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (11 turns, 22s, $0.0541287)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.chrome-devtools.s1.1
+[benchmark] bakery-locked-user / playwright / seed 2: starting bakery-app-starter-flow-spring on 49617
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (15 turns, 32s, $0.0557165)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.playwright.s2.1
+[benchmark] bakery-locked-user / chrome-devtools / seed 2: starting bakery-app-starter-flow-spring on 41415
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (11 turns, 23s, $0.05604110000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-locked-user / unified-test-mcp / seed 2: starting bakery-app-starter-flow-spring on 50399
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (11 turns, 22s, $0.046094)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.unified-test-mcp.s2.1
+[benchmark] bakery-locked-user / chrome-devtools / seed 3: starting bakery-app-starter-flow-spring on 60283
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (11 turns, 18s, $0.0555099)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-locked-user / unified-test-mcp / seed 3: starting bakery-app-starter-flow-spring on 40127
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (11 turns, 24s, $0.045884499999999995)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.unified-test-mcp.s3.1
+[benchmark] bakery-locked-user / playwright / seed 3: starting bakery-app-starter-flow-spring on 53501
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer quotes 'User has been locked and cannot be modified or deleted'; nothing changed  (15 turns, 24s, $0.0560253)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-locked-user.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-price-cap / unified-test-mcp / seed 1: starting bakery-app-starter-flow-spring on 54793
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (11 turns, 22s, $0.0498416)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.unified-test-mcp.s1.1
+[benchmark] bakery-price-cap / playwright / seed 1: starting bakery-app-starter-flow-spring on 60537
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (16 turns, 27s, $0.0589716)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.playwright.s1.1
+[benchmark] bakery-price-cap / chrome-devtools / seed 1: starting bakery-app-starter-flow-spring on 57941
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (12 turns, 23s, $0.055938100000000004)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.chrome-devtools.s1.1
+[benchmark] bakery-price-cap / playwright / seed 2: starting bakery-app-starter-flow-spring on 35507
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (17 turns, 31s, $0.05877109999999999)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.playwright.s2.1
+[benchmark] bakery-price-cap / chrome-devtools / seed 2: starting bakery-app-starter-flow-spring on 58889
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (12 turns, 18s, $0.055615700000000004)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-price-cap / unified-test-mcp / seed 2: starting bakery-app-starter-flow-spring on 45693
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (12 turns, 24s, $0.05315260000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.unified-test-mcp.s2.1
+[benchmark] bakery-price-cap / chrome-devtools / seed 3: starting bakery-app-starter-flow-spring on 38663
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (12 turns, 19s, $0.055034099999999996)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-price-cap / unified-test-mcp / seed 3: starting bakery-app-starter-flow-spring on 33335
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (11 turns, 26s, $0.05020560000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.unified-test-mcp.s3.1
+[benchmark] bakery-price-cap / playwright / seed 3: starting bakery-app-starter-flow-spring on 40875
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new product 'Benchmark Brioche' at 100000 cents ($1000.00); nothing else changed  (16 turns, 30s, $0.050540400000000006)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-price-cap.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-new-user / unified-test-mcp / seed 1: starting bakery-app-starter-flow-spring on 57325
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (14 turns, 24s, $0.0627924)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.unified-test-mcp.s1.1
+[benchmark] bakery-new-user / playwright / seed 1: starting bakery-app-starter-flow-spring on 45625
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (19 turns, 24s, $0.07367009999999999)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.playwright.s1.1
+[benchmark] bakery-new-user / chrome-devtools / seed 1: starting bakery-app-starter-flow-spring on 55337
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (12 turns, 18s, $0.0530262)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.chrome-devtools.s1.1
+[benchmark] bakery-new-user / playwright / seed 2: starting bakery-app-starter-flow-spring on 59477
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (18 turns, 28s, $0.0753742)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.playwright.s2.1
+[benchmark] bakery-new-user / chrome-devtools / seed 2: starting bakery-app-starter-flow-spring on 55147
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (13 turns, 23s, $0.054344100000000006)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-new-user / unified-test-mcp / seed 2: starting bakery-app-starter-flow-spring on 52777
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (14 turns, 22s, $0.0617297)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.unified-test-mcp.s2.1
+[benchmark] bakery-new-user / chrome-devtools / seed 3: starting bakery-app-starter-flow-spring on 41783
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (13 turns, 33s, $0.062393000000000004)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-new-user / unified-test-mcp / seed 3: starting bakery-app-starter-flow-spring on 39765
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (14 turns, 25s, $0.0625562)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.unified-test-mcp.s3.1
+[benchmark] bakery-new-user / playwright / seed 3: starting bakery-app-starter-flow-spring on 50863
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new user linus@bakery.example, Linus Torvalds, role baker, its password named in the answer; nothing else changed  (18 turns, 26s, $0.0786053)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-user.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-new-order / unified-test-mcp / seed 1: starting bakery-app-starter-flow-spring on 36691
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Raspberry Pastry and 1 × Blueberry Cheese Cake 'no sugar'; nothing else changed  (17 turns, 33s, $0.08474680000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.unified-test-mcp.s1.1
+[benchmark] bakery-new-order / playwright / seed 1: starting bakery-app-starter-flow-spring on 33009
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Raspberry Pastry and 1 × Blueberry Cheese Cake 'no sugar'; nothing else changed  (43 turns, 108s, $0.38799249999999996)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.playwright.s1.1
+[benchmark] bakery-new-order / chrome-devtools / seed 1: starting bakery-app-starter-flow-spring on 46121
+[benchmark] the agent is at it
+[benchmark] failed: 0 new orders []. Expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Raspberry Pastry and 1 × Blueberry Cheese Cake 'no sugar'; nothing else changed  (38 turns, 44s, $0.3287395)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.chrome-devtools.s1.1
+[benchmark] bakery-new-order / playwright / seed 2: starting bakery-app-starter-flow-spring on 50233
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Vanilla Bun and 1 × Strawberry Muffin 'no sugar'; nothing else changed  (41 turns, 95s, $0.26209220000000005)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.playwright.s2.1
+[benchmark] bakery-new-order / chrome-devtools / seed 2: starting bakery-app-starter-flow-spring on 51001
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Vanilla Bun and 1 × Strawberry Muffin 'no sugar'; nothing else changed  (43 turns, 65s, $0.3538116000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-new-order / unified-test-mcp / seed 2: starting bakery-app-starter-flow-spring on 34361
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Vanilla Bun and 1 × Strawberry Muffin 'no sugar'; nothing else changed  (17 turns, 38s, $0.0877587)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.unified-test-mcp.s2.1
+[benchmark] bakery-new-order / chrome-devtools / seed 3: starting bakery-app-starter-flow-spring on 60383
+[benchmark] the agent is at it
+[benchmark] failed: 0 new orders []. Expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Vanilla Brownie and 1 × Vanilla Muffin 'no sugar'; nothing else changed  (38 turns, 57s, $0.2850966000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-new-order / unified-test-mcp / seed 3: starting bakery-app-starter-flow-spring on 47505
+[benchmark] the agent is at it
+[benchmark] passed: as expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Vanilla Brownie and 1 × Vanilla Muffin 'no sugar'; nothing else changed  (17 turns, 42s, $0.0876227)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.unified-test-mcp.s3.1
+[benchmark] bakery-new-order / playwright / seed 3: starting bakery-app-starter-flow-spring on 42615
+[benchmark] the agent is at it
+[benchmark] failed: 0 new orders []. Expected: one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Vanilla Brownie and 1 × Vanilla Muffin 'no sugar'; nothing else changed  (30 turns, 41s, $0.19782030000000003)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-new-order.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-edit-items / unified-test-mcp / seed 1: starting bakery-app-starter-flow-spring on 55851
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6131 (Amanda Irwin) items exactly 9 × Raspberry Blueberry Tart, 3 × Vanilla Blueberry Cake, was 8 × Raspberry Blueberry Tart, 2 × Vanilla Blueberry Cake, 5 × Blueberry Cheese Cake; nothing else changed  (13 turns, 27s, $0.071443)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.unified-test-mcp.s1.1
+[benchmark] bakery-edit-items / playwright / seed 1: starting bakery-app-starter-flow-spring on 51849
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6131 (Amanda Irwin) items exactly 9 × Raspberry Blueberry Tart, 3 × Vanilla Blueberry Cake, was 8 × Raspberry Blueberry Tart, 2 × Vanilla Blueberry Cake, 5 × Blueberry Cheese Cake; nothing else changed  (22 turns, 86s, $0.1286037)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.playwright.s1.1
+[benchmark] bakery-edit-items / chrome-devtools / seed 1: starting bakery-app-starter-flow-spring on 38631
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6131 (Amanda Irwin) items exactly 9 × Raspberry Blueberry Tart, 3 × Vanilla Blueberry Cake, was 8 × Raspberry Blueberry Tart, 2 × Vanilla Blueberry Cake, 5 × Blueberry Cheese Cake; nothing else changed  (19 turns, 43s, $0.1597692)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.chrome-devtools.s1.1
+[benchmark] bakery-edit-items / playwright / seed 2: starting bakery-app-starter-flow-spring on 38591
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6009 (Kerry Wilkinson) items exactly 8 × Raspberry Vanilla Bagel, was 7 × Raspberry Vanilla Bagel, 2 × Blueberry Tart; nothing else changed  (22 turns, 37s, $0.1560194)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.playwright.s2.1
+[benchmark] bakery-edit-items / chrome-devtools / seed 2: starting bakery-app-starter-flow-spring on 55803
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6009 (Kerry Wilkinson) items exactly 8 × Raspberry Vanilla Bagel, was 7 × Raspberry Vanilla Bagel, 2 × Blueberry Tart; nothing else changed  (23 turns, 68s, $0.1778907)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-edit-items / unified-test-mcp / seed 2: starting bakery-app-starter-flow-spring on 34947
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6009 (Kerry Wilkinson) items exactly 8 × Raspberry Vanilla Bagel, was 7 × Raspberry Vanilla Bagel, 2 × Blueberry Tart; nothing else changed  (12 turns, 27s, $0.0620643)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.unified-test-mcp.s2.1
+[benchmark] bakery-edit-items / chrome-devtools / seed 3: starting bakery-app-starter-flow-spring on 33537
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6016 (Lael Carter) items exactly 8 × Vanilla Cracker, 8 × Raspberry Vanilla Tart, was 4 × Vanilla Bun, 7 × Vanilla Cracker, 7 × Raspberry Vanilla Tart; nothing else changed  (18 turns, 40s, $0.21950790000000003)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-edit-items / unified-test-mcp / seed 3: starting bakery-app-starter-flow-spring on 54481
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6016 (Lael Carter) items exactly 8 × Vanilla Cracker, 8 × Raspberry Vanilla Tart, was 4 × Vanilla Bun, 7 × Vanilla Cracker, 7 × Raspberry Vanilla Tart; nothing else changed  (13 turns, 25s, $0.07045429999999998)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.unified-test-mcp.s3.1
+[benchmark] bakery-edit-items / playwright / seed 3: starting bakery-app-starter-flow-spring on 57725
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6016 (Lael Carter) items exactly 8 × Vanilla Cracker, 8 × Raspberry Vanilla Tart, was 4 × Vanilla Bun, 7 × Vanilla Cracker, 7 × Raspberry Vanilla Tart; nothing else changed  (20 turns, 35s, $0.21011760000000002)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-edit-items.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-reschedule / unified-test-mcp / seed 1: starting bakery-app-starter-flow-spring on 38175
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6078 (Jason Rowland, due 2026-11-29 12:00) due 2026-11-30 12:00, with a comment 'moved by phone'; nothing else changed  (14 turns, 29s, $0.074104)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.unified-test-mcp.s1.1
+[benchmark] bakery-reschedule / playwright / seed 1: starting bakery-app-starter-flow-spring on 49083
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6078 (Jason Rowland, due 2026-11-29 12:00) due 2026-11-30 12:00, with a comment 'moved by phone'; nothing else changed  (25 turns, 70s, $0.13772479999999998)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.playwright.s1.1
+[benchmark] bakery-reschedule / chrome-devtools / seed 1: starting bakery-app-starter-flow-spring on 53507
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6078 (Jason Rowland, due 2026-11-29 12:00) due 2026-11-30 12:00, with a comment 'moved by phone'; nothing else changed  (25 turns, 35s, $0.2180742)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.chrome-devtools.s1.1
+[benchmark] bakery-reschedule / playwright / seed 2: starting bakery-app-starter-flow-spring on 47573
+[benchmark] the agent is at it
+[benchmark] failed: order 5993 is due 2026-12-14 12:00; order 5993 has no comment 'moved by phone'. Expected: order 5993 (Lael Leblanc, due 2026-12-14 12:00) due 2026-12-15 12:00, with a comment 'moved by phone'; nothing else changed  (14 turns, 31s, $0.1180638)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.playwright.s2.1
+[benchmark] bakery-reschedule / chrome-devtools / seed 2: starting bakery-app-starter-flow-spring on 49069
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 5993 (Lael Leblanc, due 2026-12-14 12:00) due 2026-12-15 12:00, with a comment 'moved by phone'; nothing else changed  (52 turns, 107s, $0.4435273)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-reschedule / unified-test-mcp / seed 2: starting bakery-app-starter-flow-spring on 52897
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 5993 (Lael Leblanc, due 2026-12-14 12:00) due 2026-12-15 12:00, with a comment 'moved by phone'; nothing else changed  (18 turns, 74s, $0.09224310000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.unified-test-mcp.s2.1
+[benchmark] bakery-reschedule / chrome-devtools / seed 3: starting bakery-app-starter-flow-spring on 59539
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6039 (Arsenio Russell, due 2026-12-11 12:00) due 2026-12-12 12:00, with a comment 'moved by phone'; nothing else changed  (36 turns, 74s, $0.28589169999999997)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-reschedule / unified-test-mcp / seed 3: starting bakery-app-starter-flow-spring on 45089
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6039 (Arsenio Russell, due 2026-12-11 12:00) due 2026-12-12 12:00, with a comment 'moved by phone'; nothing else changed  (14 turns, 37s, $0.0760891)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.unified-test-mcp.s3.1
+[benchmark] bakery-reschedule / playwright / seed 3: starting bakery-app-starter-flow-spring on 38849
+[benchmark] the agent is at it
+[benchmark] passed: as expected: order 6039 (Arsenio Russell, due 2026-12-11 12:00) due 2026-12-12 12:00, with a comment 'moved by phone'; nothing else changed  (25 turns, 139s, $0.2881769)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-reschedule.playwright.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-today-count / unified-test-mcp / seed 1: starting bakery-app-starter-flow-spring on 35529
+[benchmark] the agent is at it
+[benchmark] failed: answered 1. Expected: the answer 2 (orders due 2026-11-20 at Store with status Delivered); nothing changed  (7 turns, 26s, $0.036327899999999996)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.unified-test-mcp.s1.1
+[benchmark] bakery-today-count / playwright / seed 1: starting bakery-app-starter-flow-spring on 51449
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 2 (orders due 2026-11-20 at Store with status Delivered); nothing changed  (11 turns, 189s, $0.07964260000000001)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.playwright.s1.1
+[benchmark] bakery-today-count / chrome-devtools / seed 1: starting bakery-app-starter-flow-spring on 46783
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 2 (orders due 2026-11-20 at Store with status Delivered); nothing changed  (14 turns, 27s, $0.1118837)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.chrome-devtools.s1.1
+[benchmark] bakery-today-count / playwright / seed 2: starting bakery-app-starter-flow-spring on 43343
+[benchmark] the agent is at it
+[benchmark] failed: answered 8. Expected: the answer 2 (orders due 2026-11-20 at Bakery with status Ready); nothing changed  (6 turns, 13s, $0.0575875)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.playwright.s2.1
+[benchmark] bakery-today-count / chrome-devtools / seed 2: starting bakery-app-starter-flow-spring on 33905
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 2 (orders due 2026-11-20 at Bakery with status Ready); nothing changed  (7 turns, 15s, $0.0493967)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.chrome-devtools.s2.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-today-count / unified-test-mcp / seed 2: starting bakery-app-starter-flow-spring on 58141
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 2 (orders due 2026-11-20 at Bakery with status Ready); nothing changed  (6 turns, 18s, $0.028522400000000003)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.unified-test-mcp.s2.1
+[benchmark] bakery-today-count / chrome-devtools / seed 3: starting bakery-app-starter-flow-spring on 55305
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 2 (orders due 2026-11-20 at Store with status Ready); nothing changed  (6 turns, 104s, $0.1005604)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.chrome-devtools.s3.1
+[benchmark] building unified-test-mcp
+[benchmark] bakery-today-count / unified-test-mcp / seed 3: starting bakery-app-starter-flow-spring on 47733
+[benchmark] the agent is at it
+[benchmark] failed: answered 0. Expected: the answer 2 (orders due 2026-11-20 at Store with status Ready); nothing changed  (6 turns, 22s, $0.0303866)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.unified-test-mcp.s3.1
+[benchmark] bakery-today-count / playwright / seed 3: starting bakery-app-starter-flow-spring on 46945
+[benchmark] the agent is at it
+[benchmark] passed: as expected: the answer 2 (orders due 2026-11-20 at Store with status Ready); nothing changed  (6 turns, 16s, $0.0562767)
+/home/mavi/work/vaadin/unified-test-mcp/benchmark/results/2026-11-20-bakery/bakery-today-count.playwright.s3.1
+scenario            arm               runs  passed  timeout  infra  time_s  api_s  turns  calls  errors  cost_usd  context  io%
+bakery-edit-items   chrome-devtools   3     3       0        0      40.2    31.6   19     18     2       0.1779    41254    0.1
+bakery-edit-items   playwright        3     3       0        0      35.1    26.6   22     21     1       0.156     34331    0.1
+bakery-edit-items   unified-test-mcp  3     3       0        0      24.1    16.3   13     12     0       0.0705    18972    0.1
+bakery-locked-user  chrome-devtools   3     3       0        0      19.3    15.5   11     10     0       0.0555    22279    0.2
+bakery-locked-user  playwright        3     3       0        0      29.7    23.1   15     14     1       0.056     16984    0.1
+bakery-locked-user  unified-test-mcp  3     3       0        0      20.3    12.7   11     10     0       0.0459    13882    0.2
+bakery-new-order    chrome-devtools   3     1       0        0      52.1    47.6   38     37     0       0.3287    63556    0.1
+bakery-new-order    playwright        3     2       0        0      71.8    46     41     40     2       0.2621    43032    0.1
+bakery-new-order    unified-test-mcp  3     3       0        0      36.4    15.7   17     16     0       0.0876    22041    0.1
+bakery-new-user     chrome-devtools   3     3       0        0      21.1    17.1   13     12     0       0.0543    21429    0.2
+bakery-new-user     playwright        3     3       0        0      24.2    18     18     17     1       0.0754    20852    0.1
+bakery-new-user     unified-test-mcp  3     3       0        0      21.8    12.9   14     13     0       0.0626    17411    0.2
+bakery-price-cap    chrome-devtools   3     3       0        0      16.7    13.7   12     11     0       0.0556    21904    0.1
+bakery-price-cap    playwright        3     3       0        0      28.2    22.2   16     15     0       0.0588    17009    0.1
+bakery-price-cap    unified-test-mcp  3     3       0        0      22.4    14.6   11     10     0       0.0502    15101    0.2
+bakery-reschedule   chrome-devtools   3     3       0        0      72.2    61.1   36     35     4       0.2859    52230    0.1
+bakery-reschedule   playwright        3     2       0        0      57.7    43.4   25     24     2       0.1377    30217    0.1
+bakery-reschedule   unified-test-mcp  3     3       0        0      34.8    20.8   14     13     0       0.0761    19563    0.3
+bakery-today-count  chrome-devtools   3     3       0        0      21.8    18.6   7      6      0       0.1006    23173    0.5
+bakery-today-count  playwright        3     2       0        0      11.9    9.2    6      5      0       0.0576    21698    0.7
+bakery-today-count  unified-test-mcp  3     1       0        0      18.3    9.8    6      5      0       0.0304    12350    0.5

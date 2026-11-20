@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:40127; log in as admin@vaadin.com, password admin. Change Mary Ocon's role to barista. If the app doesn't allow it, tell me what it says.

@@ -1,0 +1,284 @@
+CALL  new_page {"url":"http://localhost:55147"}
+OK    ## Pages
+      1: about:blank
+      2: http://localhost:55147/login [selected]
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=1_0 RootWebArea "###Bakery###" url="http://localhost:55147/login"
+        uid=1_1 dialog "###Bakery###" modal
+          uid=1_2 heading "###Bakery###" level="1"
+          uid=1_3 "admin@vaadin.com + admin barista@vaadin.com + barista"
+          uid=1_4 region "Sign in"
+            uid=1_5 heading "Sign in" level="2"
+            uid=1_6 form
+              "  "
+              uid=1_7 "Email"
+              uid=1_8 textbox "Email" focusable focused required
+              "  "
+              uid=1_9 "Password"
+              uid=1_10 textbox "Password" required
+              ""
+              uid=1_11 button "Show password"
+            uid=1_12 button " Sign in"
+        uid=1_13 "Online"
+        uid=1_14 generic live="polite" relevant="additions text"
+      
+CALL  fill_form {"pageId":2,"elements":[{"uid":"1_8","value":"admin@vaadin.com"},{"uid":"1_10","value":"admin"}]}
+CALL  click {"pageId":2,"uid":"1_12","includeSnapshot":true}
+OK    Successfully filled out the form
+OK    Successfully clicked on the element
+      Page navigated to http://localhost:55147/?continue.
+      ## Latest page snapshot
+      uid=2_0 RootWebArea url="http://localhost:55147/?continue"
+        uid=2_1 "Online"
+        uid=2_2 generic live="polite" relevant="additions text"
+      
+CALL  navigate_page {"pageId":2,"url":"http://localhost:55147/users"}
+CALL  take_snapshot {"pageId":2}
+OK    Successfully navigated to http://localhost:55147/users.
+      ## Pages
+      1: about:blank
+      2: Users (http://localhost:55147/users) [selected]
+OK    ## Latest page snapshot
+      uid=3_0 RootWebArea "Users" url="http://localhost:55147/users"
+        uid=3_1 "###Bakery###"
+        uid=3_2 generic
+          uid=3_3 tab "Storefront" selectable
+            uid=3_4 link "Storefront" url="http://localhost:55147/storefront"
+          uid=3_5 tab "Dashboard" selectable
+            uid=3_6 link "Dashboard" url="http://localhost:55147/dashboard"
+          uid=3_7 tab "Users" selectable selected
+            uid=3_8 link "Users" url="http://localhost:55147/users"
+          uid=3_9 tab "Products" selectable
+            uid=3_10 link "Products" url="http://localhost:55147/products"
+          uid=3_11 tab "Logout" selectable
+        "  "
+        uid=3_12 textbox
+        uid=3_13 button " New User"
+        uid=3_14 treegrid
+          uid=3_15 row "Email Name Role"
+            uid=3_16 columnheader "Email"
+            uid=3_18 columnheader "Name"
+            uid=3_20 columnheader "Role"
+            uid=3_22 columnheader
+          uid=3_23 row "baker@vaadin.com Heidi Carter baker Edit"
+            uid=3_24 gridcell "baker@vaadin.com"
+            uid=3_26 gridcell "Heidi Carter"
+            uid=3_28 gridcell "baker"
+            uid=3_30 gridcell "Edit"
+              uid=3_31 button "Edit"
+          uid=3_32 row "barista@vaadin.com Malin Castro barista Edit"
+            uid=3_33 gridcell "barista@vaadin.com"
+            uid=3_35 gridcell "Malin Castro"
+            uid=3_37 gridcell "barista"
+            uid=3_39 gridcell "Edit"
+              uid=3_40 button "Edit"
+          uid=3_41 row "admin@vaadin.com Göran Rich admin Edit"
+            uid=3_42 gridcell "admin@vaadin.com"
+            uid=3_44 gridcell "Göran Rich"
+            uid=3_46 gridcell "admin"
+            uid=3_48 gridcell "Edit"
+              uid=3_49 button "Edit"
+          uid=3_50 row "peter@vaadin.com Peter Bush barista Edit"
+            uid=3_51 gridcell "peter@vaadin.com"
+            uid=3_53 gridcell "Peter Bush"
+            uid=3_55 gridcell "barista"
+            uid=3_57 gridcell "Edit"
+              uid=3_58 button "Edit"
+          uid=3_59 row "mary@vaadin.com Mary Ocon baker Edit"
+            uid=3_60 gridcell "mary@vaadin.com"
+            uid=3_62 gridcell "Mary Ocon"
+            uid=3_64 gridcell "baker"
+            uid=3_66 gridcell "Edit"
+              uid=3_67 button "Edit"
+        uid=3_68 generic
+        uid=3_69 "Online"
+        uid=3_70 generic live="polite" relevant="additions text"
+      
+CALL  click {"pageId":2,"uid":"3_13","includeSnapshot":true}
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=3_0 RootWebArea "Users" url="http://localhost:55147/users"
+        uid=3_1 "###Bakery###"
+        uid=3_2 generic
+          uid=3_3 tab "Storefront" selectable
+            uid=3_4 link "Storefront" url="http://localhost:55147/storefront"
+          uid=3_5 tab "Dashboard" selectable
+            uid=3_6 link "Dashboard" url="http://localhost:55147/dashboard"
+          uid=3_7 tab "Users" selectable selected
+            uid=3_8 link "Users" url="http://localhost:55147/users"
+          uid=3_9 tab "Products" selectable
+            uid=3_10 link "Products" url="http://localhost:55147/products"
+          uid=3_11 tab "Logout" selectable
+        "  "
+        uid=3_12 textbox
+        uid=3_13 button " New User"
+        uid=4_0 dialog "New item" focusable focused modal
+          uid=4_1 heading "New item" level="3"
+          "  "
+          uid=4_2 "Email (login)"
+          uid=4_3 textbox "Email (login)" required
+          "  "
+          uid=4_4 "First name"
+          uid=4_5 textbox "First name"
+          "  "
+          uid=4_6 "Last name"
+          uid=4_7 textbox "Last name"
+          "  "
+          uid=4_8 "Password"
+          uid=4_9 textbox "Password"
+          ""
+          uid=4_10 button "Show password"
+          "  "
+          uid=4_11 "Role"
+          uid=4_12 combobox "Role" autocomplete="list" expandable haspopup="listbox"
+          uid=4_13 button " Save"
+          uid=4_14 button " Cancel"
+        uid=3_69 "Online"
+        uid=3_70 generic live="polite" relevant="additions text"
+      
+SAYS  Filling in the new user form for Linus now; I'll pick the baker role next.
+CALL  fill_form {"pageId":2,"elements":[{"uid":"4_3","value":"linus@bakery.example"},{"uid":"4_5","value":"Linus"},{"uid":"4_7","value":"Torvalds"},{"uid":"4_9","value":"penguin"}]}
+CALL  click {"pageId":2,"uid":"4_12","includeSnapshot":true}
+OK    Successfully filled out the form
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=3_0 RootWebArea "Users" url="http://localhost:55147/users"
+        uid=3_1 "###Bakery###"
+        uid=3_2 generic
+          uid=3_3 tab "Storefront" selectable
+            uid=3_4 link "Storefront" url="http://localhost:55147/storefront"
+          uid=3_5 tab "Dashboard" selectable
+            uid=3_6 link "Dashboard" url="http://localhost:55147/dashboard"
+          uid=3_7 tab "Users" selectable selected
+            uid=3_8 link "Users" url="http://localhost:55147/users"
+          uid=3_9 tab "Products" selectable
+            uid=3_10 link "Products" url="http://localhost:55147/products"
+          uid=3_11 tab "Logout" selectable
+        "  "
+        uid=3_12 textbox
+        uid=3_13 button " New User"
+        uid=4_0 dialog "New item" modal
+          uid=4_1 heading "New item" level="3"
+          "  "
+          uid=4_2 "Email (login)"
+          uid=4_3 textbox "Email (login)" required value="linus@bakery.example"
+          "  "
+          uid=4_4 "First name"
+          uid=4_5 textbox "First name" value="Linus"
+          "  "
+          uid=4_6 "Last name"
+          uid=4_7 textbox "Last name" value="Torvalds"
+          "  "
+          uid=4_8 "Password"
+          uid=4_9 textbox "Password" description="need 6 or more chars, mixing digits, lowercase and uppercase letters" invalid="true" value="•••••••"
+          ""
+          uid=4_10 button "Show password"
+          uid=5_0 "need 6 or more chars, mixing digits, lowercase and uppercase letters"
+          "  "
+          uid=4_11 "Role"
+          uid=4_12 combobox "Role" autocomplete="list" expandable expanded focusable focused haspopup="listbox"
+          uid=5_1 listbox orientation="vertical"
+            uid=5_2 option "barista"
+            uid=5_3 option "baker"
+            uid=5_4 option "admin"
+          uid=4_13 button " Save"
+          uid=4_14 button " Cancel"
+        uid=3_69 "Online"
+        uid=3_70 generic live="assertive" relevant="additions text"
+          uid=5_5 "need 6 or more chars, mixing digits, lowercase and uppercase letters"
+      
+SAYS  The app rejects `penguin`. It needs 6 or more characters with digits, lowercase and uppercase mixed. I'll use `Penguin1` instead.
+CALL  click {"pageId":2,"uid":"5_3"}
+OK    Successfully clicked on the element
+CALL  fill {"pageId":2,"uid":"4_9","value":"Penguin1"}
+CALL  click {"pageId":2,"uid":"4_13","includeSnapshot":true}
+OK    Successfully filled out the element
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=3_0 RootWebArea "Users" url="http://localhost:55147/users"
+        uid=3_1 "###Bakery###"
+        uid=3_2 generic
+          uid=3_3 tab "Storefront" selectable
+            uid=3_4 link "Storefront" url="http://localhost:55147/storefront"
+          uid=3_5 tab "Dashboard" selectable
+            uid=3_6 link "Dashboard" url="http://localhost:55147/dashboard"
+          uid=3_7 tab "Users" selectable selected
+            uid=3_8 link "Users" url="http://localhost:55147/users"
+          uid=3_9 tab "Products" selectable
+            uid=3_10 link "Products" url="http://localhost:55147/products"
+          uid=3_11 tab "Logout" selectable
+        "  "
+        uid=3_12 textbox
+        uid=3_13 button " New User"
+        uid=6_0 treegrid
+          uid=6_1 row "Email Name Role"
+            uid=6_2 columnheader "Email"
+            uid=6_4 columnheader "Name"
+            uid=6_6 columnheader "Role"
+            uid=6_8 columnheader
+          uid=6_9 row "baker@vaadin.com Heidi Carter baker Edit"
+            uid=6_10 gridcell "baker@vaadin.com"
+            uid=6_12 gridcell "Heidi Carter"
+            uid=6_14 gridcell "baker"
+            uid=6_16 gridcell "Edit"
+              uid=6_17 button "Edit"
+          uid=6_18 row "barista@vaadin.com Malin Castro barista Edit"
+            uid=6_19 gridcell "barista@vaadin.com"
+            uid=6_21 gridcell "Malin Castro"
+            uid=6_23 gridcell "barista"
+            uid=6_25 gridcell "Edit"
+              uid=6_26 button "Edit"
+          uid=6_27 row "admin@vaadin.com Göran Rich admin Edit"
+            uid=6_28 gridcell "admin@vaadin.com"
+            uid=6_30 gridcell "Göran Rich"
+            uid=6_32 gridcell "admin"
+            uid=6_34 gridcell "Edit"
+              uid=6_35 button "Edit"
+          uid=6_36 row "peter@vaadin.com Peter Bush barista Edit"
+            uid=6_37 gridcell "peter@vaadin.com"
+            uid=6_39 gridcell "Peter Bush"
+            uid=6_41 gridcell "barista"
+            uid=6_43 gridcell "Edit"
+              uid=6_44 button "Edit"
+          uid=6_45 row "mary@vaadin.com Mary Ocon baker Edit"
+            uid=6_46 gridcell "mary@vaadin.com"
+            uid=6_48 gridcell "Mary Ocon"
+            uid=6_50 gridcell "baker"
+            uid=6_52 gridcell "Edit"
+              uid=6_53 button "Edit"
+          uid=6_54 row "linus@bakery.example Linus Torvalds baker Edit"
+            uid=6_55 gridcell "linus@bakery.example"
+            uid=6_57 gridcell "Linus Torvalds"
+            uid=6_59 gridcell "baker"
+            uid=6_61 gridcell "Edit"
+              uid=6_62 button "Edit"
+        uid=6_63 generic
+        uid=4_0 dialog "New item" modal
+          uid=4_1 heading "New item" level="3"
+          "  "
+          uid=4_2 "Email (login)"
+          uid=4_3 textbox "Email (login)" required
+          "  "
+          uid=4_4 "First name"
+          uid=4_5 textbox "First name"
+          "  "
+          uid=4_6 "Last name"
+          uid=4_7 textbox "Last name"
+          "  "
+          uid=4_8 "Password"
+          uid=4_9 textbox "Password"
+          ""
+          uid=4_10 button "Show password"
+          "  "
+          uid=4_11 "Role"
+          uid=4_12 combobox "Role" autocomplete="list" expandable haspopup="listbox"
+          uid=4_13 button " Save" disableable disabled focusable focused
+          uid=4_14 button " Cancel"
+        uid=3_69 "Online"
+        uid=3_70 generic live="assertive" relevant="additions text"
+      
+SAYS  Linus Torvalds's account now exists. It appears in the Users list as `linus@bakery.example` with the baker role.
+      
+      The app rejected `penguin`. It requires 6 or more characters that mix digits, lowercase and uppercase letters. I used **`Penguin1`**, which it accepted.
+END   turns=13 duration=21s cost=$0.054344100000000006 is_error=false

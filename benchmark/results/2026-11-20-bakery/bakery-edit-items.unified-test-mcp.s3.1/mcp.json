@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "unified-test-mcp": {
+      "type": "stdio",
+      "command": "java",
+      "args": [
+        "-jar",
+        "/opt/unified-test-mcp.jar",
+        "--browser-executable",
+        "/usr/bin/chromium"
+      ]
+    }
+  }
+}

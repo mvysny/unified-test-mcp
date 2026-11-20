@@ -1,33 +1,30 @@
 # What the server lacks for the benchmark
 
-The benchmark's 12 scenarios (`benchmark/scenarios/`, `benchmark.md`) through this server: which
-pass today, which can't, and what each needs. From the first CRM round's probe
-(`benchmark/results/2026-11-18-crm/`), and walks through Bakery (seed 1) driven over stdio, its DOM
-looked up beside it: on 2026-11-19 with the server as of 5f4434c, and as of e3010d1, which walks
-the templates' shadow roots; on 2026-11-20 as of d49a8be, each walk ending in the app's check.
+The benchmark's 12 scenarios (`benchmark/scenarios/`, `benchmark.md`) through this server: what
+each still needs. From the rounds of 2026-11-20, all three arms, seeds 1–3
+(`benchmark/results/2026-11-20-crm/`, `…-bakery/`, each with its `NOTES.md`), and the walks through
+Bakery before them.
 
 Two kinds of gap: a **blocker** leaves a scenario undoable through our tools; a **cost** lets it
-pass at many times a competitor's tokens, which is what the benchmark measures.
+pass at many times a competitor's tokens, which is what the benchmark measures. No blocker is
+left.
 
 ## Where each scenario stands
 
-| Scenario | Today | What stands in the way |
+| Scenario | Ours: passed, median cost and time (the cheaper competitor's) | What stands in the way |
 |---|---|---|
-| crm-add-contact | passes, $0.24 (Playwright MCP $0.14) | unmeasured since a row a line (`D_grid_as_rows`) |
-| crm-invalid-email | passes, $0.19 ($0.12) | the same |
-| crm-move-contact | passes, $0.16 ($0.12) | the same |
-| crm-count | passes, 210 turns, $1.23 ($0.06) | unmeasured since `get_rows` (`D_get_rows_scrolls`) |
-| crm-delete-closed | passes, 130 turns, $1.06 ($0.22) | the same |
-| bakery-locked-user | passes in the scripted walk: Edit, Role, Save, the persistent notification in Save's answer | — |
-| bakery-price-cap | passes in the walk: 1200's error in `set_value`'s answer, then 1000 | — the Crud editor inline, no `Modal:` line (§1), didn't matter |
-| bakery-new-user | passes in the walk: the password rule in `set_value`'s answer | the same |
-| bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (`D_set_value_reads_back`) |
-| bakery-edit-items | passes in the walk: a delete, two amounts, review, place | — |
-| bakery-reschedule | passes in the walk: search, the card, Edit order, the date, place, the comment's Send | — `click(ref, row)` opens the order since `R_dramafinder_row_click`'s centre first |
-| bakery-today-count | passes in the walks: seed 1 Bakery, Ready, 3; seed 3 Store, Ready, 2, off `get_rows` | — seeds 1–3 all ask Ready; Delivered's check shows (`D_lone_icon`) |
-
-Ours: the probe, one run each, of a work-in-progress tree whose grid showed a line per cell (its
-`NOTES.md`). In brackets: Playwright MCP's median, the cheaper competitor in every CRM scenario.
+| crm-add-contact | 3 of 3, $0.064, 20 s ($0.128, 106 s) | — |
+| crm-invalid-email | 3 of 3, $0.064, 23 s ($0.092, 43 s) | — |
+| crm-move-contact | 3 of 3, $0.055, 27 s ($0.097, 33 s) | — |
+| crm-count | 3 of 3, $0.062, 12 s ($0.085, 123 s, 2 of 3) | — |
+| crm-delete-closed | 3 of 3, $0.282, 71 s ($0.118, 81 s, 2 of 3) | cost: two clicks a contact, each answered with the page's snapshot (§2) |
+| bakery-locked-user | 3 of 3, $0.046, 20 s ($0.056, 19 s) | — |
+| bakery-price-cap | 3 of 3, $0.050, 22 s ($0.056, 17 s) | — the Crud editor inline, no `Modal:` line (§1), didn't matter |
+| bakery-new-user | 3 of 3, $0.063, 22 s ($0.054, 21 s) | the same |
+| bakery-new-order | 3 of 3, $0.088, 36 s ($0.262, 72 s, 2 of 3) | each product pick waits 10 s (`D_set_value_reads_back`) |
+| bakery-edit-items | 3 of 3, $0.070, 24 s ($0.156, 35 s) | — |
+| bakery-reschedule | 3 of 3, $0.076, 35 s ($0.138, 58 s, 2 of 3) | — |
+| bakery-today-count | 1 of 3 as checked, 3 of 3 right, $0.030, 18 s ($0.058, 12 s) | the harness: the fork's check reads the answer's first integer (§3) |
 
 ## 1. Lit templates — walked on Bakery
 
@@ -48,13 +45,23 @@ Unified API's lookups reach into them only in the local `-shadow` build
 ## 2. Grid
 
 The CRM's cost, the grid's cells in every answer and the rows beyond the rendered ones, is built
-(`D_grid_as_rows`, `D_get_rows_scrolls`); the next CRM round measures it. The storefront has 158
-orders, 23 cards rendered: bakery-today-count's "Today" group sits on top, and
-bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered ones
-on seed 1.
+(`D_grid_as_rows`, `D_get_rows_scrolls`) and measured: crm-count 6 turns, where the probe of
+2026-11-18 took 210. The storefront has 158 orders, 23 cards rendered: bakery-today-count's
+"Today" group sits on top, and bakery-reschedule's target is found by the search, so neither needs
+rows beyond the rendered ones.
+
+- **crm-delete-closed costs ours $0.28**, playwright's $0.12: its agent reads all 190 rows in one
+  `get_rows`, then clicks each contact's row and the form's Delete, 13 contacts on seed 3, every
+  click answered with the page's snapshot, the contact form's fields included; the context grows
+  to 46k. `Q_lean_answer`: an action answering with what changed, rather than the whole page
+  (`D_action_returns_snapshot`)?
 
 ## 3. Smaller, each found walking Bakery
 
+- **bakery-today-count's check** takes the answer's first integer (`Answers.firstInteger` in the
+  fork), and agents explain before the number: two of ours ("rows 0–6 … **2**" read as 0) and
+  one of playwright's misjudged. The answer's last integer reads every answer of the round right.
+  The fork's change, the same for all arms.
 - **Links and tabs**: Bakery's menu shows as `Tab [value="Storefront"]` with `Anchor "Storefront"`
   inside it, the CRM's drawer as `Anchor "List"`: no `href`, no `actions: click`, no `selected` on
   the current tab. An agent clicks the Anchor anyway, or guesses `/users`; `path=` as on a
@@ -68,5 +75,6 @@ ours, so by the code it isn't one a user acts on and shows as its text, none
 
 ## Order
 
-1. A CRM round on a committed tree, and Bakery's first.
-2. §1: the Unified API's upstream PR; Dramafinder's #311 merged and released. §3's links and tabs.
+1. §3's check, in the fork, and today-count's three runs judged again.
+2. §2's `Q_lean_answer`, for crm-delete-closed.
+3. §1: the Unified API's upstream PR; Dramafinder's #311 merged and released. §3's links and tabs.

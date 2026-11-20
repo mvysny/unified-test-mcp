@@ -1,0 +1,300 @@
+CALL  new_page {"url":"http://localhost:38663"}
+OK    ## Pages
+      1: about:blank
+      2: http://localhost:38663/login [selected]
+CALL  take_snapshot {"pageId":2}
+OK    ## Latest page snapshot
+      uid=1_0 RootWebArea "###Bakery###" url="http://localhost:38663/login"
+        uid=1_1 dialog "###Bakery###" modal
+          uid=1_2 heading "###Bakery###" level="1"
+          uid=1_3 "admin@vaadin.com + admin barista@vaadin.com + barista"
+          uid=1_4 region "Sign in"
+            uid=1_5 heading "Sign in" level="2"
+            uid=1_6 form
+              "  "
+              uid=1_7 "Email"
+              uid=1_8 textbox "Email" focusable focused required
+              "  "
+              uid=1_9 "Password"
+              uid=1_10 textbox "Password" required
+              ""
+              uid=1_11 button "Show password"
+            uid=1_12 button " Sign in"
+        uid=1_13 "Online"
+        uid=1_14 generic live="polite" relevant="additions text"
+      
+CALL  fill_form {"pageId":2,"elements":[{"uid":"1_8","value":"admin@vaadin.com"},{"uid":"1_10","value":"admin"}]}
+CALL  click {"pageId":2,"uid":"1_12"}
+OK    Successfully filled out the form
+OK    Successfully clicked on the element
+      Page navigated to http://localhost:38663/?continue.
+CALL  navigate_page {"pageId":2,"url":"http://localhost:38663/products"}
+CALL  take_snapshot {"pageId":2}
+OK    Successfully navigated to http://localhost:38663/products.
+      ## Pages
+      1: about:blank
+      2: http://localhost:38663/products [selected]
+OK    ## Latest page snapshot
+      uid=2_0 RootWebArea "Products" url="http://localhost:38663/products"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:38663/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:38663/dashboard"
+          uid=2_7 tab "Users" selectable
+            uid=2_8 link "Users" url="http://localhost:38663/users"
+          uid=2_9 tab "Products" selectable selected
+            uid=2_10 link "Products" url="http://localhost:38663/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New Product"
+        uid=2_14 treegrid
+          uid=2_15 row "Product Name Unit Price"
+            uid=2_16 columnheader "Product Name"
+            uid=2_18 columnheader "Unit Price"
+            uid=2_20 columnheader
+          uid=2_21 row "Vanilla Strawberry Pastry $8.71 Edit"
+            uid=2_22 gridcell "Vanilla Strawberry Pastry"
+            uid=2_24 gridcell "$8.71"
+            uid=2_26 gridcell "Edit"
+              uid=2_27 button "Edit"
+          uid=2_28 row "Vanilla Chocolate Cookie $37.28 Edit"
+            uid=2_29 gridcell "Vanilla Chocolate Cookie"
+            uid=2_31 gridcell "$37.28"
+            uid=2_33 gridcell "Edit"
+              uid=2_34 button "Edit"
+          uid=2_35 row "Vanilla Cracker $83.11 Edit"
+            uid=2_36 gridcell "Vanilla Cracker"
+            uid=2_38 gridcell "$83.11"
+            uid=2_40 gridcell "Edit"
+              uid=2_41 button "Edit"
+          uid=2_42 row "Chocolate Blueberry Pastry $59.66 Edit"
+            uid=2_43 gridcell "Chocolate Blueberry Pastry"
+            uid=2_45 gridcell "$59.66"
+            uid=2_47 gridcell "Edit"
+              uid=2_48 button "Edit"
+          uid=2_49 row "Raspberry Vanilla Tart $49.91 Edit"
+            uid=2_50 gridcell "Raspberry Vanilla Tart"
+            uid=2_52 gridcell "$49.91"
+            uid=2_54 gridcell "Edit"
+              uid=2_55 button "Edit"
+          uid=2_56 row "Strawberry Raspberry Brownie $83.01 Edit"
+            uid=2_57 gridcell "Strawberry Raspberry Brownie"
+            uid=2_59 gridcell "$83.01"
+            uid=2_61 gridcell "Edit"
+              uid=2_62 button "Edit"
+          uid=2_63 row "Vanilla Bun $30.64 Edit"
+            uid=2_64 gridcell "Vanilla Bun"
+            uid=2_66 gridcell "$30.64"
+            uid=2_68 gridcell "Edit"
+              uid=2_69 button "Edit"
+          uid=2_70 row "Blueberry Strawberry Cracker $96.31 Edit"
+            uid=2_71 gridcell "Blueberry Strawberry Cracker"
+            uid=2_73 gridcell "$96.31"
+            uid=2_75 gridcell "Edit"
+              uid=2_76 button "Edit"
+          uid=2_77 row "Vanilla Muffin $56.94 Edit"
+            uid=2_78 gridcell "Vanilla Muffin"
+            uid=2_80 gridcell "$56.94"
+            uid=2_82 gridcell "Edit"
+              uid=2_83 button "Edit"
+          uid=2_84 row "Blueberry Bagel $11.79 Edit"
+            uid=2_85 gridcell "Blueberry Bagel"
+            uid=2_87 gridcell "$11.79"
+            uid=2_89 gridcell "Edit"
+              uid=2_90 button "Edit"
+          uid=2_91 row "Strawberry Tart $43.93 Edit"
+            uid=2_92 gridcell "Strawberry Tart"
+            uid=2_94 gridcell "$43.93"
+            uid=2_96 gridcell "Edit"
+              uid=2_97 button "Edit"
+          uid=2_98 row "Vanilla Brownie $18.91 Edit"
+            uid=2_99 gridcell "Vanilla Brownie"
+            uid=2_101 gridcell "$18.91"
+            uid=2_103 gridcell "Edit"
+              uid=2_104 button "Edit"
+        uid=2_105 generic
+        uid=2_106 "Online"
+        uid=2_107 generic live="polite" relevant="additions text"
+      
+CALL  click {"pageId":2,"uid":"2_13","includeSnapshot":true}
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=2_0 RootWebArea "Products" url="http://localhost:38663/products"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:38663/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:38663/dashboard"
+          uid=2_7 tab "Users" selectable
+            uid=2_8 link "Users" url="http://localhost:38663/users"
+          uid=2_9 tab "Products" selectable selected
+            uid=2_10 link "Products" url="http://localhost:38663/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New Product"
+        uid=3_0 dialog "New item" focusable focused modal
+          uid=3_1 heading "New item" level="3"
+          "  "
+          uid=3_2 "Product name"
+          uid=3_3 textbox "Product name"
+          "  "
+          uid=3_4 "Unit price"
+          uid=3_5 "$"
+          uid=3_6 textbox "Unit price"
+          uid=3_7 button " Save"
+          uid=3_8 button " Cancel"
+        uid=2_106 "Online"
+        uid=2_107 generic live="polite" relevant="additions text"
+      
+SAYS  Filling in the new product form with the 1200 price first.
+CALL  fill_form {"pageId":2,"elements":[{"uid":"3_3","value":"Benchmark Brioche"},{"uid":"3_6","value":"1200"}]}
+OK    Successfully filled out the form
+CALL  click {"pageId":2,"uid":"3_7","includeSnapshot":true}
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=2_0 RootWebArea "Products" url="http://localhost:38663/products"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:38663/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:38663/dashboard"
+          uid=2_7 tab "Users" selectable
+            uid=2_8 link "Users" url="http://localhost:38663/users"
+          uid=2_9 tab "Products" selectable selected
+            uid=2_10 link "Products" url="http://localhost:38663/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New Product"
+        uid=3_0 dialog "New item" modal
+          uid=3_1 heading "New item" level="3"
+          "  "
+          uid=3_2 "Product name"
+          uid=3_3 textbox "Product name" value="Benchmark Brioche"
+          "  "
+          uid=3_4 "Unit price"
+          uid=3_5 "$"
+          uid=3_6 textbox "Unit price" description="price must be between 0 and 1000" invalid="true" value="1200"
+          uid=4_0 "price must be between 0 and 1000"
+          uid=3_7 button " Save" focusable focused
+          uid=3_8 button " Cancel"
+        uid=2_106 "Online"
+        uid=2_107 generic live="assertive" relevant="additions text"
+          uid=4_1 "price must be between 0 and 1000"
+      
+SAYS  The app rejects 1200 because the limit is 1000. Using 1000, the highest price it accepts.
+CALL  fill {"pageId":2,"uid":"3_6","value":"1000"}
+OK    Successfully filled out the element
+CALL  click {"pageId":2,"uid":"3_7","includeSnapshot":true}
+OK    Successfully clicked on the element
+      ## Latest page snapshot
+      uid=2_0 RootWebArea "Products" url="http://localhost:38663/products"
+        uid=2_1 "###Bakery###"
+        uid=2_2 generic
+          uid=2_3 tab "Storefront" selectable
+            uid=2_4 link "Storefront" url="http://localhost:38663/storefront"
+          uid=2_5 tab "Dashboard" selectable
+            uid=2_6 link "Dashboard" url="http://localhost:38663/dashboard"
+          uid=2_7 tab "Users" selectable
+            uid=2_8 link "Users" url="http://localhost:38663/users"
+          uid=2_9 tab "Products" selectable selected
+            uid=2_10 link "Products" url="http://localhost:38663/products"
+          uid=2_11 tab "Logout" selectable
+        "  "
+        uid=2_12 textbox
+        uid=2_13 button " New Product"
+        uid=5_0 treegrid
+          uid=5_1 row "Product Name Unit Price"
+            uid=5_2 columnheader "Product Name"
+            uid=5_4 columnheader "Unit Price"
+            uid=5_6 columnheader
+          uid=5_7 row "Vanilla Strawberry Pastry $8.71 Edit"
+            uid=5_8 gridcell "Vanilla Strawberry Pastry"
+            uid=5_10 gridcell "$8.71"
+            uid=5_12 gridcell "Edit"
+              uid=5_13 button "Edit"
+          uid=5_14 row "Vanilla Chocolate Cookie $37.28 Edit"
+            uid=5_15 gridcell "Vanilla Chocolate Cookie"
+            uid=5_17 gridcell "$37.28"
+            uid=5_19 gridcell "Edit"
+              uid=5_20 button "Edit"
+          uid=5_21 row "Vanilla Cracker $83.11 Edit"
+            uid=5_22 gridcell "Vanilla Cracker"
+            uid=5_24 gridcell "$83.11"
+            uid=5_26 gridcell "Edit"
+              uid=5_27 button "Edit"
+          uid=5_28 row "Chocolate Blueberry Pastry $59.66 Edit"
+            uid=5_29 gridcell "Chocolate Blueberry Pastry"
+            uid=5_31 gridcell "$59.66"
+            uid=5_33 gridcell "Edit"
+              uid=5_34 button "Edit"
+          uid=5_35 row "Raspberry Vanilla Tart $49.91 Edit"
+            uid=5_36 gridcell "Raspberry Vanilla Tart"
+            uid=5_38 gridcell "$49.91"
+            uid=5_40 gridcell "Edit"
+              uid=5_41 button "Edit"
+          uid=5_42 row "Strawberry Raspberry Brownie $83.01 Edit"
+            uid=5_43 gridcell "Strawberry Raspberry Brownie"
+            uid=5_45 gridcell "$83.01"
+            uid=5_47 gridcell "Edit"
+              uid=5_48 button "Edit"
+          uid=5_49 row "Vanilla Bun $30.64 Edit"
+            uid=5_50 gridcell "Vanilla Bun"
+            uid=5_52 gridcell "$30.64"
+            uid=5_54 gridcell "Edit"
+              uid=5_55 button "Edit"
+          uid=5_56 row "Blueberry Strawberry Cracker $96.31 Edit"
+            uid=5_57 gridcell "Blueberry Strawberry Cracker"
+            uid=5_59 gridcell "$96.31"
+            uid=5_61 gridcell "Edit"
+              uid=5_62 button "Edit"
+          uid=5_63 row "Vanilla Muffin $56.94 Edit"
+            uid=5_64 gridcell "Vanilla Muffin"
+            uid=5_66 gridcell "$56.94"
+            uid=5_68 gridcell "Edit"
+              uid=5_69 button "Edit"
+          uid=5_70 row "Blueberry Bagel $11.79 Edit"
+            uid=5_71 gridcell "Blueberry Bagel"
+            uid=5_73 gridcell "$11.79"
+            uid=5_75 gridcell "Edit"
+              uid=5_76 button "Edit"
+          uid=5_77 row "Strawberry Tart $43.93 Edit"
+            uid=5_78 gridcell "Strawberry Tart"
+            uid=5_80 gridcell "$43.93"
+            uid=5_82 gridcell "Edit"
+              uid=5_83 button "Edit"
+          uid=5_84 row "Vanilla Brownie $18.91 Edit"
+            uid=5_85 gridcell "Vanilla Brownie"
+            uid=5_87 gridcell "$18.91"
+            uid=5_89 gridcell "Edit"
+              uid=5_90 button "Edit"
+          uid=5_91 row "Benchmark Brioche $1,000.00 Edit"
+            uid=5_92 gridcell "Benchmark Brioche"
+            uid=5_94 gridcell "$1,000.00"
+            uid=5_96 gridcell "Edit"
+              uid=5_97 button "Edit"
+        uid=5_98 generic
+        uid=3_0 dialog "New item" modal
+          uid=3_1 heading "New item" level="3"
+          "  "
+          uid=3_2 "Product name"
+          uid=3_3 textbox "Product name"
+          "  "
+          uid=3_4 "Unit price"
+          uid=3_5 "$"
+          uid=3_6 textbox "Unit price"
+          uid=3_7 button " Save" disableable disabled focusable focused
+          uid=3_8 button " Cancel"
+        uid=2_106 "Online"
+        uid=2_107 generic live="assertive" relevant="additions text"
+      
+SAYS  I added "Benchmark Brioche" at $1,000.00, not $1,200. The app rejected 1200 with the message "price must be between 0 and 1000", so I used 1000, the highest price it accepts.
+      
+      The product now shows in the Products list at $1,000.00. The snapshot taken right after saving still showed the "New item" dialog, but its fields were cleared and Save was disabled. I didn't check that the dialog closed afterward.
+END   turns=12 duration=16s cost=$0.055034099999999996 is_error=false

@@ -1,0 +1,320 @@
+CALL  navigate {"url":"http://localhost:33335"}
+OK    Navigated to http://localhost:33335
+      
+      URL: http://localhost:33335/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  set_value {"ref":2,"value":"admin@vaadin.com"}
+CALL  set_value {"ref":3,"value":"admin"}
+OK    Set ref=2 to "admin@vaadin.com"
+      
+      URL: http://localhost:33335/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="admin@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+OK    Set ref=3 to "admin"
+      
+      URL: http://localhost:33335/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="admin@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="admin", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  click {"ref":4}
+OK    Clicked ref=4
+      
+      URL: http://localhost:33335/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <storefront-view> [ref=18]
+            - <search-bar> [ref=19, id=search]
+              - TextField [ref=20, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+              - Button "New order" [ref=21, id=action, icon="vaadin:plus"] actions: click
+              - Checkbox "Show past orders" [ref=22] actions: set_value
+            - Grid [ref=23, id=grid, rows=213]
+              - row 0: Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart
+              - row 1: ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker
+              - row 2: ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry
+              - row 3: cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart
+              - row 4: ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry
+              - rows 5–212 not shown: get_rows ref=23
+      
+CALL  click {"ref":15}
+OK    Clicked ref=15
+      
+      URL: http://localhost:33335/products
+      Title: Products
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New Product" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Grid [ref=28, rows=12]
+              Header: | Product Name | Unit Price | |
+              - row 0: Vanilla Strawberry Pastry | $8.71 |
+              - row 1: Vanilla Chocolate Cookie | $37.28 |
+              - row 2: Vanilla Cracker | $83.11 |
+              - row 3: Chocolate Blueberry Pastry | $59.66 |
+              - row 4: Raspberry Vanilla Tart | $49.91 |
+              - row 5: Strawberry Raspberry Brownie | $83.01 |
+              - row 6: Vanilla Bun | $30.64 |
+              - row 7: Blueberry Strawberry Cracker | $96.31 |
+              - row 8: Vanilla Muffin | $56.94 |
+              - row 9: Blueberry Bagel | $11.79 |
+              - rows 10–11 not shown: get_rows ref=28
+      
+CALL  click {"ref":26}
+OK    Clicked ref=26
+      
+      URL: http://localhost:33335/products
+      Title: Products
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New Product" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=12]
+              Header: | Product Name | Unit Price | |
+              - row 0: Vanilla Strawberry Pastry | $8.71 |
+              - row 1: Vanilla Chocolate Cookie | $37.28 |
+              - row 2: Vanilla Cracker | $83.11 |
+              - row 3: Chocolate Blueberry Pastry | $59.66 |
+              - row 4: Raspberry Vanilla Tart | $49.91 |
+              - row 5: Strawberry Raspberry Brownie | $83.01 |
+              - row 6: Vanilla Bun | $30.64 |
+              - row 7: Blueberry Strawberry Cracker | $96.31 |
+              - row 8: Vanilla Muffin | $56.94 |
+              - row 9: Blueberry Bagel | $11.79 |
+              - rows 10–11 not shown: get_rows ref=28
+            - TextField "Product name" [ref=31, value=""] actions: set_value
+            - TextField "Unit price" [ref=32, value=""] actions: set_value
+            - H3 "New item" [ref=33]
+      
+SAYS  Filling in the new product form now.
+CALL  set_value {"ref":31,"value":"Benchmark Brioche"}
+CALL  set_value {"ref":32,"value":1200}
+OK    Set ref=31 to "Benchmark Brioche"
+      
+      URL: http://localhost:33335/products
+      Title: Products
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New Product" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=12]
+              Header: | Product Name | Unit Price | |
+              - row 0: Vanilla Strawberry Pastry | $8.71 |
+              - row 1: Vanilla Chocolate Cookie | $37.28 |
+              - row 2: Vanilla Cracker | $83.11 |
+              - row 3: Chocolate Blueberry Pastry | $59.66 |
+              - row 4: Raspberry Vanilla Tart | $49.91 |
+              - row 5: Strawberry Raspberry Brownie | $83.01 |
+              - row 6: Vanilla Bun | $30.64 |
+              - row 7: Blueberry Strawberry Cracker | $96.31 |
+              - row 8: Vanilla Muffin | $56.94 |
+              - row 9: Blueberry Bagel | $11.79 |
+              - rows 10–11 not shown: get_rows ref=28
+            - TextField "Product name" [ref=31, value="Benchmark Brioche"] actions: set_value
+            - TextField "Unit price" [ref=32, value=""] actions: set_value
+            - H3 "New item" [ref=33]
+      
+OK    Set ref=32 to "1200"; it holds it but shows invalid "price must be between 0 and 1000"
+      
+      URL: http://localhost:33335/products
+      Title: Products
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New Product" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=12]
+              Header: | Product Name | Unit Price | |
+              - row 0: Vanilla Strawberry Pastry | $8.71 |
+              - row 1: Vanilla Chocolate Cookie | $37.28 |
+              - row 2: Vanilla Cracker | $83.11 |
+              - row 3: Chocolate Blueberry Pastry | $59.66 |
+              - row 4: Raspberry Vanilla Tart | $49.91 |
+              - row 5: Strawberry Raspberry Brownie | $83.01 |
+              - row 6: Vanilla Bun | $30.64 |
+              - row 7: Blueberry Strawberry Cracker | $96.31 |
+              - row 8: Vanilla Muffin | $56.94 |
+              - row 9: Blueberry Bagel | $11.79 |
+              - rows 10–11 not shown: get_rows ref=28
+            - TextField "Product name" [ref=31, value="Benchmark Brioche"] actions: set_value
+            - TextField "Unit price" [ref=32, value="1200", invalid "price must be between 0 and 1000"] actions: set_value
+            - H3 "New item" [ref=33]
+      
+SAYS  Max is 1000. Using that.
+CALL  set_value {"ref":32,"value":1000}
+OK    Set ref=32 to "1000"
+      
+      URL: http://localhost:33335/products
+      Title: Products
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New Product" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Button "Save" [ref=29] actions: click
+            - Button "Cancel" [ref=30] actions: click
+            - Grid [ref=28, rows=12]
+              Header: | Product Name | Unit Price | |
+              - row 0: Vanilla Strawberry Pastry | $8.71 |
+              - row 1: Vanilla Chocolate Cookie | $37.28 |
+              - row 2: Vanilla Cracker | $83.11 |
+              - row 3: Chocolate Blueberry Pastry | $59.66 |
+              - row 4: Raspberry Vanilla Tart | $49.91 |
+              - row 5: Strawberry Raspberry Brownie | $83.01 |
+              - row 6: Vanilla Bun | $30.64 |
+              - row 7: Blueberry Strawberry Cracker | $96.31 |
+              - row 8: Vanilla Muffin | $56.94 |
+              - row 9: Blueberry Bagel | $11.79 |
+              - rows 10–11 not shown: get_rows ref=28
+            - TextField "Product name" [ref=31, value="Benchmark Brioche"] actions: set_value
+            - TextField "Unit price" [ref=32, value="1000"] actions: set_value
+            - H3 "New item" [ref=33]
+      
+CALL  click {"ref":29}
+OK    Clicked ref=29
+      
+      URL: http://localhost:33335/products
+      Title: Products
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, value="Users"]
+              - Anchor "Users" [ref=13]
+            - Tab [ref=14, value="Products"]
+              - Anchor "Products" [ref=15]
+            - Tab [ref=16, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=17]
+        - Content:
+          - <search-bar> [ref=24]
+            - TextField [ref=25, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+            - Button "New Product" [ref=26, id=action, icon="vaadin:plus"] actions: click
+          - Crud [ref=27]
+            - Grid [ref=28, rows=13]
+              Header: | Product Name | Unit Price | |
+              - row 0: Vanilla Strawberry Pastry | $8.71 |
+              - row 1: Vanilla Chocolate Cookie | $37.28 |
+              - row 2: Vanilla Cracker | $83.11 |
+              - row 3: Chocolate Blueberry Pastry | $59.66 |
+              - row 4: Raspberry Vanilla Tart | $49.91 |
+              - row 5: Strawberry Raspberry Brownie | $83.01 |
+              - row 6: Vanilla Bun | $30.64 |
+              - row 7: Blueberry Strawberry Cracker | $96.31 |
+              - row 8: Vanilla Muffin | $56.94 |
+              - row 9: Blueberry Bagel | $11.79 |
+              - rows 10–12 not shown: get_rows ref=28
+      
+SAYS  I added "Benchmark Brioche" at **$1,000.00**, not $1,200. The app rejected 1200 with the error "price must be between 0 and 1000", so I used 1000, the highest price it accepts.
+      
+      After I saved, the product grid went from 12 to 13 rows. I didn't scroll down to look at the new row itself.
+END   turns=11 duration=23s cost=$0.05020560000000001 is_error=false

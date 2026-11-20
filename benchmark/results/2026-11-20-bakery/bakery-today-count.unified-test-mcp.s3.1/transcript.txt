@@ -1,0 +1,125 @@
+CALL  navigate {"url":"http://localhost:47733"}
+OK    Navigated to http://localhost:47733
+      
+      URL: http://localhost:47733/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  set_value {"ref":2,"value":"barista@vaadin.com"}
+CALL  set_value {"ref":3,"value":"barista"}
+OK    Set ref=2 to "barista@vaadin.com"
+      
+      URL: http://localhost:47733/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="barista@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+OK    Set ref=3 to "barista"
+      
+      URL: http://localhost:47733/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="barista@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="barista", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  click {"ref":4}
+OK    Clicked ref=4
+      
+      URL: http://localhost:47733/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+              - Button "New order" [ref=17, id=action, icon="vaadin:plus"] actions: click
+              - Checkbox "Show past orders" [ref=18] actions: set_value
+            - Grid [ref=19, id=grid, rows=213]
+              - row 0: Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart
+              - row 1: ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker
+              - row 2: ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry
+              - row 3: cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart
+              - row 4: ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry
+              - rows 5–212 not shown: get_rows ref=19
+      
+CALL  get_rows {"ref":19,"offset":0,"length":30}
+OK    Rows 0–29 of 213 in ref=19. The grid now shows row 0; the snapshot below has the refs of the rows in view:
+      - row 0: Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart
+      - row 1: ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker
+      - row 2: ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry
+      - row 3: cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart
+      - row 4: ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry
+      - row 5: cancelled 4:00 PM Store Kerry Benton 5 Chocolate Blueberry Pastry 1 Vanilla Chocolate Cookie
+      - row 6: ready 4:00 PM Bakery Skyler Mcbride 7 Raspberry Vanilla Tart 10 Vanilla Cracker
+      - row 7: This week Sat, Nov 21 - Sun, Nov 22; Icon "vaadin:check"; Sat 21 8:00 AM Bakery Amanda Rich 6 Vanilla Cracker
+      - row 8: ready Sat 21 12:00 PM Bakery Griffin Rowland 7 Chocolate Blueberry Pastry 5 Strawberry Raspberry Brownie
+      - row 9: ready Sat 21 12:00 PM Bakery Skyler Nixon 8 Chocolate Blueberry Pastry 2 Vanilla Cracker
+      - row 10: ready Sat 21 12:00 PM Bakery Laurel Hendricks 10 Chocolate Blueberry Pastry
+      - row 11: Icon "vaadin:check"; Sat 21 12:00 PM Bakery Jessica Russell 7 Vanilla Cracker 2 Raspberry Vanilla Tart
+      - row 12: ready Sat 21 12:00 PM Bakery Lionel Castro 4 Raspberry Vanilla Tart 5 Vanilla Cracker
+      - row 13: Icon "vaadin:check"; Sat 21 12:00 PM Store Lionel Moore 7 Vanilla Cracker 1 Raspberry Vanilla Tart
+      - row 14: ready Sat 21 4:00 PM Bakery Griffin Pickett 8 Vanilla Cracker 6 Chocolate Blueberry Pastry
+      - row 15: new Nov 22 Sunday Ferdinand Macias 10 Raspberry Vanilla Tart
+      - row 16: new Nov 22 Sunday Ferdinand Cortez 6 Vanilla Bun
+      - row 17: new Nov 22 Sunday Sylvia Castro 10 Vanilla Chocolate Cookie 8 Chocolate Blueberry Pastry
+      - row 18: new Nov 22 Sunday Octavia Benton 2 Chocolate Blueberry Pastry 1 Vanilla Strawberry Pastry
+      - row 19: problem Nov 22 Sunday Dominique Farmer 1 Vanilla Chocolate Cookie 7 Raspberry Vanilla Tart 5 Strawberry Raspberry Brownie
+      - row 20: cancelled Nov 22 Sunday Amanda Huber 1 Vanilla Cracker 7 Vanilla Chocolate Cookie 7 Strawberry Raspberry Brownie
+      - row 21: new Nov 22 Sunday Elaine Moore 3 Chocolate Blueberry Pastry
+      - row 22: new Nov 22 Sunday Octavia Chen 3 Vanilla Cracker 4 Chocolate Blueberry Pastry
+      - row 23: new Nov 22 Sunday Octavia Macias 3 Vanilla Cracker 7 Chocolate Blueberry Pastry 1 Raspberry Vanilla Tart
+      - row 24: new Nov 22 Sunday Lionel Lyons 2 Raspberry Vanilla Tart 1 Vanilla Chocolate Cookie 8 Chocolate Blueberry Pastry
+      - row 25: new Nov 22 Sunday Lael Carver 2 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 2 Vanilla Bun
+      - row 26: Upcoming After this week new Nov 23 Monday Dominique Macias 5 Raspberry Vanilla Tart 1 Vanilla Chocolate Cookie 10 Vanilla Cracker
+      - row 27: new Nov 23 Monday Kerry Blevins 4 Strawberry Raspberry Brownie
+      - row 28: new Nov 23 Monday Skyler Carter 3 Vanilla Chocolate Cookie
+      - row 29: new Nov 23 Monday Ferdinand Thornton 10 Chocolate Blueberry Pastry 3 Raspberry Vanilla Tart
+      
+      URL: http://localhost:47733/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+              - Button "New order" [ref=17, id=action, icon="vaadin:plus"] actions: click
+              - Checkbox "Show past orders" [ref=18] actions: set_value
+            - Grid [ref=19, id=grid, rows=213]
+              - row 0: Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart
+              - row 1: ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker
+              - row 2: ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry
+              - row 3: cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart
+              - row 4: ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry
+              - rows 5–212 not shown: get_rows ref=19
+      
+SAYS  Today's orders are rows 0–6. Rows 2 and 4 are at the Store and have the status ready.
+      
+      **2**
+END   turns=6 duration=18s cost=$0.0303866 is_error=false

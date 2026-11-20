@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:54481; log in as barista@vaadin.com, password barista. In Lael Carter's next order, drop the Vanilla Bun, and add one more of each remaining product.

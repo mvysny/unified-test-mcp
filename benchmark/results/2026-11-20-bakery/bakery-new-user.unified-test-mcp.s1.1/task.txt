@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:57325; log in as admin@vaadin.com, password admin. Create an account for the new baker Linus Torvalds, linus@bakery.example, with the password `penguin`. If the app rejects that password, choose one it accepts and tell me which.

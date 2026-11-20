@@ -1,0 +1,1 @@
+{"params":{"product_b":"Strawberry Muffin","tomorrow":"Saturday, November 21","product_a":"Strawberry Vanilla Bun"},"expected":"one new order: Grace Hopper, +1 555 0100, pickup at Bakery, due 2026-11-21 11:00, state New; items exactly 2 × Strawberry Vanilla Bun and 1 × Strawberry Muffin 'no sugar'; nothing else changed"}

@@ -1,0 +1,1100 @@
+CALL  browser_navigate {"url":"http://localhost:47573"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:47573');
+      ```
+      ### Page
+      - Page URL: http://localhost:47573/login
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-23-30-384Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:47573/login
+      - Page Title: ###Bakery###
+      ### Snapshot
+      ```yaml
+      - generic [ref=e1]:
+        - generic [ref=e2]:
+          - generic:
+            - dialog "###Bakery###":
+              - generic [ref=e6]:
+                - generic [ref=e7]:
+                  - heading "###Bakery###" [level=1] [ref=e8]
+                  - generic [ref=e9]: admin@vaadin.com + admin barista@vaadin.com + barista
+                - region "Sign in" [ref=e11]:
+                  - heading "Sign in" [level=2] [ref=e12]
+                  - text: 
+                  - generic [ref=e13]:
+                    - generic [ref=e15]:
+                      - generic [ref=e16]:
+                        - generic: Email
+                        - text: •
+                      - generic [ref=e17]:
+                        - textbox "Email" [active] [ref=e18]
+                        - generic: 
+                    - generic [ref=e20]:
+                      - generic [ref=e21]:
+                        - generic: Password
+                        - text: •
+                      - generic [ref=e22]:
+                        - textbox "Password" [ref=e23]
+                        - generic:
+                          - text: 
+                          - generic [ref=e24]:
+                            - text: 
+                            - button "Show password" [ref=e25]
+                  - button "Sign in" [ref=e26]
+        - generic [ref=e28]: Online
+      ```
+CALL  browser_fill_form {"fields":[{"target":"e18","name":"Email","type":"textbox","value":"barista@vaadin.com"},{"target":"e23","name":"Password","type":"textbox","value":"barista"}]}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Email' }).fill('barista@vaadin.com');
+      await page.getByRole('textbox', { name: 'Password' }).fill('barista');
+      ```
+CALL  browser_click {"target":"e26"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Sign in' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:47573/?continue
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-23-34-490Z.yml)
+CALL  browser_find {"text":"Leblanc"}
+OK    ### Result
+      No matches found for "Leblanc".
+      ### Page
+      - Page URL: http://localhost:47573/?continue
+      - Page Title: Storefront
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:47573/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e5]:
+            - generic:
+              - generic [ref=f1e6]: "###Bakery###"
+              - tablist [ref=f1e7]:
+                - generic [aria-hidden]: 
+                - generic [ref=f1e8]:
+                  - generic:
+                    - tab [selected] [ref=f1e9] [cursor=pointer]:
+                      - link "Storefront" [ref=f1e10]:
+                        - /url: storefront
+                    - tab [ref=f1e16] [cursor=pointer]:
+                      - link "Dashboard" [ref=f1e17]:
+                        - /url: dashboard
+                    - tab [ref=f1e24] [cursor=pointer]
+                - generic [aria-hidden]: 
+          - generic [ref=f1e32]:
+            - generic [ref=f1e33]:
+              - generic [ref=f1e34]:
+                - generic [ref=f1e37]:
+                  - textbox [ref=f1e43]:
+                    - /placeholder: Search
+                  - generic: 
+                - text: 
+                - button "New order" [ref=f1e44]
+              - generic [ref=f1e52]:
+                - generic [aria-hidden] [ref=f1e53]: 
+                - checkbox "Show past orders" [ref=f1e54]
+                - generic [ref=f1e55]: Show past orders
+            - treegrid [ref=f1e59]:
+              - rowgroup
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e61]:
+                  - gridcell "Today Fri, Nov 20 problem 8:00 AM Bakery Delilah Nixon 2 Chocolate Bagel" [ref=f1e62]:
+                    - generic [ref=f1e65]:
+                      - generic [ref=f1e66]:
+                        - generic [ref=f1e67]: Today
+                        - generic [ref=f1e68]: Fri, Nov 20
+                      - generic [ref=f1e69] [cursor=pointer]:
+                        - generic [ref=f1e70]:
+                          - generic [ref=f1e71]: problem
+                          - generic [ref=f1e74]:
+                            - heading "8:00 AM" [level=3] [ref=f1e75]
+                            - heading [level=3]
+                            - heading [level=3]
+                            - generic [ref=f1e76]: Bakery
+                        - generic [ref=f1e77]:
+                          - heading "Delilah Nixon" [level=3] [ref=f1e78]
+                          - generic [ref=f1e80]:
+                            - generic [ref=f1e81]: "2"
+                            - generic [ref=f1e82]: Chocolate Bagel
+                - row [ref=f1e83]:
+                  - gridcell "ready 8:00 AM Bakery Elaine Rowland 9 Raspberry Vanilla Bagel 6 Blueberry Tart 7 Blueberry Chocolate Bagel" [ref=f1e84]:
+                    - generic [ref=f1e88] [cursor=pointer]:
+                      - generic [ref=f1e89]:
+                        - generic [ref=f1e90]: ready
+                        - generic [ref=f1e93]:
+                          - heading "8:00 AM" [level=3] [ref=f1e94]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e95]: Bakery
+                      - generic [ref=f1e96]:
+                        - heading "Elaine Rowland" [level=3] [ref=f1e97]
+                        - generic [ref=f1e98]:
+                          - generic [ref=f1e99]:
+                            - generic [ref=f1e100]: "9"
+                            - generic [ref=f1e101]: Raspberry Vanilla Bagel
+                          - generic [ref=f1e102]:
+                            - generic [ref=f1e103]: "6"
+                            - generic [ref=f1e104]: Blueberry Tart
+                          - generic [ref=f1e105]:
+                            - generic [ref=f1e106]: "7"
+                            - generic [ref=f1e107]: Blueberry Chocolate Bagel
+                - row [ref=f1e108]:
+                  - gridcell "ready 12:00 PM Store Jessica Rich 5 Raspberry Brownie 3 Blueberry Chocolate Bagel" [ref=f1e109]:
+                    - generic [ref=f1e113] [cursor=pointer]:
+                      - generic [ref=f1e114]:
+                        - generic [ref=f1e115]: ready
+                        - generic [ref=f1e118]:
+                          - heading "12:00 PM" [level=3] [ref=f1e119]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e120]: Store
+                      - generic [ref=f1e121]:
+                        - heading "Jessica Rich" [level=3] [ref=f1e122]
+                        - generic [ref=f1e123]:
+                          - generic [ref=f1e124]:
+                            - generic [ref=f1e125]: "5"
+                            - generic [ref=f1e126]: Raspberry Brownie
+                          - generic [ref=f1e127]:
+                            - generic [ref=f1e128]: "3"
+                            - generic [ref=f1e129]: Blueberry Chocolate Bagel
+                - row [ref=f1e130]:
+                  - gridcell "12:00 PM Bakery Lael Noble 10 Blueberry Chocolate Bagel 8 Chocolate Bagel 7 Raspberry Vanilla Bagel" [ref=f1e131]:
+                    - generic [ref=f1e135] [cursor=pointer]:
+                      - generic [ref=f1e144]:
+                        - heading "12:00 PM" [level=3] [ref=f1e145]
+                        - heading [level=3]
+                        - heading [level=3]
+                        - generic [ref=f1e146]: Bakery
+                      - generic [ref=f1e147]:
+                        - heading "Lael Noble" [level=3] [ref=f1e148]
+                        - generic [ref=f1e149]:
+                          - generic [ref=f1e150]:
+                            - generic [ref=f1e151]: "10"
+                            - generic [ref=f1e152]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e153]:
+                            - generic [ref=f1e154]: "8"
+                            - generic [ref=f1e155]: Chocolate Bagel
+                          - generic [ref=f1e156]:
+                            - generic [ref=f1e157]: "7"
+                            - generic [ref=f1e158]: Raspberry Vanilla Bagel
+                - row [ref=f1e159]:
+                  - gridcell "ready 4:00 PM Bakery Arsenio Chen 10 Blueberry Chocolate Bagel 9 Blueberry Tart 2 Raspberry Vanilla Bagel" [ref=f1e160]:
+                    - generic [ref=f1e164] [cursor=pointer]:
+                      - generic [ref=f1e165]:
+                        - generic [ref=f1e166]: ready
+                        - generic [ref=f1e169]:
+                          - heading "4:00 PM" [level=3] [ref=f1e170]
+                          - heading [level=3]
+                          - heading [level=3]
+                          - generic [ref=f1e171]: Bakery
+                      - generic [ref=f1e172]:
+                        - heading "Arsenio Chen" [level=3] [ref=f1e173]
+                        - generic [ref=f1e174]:
+                          - generic [ref=f1e175]:
+                            - generic [ref=f1e176]: "10"
+                            - generic [ref=f1e177]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e178]:
+                            - generic [ref=f1e179]: "9"
+                            - generic [ref=f1e180]: Blueberry Tart
+                          - generic [ref=f1e181]:
+                            - generic [ref=f1e182]: "2"
+                            - generic [ref=f1e183]: Raspberry Vanilla Bagel
+                - row [ref=f1e184]:
+                  - gridcell "4:00 PM Bakery Jessica Henry 5 Blueberry Chocolate Bagel" [ref=f1e185]:
+                    - generic [ref=f1e189] [cursor=pointer]:
+                      - generic [ref=f1e198]:
+                        - heading "4:00 PM" [level=3] [ref=f1e199]
+                        - heading [level=3]
+                        - heading [level=3]
+                        - generic [ref=f1e200]: Bakery
+                      - generic [ref=f1e201]:
+                        - heading "Jessica Henry" [level=3] [ref=f1e202]
+                        - generic [ref=f1e204]:
+                          - generic [ref=f1e205]: "5"
+                          - generic [ref=f1e206]: Blueberry Chocolate Bagel
+                - row [ref=f1e207]:
+                  - gridcell "This week Sat, Nov 21 - Sun, Nov 22 problem Sat 21 8:00 AM Store Haley Chen 10 Chocolate Bagel" [ref=f1e208]:
+                    - generic [ref=f1e211]:
+                      - generic [ref=f1e212]:
+                        - generic [ref=f1e213]: This week
+                        - generic [ref=f1e214]: Sat, Nov 21 - Sun, Nov 22
+                      - generic [ref=f1e215] [cursor=pointer]:
+                        - generic [ref=f1e216]:
+                          - generic [ref=f1e217]: problem
+                          - generic [ref=f1e220]:
+                            - heading [level=3]
+                            - heading "Sat 21" [level=3] [ref=f1e221]
+                            - heading [level=3]
+                            - generic [ref=f1e222]: 8:00 AM
+                            - generic [ref=f1e223]: Store
+                        - generic [ref=f1e224]:
+                          - heading "Haley Chen" [level=3] [ref=f1e225]
+                          - generic [ref=f1e227]:
+                            - generic [ref=f1e228]: "10"
+                            - generic [ref=f1e229]: Chocolate Bagel
+                - row [ref=f1e230]:
+                  - gridcell "ready Sat 21 4:00 PM Bakery Ori Carver 7 Blueberry Chocolate Bagel 5 Chocolate Bagel 4 Raspberry Vanilla Bagel" [ref=f1e231]:
+                    - generic [ref=f1e235] [cursor=pointer]:
+                      - generic [ref=f1e236]:
+                        - generic [ref=f1e237]: ready
+                        - generic [ref=f1e240]:
+                          - heading [level=3]
+                          - heading "Sat 21" [level=3] [ref=f1e241]
+                          - heading [level=3]
+                          - generic [ref=f1e242]: 4:00 PM
+                          - generic [ref=f1e243]: Bakery
+                      - generic [ref=f1e244]:
+                        - heading "Ori Carver" [level=3] [ref=f1e245]
+                        - generic [ref=f1e246]:
+                          - generic [ref=f1e247]:
+                            - generic [ref=f1e248]: "7"
+                            - generic [ref=f1e249]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e250]:
+                            - generic [ref=f1e251]: "5"
+                            - generic [ref=f1e252]: Chocolate Bagel
+                          - generic [ref=f1e253]:
+                            - generic [ref=f1e254]: "4"
+                            - generic [ref=f1e255]: Raspberry Vanilla Bagel
+                - row [ref=f1e256]:
+                  - gridcell "Sat 21 4:00 PM Bakery Kerry Macias 1 Blueberry Chocolate Bagel 4 Strawberry Vanilla Bun" [ref=f1e257]:
+                    - generic [ref=f1e261] [cursor=pointer]:
+                      - generic [ref=f1e270]:
+                        - heading [level=3]
+                        - heading "Sat 21" [level=3] [ref=f1e271]
+                        - heading [level=3]
+                        - generic [ref=f1e272]: 4:00 PM
+                        - generic [ref=f1e273]: Bakery
+                      - generic [ref=f1e274]:
+                        - heading "Kerry Macias" [level=3] [ref=f1e275]
+                        - generic [ref=f1e276]:
+                          - generic [ref=f1e277]:
+                            - generic [ref=f1e278]: "1"
+                            - generic [ref=f1e279]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e280]:
+                            - generic [ref=f1e281]: "4"
+                            - generic [ref=f1e282]: Strawberry Vanilla Bun
+                - row [ref=f1e283]:
+                  - gridcell "ready Sat 21 4:00 PM Bakery Dominique Rich 8 Chocolate Bagel 8 Raspberry Brownie 8 Blueberry Chocolate Bagel" [ref=f1e284]:
+                    - generic [ref=f1e288] [cursor=pointer]:
+                      - generic [ref=f1e289]:
+                        - generic [ref=f1e290]: ready
+                        - generic [ref=f1e293]:
+                          - heading [level=3]
+                          - heading "Sat 21" [level=3] [ref=f1e294]
+                          - heading [level=3]
+                          - generic [ref=f1e295]: 4:00 PM
+                          - generic [ref=f1e296]: Bakery
+                      - generic [ref=f1e297]:
+                        - heading "Dominique Rich" [level=3] [ref=f1e298]
+                        - generic [ref=f1e299]:
+                          - generic [ref=f1e300]:
+                            - generic [ref=f1e301]: "8"
+                            - generic [ref=f1e302]: Chocolate Bagel
+                          - generic [ref=f1e303]:
+                            - generic [ref=f1e304]: "8"
+                            - generic [ref=f1e305]: Raspberry Brownie
+                          - generic [ref=f1e306]:
+                            - generic [ref=f1e307]: "8"
+                            - generic [ref=f1e308]: Blueberry Chocolate Bagel
+                - row [ref=f1e309]:
+                  - gridcell "problem Nov 22 Sunday Sylvia Blevins 7 Chocolate Bagel 6 Blueberry Tart" [ref=f1e310]:
+                    - generic [ref=f1e314] [cursor=pointer]:
+                      - generic [ref=f1e315]:
+                        - generic [ref=f1e316]: problem
+                        - generic [ref=f1e319]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e320]
+                          - generic [ref=f1e321]: Sunday
+                      - generic [ref=f1e322]:
+                        - heading "Sylvia Blevins" [level=3] [ref=f1e323]
+                        - generic [ref=f1e324]:
+                          - generic [ref=f1e325]:
+                            - generic [ref=f1e326]: "7"
+                            - generic [ref=f1e327]: Chocolate Bagel
+                          - generic [ref=f1e328]:
+                            - generic [ref=f1e329]: "6"
+                            - generic [ref=f1e330]: Blueberry Tart
+                - row [ref=f1e331]:
+                  - gridcell "new Nov 22 Sunday Delilah Pierce 2 Raspberry Vanilla Bagel 5 Chocolate Bagel 5 Blueberry Tart" [ref=f1e332]:
+                    - generic [ref=f1e336] [cursor=pointer]:
+                      - generic [ref=f1e337]:
+                        - generic [ref=f1e338]: new
+                        - generic [ref=f1e341]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e342]
+                          - generic [ref=f1e343]: Sunday
+                      - generic [ref=f1e344]:
+                        - heading "Delilah Pierce" [level=3] [ref=f1e345]
+                        - generic [ref=f1e346]:
+                          - generic [ref=f1e347]:
+                            - generic [ref=f1e348]: "2"
+                            - generic [ref=f1e349]: Raspberry Vanilla Bagel
+                          - generic [ref=f1e350]:
+                            - generic [ref=f1e351]: "5"
+                            - generic [ref=f1e352]: Chocolate Bagel
+                          - generic [ref=f1e353]:
+                            - generic [ref=f1e354]: "5"
+                            - generic [ref=f1e355]: Blueberry Tart
+                - row [ref=f1e356]:
+                  - gridcell "cancelled Nov 22 Sunday Lael Maldonado 6 Blueberry Tart 4 Chocolate Bagel 6 Blueberry Chocolate Bagel" [ref=f1e357]:
+                    - generic [ref=f1e361] [cursor=pointer]:
+                      - generic [ref=f1e362]:
+                        - generic [ref=f1e363]: cancelled
+                        - generic [ref=f1e366]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e367]
+                          - generic [ref=f1e368]: Sunday
+                      - generic [ref=f1e369]:
+                        - heading "Lael Maldonado" [level=3] [ref=f1e370]
+                        - generic [ref=f1e371]:
+                          - generic [ref=f1e372]:
+                            - generic [ref=f1e373]: "6"
+                            - generic [ref=f1e374]: Blueberry Tart
+                          - generic [ref=f1e375]:
+                            - generic [ref=f1e376]: "4"
+                            - generic [ref=f1e377]: Chocolate Bagel
+                          - generic [ref=f1e378]:
+                            - generic [ref=f1e379]: "6"
+                            - generic [ref=f1e380]: Blueberry Chocolate Bagel
+                - row [ref=f1e381]:
+                  - gridcell "new Nov 22 Sunday Haley Benton 1 Strawberry Vanilla Bun 10 Blueberry Tart 9 Chocolate Bagel" [ref=f1e382]:
+                    - generic [ref=f1e386] [cursor=pointer]:
+                      - generic [ref=f1e387]:
+                        - generic [ref=f1e388]: new
+                        - generic [ref=f1e391]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e392]
+                          - generic [ref=f1e393]: Sunday
+                      - generic [ref=f1e394]:
+                        - heading "Haley Benton" [level=3] [ref=f1e395]
+                        - generic [ref=f1e396]:
+                          - generic [ref=f1e397]:
+                            - generic [ref=f1e398]: "1"
+                            - generic [ref=f1e399]: Strawberry Vanilla Bun
+                          - generic [ref=f1e400]:
+                            - generic [ref=f1e401]: "10"
+                            - generic [ref=f1e402]: Blueberry Tart
+                          - generic [ref=f1e403]:
+                            - generic [ref=f1e404]: "9"
+                            - generic [ref=f1e405]: Chocolate Bagel
+                - row [ref=f1e406]:
+                  - gridcell "new Nov 22 Sunday Dominique Huber 4 Blueberry Chocolate Bagel 5 Blueberry Tart 7 Raspberry Strawberry Tart" [ref=f1e407]:
+                    - generic [ref=f1e411] [cursor=pointer]:
+                      - generic [ref=f1e412]:
+                        - generic [ref=f1e413]: new
+                        - generic [ref=f1e416]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e417]
+                          - generic [ref=f1e418]: Sunday
+                      - generic [ref=f1e419]:
+                        - heading "Dominique Huber" [level=3] [ref=f1e420]
+                        - generic [ref=f1e421]:
+                          - generic [ref=f1e422]:
+                            - generic [ref=f1e423]: "4"
+                            - generic [ref=f1e424]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e425]:
+                            - generic [ref=f1e426]: "5"
+                            - generic [ref=f1e427]: Blueberry Tart
+                          - generic [ref=f1e428]:
+                            - generic [ref=f1e429]: "7"
+                            - generic [ref=f1e430]: Raspberry Strawberry Tart
+                - row [ref=f1e431]:
+                  - gridcell "new Nov 22 Sunday Laurel Noble 10 Raspberry Vanilla Bagel 5 Chocolate Bagel" [ref=f1e432]:
+                    - generic [ref=f1e436] [cursor=pointer]:
+                      - generic [ref=f1e437]:
+                        - generic [ref=f1e438]: new
+                        - generic [ref=f1e441]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e442]
+                          - generic [ref=f1e443]: Sunday
+                      - generic [ref=f1e444]:
+                        - heading "Laurel Noble" [level=3] [ref=f1e445]
+                        - generic [ref=f1e446]:
+                          - generic [ref=f1e447]:
+                            - generic [ref=f1e448]: "10"
+                            - generic [ref=f1e449]: Raspberry Vanilla Bagel
+                          - generic [ref=f1e450]:
+                            - generic [ref=f1e451]: "5"
+                            - generic [ref=f1e452]: Chocolate Bagel
+                - row [ref=f1e453]:
+                  - gridcell "cancelled Nov 22 Sunday Elaine Pickett 4 Chocolate Bagel" [ref=f1e454]:
+                    - generic [ref=f1e458] [cursor=pointer]:
+                      - generic [ref=f1e459]:
+                        - generic [ref=f1e460]: cancelled
+                        - generic [ref=f1e463]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e464]
+                          - generic [ref=f1e465]: Sunday
+                      - generic [ref=f1e466]:
+                        - heading "Elaine Pickett" [level=3] [ref=f1e467]
+                        - generic [ref=f1e469]:
+                          - generic [ref=f1e470]: "4"
+                          - generic [ref=f1e471]: Chocolate Bagel
+                - row [ref=f1e472]:
+                  - gridcell "problem Nov 22 Sunday Dominique Farmer 3 Raspberry Brownie 6 Blueberry Chocolate Bagel 9 Chocolate Bagel" [ref=f1e473]:
+                    - generic [ref=f1e477] [cursor=pointer]:
+                      - generic [ref=f1e478]:
+                        - generic [ref=f1e479]: problem
+                        - generic [ref=f1e482]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e483]
+                          - generic [ref=f1e484]: Sunday
+                      - generic [ref=f1e485]:
+                        - heading "Dominique Farmer" [level=3] [ref=f1e486]
+                        - generic [ref=f1e487]:
+                          - generic [ref=f1e488]:
+                            - generic [ref=f1e489]: "3"
+                            - generic [ref=f1e490]: Raspberry Brownie
+                          - generic [ref=f1e491]:
+                            - generic [ref=f1e492]: "6"
+                            - generic [ref=f1e493]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e494]:
+                            - generic [ref=f1e495]: "9"
+                            - generic [ref=f1e496]: Chocolate Bagel
+                - row [ref=f1e497]:
+                  - gridcell "new Nov 22 Sunday Octavia Irwin 9 Blueberry Chocolate Bagel" [ref=f1e498]:
+                    - generic [ref=f1e502] [cursor=pointer]:
+                      - generic [ref=f1e503]:
+                        - generic [ref=f1e504]: new
+                        - generic [ref=f1e507]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 22" [level=3] [ref=f1e508]
+                          - generic [ref=f1e509]: Sunday
+                      - generic [ref=f1e510]:
+                        - heading "Octavia Irwin" [level=3] [ref=f1e511]
+                        - generic [ref=f1e513]:
+                          - generic [ref=f1e514]: "9"
+                          - generic [ref=f1e515]: Blueberry Chocolate Bagel
+                - row [ref=f1e516]:
+                  - gridcell "Upcoming After this week new Nov 23 Monday Ori Cortez 6 Chocolate Bagel" [ref=f1e517]:
+                    - generic [ref=f1e520]:
+                      - generic [ref=f1e521]:
+                        - generic [ref=f1e522]: Upcoming
+                        - generic [ref=f1e523]: After this week
+                      - generic [ref=f1e524] [cursor=pointer]:
+                        - generic [ref=f1e525]:
+                          - generic [ref=f1e526]: new
+                          - generic [ref=f1e529]:
+                            - heading [level=3]
+                            - heading [level=3]
+                            - heading "Nov 23" [level=3] [ref=f1e530]
+                            - generic [ref=f1e531]: Monday
+                        - generic [ref=f1e532]:
+                          - heading "Ori Cortez" [level=3] [ref=f1e533]
+                          - generic [ref=f1e535]:
+                            - generic [ref=f1e536]: "6"
+                            - generic [ref=f1e537]: Chocolate Bagel
+                - row [ref=f1e538]:
+                  - gridcell "new Nov 23 Monday Haley Mejia 5 Blueberry Chocolate Bagel 4 Chocolate Bagel" [ref=f1e539]:
+                    - generic [ref=f1e543] [cursor=pointer]:
+                      - generic [ref=f1e544]:
+                        - generic [ref=f1e545]: new
+                        - generic [ref=f1e548]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 23" [level=3] [ref=f1e549]
+                          - generic [ref=f1e550]: Monday
+                      - generic [ref=f1e551]:
+                        - heading "Haley Mejia" [level=3] [ref=f1e552]
+                        - generic [ref=f1e553]:
+                          - generic [ref=f1e554]:
+                            - generic [ref=f1e555]: "5"
+                            - generic [ref=f1e556]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e557]:
+                            - generic [ref=f1e558]: "4"
+                            - generic [ref=f1e559]: Chocolate Bagel
+                - row [ref=f1e560]:
+                  - gridcell "new Nov 23 Monday Elaine Mejia 7 Chocolate Bagel 2 Raspberry Brownie 10 Blueberry Tart" [ref=f1e561]:
+                    - generic [ref=f1e565] [cursor=pointer]:
+                      - generic [ref=f1e566]:
+                        - generic [ref=f1e567]: new
+                        - generic [ref=f1e570]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 23" [level=3] [ref=f1e571]
+                          - generic [ref=f1e572]: Monday
+                      - generic [ref=f1e573]:
+                        - heading "Elaine Mejia" [level=3] [ref=f1e574]
+                        - generic [ref=f1e575]:
+                          - generic [ref=f1e576]:
+                            - generic [ref=f1e577]: "7"
+                            - generic [ref=f1e578]: Chocolate Bagel
+                          - generic [ref=f1e579]:
+                            - generic [ref=f1e580]: "2"
+                            - generic [ref=f1e581]: Raspberry Brownie
+                          - generic [ref=f1e582]:
+                            - generic [ref=f1e583]: "10"
+                            - generic [ref=f1e584]: Blueberry Tart
+                - row [ref=f1e585]:
+                  - gridcell "new Nov 23 Monday Lionel Maldonado 9 Blueberry Chocolate Bagel 6 Strawberry Vanilla Bun" [ref=f1e586]:
+                    - generic [ref=f1e590] [cursor=pointer]:
+                      - generic [ref=f1e591]:
+                        - generic [ref=f1e592]: new
+                        - generic [ref=f1e595]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Nov 23" [level=3] [ref=f1e596]
+                          - generic [ref=f1e597]: Monday
+                      - generic [ref=f1e598]:
+                        - heading "Lionel Maldonado" [level=3] [ref=f1e599]
+                        - generic [ref=f1e600]:
+                          - generic [ref=f1e601]:
+                            - generic [ref=f1e602]: "9"
+                            - generic [ref=f1e603]: Blueberry Chocolate Bagel
+                          - generic [ref=f1e604]:
+                            - generic [ref=f1e605]: "6"
+                            - generic [ref=f1e606]: Strawberry Vanilla Bun
+              - rowgroup
+        - generic [ref=f1e607]: Online
+      ```
+SAYS  I'm searching the storefront for Lael Leblanc's order. The list shows Lael Noble and Lael Maldonado, but no Leblanc.
+CALL  browser_type {"target":"f1e43","text":"Leblanc","submit":true}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByLabel('', { exact: true }).fill('Leblanc');
+      await page.getByLabel('', { exact: true }).press('Enter');
+      ```
+      ### Page
+      - Page URL: http://localhost:47573/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-23-40-803Z.yml)
+CALL  browser_snapshot {"depth":12}
+OK    ### Page
+      - Page URL: http://localhost:47573/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e5]:
+            - generic:
+              - generic [ref=f1e6]: "###Bakery###"
+              - tablist [ref=f1e7]:
+                - generic [aria-hidden]: 
+                - generic [ref=f1e8]:
+                  - generic:
+                    - tab [selected] [ref=f1e9] [cursor=pointer]:
+                      - link "Storefront" [ref=f1e10]:
+                        - /url: storefront
+                    - tab [ref=f1e16] [cursor=pointer]:
+                      - link "Dashboard" [ref=f1e17]:
+                        - /url: dashboard
+                    - tab [ref=f1e24] [cursor=pointer]
+                - generic [aria-hidden]: 
+          - generic [active] [ref=f1e32]:
+            - generic [ref=f1e33]:
+              - generic [ref=f1e34]:
+                - generic [ref=f1e37]:
+                  - textbox [ref=f1e43]:
+                    - /placeholder: Search
+                    - text: Leblanc
+                  - generic: 
+                - generic [ref=f1e609]:
+                  - generic [aria-hidden] [ref=f1e610]: 
+                  - checkbox "Show past orders" [ref=f1e611]
+                  - generic [ref=f1e612]: Show past orders
+                - button "Clear search" [ref=f1e614]
+              - text: 
+            - treegrid [ref=f1e59]:
+              - rowgroup
+              - rowgroup [ref=f1e60]:
+                - row [ref=f1e616]:
+                  - gridcell "Upcoming After this week new Nov 28 Saturday Ferdinand Leblanc 2 Raspberry Vanilla Bagel" [ref=f1e617]:
+                    - generic [ref=f1e65]:
+                      - generic [ref=f1e66]:
+                        - generic [ref=f1e67]: Upcoming
+                        - generic [ref=f1e68]: After this week
+                      - generic [ref=f1e69] [cursor=pointer]:
+                        - generic [ref=f1e70]:
+                          - generic [ref=f1e71]: new
+                          - generic [ref=f1e74]:
+                            - heading [level=3]
+                            - heading [level=3]
+                            - heading "Nov 28" [level=3] [ref=f1e618]
+                            - generic [ref=f1e619]: Saturday
+                        - generic [ref=f1e77]:
+                          - heading "Ferdinand Leblanc" [level=3] [ref=f1e620]
+                          - generic [ref=f1e80]:
+                            - generic [ref=f1e81]: "2"
+                            - generic [ref=f1e82]: Raspberry Vanilla Bagel
+                - row [ref=f1e621]:
+                  - gridcell "new Dec 14 Monday Jason Leblanc 10 Chocolate Bagel" [ref=f1e622]:
+                    - generic [ref=f1e88] [cursor=pointer]:
+                      - generic [ref=f1e89]:
+                        - generic [ref=f1e90]: new
+                        - generic [ref=f1e93]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Dec 14" [level=3] [ref=f1e623]
+                          - generic [ref=f1e624]: Monday
+                      - generic [ref=f1e96]:
+                        - heading "Jason Leblanc" [level=3] [ref=f1e625]
+                        - generic [ref=f1e99]:
+                          - generic [ref=f1e100]: "10"
+                          - generic [ref=f1e101]: Chocolate Bagel
+                - row [ref=f1e626]:
+                  - gridcell "new Dec 14 Monday Lael Leblanc 3 Raspberry Vanilla Bagel" [ref=f1e627]:
+                    - generic [ref=f1e113] [cursor=pointer]:
+                      - generic [ref=f1e114]:
+                        - generic [ref=f1e115]: new
+                        - generic [ref=f1e118]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Dec 14" [level=3] [ref=f1e628]
+                          - generic [ref=f1e629]: Monday
+                      - generic [ref=f1e121]:
+                        - heading "Lael Leblanc" [level=3] [ref=f1e630]
+                        - generic [ref=f1e124]:
+                          - generic [ref=f1e125]: "3"
+                          - generic [ref=f1e126]: Raspberry Vanilla Bagel
+                - row [ref=f1e631]:
+                  - gridcell "new Dec 14 Monday Lael Leblanc 9 Strawberry Cookie 2 Chocolate Bagel" [ref=f1e632]:
+                    - generic [ref=f1e135] [cursor=pointer]:
+                      - generic [ref=f1e136]:
+                        - generic [ref=f1e137]: new
+                        - generic [ref=f1e144]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Dec 14" [level=3] [ref=f1e634]
+                          - generic [ref=f1e635]: Monday
+                      - generic [ref=f1e147]:
+                        - heading "Lael Leblanc" [level=3] [ref=f1e636]
+                        - generic [ref=f1e149]:
+                          - generic [ref=f1e150]:
+                            - generic [ref=f1e151]: "9"
+                            - generic [ref=f1e152]: Strawberry Cookie
+                          - generic [ref=f1e153]:
+                            - generic [ref=f1e154]: "2"
+                            - generic [ref=f1e155]: Chocolate Bagel
+                - row [ref=f1e637]:
+                  - gridcell "new Dec 18 Friday Skyler Leblanc 5 Strawberry Vanilla Bun 4 Chocolate Bagel 6 Blueberry Chocolate Bagel" [ref=f1e638]:
+                    - generic [ref=f1e164] [cursor=pointer]:
+                      - generic [ref=f1e165]:
+                        - generic [ref=f1e166]: new
+                        - generic [ref=f1e169]:
+                          - heading [level=3]
+                          - heading [level=3]
+                          - heading "Dec 18" [level=3] [ref=f1e639]
+                          - generic [ref=f1e640]: Friday
+                      - generic [ref=f1e172]:
+                        - heading "Skyler Leblanc" [level=3] [ref=f1e641]
+                        - generic [ref=f1e174]:
+                          - generic [ref=f1e175]:
+                            - generic [ref=f1e176]: "5"
+                            - generic [ref=f1e177]: Strawberry Vanilla Bun
+                          - generic [ref=f1e178]:
+                            - generic [ref=f1e179]: "4"
+                            - generic [ref=f1e180]: Chocolate Bagel
+                          - generic [ref=f1e181]:
+                            - generic [ref=f1e182]: "6"
+                            - generic [ref=f1e183]: Blueberry Chocolate Bagel
+              - rowgroup
+        - generic [ref=f1e607]: Online
+      ```
+SAYS  Lael Leblanc has two upcoming orders, and both are on Dec 14. I'll open each one to see how they differ.
+CALL  browser_click {"target":"f1e627"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('gridcell', { name: 'new Dec 14 Monday Lael Leblanc 3 Raspberry Vanilla Bagel' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:47573/storefront/5993
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-23-45-724Z.yml)
+      ### Events
+      - New console entries: .playwright-mcp/console-2026-11-20T08-23-30-075Z.log#L1-L2
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:47573/storefront/5993
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      ```yaml
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: "###Bakery###"
+                  - tablist:
+                    - generic [aria-hidden]: 
+                    - generic:
+                      - generic:
+                        - tab "Storefront" [selected]:
+                          - generic:
+                            - link "Storefront":
+                              - /url: storefront
+                        - tab "Dashboard":
+                          - generic:
+                            - link "Dashboard":
+                              - /url: dashboard
+                        - tab "Logout"
+                    - generic [aria-hidden]: 
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - textbox:
+                                    - /placeholder: Search
+                                    - text: Leblanc
+                              - generic: 
+                        - generic:
+                          - generic:
+                            - generic [aria-hidden]: 
+                            - generic:
+                              - checkbox "Show past orders"
+                            - generic: Show past orders
+                        - button "Clear search"
+                      - text: 
+                    - generic:
+                      - generic:
+                        - treegrid:
+                          - rowgroup
+                          - rowgroup:
+                            - row "Upcoming After this week new Nov 28 Saturday Ferdinand Leblanc 2 Raspberry Vanilla Bagel":
+                              - gridcell "Upcoming After this week new Nov 28 Saturday Ferdinand Leblanc 2 Raspberry Vanilla Bagel":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: Upcoming
+                                          - generic: After this week
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 28" [level=3]
+                                              - generic: Saturday
+                                          - generic:
+                                            - heading "Ferdinand Leblanc" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Raspberry Vanilla Bagel
+                            - row "new Dec 14 Monday Jason Leblanc 10 Chocolate Bagel":
+                              - gridcell "new Dec 14 Monday Jason Leblanc 10 Chocolate Bagel":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Dec 14" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Jason Leblanc" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Chocolate Bagel
+                            - row "new Dec 14 Monday Lael Leblanc 3 Raspberry Vanilla Bagel":
+                              - gridcell "new Dec 14 Monday Lael Leblanc 3 Raspberry Vanilla Bagel":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Dec 14" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Lael Leblanc" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Raspberry Vanilla Bagel
+                            - row "new Dec 14 Monday Lael Leblanc 9 Strawberry Cookie 2 Chocolate Bagel":
+                              - gridcell "new Dec 14 Monday Lael Leblanc 9 Strawberry Cookie 2 Chocolate Bagel":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Dec 14" [level=3]
+                                              - generic: Monday
+                                          - generic:
+                                            - heading "Lael Leblanc" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "9"
+                                                - generic: Strawberry Cookie
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Chocolate Bagel
+                            - row "new Dec 18 Friday Skyler Leblanc 5 Strawberry Vanilla Bun 4 Chocolate Bagel 6 Blueberry Chocolate Bagel":
+                              - gridcell "new Dec 18 Friday Skyler Leblanc 5 Strawberry Vanilla Bun 4 Chocolate Bagel 6 Blueberry Chocolate Bagel":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Dec 18" [level=3]
+                                              - generic: Friday
+                                          - generic:
+                                            - heading "Skyler Leblanc" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Vanilla Bun
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Chocolate Bagel
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Blueberry Chocolate Bagel
+                          - rowgroup
+                    - dialog:
+                      - generic [ref=f1e646]:
+                        - generic [ref=f1e647]:
+                          - generic [ref=f1e648]:
+                            - generic [ref=f1e649]: new
+                            - generic [ref=f1e652]: "Order #5993"
+                          - generic [ref=f1e654]:
+                            - generic:
+                              - generic [ref=f1e655]:
+                                - generic [ref=f1e656]:
+                                  - generic: Due
+                                  - text: •
+                                - generic [ref=f1e659]:
+                                  - generic:
+                                    - generic [ref=f1e660]:
+                                      - heading "Dec 14" [level=3] [ref=f1e661]
+                                      - generic [ref=f1e662]: Monday
+                                    - generic [ref=f1e663]:
+                                      - heading "12:00 PM" [level=3] [ref=f1e664]
+                                      - generic [ref=f1e665]: Bakery
+                              - generic [ref=f1e666]:
+                                - generic [ref=f1e667]:
+                                  - generic: Customer
+                                  - text: •
+                                - heading "Lael Leblanc" [level=3] [ref=f1e669]
+                              - generic [ref=f1e670]:
+                                - generic [ref=f1e671]:
+                                  - generic: Phone number
+                                  - text: •
+                                - heading "+1-555-6259" [level=3] [ref=f1e673]
+                          - generic [ref=f1e677]:
+                            - generic:
+                              - generic [ref=f1e678]:
+                                - generic [ref=f1e679]:
+                                  - generic: Products
+                                  - text: •
+                                - generic [ref=f1e682]:
+                                  - generic [ref=f1e683]:
+                                    - generic [ref=f1e684]: Raspberry Vanilla Bagel
+                                    - generic [ref=f1e685]: Gluten free
+                                  - generic [ref=f1e686]: "3"
+                                  - generic [ref=f1e688]: ×
+                                  - generic [ref=f1e689]: $101.36
+                              - generic [ref=f1e690]:
+                                - generic [ref=f1e691]:
+                                  - generic: History
+                                  - text: •
+                                - generic [ref=f1e692]:
+                                  - generic:
+                                    - generic [ref=f1e693]:
+                                      - generic [ref=f1e694]: Malin
+                                      - generic [ref=f1e695]: 08.12.2026 9:00 AM
+                                      - generic [ref=f1e696]: new
+                                    - generic [ref=f1e699]: Order placed
+                              - generic [ref=f1e700]:
+                                - generic [ref=f1e701]: •
+                                - generic [ref=f1e705]:
+                                  - textbox [ref=f1e706]:
+                                    - /placeholder: Add comment
+                                  - generic:
+                                    - button "Send" [ref=f1e708]
+                                    - text: 
+                        - generic [ref=f1e710]:
+                          - button "Cancel" [ref=f1e711]
+                          - generic: Total $304.08
+                          - button "Edit order" [ref=f1e714]
+        - generic: Online
+      ```
+CALL  browser_click {"target":"f1e711"}
+CALL  browser_click {"target":"f1e632"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Cancel' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:47573/storefront
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-23-50-977Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('gridcell', { name: 'new Dec 14 Monday Lael Leblanc 9 Strawberry Cookie 2 Chocolate Bagel' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:47573/storefront/6001
+      - Page Title: Storefront
+      - Console: 0 errors, 1 warnings
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-23-52-132Z.yml)
+CALL  browser_find {"regex":"/Order #|PM|AM|\\+1-|History|placed/"}
+OK    ### Result
+      Found 6 matches for /Order #|PM|AM|\+1-|History|placed/:
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic [ref=f1e646]:
+                        - generic [ref=f1e647]:
+                          - generic [ref=f1e648]:
+                            - generic [ref=f1e649]: new
+                            - generic [ref=f1e652]: "Order #6001"
+                          - generic [ref=f1e654]:
+                            - generic:
+                              - generic [ref=f1e655]:
+      
+      ----
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic [ref=f1e646]:
+                        - generic [ref=f1e647]:
+                          - generic [ref=f1e654]:
+                            - generic:
+                              - generic [ref=f1e655]:
+                                - generic [ref=f1e659]:
+                                  - generic:
+                                    - generic [ref=f1e660]:
+                                      - heading "Dec 14" [level=3] [ref=f1e661]
+                                      - generic [ref=f1e662]: Monday
+                                    - generic [ref=f1e663]:
+                                      - heading "4:00 PM" [level=3] [ref=f1e722]
+                                      - generic [ref=f1e665]: Store
+                              - generic [ref=f1e666]:
+                                - generic [ref=f1e667]:
+      
+      ----
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic [ref=f1e646]:
+                        - generic [ref=f1e647]:
+                          - generic [ref=f1e654]:
+                            - generic:
+                              - generic [ref=f1e670]:
+                                - generic [ref=f1e671]:
+                                  - generic: Phone number
+                                  - text: •
+                                - heading "+1-555-2195" [level=3] [ref=f1e723]
+                          - generic [ref=f1e677]:
+                            - generic:
+                              - generic [ref=f1e678]:
+      
+      ----
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic [ref=f1e646]:
+                        - generic [ref=f1e647]:
+                          - generic [ref=f1e677]:
+                            - generic:
+                              - generic [ref=f1e678]:
+                                ...
+                                - generic [ref=f1e681]:
+                                  ...
+                                  - generic [ref=f1e724]:
+                                    ...
+                                    - generic [ref=f1e731]: $9.47
+                              - generic [ref=f1e690]:
+                                - generic [ref=f1e691]:
+                                  - generic: History
+                                  - text: •
+                                - generic [ref=f1e692]:
+                                  - generic:
+                                    - generic [ref=f1e693]:
+                                      - generic [ref=f1e694]: Malin
+                                      - generic [ref=f1e695]: 09.12.2026 11:00 AM
+                                      - generic [ref=f1e696]: new
+                                    - generic [ref=f1e699]: Order placed
+                              - generic [ref=f1e700]:
+                                - generic [ref=f1e701]: •
+                                - generic [ref=f1e705]:
+SAYS  I didn't change anything, because I can't tell which order you mean. I need you to pick one.
+      
+      The system has two upcoming Lael Leblanc orders, both due Mon Dec 14. They have different phone numbers, so they may be two different customers with the same name.
+      
+      | Order | Due | Pickup | Phone | Items |
+      |---|---|---|---|---|
+      | #5993 | Dec 14, 12:00 PM | Bakery | +1-555-6259 | 3 Raspberry Vanilla Bagel |
+      | #6001 | Dec 14, 4:00 PM | Store | +1-555-2195 | 9 Strawberry Cookie, 2 Chocolate Bagel |
+      
+      Which one should I move to Dec 15 at the same time and comment "moved by phone"? If you know the phone number the caller used, I can match it to the order.
+END   turns=14 duration=29s cost=$0.1180638 is_error=false

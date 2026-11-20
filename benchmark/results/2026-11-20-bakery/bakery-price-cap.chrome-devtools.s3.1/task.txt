@@ -1,0 +1,1 @@
+The bakery app runs at http://localhost:38663; log in as admin@vaadin.com, password admin. Add a product "Benchmark Brioche" at 1200 dollars. If the app won't take that price, use the highest price it accepts.

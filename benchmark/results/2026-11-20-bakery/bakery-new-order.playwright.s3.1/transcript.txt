@@ -1,0 +1,1858 @@
+CALL  browser_navigate {"url":"http://localhost:42615"}
+OK    ### Ran Playwright code
+      ```js
+      await page.goto('http://localhost:42615');
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/login
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-11-55-564Z.yml)
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:42615/login
+      - Page Title: ###Bakery###
+      ### Snapshot
+      ```yaml
+      - generic [ref=e1]:
+        - generic [ref=e2]:
+          - generic:
+            - dialog "###Bakery###":
+              - generic [ref=e6]:
+                - generic [ref=e7]:
+                  - heading "###Bakery###" [level=1] [ref=e8]
+                  - generic [ref=e9]: admin@vaadin.com + admin barista@vaadin.com + barista
+                - region "Sign in" [ref=e11]:
+                  - heading "Sign in" [level=2] [ref=e12]
+                  - text: 
+                  - generic [ref=e13]:
+                    - generic [ref=e15]:
+                      - generic [ref=e16]:
+                        - generic: Email
+                        - text: •
+                      - generic [ref=e17]:
+                        - textbox "Email" [active] [ref=e18]
+                        - generic: 
+                    - generic [ref=e20]:
+                      - generic [ref=e21]:
+                        - generic: Password
+                        - text: •
+                      - generic [ref=e22]:
+                        - textbox "Password" [ref=e23]
+                        - generic:
+                          - text: 
+                          - generic [ref=e24]:
+                            - text: 
+                            - button "Show password" [ref=e25]
+                  - button "Sign in" [ref=e26]
+        - generic [ref=e28]: Online
+      ```
+CALL  browser_fill_form {"fields":[{"target":"e18","name":"Email","type":"textbox","value":"barista@vaadin.com"},{"target":"e23","name":"Password","type":"textbox","value":"barista"}]}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Email' }).fill('barista@vaadin.com');
+      await page.getByRole('textbox', { name: 'Password' }).fill('barista');
+      ```
+CALL  browser_click {"target":"e26"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'Sign in' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-11-58-514Z.yml)
+CALL  browser_find {"text":"New order"}
+OK    ### Result
+      Found 1 match for "New order":
+      
+      - generic [active] [ref=f1e1]:
+        - generic [ref=f1e4]:
+          - generic [ref=f1e32]:
+            - generic [ref=f1e33]:
+              - generic [ref=f1e34]:
+                - generic [ref=f1e37]:
+                  - textbox [ref=f1e43]:
+                    - /placeholder: Search
+                  - generic: 
+                - text: 
+                - button "New order" [ref=f1e44]
+              - generic [ref=f1e52]:
+                - generic [aria-hidden] [ref=f1e53]: 
+                - checkbox "Show past orders" [ref=f1e54]
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+CALL  browser_click {"target":"f1e44"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('button', { name: 'New order' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-01-281Z.yml)
+SAYS  Logged in; the new order form is open. Now I'll read its fields.
+CALL  browser_snapshot {}
+OK    ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: "###Bakery###"
+                  - tablist:
+                    - generic [aria-hidden]: 
+                    - generic:
+                      - generic:
+                        - tab "Storefront" [selected]:
+                          - generic:
+                            - link "Storefront":
+                              - /url: storefront
+                        - tab "Dashboard":
+                          - generic:
+                            - link "Dashboard":
+                              - /url: dashboard
+                        - tab "Logout"
+                    - generic [aria-hidden]: 
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - textbox:
+                                    - /placeholder: Search
+                              - generic: 
+                        - text: 
+                        - button "New order"
+                      - generic:
+                        - generic:
+                          - generic [aria-hidden]: 
+                          - generic:
+                            - checkbox "Show past orders"
+                          - generic: Show past orders
+                    - generic:
+                      - generic:
+                        - treegrid:
+                          - rowgroup
+                          - rowgroup:
+                            - row "Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart":
+                              - gridcell "Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: Today
+                                          - generic: Fri, Nov 20
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Haley Carver" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                              - gridcell "ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Ferdinand Russell" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Vanilla Cracker
+                            - row "ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry":
+                              - gridcell "ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Elaine Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Strawberry Pastry
+                            - row "cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart":
+                              - gridcell "cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: cancelled
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Jason Macias" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Vanilla Bun
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry":
+                              - gridcell "ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Octavia Maldonado" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Strawberry Raspberry Brownie
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "cancelled 4:00 PM Store Kerry Benton 5 Chocolate Blueberry Pastry 1 Vanilla Chocolate Cookie":
+                              - gridcell "cancelled 4:00 PM Store Kerry Benton 5 Chocolate Blueberry Pastry 1 Vanilla Chocolate Cookie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: cancelled
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Kerry Benton" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Chocolate Cookie
+                            - row "ready 4:00 PM Bakery Skyler Mcbride 7 Raspberry Vanilla Tart 10 Vanilla Cracker":
+                              - gridcell "ready 4:00 PM Bakery Skyler Mcbride 7 Raspberry Vanilla Tart 10 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Skyler Mcbride" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Cracker
+                            - row "This week Sat, Nov 21 - Sun, Nov 22 Sat 21 8:00 AM Bakery Amanda Rich 6 Vanilla Cracker":
+                              - gridcell "This week Sat, Nov 21 - Sun, Nov 22 Sat 21 8:00 AM Bakery Amanda Rich 6 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: This week
+                                          - generic: Sat, Nov 21 - Sun, Nov 22
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 8:00 AM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Amanda Rich" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Vanilla Cracker
+                            - row "ready Sat 21 12:00 PM Bakery Griffin Rowland 7 Chocolate Blueberry Pastry 5 Strawberry Raspberry Brownie":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Griffin Rowland 7 Chocolate Blueberry Pastry 5 Strawberry Raspberry Brownie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Griffin Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Raspberry Brownie
+                            - row "ready Sat 21 12:00 PM Bakery Skyler Nixon 8 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Skyler Nixon 8 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Skyler Nixon" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Vanilla Cracker
+                            - row "ready Sat 21 12:00 PM Bakery Laurel Hendricks 10 Chocolate Blueberry Pastry":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Laurel Hendricks 10 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Laurel Hendricks" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "Sat 21 12:00 PM Bakery Jessica Russell 7 Vanilla Cracker 2 Raspberry Vanilla Tart":
+                              - gridcell "Sat 21 12:00 PM Bakery Jessica Russell 7 Vanilla Cracker 2 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Jessica Russell" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready Sat 21 12:00 PM Bakery Lionel Castro 4 Raspberry Vanilla Tart 5 Vanilla Cracker":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Lionel Castro 4 Raspberry Vanilla Tart 5 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Lionel Castro" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Vanilla Cracker
+                            - row "Sat 21 12:00 PM Store Lionel Moore 7 Vanilla Cracker 1 Raspberry Vanilla Tart":
+                              - gridcell "Sat 21 12:00 PM Store Lionel Moore 7 Vanilla Cracker 1 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Lionel Moore" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready Sat 21 4:00 PM Bakery Griffin Pickett 8 Vanilla Cracker 6 Chocolate Blueberry Pastry":
+                              - gridcell "ready Sat 21 4:00 PM Bakery Griffin Pickett 8 Vanilla Cracker 6 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 4:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Griffin Pickett" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "new Nov 22 Sunday Ferdinand Macias 10 Raspberry Vanilla Tart":
+                              - gridcell "new Nov 22 Sunday Ferdinand Macias 10 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Ferdinand Macias" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "new Nov 22 Sunday Ferdinand Cortez 6 Vanilla Bun":
+                              - gridcell "new Nov 22 Sunday Ferdinand Cortez 6 Vanilla Bun":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Ferdinand Cortez" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Vanilla Bun
+                            - row "new Nov 22 Sunday Sylvia Castro 10 Vanilla Chocolate Cookie 8 Chocolate Blueberry Pastry":
+                              - gridcell "new Nov 22 Sunday Sylvia Castro 10 Vanilla Chocolate Cookie 8 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Sylvia Castro" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Chocolate Cookie
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "new Nov 22 Sunday Octavia Benton 2 Chocolate Blueberry Pastry 1 Vanilla Strawberry Pastry":
+                              - gridcell "new Nov 22 Sunday Octavia Benton 2 Chocolate Blueberry Pastry 1 Vanilla Strawberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Octavia Benton" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Strawberry Pastry
+                            - row "problem Nov 22 Sunday Dominique Farmer 1 Vanilla Chocolate Cookie 7 Raspberry Vanilla Tart 5 Strawberry Raspberry Brownie":
+                              - gridcell "problem Nov 22 Sunday Dominique Farmer 1 Vanilla Chocolate Cookie 7 Raspberry Vanilla Tart 5 Strawberry Raspberry Brownie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: problem
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Dominique Farmer" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Chocolate Cookie
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Raspberry Brownie
+                            - row "cancelled Nov 22 Sunday Amanda Huber 1 Vanilla Cracker 7 Vanilla Chocolate Cookie 7 Strawberry Raspberry Brownie":
+                              - gridcell "cancelled Nov 22 Sunday Amanda Huber 1 Vanilla Cracker 7 Vanilla Chocolate Cookie 7 Strawberry Raspberry Brownie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: cancelled
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Amanda Huber" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Chocolate Cookie
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Strawberry Raspberry Brownie
+                            - row "new Nov 22 Sunday Elaine Moore 3 Chocolate Blueberry Pastry":
+                              - gridcell "new Nov 22 Sunday Elaine Moore 3 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Elaine Moore" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "new Nov 22 Sunday Octavia Chen 3 Vanilla Cracker 4 Chocolate Blueberry Pastry":
+                              - gridcell "new Nov 22 Sunday Octavia Chen 3 Vanilla Cracker 4 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Octavia Chen" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Chocolate Blueberry Pastry
+                          - rowgroup
+                    - dialog:
+                      - generic [ref=f1e589]:
+                        - generic [ref=f1e590]:
+                          - heading "New order" [level=2] [ref=f1e591]
+                          - text:  
+                          - generic [ref=f1e593]:
+                            - generic:
+                              - generic [ref=f1e595]:
+                                - generic:
+                                  - generic [ref=f1e597]:
+                                    - generic [ref=f1e598]:
+                                      - generic: Due
+                                      - text: •
+                                    - generic [ref=f1e599]:
+                                      - combobox "Due" [ref=f1e600]: 11/20/2026
+                                      - generic:
+                                        - text: 
+                                        - generic [aria-hidden] [ref=f1e601]: 
+                                  - generic [ref=f1e603]:
+                                    - text: •
+                                    - generic [ref=f1e604]:
+                                      - combobox [ref=f1e611]: 4:00 PM
+                                      - generic:
+                                        - text: 
+                                        - generic [aria-hidden] [ref=f1e612]: 
+                                  - generic [ref=f1e615]:
+                                    - combobox [ref=f1e622]
+                                    - generic:
+                                      - text: 
+                                      - generic [aria-hidden] [ref=f1e623]: 
+                              - generic [ref=f1e625]:
+                                - generic:
+                                  - generic [ref=f1e627]:
+                                    - generic [ref=f1e628]:
+                                      - generic: Customer
+                                      - text: •
+                                    - generic [ref=f1e629]:
+                                      - textbox "Customer" [ref=f1e635]
+                                      - generic: 
+                                  - generic [ref=f1e637]:
+                                    - generic [ref=f1e638]:
+                                      - generic: Phone number
+                                      - text: •
+                                    - generic [ref=f1e639]:
+                                      - textbox "Phone number" [ref=f1e645]
+                                      - generic: 
+                                  - generic [ref=f1e647]:
+                                    - generic [ref=f1e648]: Additional Details
+                                    - generic [ref=f1e649]:
+                                      - textbox "Additional Details" [ref=f1e650]
+                                      - generic: 
+                                  - generic [ref=f1e652]:
+                                    - generic: Products
+                                    - text: •
+                                  - generic [ref=f1e657]:
+                                    - generic:
+                                      - generic [ref=f1e659]:
+                                        - generic:
+                                          - generic [ref=f1e661]:
+                                            - text: •
+                                            - generic [ref=f1e662]:
+                                              - combobox [ref=f1e663]
+                                              - generic:
+                                                - text: 
+                                                - generic [aria-hidden] [ref=f1e664]: 
+                                          - generic:
+                                            - generic:
+                                              - text: •
+                                              - generic:
+                                                - generic:
+                                                  - generic [aria-hidden]: 
+                                                - generic:
+                                                  - generic:
+                                                    - spinbutton [disabled]
+                                                - generic:
+                                                  - text: 
+                                                  - generic [aria-hidden]: 
+                                          - generic [ref=f1e665]: $0.00
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - textbox [disabled]:
+                                                      - /placeholder: Details
+                                                - generic: 
+                                      - button [disabled]
+                        - generic [ref=f1e666]:
+                          - button "Cancel" [ref=f1e667]
+                          - generic: Total
+                          - generic:
+                            - button "Review order" [disabled]
+        - generic: Online
+      ```
+CALL  browser_click {"target":"f1e600"}
+CALL  browser_press_key {"key":"Control+a"}
+CALL  browser_type {"target":"f1e600","text":"11/21/2026","submit":true}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Due' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-04-885Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      // Press Control+a
+      await page.keyboard.press('Control+a');
+      ```
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('combobox', { name: 'Due' }).fill('11/21/2026');
+      await page.getByRole('combobox', { name: 'Due' }).press('Enter');
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-06-063Z.yml)
+SAYS  Now the time field.
+CALL  browser_click {"target":"f1e611"}
+CALL  browser_snapshot {"target":"f1e593"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-38').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-08-322Z.yml)
+ERROR ### Error
+      Error: Ref f1e593 not found in the current page snapshot. Try capturing new snapshot.
+CALL  browser_press_key {"key":"Control+a"}
+OK    ### Ran Playwright code
+      ```js
+      // Press Control+a
+      await page.keyboard.press('Control+a');
+      ```
+CALL  browser_type {"target":"f1e611","text":"11:00 AM","submit":true}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-38').fill('11:00 AM');
+      await page.locator('#input-vaadin-combo-box-38').press('Enter');
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-10-956Z.yml)
+SAYS  Now the pickup location.
+CALL  browser_click {"target":"f1e622"}
+CALL  browser_snapshot {}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-40').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-13-206Z.yml)
+OK    ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      ```yaml
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: "###Bakery###"
+                  - tablist:
+                    - generic [aria-hidden]: 
+                    - generic:
+                      - generic:
+                        - tab "Storefront" [selected]:
+                          - generic:
+                            - link "Storefront":
+                              - /url: storefront
+                        - tab "Dashboard":
+                          - generic:
+                            - link "Dashboard":
+                              - /url: dashboard
+                        - tab "Logout"
+                    - generic [aria-hidden]: 
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - textbox:
+                                    - /placeholder: Search
+                              - generic: 
+                        - text: 
+                        - button "New order"
+                      - generic:
+                        - generic:
+                          - generic [aria-hidden]: 
+                          - generic:
+                            - checkbox "Show past orders"
+                          - generic: Show past orders
+                    - generic:
+                      - generic:
+                        - treegrid:
+                          - rowgroup
+                          - rowgroup:
+                            - row "Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart":
+                              - gridcell "Today Fri, Nov 20 ready 8:00 AM Bakery Haley Carver 1 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: Today
+                                          - generic: Fri, Nov 20
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Haley Carver" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                              - gridcell "ready 8:00 AM Bakery Ferdinand Russell 4 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Ferdinand Russell" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Vanilla Cracker
+                            - row "ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry":
+                              - gridcell "ready 8:00 AM Store Elaine Rowland 3 Raspberry Vanilla Tart 5 Chocolate Blueberry Pastry 8 Vanilla Strawberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "8:00 AM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Elaine Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Strawberry Pastry
+                            - row "cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart":
+                              - gridcell "cancelled 12:00 PM Bakery Jason Macias 4 Vanilla Bun 1 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: cancelled
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Jason Macias" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Vanilla Bun
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry":
+                              - gridcell "ready 12:00 PM Store Octavia Maldonado 1 Strawberry Raspberry Brownie 7 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "12:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Octavia Maldonado" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Strawberry Raspberry Brownie
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "cancelled 4:00 PM Store Kerry Benton 5 Chocolate Blueberry Pastry 1 Vanilla Chocolate Cookie":
+                              - gridcell "cancelled 4:00 PM Store Kerry Benton 5 Chocolate Blueberry Pastry 1 Vanilla Chocolate Cookie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: cancelled
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Kerry Benton" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Chocolate Cookie
+                            - row "ready 4:00 PM Bakery Skyler Mcbride 7 Raspberry Vanilla Tart 10 Vanilla Cracker":
+                              - gridcell "ready 4:00 PM Bakery Skyler Mcbride 7 Raspberry Vanilla Tart 10 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading "4:00 PM" [level=3]
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Skyler Mcbride" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Cracker
+                            - row "This week Sat, Nov 21 - Sun, Nov 22 Sat 21 8:00 AM Bakery Amanda Rich 6 Vanilla Cracker":
+                              - gridcell "This week Sat, Nov 21 - Sun, Nov 22 Sat 21 8:00 AM Bakery Amanda Rich 6 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic: This week
+                                          - generic: Sat, Nov 21 - Sun, Nov 22
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 8:00 AM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Amanda Rich" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Vanilla Cracker
+                            - row "ready Sat 21 12:00 PM Bakery Griffin Rowland 7 Chocolate Blueberry Pastry 5 Strawberry Raspberry Brownie":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Griffin Rowland 7 Chocolate Blueberry Pastry 5 Strawberry Raspberry Brownie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Griffin Rowland" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Raspberry Brownie
+                            - row "ready Sat 21 12:00 PM Bakery Skyler Nixon 8 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Skyler Nixon 8 Chocolate Blueberry Pastry 2 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Skyler Nixon" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Vanilla Cracker
+                            - row "ready Sat 21 12:00 PM Bakery Laurel Hendricks 10 Chocolate Blueberry Pastry":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Laurel Hendricks 10 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Laurel Hendricks" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "Sat 21 12:00 PM Bakery Jessica Russell 7 Vanilla Cracker 2 Raspberry Vanilla Tart":
+                              - gridcell "Sat 21 12:00 PM Bakery Jessica Russell 7 Vanilla Cracker 2 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Jessica Russell" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready Sat 21 12:00 PM Bakery Lionel Castro 4 Raspberry Vanilla Tart 5 Vanilla Cracker":
+                              - gridcell "ready Sat 21 12:00 PM Bakery Lionel Castro 4 Raspberry Vanilla Tart 5 Vanilla Cracker":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Lionel Castro" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Vanilla Cracker
+                            - row "Sat 21 12:00 PM Store Lionel Moore 7 Vanilla Cracker 1 Raspberry Vanilla Tart":
+                              - gridcell "Sat 21 12:00 PM Store Lionel Moore 7 Vanilla Cracker 1 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 12:00 PM
+                                              - generic: Store
+                                          - generic:
+                                            - heading "Lionel Moore" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "ready Sat 21 4:00 PM Bakery Griffin Pickett 8 Vanilla Cracker 6 Chocolate Blueberry Pastry":
+                              - gridcell "ready Sat 21 4:00 PM Bakery Griffin Pickett 8 Vanilla Cracker 6 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: ready
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading "Sat 21" [level=3]
+                                              - heading [level=3]
+                                              - generic: 4:00 PM
+                                              - generic: Bakery
+                                          - generic:
+                                            - heading "Griffin Pickett" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "new Nov 22 Sunday Ferdinand Macias 10 Raspberry Vanilla Tart":
+                              - gridcell "new Nov 22 Sunday Ferdinand Macias 10 Raspberry Vanilla Tart":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Ferdinand Macias" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Raspberry Vanilla Tart
+                            - row "new Nov 22 Sunday Ferdinand Cortez 6 Vanilla Bun":
+                              - gridcell "new Nov 22 Sunday Ferdinand Cortez 6 Vanilla Bun":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Ferdinand Cortez" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "6"
+                                                - generic: Vanilla Bun
+                            - row "new Nov 22 Sunday Sylvia Castro 10 Vanilla Chocolate Cookie 8 Chocolate Blueberry Pastry":
+                              - gridcell "new Nov 22 Sunday Sylvia Castro 10 Vanilla Chocolate Cookie 8 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Sylvia Castro" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "10"
+                                                - generic: Vanilla Chocolate Cookie
+                                              - generic:
+                                                - generic: "8"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "new Nov 22 Sunday Octavia Benton 2 Chocolate Blueberry Pastry 1 Vanilla Strawberry Pastry":
+                              - gridcell "new Nov 22 Sunday Octavia Benton 2 Chocolate Blueberry Pastry 1 Vanilla Strawberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Octavia Benton" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "2"
+                                                - generic: Chocolate Blueberry Pastry
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Strawberry Pastry
+                            - row "problem Nov 22 Sunday Dominique Farmer 1 Vanilla Chocolate Cookie 7 Raspberry Vanilla Tart 5 Strawberry Raspberry Brownie":
+                              - gridcell "problem Nov 22 Sunday Dominique Farmer 1 Vanilla Chocolate Cookie 7 Raspberry Vanilla Tart 5 Strawberry Raspberry Brownie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: problem
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Dominique Farmer" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Chocolate Cookie
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Raspberry Vanilla Tart
+                                              - generic:
+                                                - generic: "5"
+                                                - generic: Strawberry Raspberry Brownie
+                            - row "cancelled Nov 22 Sunday Amanda Huber 1 Vanilla Cracker 7 Vanilla Chocolate Cookie 7 Strawberry Raspberry Brownie":
+                              - gridcell "cancelled Nov 22 Sunday Amanda Huber 1 Vanilla Cracker 7 Vanilla Chocolate Cookie 7 Strawberry Raspberry Brownie":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: cancelled
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Amanda Huber" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "1"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Vanilla Chocolate Cookie
+                                              - generic:
+                                                - generic: "7"
+                                                - generic: Strawberry Raspberry Brownie
+                            - row "new Nov 22 Sunday Elaine Moore 3 Chocolate Blueberry Pastry":
+                              - gridcell "new Nov 22 Sunday Elaine Moore 3 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Elaine Moore" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Chocolate Blueberry Pastry
+                            - row "new Nov 22 Sunday Octavia Chen 3 Vanilla Cracker 4 Chocolate Blueberry Pastry":
+                              - gridcell "new Nov 22 Sunday Octavia Chen 3 Vanilla Cracker 4 Chocolate Blueberry Pastry":
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic: new
+                                            - generic:
+                                              - heading [level=3]
+                                              - heading [level=3]
+                                              - heading "Nov 22" [level=3]
+                                              - generic: Sunday
+                                          - generic:
+                                            - heading "Octavia Chen" [level=3]
+                                            - generic:
+                                              - generic:
+                                                - generic: "3"
+                                                - generic: Vanilla Cracker
+                                              - generic:
+                                                - generic: "4"
+                                                - generic: Chocolate Blueberry Pastry
+                          - rowgroup
+                    - dialog:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - heading "New order" [level=2]
+                                      - text:  
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic: Due
+                                                        - text: •
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - combobox "Due": 11/21/2026
+                                                        - generic:
+                                                          - text: 
+                                                          - generic [aria-hidden]: 
+                                                    - generic: • • • • • • • • • • • • • • • • • • • • • • • •
+                                                    - generic: Today
+                                                    - generic: Cancel
+                                                  - generic:
+                                                    - generic:
+                                                      - text: •
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - combobox: 11:00 AM
+                                                        - generic:
+                                                          - text: 
+                                                          - generic [aria-hidden]: 
+                                                    - generic:         
+                                                  - generic [ref=f1e613]:
+                                                    - generic [ref=f1e615]:
+                                                      - combobox [expanded] [ref=f1e622]
+                                                      - generic:
+                                                        - text: 
+                                                        - generic [aria-hidden] [ref=f1e623]: 
+                                                    - listbox [ref=f1e1125]:
+                                                      - generic [ref=f1e1126]:
+                                                        - generic:
+                                                          - option "Store" [ref=f1e1127]:
+                                                            - generic [aria-hidden] [ref=f1e1128]: 
+                                                          - option "Bakery" [ref=f1e1130]:
+                                                            - generic [aria-hidden] [ref=f1e1131]: 
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic: Customer
+                                                        - text: •
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - textbox "Customer"
+                                                        - generic: 
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic: Phone number
+                                                        - text: •
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - textbox "Phone number"
+                                                        - generic: 
+                                                  - generic:
+                                                    - generic:
+                                                      - generic: Additional Details
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - textbox "Additional Details"
+                                                        - generic: 
+                                                  - generic:
+                                                    - generic:
+                                                      - generic: Products
+                                                      - text: •
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - generic:
+                                                              - generic:
+                                                                - generic:
+                                                                  - generic:
+                                                                    - generic:
+                                                                      - generic:
+                                                                        - text: •
+                                                                        - generic:
+                                                                          - generic:
+                                                                            - generic:
+                                                                              - combobox
+                                                                          - generic:
+                                                                            - text: 
+                                                                            - generic [aria-hidden]: 
+                                                                    - generic:
+                                                                      - generic:
+                                                                        - text: •
+                                                                        - generic:
+                                                                          - generic:
+                                                                            - generic [aria-hidden]: 
+                                                                          - generic:
+                                                                            - generic:
+                                                                              - spinbutton [disabled]
+                                                                          - generic:
+                                                                            - text: 
+                                                                            - generic [aria-hidden]: 
+                                                                    - generic: $0.00
+                                                                    - generic:
+                                                                      - generic:
+                                                                        - generic:
+                                                                          - generic:
+                                                                            - generic:
+                                                                              - textbox [disabled]:
+                                                                                - /placeholder: Details
+                                                                          - generic: 
+                                                              - button [disabled]
+                                    - generic:
+                                      - generic:
+                                        - button "Cancel"
+                                      - generic: Total
+                                      - generic:
+                                        - button "Review order"
+        - generic: Online
+      ```
+CALL  browser_click {"target":"f1e1130"}
+CALL  browser_type {"target":"f1e635","text":"Grace Hopper"}
+CALL  browser_type {"target":"f1e645","text":"+1 555 0100"}
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('option', { name: 'Bakery' }).click();
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-15-732Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Customer' }).fill('Grace Hopper');
+      ```
+OK    ### Ran Playwright code
+      ```js
+      await page.getByRole('textbox', { name: 'Phone number' }).fill('+1 555 0100');
+      ```
+SAYS  Now the first product.
+CALL  browser_click {"target":"f1e663"}
+CALL  browser_type {"target":"f1e663","text":"Vanilla Brownie"}
+CALL  browser_snapshot {"target":"f1e657"}
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-55').click();
+      ```
+      ### Page
+      - Page URL: http://localhost:42615/?continue
+      - Page Title: Storefront
+      ### Snapshot
+      - [Snapshot](.playwright-mcp/page-2026-11-20T08-12-17-923Z.yml)
+OK    ### Ran Playwright code
+      ```js
+      await page.locator('#input-vaadin-combo-box-55').fill('Vanilla Brownie');
+      ```
+ERROR ### Error
+      Error: Ref f1e657 not found in the current page snapshot. Try capturing new snapshot.
+CALL  browser_find {"regex":"option \"|Vanilla Brownie"}
+OK    ### Result
+      Found 11 matches for /option "|Vanilla Brownie/:
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - generic:
+                                                              - generic:
+                                                                - generic:
+                                                                  - generic:
+                                                                    - generic [ref=f1e660]:
+                                                                      - generic [ref=f1e661]:
+                                                                        - text: •
+                                                                        - generic [ref=f1e662]:
+                                                                          - combobox [expanded] [ref=f1e663]: Vanilla Brownie
+                                                                          - generic:
+                                                                            - text: 
+                                                                            - generic [aria-hidden] [ref=f1e664]: 
+                                                                      - listbox [ref=f1e1135]:
+                                                                        - generic [ref=f1e1136]:
+                                                                          - generic:
+                                                                            - option "Vanilla Strawberry Pastry" [ref=f1e1137]:
+                                                                              - generic [aria-hidden] [ref=f1e1138]: 
+                                                                            - option "Vanilla Chocolate Cookie" [ref=f1e1140]:
+                                                                              - generic [aria-hidden] [ref=f1e1141]: 
+                                                                            - option "Vanilla Cracker" [ref=f1e1143]:
+                                                                              - generic [aria-hidden] [ref=f1e1144]: 
+                                                                            - option "Chocolate Blueberry Pastry" [ref=f1e1146]:
+                                                                              - generic [aria-hidden] [ref=f1e1147]: 
+                                                                            - option "Raspberry Vanilla Tart" [ref=f1e1149]:
+                                                                              - generic [aria-hidden] [ref=f1e1150]: 
+                                                                            - option "Strawberry Raspberry Brownie" [ref=f1e1152]:
+                                                                              - generic [aria-hidden] [ref=f1e1153]: 
+                                                                            - option "Vanilla Bun" [ref=f1e1155]:
+                                                                              - generic [aria-hidden] [ref=f1e1156]: 
+                                                                            - option "Blueberry Strawberry Cracker" [ref=f1e1158]:
+                                                                              - generic [aria-hidden] [ref=f1e1159]: 
+                                                                            - option "Vanilla Muffin" [ref=f1e1161]:
+                                                                              - generic [aria-hidden] [ref=f1e1162]: 
+                                                                            - option "Blueberry Bagel" [ref=f1e1164]:
+                                                                              - generic [aria-hidden] [ref=f1e1165]: 
+                                                                    - generic:
+                                                                      - generic:
+CALL  browser_evaluate {"function":"() => [...document.querySelectorAll('vaadin-combo-box-item')].map(e=>e.textContent.trim())"}
+OK    ### Result
+      []
+      ### Ran Playwright code
+      ```js
+      await page.evaluate('() => [...document.querySelectorAll(\'vaadin-combo-box-item\')].map(e=>e.textContent.trim())');
+      ```
+CALL  browser_find {"regex":"option \""}
+OK    ### Result
+      Found 10 matches for /option "/:
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - generic:
+                                                              - generic:
+                                                                - generic:
+                                                                  - generic:
+                                                                    - generic [ref=f1e660]:
+                                                                      - listbox [ref=f1e1135]:
+                                                                        - generic [ref=f1e1136]:
+                                                                          - generic:
+                                                                            - option "Vanilla Strawberry Pastry" [ref=f1e1137]:
+                                                                              - generic [aria-hidden] [ref=f1e1138]: 
+                                                                            - option "Vanilla Chocolate Cookie" [ref=f1e1140]:
+                                                                              - generic [aria-hidden] [ref=f1e1141]: 
+                                                                            - option "Vanilla Cracker" [ref=f1e1143]:
+                                                                              - generic [aria-hidden] [ref=f1e1144]: 
+                                                                            - option "Chocolate Blueberry Pastry" [ref=f1e1146]:
+                                                                              - generic [aria-hidden] [ref=f1e1147]: 
+                                                                            - option "Raspberry Vanilla Tart" [ref=f1e1149]:
+                                                                              - generic [aria-hidden] [ref=f1e1150]: 
+                                                                            - option "Strawberry Raspberry Brownie" [ref=f1e1152]:
+                                                                              - generic [aria-hidden] [ref=f1e1153]: 
+                                                                            - option "Vanilla Bun" [ref=f1e1155]:
+                                                                              - generic [aria-hidden] [ref=f1e1156]: 
+                                                                            - option "Blueberry Strawberry Cracker" [ref=f1e1158]:
+                                                                              - generic [aria-hidden] [ref=f1e1159]: 
+                                                                            - option "Vanilla Muffin" [ref=f1e1161]:
+                                                                              - generic [aria-hidden] [ref=f1e1162]: 
+                                                                            - option "Blueberry Bagel" [ref=f1e1164]:
+                                                                              - generic [aria-hidden] [ref=f1e1165]: 
+                                                                    - generic:
+                                                                      - generic:
+CALL  browser_evaluate {"function":"async () => { const o=document.querySelector('vaadin-combo-box-overlay'); const s=o && o.querySelector('vaadin-combo-box-scroller'); if(s) s.scrollTop=1e6; await new Promise(r=>setTimeout(r,800)); return [...document.querySelectorAll('[role=option]')].map(e=>e.textContent.trim()); }"}
+OK    ### Result
+      []
+      ### Ran Playwright code
+      ```js
+      await page.evaluate('async () => { const o=document.querySelector(\'vaadin-combo-box-overlay\'); const s=o && o.querySelector(\'vaadin-combo-box-scroller\'); if(s) s.scrollTop=1e6; await new Promise(r=>setTimeout(r,800)); return [...document.querySelectorAll(\'[role=option]\')].map(e=>e.textContent.trim()); }');
+      ```
+SAYS  Shadow DOM hides these; I'll scroll via keyboard instead and re-check the list.
+CALL  browser_press_key {"key":"End"}
+OK    ### Ran Playwright code
+      ```js
+      // Press End
+      await page.keyboard.press('End');
+      ```
+CALL  browser_find {"regex":"option \""}
+OK    ### Result
+      Found 10 matches for /option "/:
+      
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic [active]:
+                    - dialog:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic:
+                                - generic:
+                                  - generic:
+                                    - generic:
+                                      - generic:
+                                        - generic:
+                                          - generic:
+                                            - generic:
+                                              - generic:
+                                                - generic:
+                                                  - generic:
+                                                    - generic:
+                                                      - generic:
+                                                        - generic:
+                                                          - generic:
+                                                            - generic:
+                                                              - generic:
+                                                                - generic:
+                                                                  - generic:
+                                                                    - generic [ref=f1e660]:
+                                                                      - listbox [ref=f1e1135]:
+                                                                        - generic [ref=f1e1136]:
+                                                                          - generic:
+                                                                            - option "Vanilla Strawberry Pastry" [ref=f1e1137]:
+                                                                              - generic [aria-hidden] [ref=f1e1138]: 
+                                                                            - option "Vanilla Chocolate Cookie" [ref=f1e1140]:
+                                                                              - generic [aria-hidden] [ref=f1e1141]: 
+                                                                            - option "Vanilla Cracker" [ref=f1e1143]:
+                                                                              - generic [aria-hidden] [ref=f1e1144]: 
+                                                                            - option "Chocolate Blueberry Pastry" [ref=f1e1146]:
+                                                                              - generic [aria-hidden] [ref=f1e1147]: 
+                                                                            - option "Raspberry Vanilla Tart" [ref=f1e1149]:
+                                                                              - generic [aria-hidden] [ref=f1e1150]: 
+                                                                            - option "Strawberry Raspberry Brownie" [ref=f1e1152]:
+                                                                              - generic [aria-hidden] [ref=f1e1153]: 
+                                                                            - option "Vanilla Bun" [ref=f1e1155]:
+                                                                              - generic [aria-hidden] [ref=f1e1156]: 
+                                                                            - option "Blueberry Strawberry Cracker" [ref=f1e1158]:
+                                                                              - generic [aria-hidden] [ref=f1e1159]: 
+                                                                            - option "Vanilla Muffin" [ref=f1e1161]:
+                                                                              - generic [aria-hidden] [ref=f1e1162]: 
+                                                                            - option "Blueberry Bagel" [ref=f1e1164]:
+                                                                              - generic [aria-hidden] [ref=f1e1165]: 
+                                                                    - generic:
+                                                                      - generic:
+CALL  browser_take_screenshot {"scale":"css"}
+OK    ### Result
+      - [Screenshot of viewport](.playwright-mcp/page-2026-11-20T08-12-27-640Z.png)
+      ### Ran Playwright code
+      ```js
+      // Screenshot viewport and save it as .playwright-mcp/page-2026-11-20T08-12-27-640Z.png
+      await page.screenshot({
+        path: '.playwright-mcp/page-2026-11-20T08-12-27-640Z.png',
+        scale: 'css',
+        type: 'png'
+      });
+      ```
+      [image]
+      [Image: source: /home/node/.claude/projects/-home-node-work/f3de8ea2-52aa-48c5-9658-3c0488e1a529/tool-results/mcp-playwright-blob-1795162347646-8m039t.png]
+SAYS  I couldn't finish the order because the bakery has no "Vanilla Brownie" product, so nothing has been submitted.
+      
+      The product dropdown lists only these 10 items:
+      - Vanilla Strawberry Pastry
+      - Vanilla Chocolate Cookie
+      - Vanilla Cracker
+      - Chocolate Blueberry Pastry
+      - Raspberry Vanilla Tart
+      - Strawberry Raspberry Brownie
+      - Vanilla Bun
+      - Blueberry Strawberry Cracker
+      - Vanilla Muffin
+      - Blueberry Bagel
+      
+      Strawberry Raspberry Brownie is the only brownie, but I didn't want to swap it in without checking with you.
+      
+      The "New order" dialog is still open with these fields filled in:
+      - **Due:** 11/21/2026 at 11:00 AM
+      - **Location:** Bakery
+      - **Customer:** Grace Hopper
+      - **Phone:** +1 555 0100
+      
+      The product row still has the unmatched "Vanilla Brownie" text in it, and Vanilla Muffin and the "no sugar" note aren't added yet.
+      
+      Should I use Strawberry Raspberry Brownie (×2) instead, or a different product? Once you tell me, I'll add the items and the muffin note, then review and place the order.
+END   turns=30 duration=38s cost=$0.19782030000000003 is_error=false

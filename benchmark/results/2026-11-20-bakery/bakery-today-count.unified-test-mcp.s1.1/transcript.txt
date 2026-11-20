@@ -1,0 +1,148 @@
+CALL  navigate {"url":"http://localhost:35529"}
+OK    Navigated to http://localhost:35529
+      
+      URL: http://localhost:35529/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  set_value {"ref":2,"value":"barista@vaadin.com"}
+CALL  set_value {"ref":3,"value":"barista"}
+OK    Set ref=2 to "barista@vaadin.com"
+      
+      URL: http://localhost:35529/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="barista@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+OK    Set ref=3 to "barista"
+      
+      URL: http://localhost:35529/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="barista@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="barista", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  click {"ref":4}
+OK    Clicked ref=4
+      
+      URL: http://localhost:35529/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+              - Button "New order" [ref=17, id=action, icon="vaadin:plus"] actions: click
+              - Checkbox "Show past orders" [ref=18] actions: set_value
+            - Grid [ref=19, id=grid, rows=174]
+              - row 0: Today Fri, Nov 20 ready 8:00 AM Store Lionel Huber 2 Vanilla Cracker
+              - row 1: Icon "vaadin:check"; 8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake
+              - row 2: Icon "vaadin:check"; 8:00 AM Store Jason Macias 7 Vanilla Blueberry Cake 9 Vanilla Pastry
+              - row 3: ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker
+              - row 4: ready 12:00 PM Bakery Amanda Mejia 3 Vanilla Blueberry Cake 4 Blueberry Cheese Cake
+              - rows 5–173 not shown: get_rows ref=19
+      
+CALL  get_rows {"ref":19,"offset":0,"length":30}
+OK    Rows 0–29 of 174 in ref=19. The grid now shows row 0; the snapshot below has the refs of the rows in view:
+      - row 0: Today Fri, Nov 20 ready 8:00 AM Store Lionel Huber 2 Vanilla Cracker
+      - row 1: Icon "vaadin:check"; 8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake
+      - row 2: Icon "vaadin:check"; 8:00 AM Store Jason Macias 7 Vanilla Blueberry Cake 9 Vanilla Pastry
+      - row 3: ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker
+      - row 4: ready 12:00 PM Bakery Amanda Mejia 3 Vanilla Blueberry Cake 4 Blueberry Cheese Cake
+      - row 5: ready 12:00 PM Bakery Lael Chen 7 Vanilla Blueberry Cake
+      - row 6: ready 12:00 PM Bakery Jessica Wilkinson 9 Vanilla Pastry
+      - row 7: ready 12:00 PM Bakery Arsenio Carver 8 Vanilla Blueberry Cake 2 Vanilla Cracker 2 Blueberry Cheese Cake
+      - row 8: problem 4:00 PM Store Sylvia Hendricks 5 Vanilla Cracker
+      - row 9: cancelled 4:00 PM Store Jason Farmer 1 Vanilla Pastry 8 Vanilla Blueberry Cake 5 Blueberry Cheese Cake
+      - row 10: problem 4:00 PM Bakery Jessica Moore 10 Vanilla Pastry 10 Vanilla Cracker 9 Vanilla Blueberry Cake
+      - row 11: ready 4:00 PM Store Kerry Benton 3 Blueberry Cheese Cake 10 Vanilla Pastry 1 Vanilla Blueberry Cake
+      - row 12: This week Sat, Nov 21 - Sun, Nov 22 ready Sat 21 8:00 AM Bakery Griffin Hendricks 2 Blueberry Cheese Cake
+      - row 13: ready Sat 21 4:00 PM Bakery Ferdinand Patton 6 Vanilla Cracker
+      - row 14: problem Nov 22 Sunday Amanda Castro 2 Vanilla Blueberry Cake
+      - row 15: new Nov 22 Sunday Lester Lyons 1 Vanilla Blueberry Cake
+      - row 16: Upcoming After this week new Nov 23 Monday Amanda Nunez 5 Strawberry Bun 3 Raspberry Blueberry Tart 2 Blueberry Cheese Cake
+      - row 17: new Nov 23 Monday Elaine Blevins 10 Vanilla Blueberry Cake
+      - row 18: new Nov 23 Monday Lionel Irwin 9 Vanilla Cracker
+      - row 19: new Nov 23 Monday Delilah Henry 10 Raspberry Blueberry Tart 6 Vanilla Blueberry Cake 5 Strawberry Cheese Cake
+      - row 20: new Nov 23 Monday Jason Howard 3 Vanilla Blueberry Cake 10 Raspberry Blueberry Tart
+      - row 21: new Nov 24 Tuesday Arsenio Carter 9 Blueberry Cheese Cake 8 Vanilla Pastry
+      - row 22: new Nov 24 Tuesday Ferdinand Benton 3 Raspberry Blueberry Tart
+      - row 23: new Nov 24 Tuesday Lael Leblanc 8 Vanilla Blueberry Cake 10 Blueberry Cheese Cake 4 Raspberry Blueberry Tart
+      - row 24: new Nov 24 Tuesday Ori Irwin 8 Vanilla Blueberry Cake
+      - row 25: new Nov 25 Wednesday Jessica Pickett 8 Blueberry Cheese Cake 2 Raspberry Blueberry Tart 4 Vanilla Pastry
+      - row 26: new Nov 25 Wednesday Laurel Irwin 4 Raspberry Blueberry Tart 6 Vanilla Cracker
+      - row 27: new Nov 25 Wednesday Ferdinand Pickett 2 Vanilla Blueberry Cake 10 Vanilla Pastry
+      - row 28: new Nov 25 Wednesday Lael Chen 7 Vanilla Pastry 9 Vanilla Blueberry Cake 4 Blueberry Cheese Cake
+      - row 29: new Nov 25 Wednesday Sylvia Macias 6 Vanilla Pastry 9 Blueberry Cheese Cake 4 Strawberry Cheese Cake
+      
+      URL: http://localhost:35529/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+              - Button "New order" [ref=17, id=action, icon="vaadin:plus"] actions: click
+              - Checkbox "Show past orders" [ref=18] actions: set_value
+            - Grid [ref=19, id=grid, rows=174]
+              - row 0: Today Fri, Nov 20 ready 8:00 AM Store Lionel Huber 2 Vanilla Cracker
+              - row 1: Icon "vaadin:check"; 8:00 AM Store Dominique Rowland 5 Vanilla Cracker 1 Vanilla Blueberry Cake
+              - row 2: Icon "vaadin:check"; 8:00 AM Store Jason Macias 7 Vanilla Blueberry Cake 9 Vanilla Pastry
+              - row 3: ready 12:00 PM Bakery Haley Rowland 8 Blueberry Cheese Cake 8 Vanilla Cracker
+              - row 4: ready 12:00 PM Bakery Amanda Mejia 3 Vanilla Blueberry Cake 4 Blueberry Cheese Cake
+              - rows 5–173 not shown: get_rows ref=19
+      
+CALL  set_value {"ref":16,"value":"Delivered"}
+OK    Set ref=16 to "Delivered"
+      
+      URL: http://localhost:35529/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value="Delivered"] actions: set_value
+              - Checkbox "Show past orders" [ref=20] actions: set_value
+              - Button "Clear search" [ref=21, id=clear] actions: click
+            - Grid [ref=19, id=grid, rows=0]
+      
+SAYS  Searching "Delivered" returned no rows, so the search doesn't filter on status. I'm going by the grid itself. Today's Store orders showing the delivered check icon are rows 1 and 2 (Dominique Rowland and Jason Macias).
+      
+      2
+END   turns=7 duration=22s cost=$0.036327899999999996 is_error=false

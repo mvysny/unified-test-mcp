@@ -1,0 +1,351 @@
+CALL  navigate {"url":"http://localhost:34947"}
+OK    Navigated to http://localhost:34947
+      
+      URL: http://localhost:34947/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  set_value {"ref":2,"value":"barista@vaadin.com"}
+CALL  set_value {"ref":3,"value":"barista"}
+OK    Set ref=2 to "barista@vaadin.com"
+      
+      URL: http://localhost:34947/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="barista@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+OK    Set ref=3 to "barista"
+      
+      URL: http://localhost:34947/login
+      Title: ###Bakery###
+      Modal: LoginOverlay "###Bakery###" over the page; only the dialog on top is shown: nothing under it takes input
+      - LoginOverlay "###Bakery###" [ref=1, description="admin@vaadin.com + admin barista@vaadin.com + barista"]
+        - TextField "Email" [ref=2, id=vaadinLoginUsername, value="barista@vaadin.com", required] actions: set_value
+        - PasswordField "Password" [ref=3, id=vaadinLoginPassword, value="barista", required] actions: set_value
+        - Button "Sign in" [ref=4] actions: click
+      
+CALL  click {"ref":4}
+OK    Clicked ref=4
+      
+      URL: http://localhost:34947/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value=""] actions: set_value
+              - Button "New order" [ref=17, id=action, icon="vaadin:plus"] actions: click
+              - Checkbox "Show past orders" [ref=18] actions: set_value
+            - Grid [ref=19, id=grid, rows=184]
+              - row 0: Today Fri, Nov 20 problem 8:00 AM Bakery Delilah Nixon 2 Chocolate Bagel
+              - row 1: ready 8:00 AM Bakery Elaine Rowland 9 Raspberry Vanilla Bagel 6 Blueberry Tart 7 Blueberry Chocolate Bagel
+              - row 2: ready 12:00 PM Store Jessica Rich 5 Raspberry Brownie 3 Blueberry Chocolate Bagel
+              - row 3: Icon "vaadin:check"; 12:00 PM Bakery Lael Noble 10 Blueberry Chocolate Bagel 8 Chocolate Bagel 7 Raspberry Vanilla Bagel
+              - row 4: ready 4:00 PM Bakery Arsenio Chen 10 Blueberry Chocolate Bagel 9 Blueberry Tart 2 Raspberry Vanilla Bagel
+              - rows 5–183 not shown: get_rows ref=19
+      
+SAYS  Search for Kerry.
+CALL  set_value {"ref":16,"value":"Kerry Wilkinson"}
+OK    Set ref=16 to "Kerry Wilkinson"
+      
+      URL: http://localhost:34947/?continue
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value="Kerry Wilkinson"] actions: set_value
+              - Checkbox "Show past orders" [ref=20] actions: set_value
+              - Button "Clear search" [ref=21, id=clear] actions: click
+            - Grid [ref=19, id=grid, rows=1]
+              - row 0: Upcoming After this week new Dec 16 Wednesday Kerry Wilkinson 7 Raspberry Vanilla Bagel 2 Blueberry Tart
+      
+CALL  click {"ref":19,"row":0}
+OK    Clicked row 0 of ref=19
+      
+      URL: http://localhost:34947/storefront/6009
+      Title: Storefront
+      Modal: Dialog over the page; only the dialog on top is shown: nothing under it takes input
+      - Dialog [ref=22, id=dialog]
+        - <order-details> [ref=23]
+          - Div [ref=24, id=main]
+            - <order-status-badge> [ref=25]
+              - Div [ref=26, id=wrapper]
+                - Span "new" [ref=27]
+            - Span "Order # 6009" [ref=28]
+            - FormLayout [ref=29, id=form1]
+              - FormItem "Due" [ref=30]
+                - FormLayout [ref=31, id=form2]
+                  - H3 "Dec 16" [ref=32]
+                  - Span "Wednesday" [ref=33]
+                  - H3 "8:00 AM" [ref=34]
+                  - Span "Store" [ref=35]
+              - FormItem "Customer" [ref=36]
+                - H3 "Kerry Wilkinson" [ref=37]
+              - FormItem "Phone number" [ref=38]
+                - H3 "+1-555-6319" [ref=39]
+            - FormLayout [ref=40, id=form3]
+              - FormLayout [ref=41, id=form4]
+                - FormItem "Products" [ref=42]
+                  - Div "Raspberry Vanilla Bagel" [ref=43]
+                  - Span "7" [ref=44]
+                  - Div "×" [ref=45]
+                  - Div "$101.36" [ref=46]
+                  - Div "Blueberry Tart" [ref=47]
+                  - Span "2" [ref=48]
+                  - Div "×" [ref=49]
+                  - Div "$57.37" [ref=50]
+                - FormItem "History" [ref=51, id=history]
+                  - Span "Malin" [ref=52]
+                  - Span "12.12.2026 12:00 PM" [ref=53]
+                  - <order-status-badge> [ref=54]
+                    - Div [ref=55, id=wrapper]
+                      - Span "new" [ref=56]
+                  - Div "Order placed" [ref=57]
+                - FormItem [ref=58, id=comment]
+                  - TextField [ref=59, id=commentField, placeholder="Add comment", value=""] actions: set_value
+                    - Button "Send" [ref=60, id=sendComment] actions: click
+          - <buttons-bar> [ref=61, id=footer]
+            - Button "Cancel" [ref=62, id=cancel] actions: click
+            - Div "Total $824.26" [ref=63]
+            - Button "Edit order" [ref=64, id=edit] actions: click
+      
+CALL  click {"ref":64}
+OK    Clicked ref=64
+      
+      URL: http://localhost:34947/storefront/6009/edit
+      Title: Storefront
+      Modal: Dialog over the page; only the dialog on top is shown: nothing under it takes input
+      - Dialog [ref=22, id=dialog]
+        - <order-editor> [ref=65]
+          - Div [ref=66, id=main]
+            - Div [ref=67, id=metaContainer]
+              - ComboBox [ref=68, id=status, value="New"] actions: set_value
+              - Span "Order #" [ref=69]
+                - Span "6009" [ref=70, id=orderNumber]
+            - FormLayout [ref=71, id=form1]
+              - FormLayout [ref=72, id=form2]
+                - DatePicker "Due" [ref=73, id=dueDate, value="12/16/2026", required] actions: set_value
+                - ComboBox [ref=74, id=dueTime, icon="vaadin:clock", value="8:00 AM", required] actions: set_value
+                - ComboBox [ref=75, id=pickupLocation, icon="vaadin:at", value="Store"] actions: set_value
+              - FormLayout [ref=76, id=form3]
+                - TextField "Customer" [ref=77, id=customerName, icon="vaadin:user", value="Kerry Wilkinson", required] actions: set_value
+                - TextField "Phone number" [ref=78, id=customerNumber, icon="vaadin:phone", value="+1-555-6319", required] actions: set_value
+                - TextField "Additional Details" [ref=79, id=customerDetails, value=""] actions: set_value
+                - FormItem "Products" [ref=80]
+                - Div [ref=81, id=itemsContainer]
+                  - <order-item-editor> [ref=82]
+                    - FormLayout [ref=83, id=form1]
+                      - FormLayout [ref=84, id=form2]
+                        - ComboBox [ref=85, id=products, value="Raspberry Vanilla Bagel", required] actions: set_value
+                        - IntegerField [ref=86, id=amount, value="7", required] actions: set_value
+                        - Div "$709.52" [ref=87, id=price]
+                        - TextField [ref=88, id=comment, placeholder="Details", value=""] actions: set_value
+                      - Button [ref=89, id=delete, icon="vaadin:close-small"] actions: click
+                  - <order-item-editor> [ref=90]
+                    - FormLayout [ref=91, id=form1]
+                      - FormLayout [ref=92, id=form2]
+                        - ComboBox [ref=93, id=products, value="Blueberry Tart", required] actions: set_value
+                        - IntegerField [ref=94, id=amount, value="2", required] actions: set_value
+                        - Div "$114.74" [ref=95, id=price]
+                        - TextField [ref=96, id=comment, placeholder="Details", value=""] actions: set_value
+                      - Button [ref=97, id=delete, icon="vaadin:close-small"] actions: click
+                  - <order-item-editor> [ref=98]
+                    - FormLayout [ref=99, id=form1]
+                      - FormLayout [ref=100, id=form2]
+                        - ComboBox [ref=101, id=products, value=null, required] actions: set_value
+                        - IntegerField [ref=102, id=amount, value="", disabled, required] actions: set_value
+                        - Div "$0.00" [ref=103, id=price]
+                        - TextField [ref=104, id=comment, placeholder="Details", value="", disabled] actions: set_value
+                      - Button [ref=105, id=delete, icon="vaadin:close-small", disabled] actions: click
+          - <buttons-bar> [ref=106, id=footer]
+            - Button "Cancel" [ref=107, id=cancel] actions: click
+            - Div "Total" [ref=108]
+            - Button "Review order" [ref=109, id=review, disabled] actions: click
+      
+CALL  click {"ref":97}
+OK    Clicked ref=97
+      
+      URL: http://localhost:34947/storefront/6009/edit
+      Title: Storefront
+      Modal: Dialog over the page; only the dialog on top is shown: nothing under it takes input
+      - Dialog [ref=22, id=dialog]
+        - <order-editor> [ref=65]
+          - Div [ref=66, id=main]
+            - Div [ref=67, id=metaContainer]
+              - ComboBox [ref=68, id=status, value="New"] actions: set_value
+              - Span "Order #" [ref=69]
+                - Span "6009" [ref=70, id=orderNumber]
+            - FormLayout [ref=71, id=form1]
+              - FormLayout [ref=72, id=form2]
+                - DatePicker "Due" [ref=73, id=dueDate, value="12/16/2026", required] actions: set_value
+                - ComboBox [ref=74, id=dueTime, icon="vaadin:clock", value="8:00 AM", required] actions: set_value
+                - ComboBox [ref=75, id=pickupLocation, icon="vaadin:at", value="Store"] actions: set_value
+              - FormLayout [ref=76, id=form3]
+                - TextField "Customer" [ref=77, id=customerName, icon="vaadin:user", value="Kerry Wilkinson", required] actions: set_value
+                - TextField "Phone number" [ref=78, id=customerNumber, icon="vaadin:phone", value="+1-555-6319", required] actions: set_value
+                - TextField "Additional Details" [ref=79, id=customerDetails, value=""] actions: set_value
+                - FormItem "Products" [ref=80]
+                - Div [ref=81, id=itemsContainer]
+                  - <order-item-editor> [ref=110]
+                    - FormLayout [ref=111, id=form1]
+                      - FormLayout [ref=112, id=form2]
+                        - ComboBox [ref=113, id=products, value="Raspberry Vanilla Bagel", required] actions: set_value
+                        - IntegerField [ref=114, id=amount, value="7", required] actions: set_value
+                        - Div "$709.52" [ref=115, id=price]
+                        - TextField [ref=116, id=comment, placeholder="Details", value=""] actions: set_value
+                      - Button [ref=117, id=delete, icon="vaadin:close-small"] actions: click
+                  - <order-item-editor> [ref=118]
+                    - FormLayout [ref=119, id=form1]
+                      - FormLayout [ref=120, id=form2]
+                        - ComboBox [ref=121, id=products, value=null, required] actions: set_value
+                        - IntegerField [ref=122, id=amount, value="", disabled, required] actions: set_value
+                        - Div "$0.00" [ref=123, id=price]
+                        - TextField [ref=124, id=comment, placeholder="Details", value="", disabled] actions: set_value
+                      - Button [ref=125, id=delete, icon="vaadin:close-small", disabled] actions: click
+          - <buttons-bar> [ref=106, id=footer]
+            - Button "Cancel" [ref=107, id=cancel] actions: click
+            - Div "Total" [ref=108]
+            - Button "Review order" [ref=109, id=review] actions: click
+      
+CALL  set_value {"ref":114,"value":8}
+OK    Set ref=114 to "8"
+      
+      URL: http://localhost:34947/storefront/6009/edit
+      Title: Storefront
+      Modal: Dialog over the page; only the dialog on top is shown: nothing under it takes input
+      - Dialog [ref=22, id=dialog]
+        - <order-editor> [ref=65]
+          - Div [ref=66, id=main]
+            - Div [ref=67, id=metaContainer]
+              - ComboBox [ref=68, id=status, value="New"] actions: set_value
+              - Span "Order #" [ref=69]
+                - Span "6009" [ref=70, id=orderNumber]
+            - FormLayout [ref=71, id=form1]
+              - FormLayout [ref=72, id=form2]
+                - DatePicker "Due" [ref=73, id=dueDate, value="12/16/2026", required] actions: set_value
+                - ComboBox [ref=74, id=dueTime, icon="vaadin:clock", value="8:00 AM", required] actions: set_value
+                - ComboBox [ref=75, id=pickupLocation, icon="vaadin:at", value="Store"] actions: set_value
+              - FormLayout [ref=76, id=form3]
+                - TextField "Customer" [ref=77, id=customerName, icon="vaadin:user", value="Kerry Wilkinson", required] actions: set_value
+                - TextField "Phone number" [ref=78, id=customerNumber, icon="vaadin:phone", value="+1-555-6319", required] actions: set_value
+                - TextField "Additional Details" [ref=79, id=customerDetails, value=""] actions: set_value
+                - FormItem "Products" [ref=80]
+                - Div [ref=81, id=itemsContainer]
+                  - <order-item-editor> [ref=110]
+                    - FormLayout [ref=111, id=form1]
+                      - FormLayout [ref=112, id=form2]
+                        - ComboBox [ref=113, id=products, value="Raspberry Vanilla Bagel", required] actions: set_value
+                        - IntegerField [ref=114, id=amount, value="8", required] actions: set_value
+                        - Div "$810.88" [ref=115, id=price]
+                        - TextField [ref=116, id=comment, placeholder="Details", value=""] actions: set_value
+                      - Button [ref=117, id=delete, icon="vaadin:close-small"] actions: click
+                  - <order-item-editor> [ref=118]
+                    - FormLayout [ref=119, id=form1]
+                      - FormLayout [ref=120, id=form2]
+                        - ComboBox [ref=121, id=products, value=null, required] actions: set_value
+                        - IntegerField [ref=122, id=amount, value="", disabled, required] actions: set_value
+                        - Div "$0.00" [ref=123, id=price]
+                        - TextField [ref=124, id=comment, placeholder="Details", value="", disabled] actions: set_value
+                      - Button [ref=125, id=delete, icon="vaadin:close-small", disabled] actions: click
+          - <buttons-bar> [ref=106, id=footer]
+            - Button "Cancel" [ref=107, id=cancel] actions: click
+            - Div "Total" [ref=108]
+            - Button "Review order" [ref=109, id=review] actions: click
+      
+CALL  click {"ref":109}
+OK    Clicked ref=109
+      
+      URL: http://localhost:34947/storefront/6009/edit
+      Title: Storefront
+      Modal: Dialog over the page; only the dialog on top is shown: nothing under it takes input
+      - Dialog [ref=22, id=dialog]
+        - <order-details> [ref=23]
+          - Div [ref=24, id=main]
+            - <order-status-badge> [ref=25]
+              - Div [ref=26, id=wrapper]
+                - Span "new" [ref=27]
+            - Span "Order # 6009" [ref=28]
+            - FormLayout [ref=29, id=form1]
+              - FormItem "Due" [ref=30]
+                - FormLayout [ref=31, id=form2]
+                  - H3 "Dec 16" [ref=32]
+                  - Span "Wednesday" [ref=33]
+                  - H3 "8:00 AM" [ref=34]
+                  - Span "Store" [ref=35]
+              - FormItem "Customer" [ref=36]
+                - H3 "Kerry Wilkinson" [ref=37]
+              - FormItem "Phone number" [ref=38]
+                - H3 "+1-555-6319" [ref=39]
+            - FormLayout [ref=40, id=form3]
+              - FormLayout [ref=41, id=form4]
+                - FormItem "Products" [ref=42]
+                  - Div "Raspberry Vanilla Bagel" [ref=43]
+                  - Span "8" [ref=44]
+                  - Div "×" [ref=45]
+                  - Div "$101.36" [ref=46]
+          - <buttons-bar> [ref=61, id=footer]
+            - Button "Back" [ref=126, id=back] actions: click
+            - Div "Total $810.88" [ref=63]
+            - Button "Place order" [ref=127, id=save] actions: click
+      
+SAYS  Reviewing the edited order before I save it. I'm placing it now.
+CALL  click {"ref":127}
+OK    Clicked ref=127
+      
+      URL: http://localhost:34947/storefront
+      Title: Storefront
+      - AppLayout [ref=5]
+        - Navbar:
+          - Span "###Bakery###" [ref=6]
+          - Tabs [ref=7]
+            - Tab [ref=8, value="Storefront"]
+              - Anchor "Storefront" [ref=9]
+            - Tab [ref=10, value="Dashboard"]
+              - Anchor "Dashboard" [ref=11]
+            - Tab [ref=12, id=logout-tab, value="Logout"]
+              - Anchor "Logout" [ref=13]
+        - Content:
+          - <storefront-view> [ref=14]
+            - <search-bar> [ref=15, id=search]
+              - TextField [ref=16, id=field, placeholder="Search", icon="vaadin:search", value="Kerry Wilkinson"] actions: set_value
+              - Checkbox "Show past orders" [ref=20] actions: set_value
+              - Button "Clear search" [ref=21, id=clear] actions: click
+            - Grid [ref=19, id=grid, rows=1]
+              - row 0: Upcoming After this week new Dec 16 Wednesday Kerry Wilkinson 8 Raspberry Vanilla Bagel
+      - NotificationContainer [ref=128]
+        - NotificationCard "Order was updated" [ref=129]
+      
+SAYS  I updated Kerry Wilkinson's next order (#6009, due Dec 16) and saved it. The app showed "Order was updated".
+      
+      - **Removed:** the Blueberry Tart (2 of them).
+      - **Added:** one more Raspberry Vanilla Bagel, so it now has 8 instead of 7.
+      - **New total:** $810.88.
+      
+      I took "each remaining product" to mean the products still in that order, and Raspberry Vanilla Bagel was the only one left. If you meant one more of every product on the bakery's menu, say so and I'll add those too.
+END   turns=12 duration=24s cost=$0.0620643 is_error=false
