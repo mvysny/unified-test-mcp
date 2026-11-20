@@ -24,7 +24,7 @@ pass at many times a competitor's tokens, which is what the benchmark measures.
 | bakery-new-order | passes in the walk, the app's check included | each product pick waits 10 s (`D_set_value_reads_back`) |
 | bakery-edit-items | untried since §1 | its picks and deletes re-create the item editors, as new-order's |
 | bakery-reschedule | untried since its blockers' fixes | — (`R_dramafinder_row_click`, `D_field_affixes`) |
-| bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | a Delivered badge shows only an icon (§3) |
+| bakery-today-count | passes in the walk: Bakery, Ready, 3, off the first snapshot's rows | — since a Delivered badge's check shows (`D_lone_icon`) and a card is cut by its runs (`D_component_views`) |
 
 Ours: the probe, one run each, of a work-in-progress tree whose grid showed a line per cell (its
 `NOTES.md`). In brackets: Playwright MCP's median, the cheaper competitor in every CRM scenario.
@@ -45,25 +45,16 @@ Unified API's lookups reach into them only in the local `-shadow` build
   Vaadin component's, which no walk enters. Crud is commercial; price-cap and new-user may pass
   regardless, as locked-user does.
 
-## 2. Grid — the storefront's cards
+## 2. Grid
 
 The CRM's cost, the grid's cells in every answer and the rows beyond the rendered ones, is built
-(`D_grid_as_rows`, `D_get_rows_scrolls`); the next CRM round measures it.
-
-The storefront has 158 orders, 23 cards rendered: bakery-today-count's "Today" group sits on top,
-and bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered
-ones on seed 1. A row is one `<order-card>`, its preview cut at 50 characters in the snapshot
-and in `get_rows`: `This week Fri, Nov 20 - Sun, Nov 22 ready Fri 20 8…` loses the location
-and the customer on a group's first row. `snapshot(ref)` cuts nothing but gives each Span its ref,
-~15 a row.
+(`D_grid_as_rows`, `D_get_rows_scrolls`); the next CRM round measures it. The storefront has 158
+orders, 23 cards rendered: bakery-today-count's "Today" group sits on top, and
+bakery-reschedule's target is found by the search, so neither needs rows beyond the rendered ones
+on seed 1.
 
 ## 3. Smaller, each found walking Bakery
 
-- **A state shown only by an icon** — bakery-today-count when its status is Delivered:
-  `<order-status-badge status="delivered">` hides its text and shows `vaadin:check`, and the
-  snapshot skips every `vaadin-icon`. The scenario picks any (location, status) group of today's
-  orders. `Q_lone_icon`: a `vaadin-icon` with no text beside it as a line of its own,
-  `Icon "vaadin:check"`?
 - **Links and tabs**: Bakery's menu shows as `Tab [value="Storefront"]` with `Anchor "Storefront"`
   inside it, the CRM's drawer as `Anchor "List"`: no `href`, no `actions: click`, no `selected` on
   the current tab. An agent clicks the Anchor anyway, or guesses `/users`; `path=` as on a
@@ -77,8 +68,7 @@ ours, so by the code it isn't one a user acts on and shows as its text, none
 
 ## Order
 
-1. §1: the Unified API's upstream PR; Dramafinder's #311 merged and released.
-2. §2: the storefront's cards cut at 50 characters.
-3. §3's lone icons (today-count), then the rest of §3.
-
-Then a CRM round on a committed tree, and Bakery's first.
+1. A scripted walk of the Bakery scenarios untried since their fixes: reschedule, edit-items,
+   price-cap, new-user.
+2. A CRM round on a committed tree, and Bakery's first.
+3. §1: the Unified API's upstream PR; Dramafinder's #311 merged and released. §3's links and tabs.

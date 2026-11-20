@@ -119,7 +119,8 @@ import java.util.Map;
  * </pre>
  *
  * In a cell, a component a user acts on ({@link ComponentTypes#ACTED_ON}) shows in its short view, type, name and
- * bracket; anything else as its text, cut at {@value #CELL_CAP} characters; parts joined by {@code ; }
+ * bracket; anything else as its text, each run cut at {@value #CELL_CAP} characters; an icon with no text beside it as
+ * {@code Icon "vaadin:check"} (D_lone_icon); parts joined by {@code ; }
  * (D_component_views). {@link #full} shows one component with nothing cut; {@link #rows} reads a grid's rows beyond
  * the view (D_get_rows_scrolls).
  *
@@ -159,7 +160,7 @@ final class Snapshot {
     /** A Grid shows at most this many of its rows in view: an overview, the rest is {@code get_rows}'. */
     static final int GRID_ROWS = 10;
 
-    /** A run of text in a grid cell longer than this is cut, with {@code …}, outside the full view. */
+    /** A run of text in a grid cell longer than this, a text node's, is cut, with {@code …}, outside the full view. */
     private static final int CELL_CAP = 50;
 
     /**
@@ -169,7 +170,7 @@ final class Snapshot {
      */
     private static final String SCRIPT = """
             async ({ next, layouts, skipped, fields, inline, titleSlots, logins, expandable, attribute, gridRows,
-                     root, full, rows: rowsWanted }) => {
+                     cellCap, root, full, rows: rowsWanted }) => {
               // A server-side navigation changes the URL after the round-trip that an action waits for
               // (R_flow_navigation_url): with React, once Flow clears its navigation flag; without, in a setTimeout.
               // The Unified API's own actions wait for it; a click through the escape hatch (ShadowParts) doesn't
@@ -251,10 +252,23 @@ final class Snapshot {
               // as the overlay renders it: its i18n's header over its own property
               const loginDescription = e => i18nOf(e)?.header?.description != null
                   ? str(i18nOf(e).header.description) : str(e.description);
+              const iconName = icon => str(icon.getAttribute('icon')) ?? str(icon.ligature) ?? str(icon.iconClass);
+              const iconElementOf = e => e.querySelector(':scope > vaadin-icon[slot=prefix]')
+                  ?? (e.localName === 'vaadin-button' ? e.querySelector(':scope > vaadin-icon:not([slot])') : null);
               const iconOf = e => {
-                const icon = e.querySelector(':scope > vaadin-icon[slot=prefix]')
-                    ?? (e.localName === 'vaadin-button' ? e.querySelector(':scope > vaadin-icon:not([slot])') : null);
-                return icon ? str(icon.getAttribute('icon')) ?? str(icon.ligature) ?? str(icon.iconClass) : null;
+                const icon = iconElementOf(e);
+                return icon ? iconName(icon) : null;
+              };
+              // an icon with no text beside it, a state a check alone shows, as Bakery's Delivered badge: an Icon named
+              // by its icon, taking no ref (D_lone_icon); not one its component shows as its icon=
+              const loneIcon = icon => {
+                const parent = icon.parentElement ?? icon.getRootNode().host;
+                if (!parent || iconElementOf(parent) === icon || icon.hidden || !isVisible(icon)) return null;
+                const beside = Array.from(parent.childNodes).some(n => n !== icon && (n.nodeType === Node.TEXT_NODE
+                    ? n.textContent.trim() !== '' : n.nodeType === Node.ELEMENT_NODE && !SKIPPED.has(n.localName)
+                        && isVisible(n) && textOf(n) !== ''));
+                const name = beside ? null : iconName(icon);
+                return name === null ? null : { tag: 'vaadin-icon', text: name, children: [] };
               };
               const valueOf = e => {
                 switch (e.localName) {
@@ -311,12 +325,14 @@ final class Snapshot {
               const selectionOf = g => ({ true: 'multi', false: 'single' })[
                   g.$?.table?.getAttribute('aria-multiselectable')] ?? null;
               // a cell's runs of text, and in their places, in their short view, the components a user acts on; in
-              // the full view every component
+              // the full view every component. Outside it, each run cut on its own: a card of short ones shows whole
+              // (D_component_views)
               const partsOf = content => {
                 const parts = [];
                 const text = t => {
                   t = t.replace(/\\s+/g, ' ').trim();
                   if (t === '') return;
+                  if (!full && t.length > cellCap) t = t.slice(0, cellCap) + '…';
                   const last = parts[parts.length - 1];
                   if (last?.text !== undefined) last.text += ' ' + t; else parts.push({ text: t });
                 };
@@ -328,6 +344,11 @@ final class Snapshot {
                     }
                     if (c.nodeType !== Node.ELEMENT_NODE) continue;
                     const tag = c.localName;
+                    if (tag === 'vaadin-icon') {
+                      const icon = loneIcon(c);
+                      if (icon) parts.push({ node: icon });
+                      continue;
+                    }
                     if (c.hidden || SKIPPED.has(tag) || tag.startsWith('copilot-')) continue;
                     const actedOn = INLINE.has(tag);
                     const nodes = actedOn || full ? visit(c, n.localName, true) : [];
@@ -376,6 +397,7 @@ final class Snapshot {
               };
               const visit = (e, parentTag, short = false) => {
                 const tag = e.localName;
+                if (tag === 'vaadin-icon') return [loneIcon(e)].filter(Boolean);
                 if (e.hidden || SKIPPED.has(tag) || tag.startsWith('copilot-')) return [];
                 // Vaadin's screen-reader announcements, "Czechia added to selection" (@vaadin/a11y-base announce.js)
                 if (parentTag === 'body' && tag === 'div' && e.style.position === 'fixed'
@@ -515,7 +537,7 @@ final class Snapshot {
         if (nodes.isEmpty()) {
             out.append("(no components)\n");
         }
-        render(nodes, 0, out, targets, false);
+        render(nodes, 0, out, targets);
         refs.replace((String) result.get("url"), modals.isEmpty() ? null : modals.get(0), targets, next(result));
         return out.toString();
     }
@@ -531,7 +553,7 @@ final class Snapshot {
         Map<?, ?> result = evaluate(page, refs, refs.resolve(page, ref).element(), true, null);
         StringBuilder out = new StringBuilder();
         Map<Integer, Refs.Target> targets = new LinkedHashMap<>();
-        render((List<?>) result.get("nodes"), 0, out, targets, true);
+        render((List<?>) result.get("nodes"), 0, out, targets);
         refs.add(targets, next(result));
         return out.toString();
     }
@@ -547,7 +569,7 @@ final class Snapshot {
     static String rows(UnifiedPage page, Refs refs, UnifiedElement grid, int offset, int length) {
         Map<?, ?> result = evaluate(page, refs, grid, false, Map.of("offset", offset, "length", length));
         StringBuilder out = new StringBuilder();
-        renderRows((List<?>) result.get("rows"), 0, out, new LinkedHashMap<>(), false);
+        renderRows((List<?>) result.get("rows"), 0, out, new LinkedHashMap<>());
         return out.toString();
     }
 
@@ -567,6 +589,7 @@ final class Snapshot {
             arg.put("expandable", List.copyOf(ComponentTypes.EXPANDABLE));
             arg.put("attribute", Refs.ATTRIBUTE);
             arg.put("gridRows", GRID_ROWS);
+            arg.put("cellCap", CELL_CAP);
             arg.put("root", handle);
             arg.put("full", full);
             arg.put("rows", rows);
@@ -582,13 +605,11 @@ final class Snapshot {
         return ((Number) result.get("next")).intValue();
     }
 
-    /** @param full whether a Grid shows in its full view: every row in view, every component in a cell named */
-    private static void render(List<?> nodes, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
-                               boolean full) {
+    private static void render(List<?> nodes, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
         for (Object o : nodes) {
             Map<?, ?> node = (Map<?, ?>) o;
             if (node.get("region") != null) {
-                renderRegion(node, depth, out, targets, full);
+                renderRegion(node, depth, out, targets);
                 continue;
             }
             out.append("  ".repeat(depth)).append("- ").append(shortView(node, targets));
@@ -601,9 +622,9 @@ final class Snapshot {
             }
             out.append('\n');
             if (node.get("grid") != null) {
-                renderGrid(node, depth + 1, out, targets, full);
+                renderGrid(node, depth + 1, out, targets);
             }
-            render((List<?>) node.get("children"), depth + 1, out, targets, full);
+            render((List<?>) node.get("children"), depth + 1, out, targets);
         }
     }
 
@@ -693,28 +714,26 @@ final class Snapshot {
      *   Footer: | 200 people | | |
      * </pre>
      */
-    private static void renderGrid(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
-                                   boolean full) {
+    private static void renderGrid(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
         Map<?, ?> grid = (Map<?, ?>) node.get("grid");
         String indent = "  ".repeat(depth);
         for (Object line : (List<?>) grid.get("header")) {
-            out.append(indent).append("Header: ").append(headerLine((List<?>) line, targets, full)).append('\n');
+            out.append(indent).append("Header: ").append(headerLine((List<?>) line, targets)).append('\n');
         }
         List<?> rows = (List<?>) grid.get("rows");
-        renderRows(rows, depth, out, targets, full);
+        renderRows(rows, depth, out, targets);
         String notShown = notShown(rows, ((Number) node.get("rows")).intValue());
         if (notShown != null) {
             out.append(indent).append("- ").append(notShown).append(" not shown: get_rows ref=")
                     .append(((Number) node.get("ref")).intValue()).append('\n');
         }
         for (Object line : (List<?>) grid.get("footer")) {
-            out.append(indent).append("Footer: ").append(headerLine((List<?>) line, targets, full)).append('\n');
+            out.append(indent).append("Footer: ").append(headerLine((List<?>) line, targets)).append('\n');
         }
     }
 
     /** {@code - row 0 [selected]: Frank Rossi | 20 | | Button "Edit" [ref=3]}, a line per row. */
-    private static void renderRows(List<?> rows, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
-                                   boolean full) {
+    private static void renderRows(List<?> rows, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
         for (Object o : rows) {
             Map<?, ?> row = (Map<?, ?>) o;
             out.append("  ".repeat(depth)).append("- row ").append(((Number) row.get("index")).intValue());
@@ -727,7 +746,7 @@ final class Snapshot {
                 if (i > 0) {
                     out.append(" |");
                 }
-                String text = cell((List<?>) cells.get(i), targets, full);
+                String text = cell((List<?>) cells.get(i), targets);
                 if (!text.isEmpty()) {
                     out.append(' ').append(text);
                 }
@@ -740,7 +759,7 @@ final class Snapshot {
      * {@code | Name ↑2 | Age ⇅ | |}: a header or footer row, a sorted column with its arrow and its order, one that
      * sorts with {@code ⇅}.
      */
-    private static String headerLine(List<?> cells, Map<Integer, Refs.Target> targets, boolean full) {
+    private static String headerLine(List<?> cells, Map<Integer, Refs.Target> targets) {
         StringBuilder line = new StringBuilder("|");
         for (Object o : cells) {
             Map<?, ?> cell = (Map<?, ?>) o;
@@ -748,23 +767,22 @@ final class Snapshot {
             String arrow = sorted != null ? (sorted.equals("asc") ? " ↑" : " ↓")
                     + (cell.get("order") == null ? "" : cell.get("order"))
                     : Boolean.TRUE.equals(cell.get("sortable")) ? " ⇅" : "";
-            String text = (cell((List<?>) cell.get("parts"), targets, full) + arrow).strip();
+            String text = (cell((List<?>) cell.get("parts"), targets) + arrow).strip();
             line.append(text.isEmpty() ? " |" : " " + text + " |");
         }
         return line.toString();
     }
 
     /**
-     * A cell's parts joined by {@code ; }: runs of text, cut at {@value #CELL_CAP} characters outside the full view,
-     * and components in their short view; each {@code |} in it written {@code \|}, the cells' own separator.
+     * A cell's parts joined by {@code ; }: runs of text, each cut by the script, and components in their short view;
+     * each {@code |} in it written {@code \|}, the cells' own separator.
      */
-    private static String cell(List<?> parts, Map<Integer, Refs.Target> targets, boolean full) {
+    private static String cell(List<?> parts, Map<Integer, Refs.Target> targets) {
         List<String> shown = new ArrayList<>();
         for (Object o : parts) {
             Map<?, ?> part = (Map<?, ?>) o;
             String text = (String) part.get("text");
-            String shownPart = text != null ? (full ? text : cap(text, CELL_CAP))
-                    : shortView((Map<?, ?>) part.get("node"), targets);
+            String shownPart = text != null ? text : shortView((Map<?, ?>) part.get("node"), targets);
             shown.add(shownPart.replace("|", "\\|"));
         }
         return String.join("; ", shown);
@@ -797,8 +815,7 @@ final class Snapshot {
     }
 
     /** {@code - Navbar:} with what it holds under it; a closed drawer as {@code - Drawer: closed; click …}. */
-    private static void renderRegion(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets,
-                                     boolean full) {
+    private static void renderRegion(Map<?, ?> node, int depth, StringBuilder out, Map<Integer, Refs.Target> targets) {
         out.append("  ".repeat(depth)).append("- ").append(node.get("region")).append(':');
         if (Boolean.TRUE.equals(node.get("closed"))) {
             out.append(" closed");
@@ -810,7 +827,7 @@ final class Snapshot {
             return;
         }
         out.append('\n');
-        render((List<?>) node.get("children"), depth + 1, out, targets, full);
+        render((List<?>) node.get("children"), depth + 1, out, targets);
     }
 
     /** The type's own naming property, its text or its label; {@code null} for none. */

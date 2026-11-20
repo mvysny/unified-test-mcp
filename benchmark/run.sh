@@ -48,7 +48,7 @@ out="$results/$scenario.$arm.s$seed.$n"
 mkdir "$out"
 
 # --- the jars: built when missing or older than their sources ------------------------------------
-stale() { [ ! -f "$1" ] || [ -n "$(find "${@:2}" -newer "$1" -type f -print -quit)" ]; }
+stale() { [ ! -f "$1" ] || [ -n "$(find "${@:2}" -newer "$1" -type f -print -quit 2>/dev/null)" ]; }
 case $scenario in
   crm-*) app=$repo/benchmark/apps/flow-crm-tutorial; build=(./mvnw -q -B package -DskipTests) ;;
   bakery-*) app=$repo/benchmark/apps/bakery-app-starter-flow-spring; build=(mvn -q -B package -DskipTests) ;;
@@ -63,7 +63,9 @@ fi
 server_jar=
 if [ "$arm" = unified-test-mcp ]; then
   server_jar=$(ls "$repo"/unified-test-mcp/build/libs/unified-test-mcp-*.jar 2>/dev/null | grep -v -- '-plain\.jar$' | head -1 || true)
-  if stale "${server_jar:-/nonexistent}" "$repo/unified-test-mcp/src/main" "$repo/unified-test-mcp/build.gradle.kts"; then
+  # its sources, its build, and the local -shadow builds it takes from ~/.m2 (gradle/libs.versions.toml)
+  if stale "${server_jar:-/nonexistent}" "$repo/unified-test-mcp/src/main" "$repo/unified-test-mcp/build.gradle.kts" \
+      "$repo/build.gradle.kts" "$repo/gradle/libs.versions.toml" "$HOME"/.m2/repository/org/vaadin/addons/*/*-shadow; then
     log "building unified-test-mcp"
     (cd "$repo" && ./gradlew -q :unified-test-mcp:shadowJar) >"$out/build.log" 2>&1 || fail "build failed: $out/build.log"
     server_jar=$(ls "$repo"/unified-test-mcp/build/libs/unified-test-mcp-*.jar | grep -v -- '-plain\.jar$' | head -1)

@@ -639,6 +639,11 @@ None of these carries `hidden`.
 - A grid cell's `<order-card>` holds all its text in its shadow root, the cell's `textContent`
   empty; its status is `<order-status-badge>`, another template.
   **[verified 2026-11-19, Vaadin 25.3.5]**
+- A card is short elements, each its own text: on a group's first row the group heading, "This
+  week" and "Fri, Nov 20 - Sun, Nov 22", then the badge, the time, the day, the place, the
+  customer, each item's count and product. The badge shows its status as a lowercase `<span>`,
+  but Delivered as a `<vaadin-icon icon="vaadin:check">`, its span hidden by CSS.
+  **[src, `order-card.js`, `order-status-badge.js`]**
 - The Crud views' editor is a `<vaadin-crud-dialog>` in `<vaadin-crud>`'s shadow root.
   **[verified 2026-11-19, Vaadin 25.3.5]**
 

@@ -115,6 +115,7 @@ public class ToolsTest {
                 - Button "Profile" [ref=N, icon="fa-solid fa-user"] actions: click
                 - Button "Star" [ref=N] actions: click
                 - Button "Logo" [ref=N] actions: click
+                - Icon "vaadin:check"
                 """, masked(snapshotOf("icons")));
     }
 
@@ -981,11 +982,12 @@ public class ToolsTest {
                     - Button "New order" [ref=N] actions: click
                   - Grid [ref=N, id=grid, rows=3, selection=single]
                     Header: | Order |
-                    - row 0: Grace Hopper Pending 2 × Strawberry Bun
-                    - row 1: Alan Turing Ready 1 × Vanilla Cracker
-                    - row 2: Ada Lovelace Delivered 1 × Blueberry Cheesecake
+                    - row 0: This week: Fri, Nov 20 – Sun, Nov 22 Grace Hopper Pending 2 × Strawberry Bun
+                    - row 1: Alan Turing Ready 1 × Vanilla Cracker, 3 × Blueberry Cheesecake, 2 ×…
+                    - row 2: Ada Lovelace; Icon "vaadin:check"; 1 × Blueberry Cheesecake
                   - Span "No order saved" [ref=N, id=status]
-                """, masked(page), "a template in a template, a card's text in its shadow root, a slot's content");
+                """, masked(page), "a template in a template, a card's text in its shadow root, each run of it cut on"
+                + " its own, a lone icon, a slot's content");
         assertEquals("""
                 - <search-bar> [ref=N, id=search]
                   - TextField [ref=N, placeholder="Search", value=""] actions: set_value
@@ -997,7 +999,8 @@ public class ToolsTest {
     public void clickSelectsARowATemplateCovers() throws IOException {
         int grid = ref(snapshotOf("template"), "Grid");
         String clicked = call(client, "click", Map.of("ref", grid, "row", 1));
-        assertTrue(masked(clicked).contains("\n    - row 1 [selected]: Alan Turing Ready 1 × Vanilla Cracker\n"), clicked);
+        assertTrue(masked(clicked).contains("\n    - row 1 [selected]: Alan Turing Ready 1 × Vanilla Cracker, 3 ×"),
+                clicked);
     }
 
     @Test
@@ -1007,7 +1010,7 @@ public class ToolsTest {
         assertTrue(masked(searched).contains("""
                   - Grid [ref=N, id=grid, rows=1, selection=single]
                     Header: | Order |
-                    - row 0: Ada Lovelace Delivered 1 × Blueberry Cheesecake
+                    - row 0: Ada Lovelace; Icon "vaadin:check"; 1 × Blueberry Cheesecake
                 """), searched);
     }
 

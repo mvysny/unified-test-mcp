@@ -613,20 +613,39 @@ A Grid's cells hold components, but a line per component would bring back a line
 (`D_grid_as_rows`): inside a cell, a component shows as one fragment, or as text. **A user acts on**
 a component whose type has tools of its own in `ComponentTypes`, a link, a Grid: those keep their
 short view, the type, name and whole bracket, ref included; a Span, a badge, an Avatar, a sorter
-shows as its preview, the text a user reads off it, cut at 50 characters, and takes no ref. The
+shows as its preview, the text a user reads off it, and takes no ref. The
 short view carries no `actions:`: two in one cell would run together (`Button "Edit" [ref=3]
 actions: click Button "Delete"` reads as an action "click Button"), and the type says the action,
 the snapshot's own lines teaching which; the `; ` between a cell's parts keeps room for them if
 agents miss it. The whole bracket, for every type: a Grid in a cell reads `Grid [ref=9, rows=3,
 selection=single]`, with no exception to remember.
 
-**The middle view cuts only what grows with the data**: a grid's rows, a preview's length.
+**The middle view cuts only what grows with the data**: a grid's rows, and in a preview each run
+of text, a text node's, at 50 characters. Why each run rather than the cell's whole text: a card
+of short fields, Bakery's order card (`R_bakery_template_dom`), lost its location and customer to
+the group heading on a group's first row, `This week Fri, Nov 20 - Sun, Nov 22 ready Fri 20 8…`;
+what grows with the data is one text, a description, a comment, and that is what gets cut.
 **The full view**, `snapshot(ref)`, cuts nothing: a Grid's every row in view, every component in
 its cells in its short view, previews only for bare text, and its children in their full view.
 Why one tool, not `get_grid`: each type with a full view, someday a Select's items or a MenuBar's
 submenus, would want one of its own. Its refs join the latest snapshot's rather than replacing
 them (`D_refs_not_ids`): the page's other refs stay good, the full view being a closer look, not a
 new picture.
+
+## D_lone_icon — Why does an icon with no text beside it show as `Icon "vaadin:check"`, where every other icon is left out or folded into `icon=`?
+
+An icon beside text is decoration, the text saying it, so the snapshot leaves it out
+(`ComponentTypes.SKIPPED`); one a component shows in front of its name is that component's
+`icon=` (`R_vaadin_icons`). Alone, an icon is what the user reads: Bakery's Delivered badge hides
+its text and shows a check (`R_bakery_template_dom`), and without it a Delivered order showed no
+status at all, so bakery-today-count failed every seed that asked for Delivered. So an icon whose
+parent shows no other text, its siblings hidden or empty, shows as an Icon named by its icon: a
+line of its own, `- Icon "vaadin:check"`, or a part of a grid cell, `Ada Lovelace; Icon
+"vaadin:check"; 1 × Blueberry Cheesecake`. It takes no ref: no tool acts on an icon.
+
+Why its name, not what it means: the name is what the app gave, and the agent reads "check" as a
+user reads the mark; "Delivered" would be our guess. Why not every icon: beside text, each costs
+tokens and says nothing the text doesn't. An SvgIcon has no name, and stays out.
 
 ## D_get_rows_scrolls — Why does `get_rows` scroll the grid, leave it scrolled, and answer with the snapshot, rather than read the rows from behind or put the scroll back?
 

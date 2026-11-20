@@ -10,10 +10,13 @@ import com.vaadin.flow.component.grid.dataview.GridListDataView;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.dom.ShadowRoot;
 import com.vaadin.flow.router.Route;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,8 +37,10 @@ import java.util.stream.Collectors;
  *   Orders                          an H2
  *   &lt;search-bar id=search&gt;          a template in the template
  *     [Search]  [New order]         filters the orders by customer as typing pauses, as Bakery's; opens the dialog
- *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status in a span with id=status;
- *                                   a card covers its cell, padding included, as Bakery's
+ *   Grid of &lt;order-card&gt;s          each card's text in its shadow root, its status an &lt;order-status-badge
+ *                                   id=status&gt;, Delivered a check icon alone; a heading on the first card, a
+ *                                   long run of items on the second; a card covers its cell, padding included,
+ *                                   as Bakery's
  *   Dialog "New order"              its content an &lt;order-editor&gt;:
  *     Customer [    ]
  *     &lt;order-item-editor&gt; …        [Product ▾] [1]: the ids products and amount in each; an empty one
@@ -49,7 +54,12 @@ import java.util.stream.Collectors;
 public class TemplateView extends Component {
     record Item(String product, int amount) {}
 
-    record Order(String customer, String status, List<Item> items) {}
+    /** @param heading what its card opens with, as Bakery's first card of "This week"; {@code null} for none */
+    record Order(String customer, String status, List<Item> items, @Nullable String heading) {
+        Order(String customer, String status, List<Item> items) {
+            this(customer, status, items, null);
+        }
+    }
 
     private static final List<String> PRODUCTS = List.of("Strawberry Bun", "Vanilla Cracker", "Blueberry Cheesecake");
 
@@ -62,8 +72,10 @@ public class TemplateView extends Component {
         grid.setId("grid");
         grid.addComponentColumn(OrderCard::new).setHeader("Order");
         GridListDataView<Order> orders = grid.setItems(new ArrayList<>(List.of(
-                new Order("Grace Hopper", "Pending", List.of(new Item("Strawberry Bun", 2))),
-                new Order("Alan Turing", "Ready", List.of(new Item("Vanilla Cracker", 1))),
+                new Order("Grace Hopper", "Pending", List.of(new Item("Strawberry Bun", 2)),
+                        "This week: Fri, Nov 20 – Sun, Nov 22"),
+                new Order("Alan Turing", "Ready", List.of(new Item("Vanilla Cracker", 1),
+                        new Item("Blueberry Cheesecake", 3), new Item("Strawberry Bun", 2))),
                 new Order("Ada Lovelace", "Delivered", List.of(new Item("Blueberry Cheesecake", 1))))));
 
         Dialog dialog = new Dialog("New order");
@@ -94,13 +106,18 @@ public class TemplateView extends Component {
         }
     }
 
-    /** An order's customer, status and items, all in its shadow root; covering its cell, padding included. */
+    /**
+     * An order's heading if any, customer, status and items, all in its shadow root; covering its cell, padding
+     * included.
+     */
     @Tag("order-card")
     static class OrderCard extends Component {
         OrderCard(Order order) {
-            Span status = new Span(order.status());
-            status.setId("status");
-            getElement().attachShadow().appendChild(new Span(order.customer()).getElement(), status.getElement(),
+            ShadowRoot shadow = getElement().attachShadow();
+            if (order.heading() != null) {
+                shadow.appendChild(new Span(order.heading()).getElement());
+            }
+            shadow.appendChild(new Span(order.customer()).getElement(), new StatusBadge(order.status()).getElement(),
                     new Span(items(order)).getElement());
             getElement().getStyle().set("display", "block").set("margin", "-50px").set("padding", "50px");
         }
@@ -109,6 +126,18 @@ public class TemplateView extends Component {
         static String items(Order order) {
             return order.items().stream().map(item -> item.amount() + " × " + item.product())
                     .collect(Collectors.joining(", "));
+        }
+    }
+
+    /** A status as its text, but Delivered as a check icon alone, its text hidden, as Bakery's badge. */
+    @Tag("order-status-badge")
+    static class StatusBadge extends Component {
+        StatusBadge(String status) {
+            Span text = new Span(status);
+            Icon check = VaadinIcon.CHECK.create();
+            (status.equals("Delivered") ? text : check).getStyle().set("display", "none");
+            setId("status");
+            getElement().attachShadow().appendChild(new Div(text, check).getElement());
         }
     }
 

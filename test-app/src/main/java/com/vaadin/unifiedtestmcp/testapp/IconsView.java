@@ -1,6 +1,7 @@
 package com.vaadin.unifiedtestmcp.testapp;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.FontIcon;
 import com.vaadin.flow.component.icon.SvgIcon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -21,6 +22,7 @@ import com.vaadin.flow.theme.lumo.LumoIcon;
  * [👤 Profile]           shown: a FontIcon's classes, fa-solid fa-user
  * [★ Star]               not shown: a FontIcon by its char code has no name
  * [▣ Logo]               not shown: an SvgIcon has no name
+ * ✓                      shown: vaadin:check, alone in a Span, no text beside it
  * </pre>
  */
 @Route("icons")
@@ -47,6 +49,7 @@ public class IconsView extends VerticalLayout {
 
         add(new Button("Search", VaadinIcon.SEARCH.create()), next, dismiss, filter,
                 new Button("Home", home), new Button("Profile", new FontIcon("fa-solid", "fa-user")),
-                new Button("Star", star), new Button("Logo", new SvgIcon(LOGO)));
+                new Button("Star", star), new Button("Logo", new SvgIcon(LOGO)),
+                new Span(VaadinIcon.CHECK.create()));
     }
 }
